@@ -2,7 +2,7 @@ export default {
     namespaced: true,
 
     state: {
-        itemMedia: { collection: [], filler: null },
+        //itemMedia: { collection: [], filler: null },
         dialogAddMedia: false,
 
         lightBox: {
@@ -19,12 +19,26 @@ export default {
     },
 
     getters: {
+        /*
         itemMedia(state) {
             return state.itemMedia.collection;
         },
+        */
+        mediaPrimary(state, rootState, getters, rootGetters) {
+            let m = rootGetters["mgr/collections"]("media").collection;
 
-        itemOneMedia(state, getters) {
-            return state.itemMedia.collection.length > 0 ? state.itemMedia.collection[0] : state.itemMedia.filler;
+            if (m.length > 0) { 
+                return m[0]
+             } else { 
+                 let module = rootGetters["mgr/module"];
+                 let fullName = `${module}0.jpg`;
+                 let tnName = `${module}0-tn.jpg`;
+                 let fullUrl = `${rootGetters["mgr/baseUrl"]}/app-media/fillers/${fullName}`;
+                 let tnUrl = `${rootGetters["mgr/baseUrl"]}/app-media/fillers/${tnName}`;
+
+                 let filler = {"fullUrl": fullUrl,"tnUrl": tnUrl, "hasMedia": false}
+                 return filler; 
+                }
         },
         dialogAddMedia(state, getters) {
             return state.dialogAddMedia;
@@ -36,8 +50,8 @@ export default {
 
         lightBox(state, rootState, getters, rootGetters) {
             //let storageName = rootGetters["mgr/storageName"](state.lightBox.source);
-            
-            
+
+
             if (state.lightBox.isOpen === false) return state.lightBox;
 
             let lb = { ...state.lightBox };
@@ -49,32 +63,8 @@ export default {
             lb["chunk"] = c.chunk;
             lb["media"] = (c.chunk)[state.lightBox.indexInChunk];
             return lb;
-            switch (state.lightBox.source) {
-                case "main":
-
-                    lb["pageNo"] = c.pageNo;
-                    lb["itemsPerPage"] = c.itemsPerPage;
-                    lb["length"] = c.collection.length;
-                    lb["chunk"] = c.chunk;
-                    lb["media"] = (c.chunk)[state.lightBox.indexInChunk];
-                    break;
-                case "related":
-                    //lb["item"] = (rootGetters["mgr/collectionRelated"].collection)[state.lightBox.index];
-                    break;
-
-                case "media":
-                    lb["pageNo"] = c.pageNo;
-                    lb["itemsPerPage"] = c.itemsPerPage;
-                    lb["length"] = c.collection.length;
-                    lb["chunk"] = c.chunk;
-                    lb["media"] = (c.chunk)[state.lightBox.indexInChunk];
-                    break;
-            }
-            return lb;
         },
-        primary(state) {
-            return state.primary;
-        },
+
         appMedia(state) {
             return state.appMedia;
         },
@@ -93,7 +83,7 @@ export default {
                 state.lightBox.indexInChunk = payload.index;
                 console.log(`med/openLightBox(commit): ${JSON.stringify(payload, null, 2)}`);
             }
-            
+
         },
 
         lightBoxIndexInChunk(state, payload) {
@@ -101,10 +91,11 @@ export default {
             state.lightBox.indexInChunk = payload;
         },
 
+        /*
         itemMedia(state, payload) {
             state.itemMedia = payload;
         },
-
+        */
         appMedia(state, payload) {
             state.appMedia = payload;
         },
@@ -112,7 +103,7 @@ export default {
             state.primary = payload;
         },
         clear(state, payload) {
-            state.itemMedia = { collection: [], filler: null };
+            //state.itemMedia = { collection: [], filler: null };
         }
     },
     actions: {
@@ -135,7 +126,8 @@ export default {
                 dispatch("xhr/xhr", xhrRequest, { root: true })
                     .then(res => {
                         console.log('upload media returned: ' + JSON.stringify(res.data, null, 2));
-                        commit('itemMedia', res.data.itemMedia);
+                        //commit('itemMedia', res.data.itemMedia);
+                        commit('mgr/collections', { name: "media", collection: res.data.itemMedia.collection }, { root: true });
                         commit('mgr/setDirtyCollection', true, { root: true });
                         return res;
                     })
@@ -160,7 +152,8 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     console.log('delete media returned: ' + JSON.stringify(res.data, null, 2));
-                    commit('itemMedia', res.data.itemMedia);
+                    //commit('itemMedia', res.data.itemMedia);
+                    commit('mgr/collections', { name: "media", collection: res.data.itemMedia.collection }, { root: true });
                     commit('mgr/setDirtyCollection', true, { root: true });
                     return res;
                 })
@@ -177,18 +170,8 @@ export default {
         },
 
         openLightBox({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
-           console.log(`med/openLB payload: ${JSON.stringify(payload, null, 2)}`); 
-           commit("openLightBox", payload);
-           return;
-
-            state.lightBox.isOpen = payload.value;
-            if (payload.value) {
-                state.lightBox.source = payload.source;
-            }
-            if(payload.hasOwnProperty('page')){
-                commit('mgr/page', {name: payload.name, page: payload.page}, { root: true });
-            }
-            commit("lightBoxIndexInChunk", payload);
+            console.log(`med/openLB payload: ${JSON.stringify(payload, null, 2)}`);
+            commit("openLightBox", payload);
         },
 
 

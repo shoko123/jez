@@ -3,7 +3,7 @@
     <v-card class="elevation-12">
       <v-card-title class="grey py-0 mb-2">{{ header }}</v-card-title>
       <v-card-text>
-        <template v-if="showMedia">
+        <template v-if="hasMedia">
           <LayoutItemWithImageCard :header="header">
             <template v-slot:e1>
               <component v-bind:is="itemForm" v-bind:showTags="showTags">
@@ -58,12 +58,7 @@ export default {
       return this.$store.getters["mgr/module"] + "Form";
     },
     hasMedia() {
-      return this.$store.getters["med/itemOneMedia"]
-        ? this.$store.getters["med/itemOneMedia"].hasMedia
-        : false;
-    },
-    showMedia() {
-      return this.hasMedia;
+      return this.$store.getters["med/mediaPrimary"].hasMedia; //
     },
     showTags() {
       return this.$store.getters["mgr/status"].itemDisplayOptionIndex === 0;

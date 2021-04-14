@@ -4324,10 +4324,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/module"] + "Form";
     },
     hasMedia: function hasMedia() {
-      return this.$store.getters["med/itemOneMedia"] ? this.$store.getters["med/itemOneMedia"].hasMedia : false;
-    },
-    showMedia: function showMedia() {
-      return this.hasMedia;
+      return this.$store.getters["med/mediaPrimary"].hasMedia; //
     },
     showTags: function showTags() {
       return this.$store.getters["mgr/status"].itemDisplayOptionIndex === 0;
@@ -4381,7 +4378,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters["mgr/collections"]("media");
     },
     mediaItem: function mediaItem() {
-      return this.$store.getters["med/itemOneMedia"];
+      return this.$store.getters["med/mediaPrimary"];
     },
     mediaHeader: function mediaHeader() {
       var cnt = this.mediaArray.length;
@@ -5645,7 +5642,7 @@ __webpack_require__.r(__webpack_exports__);
     props: function props() {
       return {
         title: "Media editor for ".concat(this.itemType, " ").concat(this.$store.getters["mgr/item"].tag),
-        source: "MediaEdit"
+        source: "media"
       };
     },
     dialogAddMedia: {
@@ -5988,10 +5985,7 @@ __webpack_require__.r(__webpack_exports__);
           return _OverlayRelated__WEBPACK_IMPORTED_MODULE_0__["default"];
 
         case "media":
-          return _OverlayItemMedia__WEBPACK_IMPORTED_MODULE_1__["default"];
-
-        case "MediaEdit":
-          return _OverlayMediaEdit__WEBPACK_IMPORTED_MODULE_2__["default"];
+          return this.$store.getters["mgr/status"].isMediaEdit ? _OverlayMediaEdit__WEBPACK_IMPORTED_MODULE_2__["default"] : _OverlayItemMedia__WEBPACK_IMPORTED_MODULE_1__["default"];
       }
     }
   }
@@ -6319,7 +6313,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    media: {
+    item: {
       type: Object
     }
   },
@@ -6333,7 +6327,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.dispatch("med/delete", {
         item_type: this.$store.getters["mgr/module"],
         id: this.$store.getters["mgr/item"].id,
-        media_id: this.media.media_id
+        media_id: this.item.media_id
       });
     }
   }
@@ -6374,6 +6368,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     module: function module() {
       return this.$store.getters["mgr/module"];
+    },
+    isImplemented: function isImplemented() {
+      return this.module === "Locus" ? this.$store.getters["mgr/isImplemented"](this.item.findable_type) : true;
     }
   },
   methods: {
@@ -6385,14 +6382,6 @@ __webpack_require__.r(__webpack_exports__);
         page: c.pageNo + 1,
         index: this.index % c.itemsPerPage
       });
-      return;
-      this.$store.commit("med/openLightBox", {
-        value: true,
-        source: "related",
-        index: this.index
-      });
-      var ipp = this.$store.getters["mgr/collections"]("media").itemsPerPage;
-      this.$store.dispatch("med/lightBoxIndex", this.index % ipp);
     },
     goTo: function goTo(locus) {
       var module, id;
@@ -6983,7 +6972,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     disable: function disable() {
-      return this.$store.getters["mgr/xhrStatus"].loadingItem || this.$store.getters["mgr/xhrStatus"].loadingCollection;
+      var ready = this.$store.getters["mgr/ready"];
+      return !ready.item || !ready.collection;
     },
     isLocus: function isLocus() {
       return this.$store.getters["mgr/status"].isLocus;
@@ -7904,8 +7894,9 @@ __webpack_require__.r(__webpack_exports__);
       //return `${this.$store.getters["mgr/module"]} ${this.$store.getters["mgr/item"].tag}`;
       return this.$store.getters["mgr/item"] ? "".concat(this.$store.getters["mgr/module"], " ").concat(this.$store.getters["mgr/item"].tag) : "loading...";
     },
-    loading: function loading() {
-      return this.$store.getters["mgr/xhrStatus"].loadingItem || this.$store.getters["mgr/xhrStatus"].loadingCollection;
+    disable: function disable() {
+      var ready = this.$store.getters["mgr/ready"];
+      return !ready.item || !ready.collection;
     },
     disableButton: function disableButton() {
       return this.status ? !this.status.ready : true;
@@ -15313,7 +15304,7 @@ var render = function() {
           _c(
             "v-card-text",
             [
-              _vm.showMedia
+              _vm.hasMedia
                 ? [
                     _c("LayoutItemWithImageCard", {
                       attrs: { header: _vm.header },
@@ -17839,6 +17830,7 @@ var render = function() {
       _c(
         "v-btn",
         {
+          attrs: { disabled: !_vm.isImplemented },
           on: {
             click: function($event) {
               return _vm.goTo(_vm.item)
@@ -19550,7 +19542,7 @@ var render = function() {
             slot: "activator",
             large: "",
             rounded: "",
-            disabled: _vm.loading
+            disabled: _vm.disable
           },
           on: {
             click: function($event) {
@@ -93402,6 +93394,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     routes: _routes_js__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   state: {
+    baseUrl: null,
     collection: [],
     collections: {
       main: {
@@ -93427,19 +93420,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         pageNo: 0
       }
     },
-    index: null,
     item: null,
     ready: {
       item: false,
       collection: false,
       chunk: false
-    },
-    xhrStatus: {
-      loadingItem: false,
-      loadingCollection: false,
-      loadingTags: false,
-      storingItem: false,
-      deletingItem: false
     },
     welcomeData: {
       counts: {
@@ -93456,17 +93441,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     isDirtyCollection: false
   },
   getters: {
-    collection: function collection(state) {
-      return state.collection;
-    },
-    chunk: function chunk(state) {
-      return state.chunk;
+    baseUrl: function baseUrl(state) {
+      return state.baseUrl;
     },
     collections: function collections(state, rootState, getters, rootGetters) {
       return function (name) {
         if (!["main", "related", "media"].includes(name)) {
-          console.log("Wrong name (".concat(name, " suppiled to collection"));
-          return [];
+          console.log("Wrong name (".concat(name, ") suppiled to collections"));
+          return;
         }
 
         var c = _objectSpread({}, state.collections[name]);
@@ -93517,14 +93499,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       c.chunk = c.collection.slice(c.pageNo * c.itemsPerPage, (c.pageNo + 1) * c.itemsPerPage);
       return c;
     },
+    isImplemented: function isImplemented(state) {
+      return function (module) {
+        return ["Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(module);
+      };
+    },
     item: function item(state) {
       return state.item;
-    },
-    index: function index(state) {
-      return state.index;
-    },
-    xhrStatus: function xhrStatus(state) {
-      return state.xhrStatus;
     },
     module: function module(state, rootState, getters, rootGetters) {
       return rootGetters["mgr/routes/status"].module;
@@ -93565,7 +93546,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       function hasMedia(module) {
-        return !rootGetters["med/itemMedia"] || rootGetters["med/itemMedia"].length > 0;
+        return rootGetters["med/mediaPrimary"].hasMedia;
       }
 
       function hasRelatedModules(module) {
@@ -93630,6 +93611,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   mutations: {
+    baseUrl: function baseUrl(state, payload) {
+      state.baseUrl = payload;
+    },
     collections: function collections(state, payload) {
       state.collections[payload.name].collection = payload.collection;
     },
@@ -93637,7 +93621,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.collections.main.chunk = payload;
     },
     page: function page(state, payload) {
-      console.log("mgr/setPage ".concat(payload.name, "(").concat(payload.page, ")"));
+      //console.log(`mgr/setPage ${payload.name}(${payload.page})`);
       state.collections[payload.name].pageNo = payload.page - 1;
     },
     itemsPerPage: function itemsPerPage(state, payload) {
@@ -93660,12 +93644,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     welcomeData: function welcomeData(state, payload) {
       state.welcomeData = payload;
     },
-    loadingItem: function loadingItem(state, payload) {
-      state.xhrStatus.loadingItem = payload;
-    },
-    loadingCollection: function loadingCollection(state, payload) {
-      state.xhrStatus.loadingCollection = payload;
-    },
     clear: function clear(state) {
       console.log("item.clear");
     },
@@ -93680,15 +93658,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.isPicker = payload;
     },
     deleteFromCollectionById: function deleteFromCollectionById(state, id) {
+      var c = state.collections["main"].collection;
       console.log("mgr.deleteFromCollectionById(".concat(id));
-      var index = state.collection.findIndex(function (x) {
+      var index = c.findIndex(function (x) {
         return x.id == id;
       });
       console.log("index: ".concat(index));
-      state.collection.splice(index, 1);
+      c.splice(index, 1);
     },
     pushIntoCollection: function pushIntoCollection(state, item) {
-      state.collection.push(item);
+      var c = state.collections["main"].collection;
+      c.push(item);
     },
     setDirtyCollection: function setDirtyCollection(state, payload) {
       state.isDirtyCollection = payload; //console.log("setDirtyCollection: " + payload);
@@ -93725,7 +93705,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         if (getters["module"] === "About") {
           //console.log('dispatcher About...');
-          if (state.collection.length === 0) {
+          if (state.collections["main"].collection.length === 0) {
             dispatch("aux/queryCollection", {
               clear: true,
               spinner: true,
@@ -93756,9 +93736,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               break;
 
             case "show":
+              //console.log('mgr.dispatch(show)');// + JSON.stringify(res, null, 2));
               if (sameModule()) {
                 //if no collection loaded yet, retrieve new module's collection and then item
-                if (!getters.collection.length) {
+                if (state.collections["main"].collection.length === 0) {
                   //if same module, but collection empty, retrieve collection and then item
                   dispatch("aux/queryCollection", {
                     clear: false,
@@ -93845,7 +93826,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref3.rootGetters,
           commit = _ref3.commit,
           dispatch = _ref3.dispatch;
-      commit('loadingCollection', true);
       commit("ready", {
         entity: "collection",
         isReady: false
@@ -93912,7 +93892,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         if (getters["ready"]["item"]) {
           //set page according to item's index
-          var index = state.collection.findIndex(function (x) {
+          var c = state.collections["main"].collection;
+          var index = c.findIndex(function (x) {
             return x.id == getters["item"].id;
           });
           var page = Math.floor((index + 1) / state.collections.main.itemsPerPage) + 1;
@@ -93942,9 +93923,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       })["catch"](function (err) {
         console.log('mgr Failed to load collection. err: ' + err);
         return err;
-      })["finally"](function () {
-        commit('loadingCollection', false);
-      });
+      })["finally"](function () {});
     },
     loadItem: function loadItem(_ref4, payload) {
       var state = _ref4.state,
@@ -93952,7 +93931,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref4.commit,
           dispatch = _ref4.dispatch;
       console.log('mgr.loadItem. endpoint: ' + "".concat(getters["status"].moduleApiBaseUrl, "/").concat(payload));
-      commit('loadingItem', true);
       commit("ready", {
         entity: "item",
         isReady: false
@@ -93988,9 +93966,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
           case "Area":
           case "Season":
-            commit('arsn/areasSeasons', res.data.areasSeasons, {
-              root: true
-            });
+            //commit('arsn/areasSeasons', res.data.areasSeasons, { root: true });
             commit('collections', {
               name: "related",
               collection: res.data.areasSeasons
@@ -93998,9 +93974,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             break;
 
           case "AreaSeason":
-            commit('arsn/loci', res.data.loci, {
-              root: true
-            });
+            //commit('arsn/loci', res.data.loci, { root: true });
             commit('collections', {
               name: "related",
               collection: res.data.loci
@@ -94008,9 +93982,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             break;
 
           case "Locus":
-            commit('loci/locusFinds', res.data.locusFinds, {
-              root: true
-            });
+            //commit('loci/locusFinds', res.data.locusFinds, { root: true });
             commit('collections', {
               name: "related",
               collection: res.data.locusFinds
@@ -94036,10 +94008,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         commit('item', res.data.item);
 
         if (getters["module"] !== "About") {
-          commit('med/itemMedia', res.data.itemMedia, {
-            root: true
-          }); //console.log(`mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
-
+          //console.log(`mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
           commit('collections', {
             name: "media",
             collection: res.data.itemMedia.collection
@@ -94056,8 +94025,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           var index = state.collections.main.collection.findIndex(function (x) {
             return x.id == res.data.item.id;
           });
-          var page = Math.floor((index + 1) / state.collections.main.itemsPerPage) + 1;
-          console.log("index: ".concat(index, " ipp: ").concat(state.collections.main.itemsPerPage, " page: ").concat(page)); //mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
+          var page = Math.floor((index + 1) / state.collections.main.itemsPerPage) + 1; //console.log(`index: ${index} ipp: ${state.collections.main.itemsPerPage} page: ${page}`);//mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
 
           dispatch("page", {
             name: "main",
@@ -94071,9 +94039,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       })["catch"](function (err) {
         console.log('mgr Failed to load item. err: ' + err);
         return err;
-      })["finally"](function () {
-        commit('loadingItem', false);
-      });
+      })["finally"](function () {});
     },
     //delete item by id - must be accompanied by deleting corresponding find record.
     deleteCurrent: function deleteCurrent(_ref5) {
@@ -94105,13 +94071,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log("mgr/delete item deleted from collection!");
         commit('deleteFromCollectionById', res.data.id);
         commit('setDirtyCollection', true);
+        var c = state.collections["main"].collection;
 
-        if (state.collection.length > 0) {
+        if (c.length > 0) {
           //go to the first item in the collection.
           dispatch('goToRoute', {
             module: getters["module"],
             action: "show",
-            id: state.collection[0].id
+            id: c[0].id
           });
         } else {
           //if we deleted the last item, we must load a new collection.
@@ -94399,8 +94366,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           case "Table":
             endpoint = "chunk-table";
             break;
-        } //console.log(`mgr/page pageNo: ${payload.pageNo}`);//meta: ${JSON.stringify(meta, null, 2)}
+        }
 
+        console.log("mgr/loadPage(".concat(payload.page, ")")); //meta: ${JSON.stringify(meta, null, 2)}
 
         var start = (payload.page - 1) * state.collections[payload.name].itemsPerPage;
         var length = state.collections[payload.name].itemsPerPage; //console.log(`mgr/page(${payload.page})`);
@@ -94442,9 +94410,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           console.log("returning page(".concat(payload.page, ") items [").concat(start + 1, " - ").concat(start + chunkLength, "]"));
           return res;
         });
-      }
+      } //console.log(`mgr/page(${payload.name}, ${payload.page})`);
 
-      console.log("mgr/page(".concat(payload.name, ", ").concat(payload.page, ")"));
+
       var res;
 
       switch (payload.name) {
@@ -94453,7 +94421,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           switch (state.collections[payload.name].views[state.collections[payload.name].view]) {
             case "Media":
             case "Table":
-              if (state.ready["collection"] && (payload.forceLoad || !payload.forceLoad && state.collections.main.pageNo + 1 !== payload.page)) {
+              if (state.ready["collection"] && (payload.forceLoad || state.collections.main.pageNo + 1 !== payload.page)) {
                 res = loadChunck();
               }
 
@@ -94820,10 +94788,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    itemMedia: {
-      collection: [],
-      filler: null
-    },
+    //itemMedia: { collection: [], filler: null },
     dialogAddMedia: false,
     lightBox: {
       isOpen: false,
@@ -94837,11 +94802,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   getters: {
-    itemMedia: function itemMedia(state) {
-      return state.itemMedia.collection;
+    /*
+    itemMedia(state) {
+        return state.itemMedia.collection;
     },
-    itemOneMedia: function itemOneMedia(state, getters) {
-      return state.itemMedia.collection.length > 0 ? state.itemMedia.collection[0] : state.itemMedia.filler;
+    */
+    mediaPrimary: function mediaPrimary(state, rootState, getters, rootGetters) {
+      var m = rootGetters["mgr/collections"]("media").collection;
+
+      if (m.length > 0) {
+        return m[0];
+      } else {
+        var module = rootGetters["mgr/module"];
+        var fullName = "".concat(module, "0.jpg");
+        var tnName = "".concat(module, "0-tn.jpg");
+        var fullUrl = "".concat(rootGetters["mgr/baseUrl"], "/app-media/fillers/").concat(fullName);
+        var tnUrl = "".concat(rootGetters["mgr/baseUrl"], "/app-media/fillers/").concat(tnName);
+        var filler = {
+          "fullUrl": fullUrl,
+          "tnUrl": tnUrl,
+          "hasMedia": false
+        };
+        return filler;
+      }
     },
     dialogAddMedia: function dialogAddMedia(state, getters) {
       return state.dialogAddMedia;
@@ -94863,33 +94846,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       lb["chunk"] = c.chunk;
       lb["media"] = c.chunk[state.lightBox.indexInChunk];
       return lb;
-
-      switch (state.lightBox.source) {
-        case "main":
-          lb["pageNo"] = c.pageNo;
-          lb["itemsPerPage"] = c.itemsPerPage;
-          lb["length"] = c.collection.length;
-          lb["chunk"] = c.chunk;
-          lb["media"] = c.chunk[state.lightBox.indexInChunk];
-          break;
-
-        case "related":
-          //lb["item"] = (rootGetters["mgr/collectionRelated"].collection)[state.lightBox.index];
-          break;
-
-        case "media":
-          lb["pageNo"] = c.pageNo;
-          lb["itemsPerPage"] = c.itemsPerPage;
-          lb["length"] = c.collection.length;
-          lb["chunk"] = c.chunk;
-          lb["media"] = c.chunk[state.lightBox.indexInChunk];
-          break;
-      }
-
-      return lb;
-    },
-    primary: function primary(state) {
-      return state.primary;
     },
     appMedia: function appMedia(state) {
       return state.appMedia;
@@ -94914,20 +94870,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       //console.log(`SET lightBoxIndexInChunk=${payload}`);//: ' + JSON.stringify(err, null, 2));
       state.lightBox.indexInChunk = payload;
     },
-    itemMedia: function itemMedia(state, payload) {
-      state.itemMedia = payload;
+
+    /*
+    itemMedia(state, payload) {
+        state.itemMedia = payload;
     },
+    */
     appMedia: function appMedia(state, payload) {
       state.appMedia = payload;
     },
     primary: function primary(state, payload) {
       state.primary = payload;
     },
-    clear: function clear(state, payload) {
-      state.itemMedia = {
-        collection: [],
-        filler: null
-      };
+    clear: function clear(state, payload) {//state.itemMedia = { collection: [], filler: null };
     }
   },
   actions: {
@@ -94957,8 +94912,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return dispatch("xhr/xhr", xhrRequest, {
         root: true
       }).then(function (res) {
-        console.log('upload media returned: ' + JSON.stringify(res.data, null, 2));
-        commit('itemMedia', res.data.itemMedia);
+        console.log('upload media returned: ' + JSON.stringify(res.data, null, 2)); //commit('itemMedia', res.data.itemMedia);
+
+        commit('mgr/collections', {
+          name: "media",
+          collection: res.data.itemMedia.collection
+        }, {
+          root: true
+        });
         commit('mgr/setDirtyCollection', true, {
           root: true
         });
@@ -94992,8 +94953,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        console.log('delete media returned: ' + JSON.stringify(res.data, null, 2));
-        commit('itemMedia', res.data.itemMedia);
+        console.log('delete media returned: ' + JSON.stringify(res.data, null, 2)); //commit('itemMedia', res.data.itemMedia);
+
+        commit('mgr/collections', {
+          name: "media",
+          collection: res.data.itemMedia.collection
+        }, {
+          root: true
+        });
         commit('mgr/setDirtyCollection', true, {
           root: true
         });
@@ -95023,23 +94990,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           dispatch = _ref4.dispatch;
       console.log("med/openLB payload: ".concat(JSON.stringify(payload, null, 2)));
       commit("openLightBox", payload);
-      return;
-      state.lightBox.isOpen = payload.value;
-
-      if (payload.value) {
-        state.lightBox.source = payload.source;
-      }
-
-      if (payload.hasOwnProperty('page')) {
-        commit('mgr/page', {
-          name: payload.name,
-          page: payload.page
-        }, {
-          root: true
-        });
-      }
-
-      commit("lightBoxIndexInChunk", payload);
     },
     //load general media used by the app (backgrounds, fillers, etc.).
     //This media is unrelated to media stored in the DB.
@@ -96520,7 +96470,9 @@ vue__WEBPACK_IMPORTED_MODULE_19___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_20
     mtl: _modules_metal__WEBPACK_IMPORTED_MODULE_14__["default"],
     about: _modules_about__WEBPACK_IMPORTED_MODULE_15__["default"]
   },
-  state: {},
+  state: {
+    baseUrl: null
+  },
   getters: {},
   mutations: {},
   actions: {
@@ -96536,6 +96488,9 @@ vue__WEBPACK_IMPORTED_MODULE_19___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_20
       }); //set server base addresses
 
       var baseUrl = "".concat(window.location.protocol, "//").concat(window.location.host);
+      commit("mgr/baseUrl", baseUrl, {
+        root: true
+      });
       console.log("setting axios.baseURL to " + baseUrl);
       axios.defaults.baseURL = baseUrl; //enables axios debug
 

@@ -71,10 +71,8 @@ export default {
 
   computed: {
     disable() {
-      return (
-        this.$store.getters["mgr/xhrStatus"].loadingItem ||
-        this.$store.getters["mgr/xhrStatus"].loadingCollection
-      );
+      let ready = this.$store.getters["mgr/ready"];
+      return (!ready.item || !ready.collection);
     },
 
     isLocus() {

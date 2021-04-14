@@ -5,7 +5,7 @@
       rounded
       slot="activator"
       @click="openModal()"
-      :disabled="loading"
+      :disabled="disable"
       class="purple white--text no-uppercase"
       >{{ tag }}</v-btn
     >
@@ -58,11 +58,9 @@ export default {
         ? `${this.$store.getters["mgr/module"]} ${this.$store.getters["mgr/item"].tag}`
         : "loading...";
     },
-    loading() {
-      return (
-        this.$store.getters["mgr/xhrStatus"].loadingItem ||
-        this.$store.getters["mgr/xhrStatus"].loadingCollection
-      );
+    disable() {
+      let ready = this.$store.getters["mgr/ready"];
+      return !ready.item || !ready.collection;
     },
 
     disableButton() {

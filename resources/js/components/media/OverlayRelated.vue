@@ -1,7 +1,7 @@
 <template>
   <div>
     <h5>{{ item.description }}</h5>
-    <v-btn @click="goTo(item)">Visit</v-btn>
+    <v-btn :disabled="!isImplemented" @click="goTo(item)">Visit</v-btn>
     <v-btn v-if="showLightBoxOption" @click="openLightBox()">Lightbox</v-btn>
   </div>
 </template>
@@ -31,6 +31,11 @@ export default {
     module() {
       return this.$store.getters["mgr/module"];
     },
+    isImplemented() {
+      return this.module === "Locus"
+        ? this.$store.getters["mgr/isImplemented"](this.item.findable_type)
+        : true;
+    },
   },
   methods: {
     openLightBox() {
@@ -41,15 +46,6 @@ export default {
         page: c.pageNo + 1,
         index: this.index % c.itemsPerPage,
       });
-      return;
-
-      this.$store.commit("med/openLightBox", {
-        value: true,
-        source: "related",
-        index: this.index,
-      });
-      let ipp = this.$store.getters["mgr/collections"]("media").itemsPerPage;
-      this.$store.dispatch("med/lightBoxIndex", this.index % ipp);
     },
 
     goTo(locus) {

@@ -33,7 +33,7 @@ export default {
     props() {
       return {
         title: `Media editor for ${this.itemType} ${this.$store.getters["mgr/item"].tag}`,
-        source: "MediaEdit"
+        source: "media"
       };
     },
 

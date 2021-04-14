@@ -88,9 +88,7 @@ export default {
         case "related":
           return OverlayRelated;
         case "media":
-          return OverlayItemMedia;
-        case "MediaEdit":
-          return OverlayMediaEdit;
+            return this.$store.getters["mgr/status"].isMediaEdit ? OverlayMediaEdit : OverlayItemMedia;       
       }
     },
   },

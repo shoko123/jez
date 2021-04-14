@@ -37,7 +37,7 @@ export default {
     },
 
     mediaItem() {
-      return this.$store.getters["med/itemOneMedia"];
+      return this.$store.getters["med/mediaPrimary"];
     },
     mediaHeader() {
       let cnt = this.mediaArray.length;

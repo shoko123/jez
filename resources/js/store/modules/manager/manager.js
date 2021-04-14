@@ -8,6 +8,8 @@ export default {
         routes: routes,
     },
     state: {
+        baseUrl: null,
+
         collection: [],
 
         collections: {
@@ -35,21 +37,12 @@ export default {
             },
         },
 
-        index: null,
         item: null,
+
         ready: {
             item: false,
             collection: false,
             chunk: false,
-        },
-
-
-        xhrStatus: {
-            loadingItem: false,
-            loadingCollection: false,
-            loadingTags: false,
-            storingItem: false,
-            deletingItem: false,
         },
 
         welcomeData: {
@@ -64,18 +57,14 @@ export default {
 
 
     getters: {
-        collection(state) {
-            return state.collection;
+        baseUrl(state) {
+            return state.baseUrl;
         },
-        chunk(state) {
-            return state.chunk;
 
-        },
         collections: (state, rootState, getters, rootGetters) => (name) => {
-          
             if (!["main", "related", "media"].includes(name)) {
-                console.log(`Wrong name (${name} suppiled to collection`);
-                return [];
+                console.log(`Wrong name (${name}) suppiled to collections`);
+                return;
             }
             let c = { ...state.collections[name] };
 
@@ -146,18 +135,14 @@ export default {
             return c;
         },
 
+        isImplemented: (state) => (module) => {
+            return ["Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(module);
+        },
 
         item(state) {
             return state.item;
         },
 
-        index(state) {
-            return state.index;
-        },
-
-        xhrStatus(state) {
-            return state.xhrStatus;
-        },
 
         module(state, rootState, getters, rootGetters) {
             return rootGetters["mgr/routes/status"].module;
@@ -200,7 +185,7 @@ export default {
             }
 
             function hasMedia(module) {
-                return (!rootGetters["med/itemMedia"] || (rootGetters["med/itemMedia"].length > 0));
+                return rootGetters["med/mediaPrimary"].hasMedia;
             }
 
             function hasRelatedModules(module) {
@@ -267,6 +252,9 @@ export default {
     },
 
     mutations: {
+        baseUrl(state, payload) {
+            state.baseUrl = payload;
+        },        
         collections(state, payload) {
             state.collections[payload.name].collection = payload.collection;
         },
@@ -274,7 +262,7 @@ export default {
             state.collections.main.chunk = payload;
         },
         page(state, payload) {
-            console.log(`mgr/setPage ${payload.name}(${payload.page})`);
+            //console.log(`mgr/setPage ${payload.name}(${payload.page})`);
             state.collections[payload.name].pageNo = payload.page - 1;
         },
         itemsPerPage(state, payload) {
@@ -298,12 +286,7 @@ export default {
         welcomeData(state, payload) {
             state.welcomeData = payload;
         },
-        loadingItem(state, payload) {
-            state.xhrStatus.loadingItem = payload;
-        },
-        loadingCollection(state, payload) {
-            state.xhrStatus.loadingCollection = payload;
-        },
+
         clear(state) {
             console.log("item.clear");
         },
@@ -322,13 +305,15 @@ export default {
         },
 
         deleteFromCollectionById(state, id) {
+            let c = state.collections["main"].collection;
             console.log(`mgr.deleteFromCollectionById(${id}`);
-            let index = state.collection.findIndex(x => x.id == id);
+            let index = c.findIndex(x => x.id == id);
             console.log(`index: ${index}`);
-            state.collection.splice(index, 1);
+            c.splice(index, 1);
         },
         pushIntoCollection(state, item) {
-            state.collection.push(item);
+            let c = state.collections["main"].collection;
+            c.push(item);
         },
         setDirtyCollection(state, payload) {
             state.isDirtyCollection = payload;
@@ -353,7 +338,7 @@ export default {
                 if (getters["module"] === "About") {
                     //console.log('dispatcher About...');
 
-                    if (state.collection.length === 0) {
+                    if (state.collections["main"].collection.length === 0) {
                         dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: false }, { root: true });
                     }
                     if (routerStatus.action === "show") {
@@ -371,9 +356,10 @@ export default {
                             break;
 
                         case "show":
+                            //console.log('mgr.dispatch(show)');// + JSON.stringify(res, null, 2));
                             if (sameModule()) {
                                 //if no collection loaded yet, retrieve new module's collection and then item
-                                if (!getters.collection.length) {
+                                if(state.collections["main"].collection.length === 0) {
                                     //if same module, but collection empty, retrieve collection and then item
                                     dispatch("aux/queryCollection", { clear: false, spinner: true, gotoCollection: false }, { root: true })
                                         .then((res) => {
@@ -441,7 +427,6 @@ export default {
         },
 
         queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
-            commit('loadingCollection', true);
             commit("ready", { entity: "collection", isReady: false });
             console.log(`mgr.queryCollection. endpoint: ${getters["status"].moduleApiBaseUrl}`);
             //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
@@ -488,7 +473,11 @@ export default {
 
                     if (getters["ready"]["item"]) {
                         //set page according to item's index
-                        let index = state.collection.findIndex(x => x.id == getters["item"].id);
+                        let c = state.collections["main"].collection;
+
+                        let index = c.findIndex(x => x.id == getters["item"].id);
+                        
+
                         let page = Math.floor((index + 1) / state.collections.main.itemsPerPage) + 1;
                         dispatch("page", { name: "main", page: page, forceLoad: true });
                     } else {
@@ -508,13 +497,11 @@ export default {
                     return err;
                 })
                 .finally(() => {
-                    commit('loadingCollection', false);
                 })
         },
 
         loadItem({ state, getters, commit, dispatch }, payload) {
             console.log('mgr.loadItem. endpoint: ' + `${getters["status"].moduleApiBaseUrl}/${payload}`);
-            commit('loadingItem', true);
             commit("ready", { entity: "item", isReady: false });
 
             let xhrRequest = {
@@ -540,17 +527,17 @@ export default {
 
                         case "Area":
                         case "Season":
-                            commit('arsn/areasSeasons', res.data.areasSeasons, { root: true });
+                            //commit('arsn/areasSeasons', res.data.areasSeasons, { root: true });
                             commit('collections', { name: "related", collection: res.data.areasSeasons });
                             break;
 
                         case "AreaSeason":
-                            commit('arsn/loci', res.data.loci, { root: true });
+                            //commit('arsn/loci', res.data.loci, { root: true });
                             commit('collections', { name: "related", collection: res.data.loci });
                             break;
 
                         case "Locus":
-                            commit('loci/locusFinds', res.data.locusFinds, { root: true });
+                            //commit('loci/locusFinds', res.data.locusFinds, { root: true });
                             commit('collections', { name: "related", collection: res.data.locusFinds });
                             break;
 
@@ -569,7 +556,6 @@ export default {
 
                     commit('item', res.data.item);
                     if (getters["module"] !== "About") {
-                        commit('med/itemMedia', res.data.itemMedia, { root: true });
                         //console.log(`mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
                         commit('collections', { name: "media", collection: res.data.itemMedia.collection });
                     }
@@ -579,7 +565,7 @@ export default {
                         //set page according to item's index
                         let index = state.collections.main.collection.findIndex(x => x.id == res.data.item.id);
                         let page = Math.floor((index + 1) / state.collections.main.itemsPerPage) + 1;
-                        console.log(`index: ${index} ipp: ${state.collections.main.itemsPerPage} page: ${page}`);//mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
+                        //console.log(`index: ${index} ipp: ${state.collections.main.itemsPerPage} page: ${page}`);//mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
 
                         dispatch("page", { name: "main", page: page, forceLoad: false });
                     }
@@ -591,7 +577,6 @@ export default {
                     return err;
                 })
                 .finally(() => {
-                    commit('loadingItem', false);
                 })
         },
 
@@ -614,10 +599,10 @@ export default {
                     console.log("mgr/delete item deleted from collection!");
                     commit('deleteFromCollectionById', res.data.id);
                     commit('setDirtyCollection', true);
-
-                    if (state.collection.length > 0) {
+                    let c = state.collections["main"].collection;
+                    if (c.length > 0) {
                         //go to the first item in the collection.
-                        dispatch('goToRoute', { module: getters["module"], action: "show", id: state.collection[0].id });
+                        dispatch('goToRoute', { module: getters["module"], action: "show", id: c[0].id });
                     } else {
                         //if we deleted the last item, we must load a new collection.
                         dispatch('goToRoute', { module: getters["module"], action: "filter" });
@@ -804,7 +789,7 @@ export default {
                         endpoint = "chunk-table";
                         break;
                 }
-                //console.log(`mgr/page pageNo: ${payload.pageNo}`);//meta: ${JSON.stringify(meta, null, 2)}
+                console.log(`mgr/loadPage(${payload.page})`);//meta: ${JSON.stringify(meta, null, 2)}
                 let start = (payload.page - 1) * state.collections[payload.name].itemsPerPage;
                 let length = state.collections[payload.name].itemsPerPage;
                 //console.log(`mgr/page(${payload.page})`);
@@ -837,7 +822,7 @@ export default {
 
             }
 
-            console.log(`mgr/page(${payload.name}, ${payload.page})`);
+            //console.log(`mgr/page(${payload.name}, ${payload.page})`);
             let res;
 
             switch (payload.name) {
@@ -847,7 +832,7 @@ export default {
                         case "Media":
                         case "Table":
                             if (state.ready["collection"] &&
-                                (payload.forceLoad || (!payload.forceLoad && state.collections.main.pageNo + 1 !== payload.page))) {
+                                (payload.forceLoad || state.collections.main.pageNo + 1 !== payload.page)) {
                                 res = loadChunck();
                             }
                     }
