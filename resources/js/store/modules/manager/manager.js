@@ -33,7 +33,6 @@ export default {
                 itemsPerPage: 18,
                 pageNo: 0,
             },
-            index: null,
         },
 
         index: null,
@@ -60,9 +59,6 @@ export default {
 
         isPicker: false,
         itemDisplayOptionIndex: 0,
-        //collectionDisplayOptionIndex: 0,
-        //collectionDisplayOptions: ["Media", "Chips", "Table"],
-        //page: 1,
         isDirtyCollection: false,
     },
 
@@ -76,52 +72,7 @@ export default {
 
         },
         collections: (state, rootState, getters, rootGetters) => (name) => {
-            //console.log("******mgr/collection***********");
-            /*
-            function main() {
-                let c = state.collections.main;
-                switch (state.collections.main.views[state.collections.main.view]) {
-                    case "Media":
-                    case "Table":
-                        if (!getters["status"].isLoadChunk) {
-                            //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
-
-                            c.chunk = c.collection.slice(
-                                c.pageNo * c.itemsPerPage,
-                                (c.pageNo + 1) * c.itemsPerPage
-                            );
-                        }
-                        return c;
-
-                    case "Chips":
-                        c.chunk = c.collection.slice(
-                            c.pageNo * c.itemsPerPage,
-                            (c.pageNo + 1) * c.itemsPerPage
-                        );
-                        //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
-                        return c;
-                }
-            }
-            function related() {//Items Per Page
-                let c = state.collections.related;
-                c.chunk = c.collection.slice(
-                    (c.pageNo) * c.itemsPerPage,
-                    (c.pageNo + 1) * c.itemsPerPage
-                );
-                //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
-                return c;
-            }
-
-            function media() {//Items Per Page
-                let c = state.collections.media;
-                c.chunk = c.collection.slice(
-                    c.pageNo * c.itemsPerPage,
-                    (c.pageNo + 1) * c.itemsPerPage
-                );
-                //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
-                return c;
-            }
-            */
+          
             if (!["main", "related", "media"].includes(name)) {
                 console.log(`Wrong name (${name} suppiled to collection`);
                 return [];
@@ -132,8 +83,9 @@ export default {
                 ["Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(rootGetters["mgr/routes/status"].module) &&
                 ["Media", "Table"].includes(state.collections.main.views[state.collections.main.view])
             ) {
-                //chunk was loaded in 'page()'
+                //do nothing - chunk loaded by 'page()'
             } else {
+                //paging is done by slicing the 'main' collection according to pageNo.
                 c.chunk = c.collection.slice(
                     c.pageNo * c.itemsPerPage,
                     (c.pageNo + 1) * c.itemsPerPage
@@ -144,6 +96,7 @@ export default {
             return c;
         },
 
+        //The following 3 are for debug only:
         collectionMain(state, rootState, getters, rootGetters) {
             let c = { ...state.collections.main };
             if (["Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(rootGetters["mgr/routes/status"].module) &&
@@ -182,17 +135,14 @@ export default {
                 c.pageNo * c.itemsPerPage,
                 (c.pageNo + 1) * c.itemsPerPage
             );
-            //console.log(`mgr/get[collectionRelated] returns:\n${JSON.stringify(c, null, 2)}`);
             return c;
         },
         collectionMedia(state) {
-            //console.log(`mgr/get[collectionMedia] returns:\n${JSON.stringify(c, null, 2)}`);
             let c = state.collections.media;
             c.chunk = c.collection.slice(
                 c.pageNo * c.itemsPerPage,
                 (c.pageNo + 1) * c.itemsPerPage
             );
-            //console.log(`mgr/get[collectionMedia] returns:\n${JSON.stringify(c, null, 2)}`);
             return c;
         },
 
@@ -207,25 +157,6 @@ export default {
 
         xhrStatus(state) {
             return state.xhrStatus;
-        },
-
-        adjacents(state, getters, rootState, rootGetters) {
-            if (state.loadingItem || state.loadingCollection || state.collection.length === 0 || state.index === -1) {
-                return;
-            }
-
-            //console.log('manager.adjacents: id ' + getters.item.id + ' at index ' + getters.index);
-            //console.log('manager.next current item: item: ' + JSON.stringify(getters.item, null, 2));
-            let nextIndex = null,
-                prevIndex = null,
-                adjacents = { next: null, prev: null };
-
-            nextIndex = (state.index == state.collection.length - 1) ? 0 : state.index + 1;
-            prevIndex = (state.index == 0) ? state.collection.length - 1 : state.index - 1;
-            adjacents.next = state.collection[nextIndex].id;
-            adjacents.prev = state.collection[prevIndex].id;
-            //console.log('adjacent is: ' + JSON.stringify(adjacents, null, 2));
-            return adjacents;
         },
 
         module(state, rootState, getters, rootGetters) {
@@ -322,7 +253,6 @@ export default {
                 isEdit: ["create", "update", "media", "tags"].includes(routerStatus.action),
                 isPicker: state.isPicker,
                 isFilterable: !["Auth", "About", "Area", "Season"].includes(routerStatus.module),
-                isLoadChunk: (module === "Locus" || isFind(module)),
                 hasMedia: hasMedia(module),
                 hasRelatedModules: hasRelatedModules(module),
                 isDeleteable: isDeleteable(module),
@@ -337,16 +267,10 @@ export default {
     },
 
     mutations: {
-        collection(state, payload) {
-            state.collection = payload;
-            state.collections.main.collection = payload;
-        },
         collections(state, payload) {
-            //state.collection = payload;
             state.collections[payload.name].collection = payload.collection;
         },
         chunk(state, payload) {
-            state.chunk = payload;
             state.collections.main.chunk = payload;
         },
         page(state, payload) {
@@ -358,7 +282,6 @@ export default {
         },
         collectionViewIndex(state, payload) {
             //console.log(`mgr/collectionViewIndex() name: ${payload.name})`);
-            //state.collectionMeta.displayOptionIndex = ++state.collectionMeta.displayOptionIndex % 3;
             state.collections[payload.name].view = payload.viewIndex;
 
         },
@@ -370,10 +293,6 @@ export default {
         },
         item(state, payload) {
             state.item = payload;
-        },
-        setIndex(state, payload) {
-            //console.log(`mgr/setIndex(${payload})`);
-            state.index = payload;
         },
 
         welcomeData(state, payload) {
@@ -395,7 +314,6 @@ export default {
         },
 
         ready(state, payload) {
-            //onsole.log("mgr/displayOptionIndex(): " + payload);
             state.ready[payload.entity] = payload.isReady;
         },
 
@@ -420,9 +338,7 @@ export default {
     actions: {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
-            //parser.parseRoute(state, commit, payload);
             dispatch('mgr/routes/parseRoute', payload, { root: true });
-            //dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch);
             dispatch("handleRouteChange", null);
         },
 
@@ -506,7 +422,7 @@ export default {
             //actual code starts running here
 
             /////////////////////////////////////////////////////////////////////////
-            //if new module, can not proceed until module's data is retrieved from DB.
+            //if new module, wait until module's metadata (tags) is retrieved from DB.
             /////////////////////////////////////////////////////////////////////////
             //if (getters["status"].isDigModule && !sameModule()) {
 
@@ -525,9 +441,7 @@ export default {
         },
 
         queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
-            commit("collection", []);
             commit('loadingCollection', true);
-            //commit("ready", { entity: "item", isReady: false });
             commit("ready", { entity: "collection", isReady: false });
             console.log(`mgr.queryCollection. endpoint: ${getters["status"].moduleApiBaseUrl}`);
             //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
@@ -567,11 +481,8 @@ export default {
                         }, { root: true });
                         return res;
                     }
-                    //let arr = ["main", "media", "related"];
-                    //arr.forEach(x => commit("collectionResetView", x));
 
                     console.log(`mgr.collection loaded (${getters["module"]})`);
-                    commit('collection', res.data.collection);
                     commit('collections', { name: "main", collection: res.data.collection });
                     commit("ready", { entity: "collection", isReady: true });
 
@@ -583,8 +494,6 @@ export default {
                     } else {
                         dispatch("page", { name: "main", page: 1, forceLoad: true });
                     }
-                    // get index of current item in collection
-                    commit("setIndex", state.item ? state.collection.findIndex(x => x.id == state.item.id) : -1);
                     commit('setDirtyCollection', false);
                     //console.log(`After return from query`);
 
@@ -675,7 +584,6 @@ export default {
                         dispatch("page", { name: "main", page: page, forceLoad: false });
                     }
                     // get index of current item in collection
-                    commit("setIndex", state.collection.findIndex(x => x.id == state.item.id));
                     return res;
                 })
                 .catch(err => {
@@ -871,12 +779,6 @@ export default {
                 default:
                     console.log(`******mgr/toggleCollectionView Wrong source: ${payload}`);
             }
-
-
-
-
-
-
         },
 
         page({ state, getters, commit, dispatch }, payload) {
@@ -930,8 +832,6 @@ export default {
                         commit('chunk', res.data.collection);
                         let chunkLength = res.data.collection.length;
                         console.log(`returning page(${payload.page}) items [${start + 1} - ${start + chunkLength}]`);
-                        //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
-                        //dispatch("aux/groups", res.data.groups, { root: true });
                         return res;
                     })
 
@@ -968,7 +868,6 @@ export default {
         },
 
         clear({ state, getters, rootGetters, commit, dispatch }) {
-            commit("collection", [])
             commit("item", null);
             commit("itemDisplayOptionIndex", 0);
             commit("med/clear", null, { root: true });
@@ -1008,8 +907,6 @@ export default {
             }
             dispatch('mgr/routes/goTo', payload, { root: true });
         },
-
-        //let page =  (newIndex + 1) % (m.itemsPerPage) + 1;
     }
 
 }

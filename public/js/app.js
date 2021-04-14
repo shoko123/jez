@@ -6985,9 +6985,6 @@ __webpack_require__.r(__webpack_exports__);
     disable: function disable() {
       return this.$store.getters["mgr/xhrStatus"].loadingItem || this.$store.getters["mgr/xhrStatus"].loadingCollection;
     },
-    adjacents: function adjacents() {
-      return this.$store.getters["mgr/adjacents"];
-    },
     isLocus: function isLocus() {
       return this.$store.getters["mgr/status"].isLocus;
     },
@@ -7003,9 +7000,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     goToItem: function goToItem(direction) {
-      if (this.adjacents) {
-        return this.$store.dispatch("mgr/goToRoute", direction);
-      }
+      //No checks needed - guaranteed collection loaded by :disable
+      return this.$store.dispatch("mgr/goToRoute", direction);
     },
     goToArea: function goToArea() {
       return this.$store.dispatch("mgr/goToRoute", {
@@ -7219,7 +7215,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.$store.dispatch("mgr/goToRoute", {
           module: _this.$store.getters["mgr/module"],
           action: "show",
-          id: _this.$store.getters["mgr/collection"][0].id
+          id: _this.$store.getters["mgr/collections"]("main").collection[0].id
         });
       });
     },
@@ -91649,10 +91645,11 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       ;
+      var c = rootGetters["mgr/collections"]("main").collection;
       return [{
         name: "The Dig",
         icon: "mdi-pickaxe",
-        data: rootGetters["mgr/collection"].filter(function (x) {
+        data: c.filter(function (x) {
           return x.tab === 1;
         }).map(function (x) {
           return {
@@ -91663,7 +91660,7 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         name: "The Database",
         icon: "mdi-web",
-        data: rootGetters["mgr/collection"].filter(function (x) {
+        data: c.filter(function (x) {
           return x.tab === 2;
         }).map(function (x) {
           return {
@@ -93428,8 +93425,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         views: ["Media"],
         itemsPerPage: 18,
         pageNo: 0
-      },
-      index: null
+      }
     },
     index: null,
     item: null,
@@ -93457,9 +93453,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     isPicker: false,
     itemDisplayOptionIndex: 0,
-    //collectionDisplayOptionIndex: 0,
-    //collectionDisplayOptions: ["Media", "Chips", "Table"],
-    //page: 1,
     isDirtyCollection: false
   },
   getters: {
@@ -93471,50 +93464,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     collections: function collections(state, rootState, getters, rootGetters) {
       return function (name) {
-        //console.log("******mgr/collection***********");
-
-        /*
-        function main() {
-            let c = state.collections.main;
-            switch (state.collections.main.views[state.collections.main.view]) {
-                case "Media":
-                case "Table":
-                    if (!getters["status"].isLoadChunk) {
-                        //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
-                         c.chunk = c.collection.slice(
-                            c.pageNo * c.itemsPerPage,
-                            (c.pageNo + 1) * c.itemsPerPage
-                        );
-                    }
-                    return c;
-                 case "Chips":
-                    c.chunk = c.collection.slice(
-                        c.pageNo * c.itemsPerPage,
-                        (c.pageNo + 1) * c.itemsPerPage
-                    );
-                    //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
-                    return c;
-            }
-        }
-        function related() {//Items Per Page
-            let c = state.collections.related;
-            c.chunk = c.collection.slice(
-                (c.pageNo) * c.itemsPerPage,
-                (c.pageNo + 1) * c.itemsPerPage
-            );
-            //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
-            return c;
-        }
-         function media() {//Items Per Page
-            let c = state.collections.media;
-            c.chunk = c.collection.slice(
-                c.pageNo * c.itemsPerPage,
-                (c.pageNo + 1) * c.itemsPerPage
-            );
-            //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
-            return c;
-        }
-        */
         if (!["main", "related", "media"].includes(name)) {
           console.log("Wrong name (".concat(name, " suppiled to collection"));
           return [];
@@ -93522,8 +93471,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         var c = _objectSpread({}, state.collections[name]);
 
-        if (name === "main" && ["Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(rootGetters["mgr/routes/status"].module) && ["Media", "Table"].includes(state.collections.main.views[state.collections.main.view])) {//chunk was loaded in 'page()'
+        if (name === "main" && ["Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(rootGetters["mgr/routes/status"].module) && ["Media", "Table"].includes(state.collections.main.views[state.collections.main.view])) {//do nothing - chunk loaded by 'page()'
         } else {
+          //paging is done by slicing the 'main' collection according to pageNo.
           c.chunk = c.collection.slice(c.pageNo * c.itemsPerPage, (c.pageNo + 1) * c.itemsPerPage); //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
         }
 
@@ -93531,6 +93481,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return c;
       };
     },
+    //The following 3 are for debug only:
     collectionMain: function collectionMain(state, rootState, getters, rootGetters) {
       var c = _objectSpread({}, state.collections.main);
 
@@ -93558,15 +93509,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     collectionRelated: function collectionRelated(state) {
       var c = state.collections.related;
-      c.chunk = c.collection.slice(c.pageNo * c.itemsPerPage, (c.pageNo + 1) * c.itemsPerPage); //console.log(`mgr/get[collectionRelated] returns:\n${JSON.stringify(c, null, 2)}`);
-
+      c.chunk = c.collection.slice(c.pageNo * c.itemsPerPage, (c.pageNo + 1) * c.itemsPerPage);
       return c;
     },
     collectionMedia: function collectionMedia(state) {
-      //console.log(`mgr/get[collectionMedia] returns:\n${JSON.stringify(c, null, 2)}`);
       var c = state.collections.media;
-      c.chunk = c.collection.slice(c.pageNo * c.itemsPerPage, (c.pageNo + 1) * c.itemsPerPage); //console.log(`mgr/get[collectionMedia] returns:\n${JSON.stringify(c, null, 2)}`);
-
+      c.chunk = c.collection.slice(c.pageNo * c.itemsPerPage, (c.pageNo + 1) * c.itemsPerPage);
       return c;
     },
     item: function item(state) {
@@ -93577,26 +93525,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     xhrStatus: function xhrStatus(state) {
       return state.xhrStatus;
-    },
-    adjacents: function adjacents(state, getters, rootState, rootGetters) {
-      if (state.loadingItem || state.loadingCollection || state.collection.length === 0 || state.index === -1) {
-        return;
-      } //console.log('manager.adjacents: id ' + getters.item.id + ' at index ' + getters.index);
-      //console.log('manager.next current item: item: ' + JSON.stringify(getters.item, null, 2));
-
-
-      var nextIndex = null,
-          prevIndex = null,
-          adjacents = {
-        next: null,
-        prev: null
-      };
-      nextIndex = state.index == state.collection.length - 1 ? 0 : state.index + 1;
-      prevIndex = state.index == 0 ? state.collection.length - 1 : state.index - 1;
-      adjacents.next = state.collection[nextIndex].id;
-      adjacents.prev = state.collection[prevIndex].id; //console.log('adjacent is: ' + JSON.stringify(adjacents, null, 2));
-
-      return adjacents;
     },
     module: function module(state, rootState, getters, rootGetters) {
       return rootGetters["mgr/routes/status"].module;
@@ -93691,7 +93619,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         isEdit: ["create", "update", "media", "tags"].includes(routerStatus.action),
         isPicker: state.isPicker,
         isFilterable: !["Auth", "About", "Area", "Season"].includes(routerStatus.module),
-        isLoadChunk: module === "Locus" || isFind(module),
         hasMedia: hasMedia(module),
         hasRelatedModules: hasRelatedModules(module),
         isDeleteable: isDeleteable(module),
@@ -93703,16 +93630,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   mutations: {
-    collection: function collection(state, payload) {
-      state.collection = payload;
-      state.collections.main.collection = payload;
-    },
     collections: function collections(state, payload) {
-      //state.collection = payload;
       state.collections[payload.name].collection = payload.collection;
     },
     chunk: function chunk(state, payload) {
-      state.chunk = payload;
       state.collections.main.chunk = payload;
     },
     page: function page(state, payload) {
@@ -93724,7 +93645,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     collectionViewIndex: function collectionViewIndex(state, payload) {
       //console.log(`mgr/collectionViewIndex() name: ${payload.name})`);
-      //state.collectionMeta.displayOptionIndex = ++state.collectionMeta.displayOptionIndex % 3;
       state.collections[payload.name].view = payload.viewIndex;
     },
     collectionResetView: function collectionResetView(state, payload) {
@@ -93736,10 +93656,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     item: function item(state, payload) {
       state.item = payload;
-    },
-    setIndex: function setIndex(state, payload) {
-      //console.log(`mgr/setIndex(${payload})`);
-      state.index = payload;
     },
     welcomeData: function welcomeData(state, payload) {
       state.welcomeData = payload;
@@ -93758,7 +93674,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.itemDisplayOptionIndex = payload;
     },
     ready: function ready(state, payload) {
-      //onsole.log("mgr/displayOptionIndex(): " + payload);
       state.ready[payload.entity] = payload.isReady;
     },
     isPicker: function isPicker(state, payload) {
@@ -93787,11 +93702,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref.commit,
           dispatch = _ref.dispatch;
       //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
-      //parser.parseRoute(state, commit, payload);
       dispatch('mgr/routes/parseRoute', payload, {
         root: true
-      }); //dispatcher.handleRouteChange(state, getters, rootGetters, commit, dispatch);
-
+      });
       dispatch("handleRouteChange", null);
     },
     handleRouteChange: function handleRouteChange(_ref2) {
@@ -93903,7 +93816,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       } //actual code starts running here
       /////////////////////////////////////////////////////////////////////////
-      //if new module, can not proceed until module's data is retrieved from DB.
+      //if new module, wait until module's metadata (tags) is retrieved from DB.
       /////////////////////////////////////////////////////////////////////////
       //if (getters["status"].isDigModule && !sameModule()) {
 
@@ -93932,9 +93845,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref3.rootGetters,
           commit = _ref3.commit,
           dispatch = _ref3.dispatch;
-      commit("collection", []);
-      commit('loadingCollection', true); //commit("ready", { entity: "item", isReady: false });
-
+      commit('loadingCollection', true);
       commit("ready", {
         entity: "collection",
         isReady: false
@@ -93987,12 +93898,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             root: true
           });
           return res;
-        } //let arr = ["main", "media", "related"];
-        //arr.forEach(x => commit("collectionResetView", x));
-
+        }
 
         console.log("mgr.collection loaded (".concat(getters["module"], ")"));
-        commit('collection', res.data.collection);
         commit('collections', {
           name: "main",
           collection: res.data.collection
@@ -94019,12 +93927,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             page: 1,
             forceLoad: true
           });
-        } // get index of current item in collection
+        }
 
-
-        commit("setIndex", state.item ? state.collection.findIndex(function (x) {
-          return x.id == state.item.id;
-        }) : -1);
         commit('setDirtyCollection', false); //console.log(`After return from query`);
         //redirect to 'list/collection' path
 
@@ -94163,9 +94067,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         } // get index of current item in collection
 
 
-        commit("setIndex", state.collection.findIndex(function (x) {
-          return x.id == state.item.id;
-        }));
         return res;
       })["catch"](function (err) {
         console.log('mgr Failed to load item. err: ' + err);
@@ -94538,9 +94439,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           });
           commit('chunk', res.data.collection);
           var chunkLength = res.data.collection.length;
-          console.log("returning page(".concat(payload.page, ") items [").concat(start + 1, " - ").concat(start + chunkLength, "]")); //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
-          //dispatch("aux/groups", res.data.groups, { root: true });
-
+          console.log("returning page(".concat(payload.page, ") items [").concat(start + 1, " - ").concat(start + chunkLength, "]"));
           return res;
         });
       }
@@ -94586,7 +94485,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           rootGetters = _ref11.rootGetters,
           commit = _ref11.commit,
           dispatch = _ref11.dispatch;
-      commit("collection", []);
       commit("item", null);
       commit("itemDisplayOptionIndex", 0);
       commit("med/clear", null, {
@@ -94659,8 +94557,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       dispatch('mgr/routes/goTo', payload, {
         root: true
       });
-    } //let page =  (newIndex + 1) % (m.itemsPerPage) + 1;
-
+    }
   }
 });
 
@@ -95434,15 +95331,17 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     areasSeasons: function areasSeasons(state, getters, rootState, rootGetters) {
       if (rootGetters["mgr/status"].isPicker) {
+        var c = rootGetters["mgr/collections"]("main").collection;
+
         if (rootGetters["mgr/status"].isAreaSeason) {
-          return rootGetters["mgr/collection"].map(function (item) {
+          return c.map(function (item) {
             return {
               text: item.tag,
               id: item.id
             };
           });
         } else if (rootGetters["mgr/status"].isLocus) {
-          var as = _toConsumableArray(new Map(rootGetters["mgr/collection"].map(function (item) {
+          var as = _toConsumableArray(new Map(c.map(function (item) {
             return [item['tag'].slice(0, 4), item];
           })).values()); //format them
 
@@ -95455,7 +95354,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           });
         } else if (rootGetters["mgr/status"].isFind) {
           //get distinct areasSesons object in collection by using first 4 characters of 'tag'.
-          var areasSeasonFromCollection = _toConsumableArray(new Map(rootGetters["mgr/collection"].map(function (item) {
+          var areasSeasonFromCollection = _toConsumableArray(new Map(c.map(function (item) {
             return [item['tag'].slice(0, 4), item];
           })).values()); //format them
 
@@ -95485,10 +95384,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }
 
       if (rootGetters["mgr/status"].isPicker) {
-        //get all loci for selected area_season_id.
+        var c = rootGetters["mgr/collections"]("main").collection; //get all loci for selected area_season_id.
+
         if (rootGetters["mgr/status"].isLocus) {
           var areaSeasonTag = getters["areasSeasons"][state.newItem.areaSeasonIndex].text;
-          return rootGetters["mgr/collection"].filter(function (x) {
+          return c.filter(function (x) {
             return x.tag.slice(0, 4) === areaSeasonTag;
           }
           /*getters["areasSeasons"][state.newItem.areaSeasonIndex].text */
@@ -95500,7 +95400,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           });
         } else if (rootGetters["mgr/status"].isFind) {
           var _areaSeasonTag = getters["areasSeasons"][state.newItem.areaSeasonIndex].text;
-          var lociForAreaSeason = rootGetters["mgr/collection"].filter(function (x) {
+          var lociForAreaSeason = c.filter(function (x) {
             return x.tag.slice(0, 4) === _areaSeasonTag;
           }); //console.log("getters/loci:\n" + JSON.stringify(lociForAreaSeason, null, 2));
           //get distinct loci objects from result above.               
@@ -95553,8 +95453,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }
 
       if (rootGetters["mgr/status"].isPicker) {
+        var c = rootGetters["mgr/collections"]("main").collection;
         var locusTag = getters["loci"][state.newItem.locusIndex].tag;
-        return rootGetters["mgr/collection"].filter(function (x) {
+        return c.filter(function (x) {
           return x.tag.split('.')[0] === locusTag;
         }).map(function (y) {
           return {

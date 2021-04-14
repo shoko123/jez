@@ -76,9 +76,7 @@ export default {
         this.$store.getters["mgr/xhrStatus"].loadingCollection
       );
     },
-    adjacents() {
-      return this.$store.getters["mgr/adjacents"];
-    },
+
     isLocus() {
       return this.$store.getters["mgr/status"].isLocus;
     },
@@ -94,9 +92,8 @@ export default {
   },
   methods: {
     goToItem(direction) {
-      if (this.adjacents) {
-        return this.$store.dispatch("mgr/goToRoute", direction);
-      }
+      //No checks needed - guaranteed collection loaded by :disable
+      return this.$store.dispatch("mgr/goToRoute", direction);
     },
 
     goToArea() {

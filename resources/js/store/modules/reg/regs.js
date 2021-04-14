@@ -94,12 +94,13 @@ export default {
 
         areasSeasons(state, getters, rootState, rootGetters) {
             if (rootGetters["mgr/status"].isPicker) {
+                let c = rootGetters["mgr/collections"]("main").collection;
                 if (rootGetters["mgr/status"].isAreaSeason) {
-                    return rootGetters["mgr/collection"].map(item => { return { text: item.tag, id: item.id } });
+                    return c.map(item => { return { text: item.tag, id: item.id } });
                 } else if (rootGetters["mgr/status"].isLocus) {
 
 
-                    const as = [...new Map(rootGetters["mgr/collection"].map(item =>
+                    const as = [...new Map(c.map(item =>
                         [item['tag'].slice(0, 4), item])).values()];
                     //format them
                     return as.map(x => {
@@ -107,7 +108,7 @@ export default {
                     });
                 } else if (rootGetters["mgr/status"].isFind) {
                     //get distinct areasSesons object in collection by using first 4 characters of 'tag'.
-                    const areasSeasonFromCollection = [...new Map(rootGetters["mgr/collection"].map(item =>
+                    const areasSeasonFromCollection = [...new Map(c.map(item =>
                         [item['tag'].slice(0, 4), item])).values()];
 
                     //format them
@@ -125,15 +126,16 @@ export default {
         loci(state, getters, rootState, rootGetters) {
             if (state.newItem.areaSeasonIndex === null) { return [] }
             if (rootGetters["mgr/status"].isPicker) {
+                let c = rootGetters["mgr/collections"]("main").collection;
                 //get all loci for selected area_season_id.
                 if (rootGetters["mgr/status"].isLocus) {
                     let areaSeasonTag = getters["areasSeasons"][state.newItem.areaSeasonIndex].text;
-                    return rootGetters["mgr/collection"]
+                    return c
                         .filter(x => x.tag.slice(0, 4) === areaSeasonTag /*getters["areasSeasons"][state.newItem.areaSeasonIndex].text */)
                         .map(y => { return { text: y.tag.split('\/')[2], id: y.id }; });
                 } else if (rootGetters["mgr/status"].isFind) {
                     let areaSeasonTag = getters["areasSeasons"][state.newItem.areaSeasonIndex].text;
-                    let lociForAreaSeason = rootGetters["mgr/collection"]
+                    let lociForAreaSeason = c
                         .filter(x => x.tag.slice(0, 4) === areaSeasonTag);
 
                     //console.log("getters/loci:\n" + JSON.stringify(lociForAreaSeason, null, 2));
@@ -164,8 +166,9 @@ export default {
         finds(state, getters, rootState, rootGetters) {
             if ((!rootGetters["mgr/status"].isFind) || state.newItem.locusIndex === null) { return [] }
             if (rootGetters["mgr/status"].isPicker) {
+                let c = rootGetters["mgr/collections"]("main").collection;
                 let locusTag = getters["loci"][state.newItem.locusIndex].tag
-                return rootGetters["mgr/collection"]
+                return c
                     .filter(x => x.tag.split('.')[0] === locusTag)
                     .map(y => { return { text: y.tag, id: y.id }; });
             } else if (rootGetters["mgr/status"].isCreate) {
