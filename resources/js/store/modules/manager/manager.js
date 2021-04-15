@@ -52,7 +52,7 @@ export default {
 
         isPicker: false,
         itemDisplayOptionIndex: 0,
-        isDirtyCollection: false,
+        isDirtyChunk: false,
     },
 
 
@@ -157,31 +157,12 @@ export default {
         },
         status(state, getters, rootState, rootGetters) {
 
-            function isDigModule(module) {
-                switch (module) {
-                    case "Auth":
-                    case "About":
-                        return false;
-                    default:
-                        return true;
-                }
+            function isDigModule() {
+                return ["Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Fauna", "Flora", "Glass", "Metal", "Tbd"].includes(module);
             }
 
-            function isFind(module) {
-                switch (module) {
-                    case "Pottery":
-                    case "Lithic":
-                    case "Stone":
-                    case "Fauna":
-                    case "Flora":
-                    case "Glass":
-                    case "Metal":
-                    case "Tbd":
-                        return true;
-
-                    default:
-                        return false;
-                }
+            function isFind() {
+                return ["Pottery", "Stone", "Lithic", "Fauna", "Flora", "Glass", "Metal", "Tbd"].includes(module);
             }
 
             function hasMedia() {
@@ -197,7 +178,7 @@ export default {
                         return false;
                 }
             }
-           
+
             let routerStatus = rootGetters["mgr/routes/status"];
             let module = routerStatus.module;
             let moduleStaticInfo = jezConfig.myModules[module];
@@ -215,12 +196,11 @@ export default {
                 actionPrevious: routerStatus.actionPrevious,
                 id: routerStatus.id,
                 idPrevious: routerStatus.idPrevious,
-
                 count: state.collections.main.collection.length,// ? state.collections.main.collection.length : "...",
                 isAreaSeason: (routerStatus.module === "AreaSeason"),
                 isLocus: (routerStatus.module === "Locus"),
-                isFind: isFind(module),
-                isDigModule: isDigModule(module),
+                isFind: isFind(),
+                isDigModule: isDigModule(),
                 isCreate: (routerStatus.action === "create"),
                 isUpdate: (routerStatus.action === "update"),
                 isFilter: (routerStatus.action === "filter"),
@@ -229,7 +209,7 @@ export default {
                 isWelcome: (routerStatus.action === "welcome"),
                 isTags: (routerStatus.action === "tags"),
                 isCreateLocus: (routerStatus.action === "create" && routerStatus.module === "Locus"),
-                isCreateFind: (routerStatus.action === "create" && isFind(module)),
+                isCreateFind: (routerStatus.action === "create" && isFind()),
                 isMediaEdit: (routerStatus.action === "media"),
                 isEdit: ["create", "update", "media", "tags"].includes(routerStatus.action),
                 isPicker: state.isPicker,
@@ -307,13 +287,21 @@ export default {
             console.log(`index: ${index}`);
             c.splice(index, 1);
         },
+
+        deleteFromCollectionByIndex(state, payload) {
+            let c = state.collections["main"].collection;
+            console.log(`mgr.deleteFromCollectionByIndex(${payload}`);
+            c.splice(payload, 1);
+        },
+
         pushIntoCollection(state, item) {
             let c = state.collections["main"].collection;
             c.push(item);
         },
-        setDirtyCollection(state, payload) {
-            state.isDirtyCollection = payload;
-            //console.log("setDirtyCollection: " + payload);
+        dirtyChunk(state, payload) {
+            //console.log(`SET dirtyChunk(${payload})`);            
+            state.isDirtyChunk = payload;
+
         },
     },
     actions: {
@@ -346,8 +334,12 @@ export default {
                         case "list":
                             //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
                             //if same module, retrieve collection if not already populated
-                            if (!sameModule() || state.isDirtyCollection) {
+                            if (!sameModule()) {
                                 dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: true }, { root: true });
+                            } else if(state.isDirtyChunk && getters["ready"].item && getters["ready"].collection){
+                                 console.log('isDirty - calling page() ');
+                                dispatch("page", { name: "main", page: state.collections["main"].pageNo + 1, forceLoad: true });
+                                commit('dirtyChunk', false);
                             }
                             break;
 
@@ -392,9 +384,10 @@ export default {
                             dispatch(`aux/prepareTagger`, null, { root: true });
                             break;
 
-                        //do nothing
+
                         case "welcome":
                         case "filter":
+                            //nothing to do
                             break;
                         default:
                     }
@@ -406,7 +399,6 @@ export default {
             /////////////////////////////////////////////////////////////////////////
             //if new module, wait until module's metadata (tags) is retrieved from DB.
             /////////////////////////////////////////////////////////////////////////
-            //if (getters["status"].isDigModule && !sameModule()) {
 
 
             let routerStatus = rootGetters["mgr/routes/status"];
@@ -470,16 +462,13 @@ export default {
                     if (getters["ready"]["item"]) {
                         //set page according to item's index
                         let c = state.collections["main"].collection;
-
                         let index = c.findIndex(x => x.id == getters["item"].id);
-
-
                         let page = Math.floor((index + 1) / state.collections.main.itemsPerPage) + 1;
                         dispatch("page", { name: "main", page: page, forceLoad: true });
                     } else {
                         dispatch("page", { name: "main", page: 1, forceLoad: true });
                     }
-                    commit('setDirtyCollection', false);
+                    commit('dirtyChunk', false);
                     //console.log(`After return from query`);
 
                     //redirect to 'list/collection' path
@@ -491,8 +480,6 @@ export default {
                 .catch(err => {
                     console.log('mgr Failed to load collection. err: ' + err);
                     return err;
-                })
-                .finally(() => {
                 })
         },
 
@@ -518,7 +505,7 @@ export default {
                     //save related collections
                     switch (getters["module"]) {
                         case "About":
-                            //
+                            //nothing to 
                             break;
 
                         case "Area":
@@ -589,13 +576,16 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    console.log("mgr/delete item deleted from collection!");
-                    commit('deleteFromCollectionById', res.data.id);
-                    commit('setDirtyCollection', true);
+                    console.log("mgr/delete() successful");
+                    //commit('deleteFromCollectionById', res.data.id);
+                    commit('dirtyChunk', true);
                     let c = state.collections["main"].collection;
                     if (c.length > 0) {
+                        let index = c.findIndex(x => x.id == res.data.id);
+                        let newIndex =  index - 1 === -1 ? 0 : index - 1;
+                        commit('deleteFromCollectionByIndex', index);
                         //go to the first item in the collection.
-                        dispatch('goToRoute', { module: getters["module"], action: "show", id: c[0].id });
+                        dispatch('goToRoute', { module: getters["module"], action: "show", id: c[newIndex].id });
                     } else {
                         //if we deleted the last item, we must load a new collection.
                         dispatch('goToRoute', { module: getters["module"], action: "filter" });
@@ -653,7 +643,7 @@ export default {
                         //the server returns an item that is formatted to be inserted into "collection".
                         commit('pushIntoCollection', res.data.item);
                     }
-                    commit('setDirtyCollection', true);
+                    commit('dirtyChunk', true);
                     if (goToItem) {
                         dispatch('goToRoute', { module: getters["module"], action: "show", id: res.data.item.id });
                     }
@@ -825,7 +815,8 @@ export default {
                         case "Media":
                         case "Table":
                             if (state.ready["collection"] &&
-                                (payload.forceLoad || state.collections.main.pageNo + 1 !== payload.page)) {
+                                (payload.forceLoad ||
+                                    state.collections.main.pageNo + 1 !== payload.page )) {
                                 res = loadChunck();
                             }
                     }

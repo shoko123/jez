@@ -6261,7 +6261,15 @@ __webpack_require__.r(__webpack_exports__);
     index: Number
   },
   created: function created() {
-    console.log("MediaOL page: ".concat(this.page, " index: ").concat(this.index, " item: ").concat(JSON.stringify(this.item, null, 2)));
+    /*
+    console.log(
+      `MediaOL page: ${this.page} index: ${this.index} item: ${JSON.stringify(
+        this.item,
+        null,
+        2
+      )}`
+    );
+    */
   },
   computed: {
     showLightBoxOption: function showLightBoxOption() {
@@ -6360,7 +6368,15 @@ __webpack_require__.r(__webpack_exports__);
     index: Number
   },
   created: function created() {
-    console.log("RelatedOL page: ".concat(this.page, " index: ").concat(this.index, " item: ").concat(JSON.stringify(this.item, null, 2)));
+    /*
+    console.log(
+      `RelatedOL page: ${this.page} index: ${this.index} item: ${JSON.stringify(
+        this.item,
+        null,
+        2
+      )}`
+    );
+    */
   },
   computed: {
     showLightBoxOption: function showLightBoxOption() {
@@ -93390,7 +93406,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     isPicker: false,
     itemDisplayOptionIndex: 0,
-    isDirtyCollection: false
+    isDirtyChunk: false
   },
   getters: {
     baseUrl: function baseUrl(state) {
@@ -93469,32 +93485,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return state.ready;
     },
     status: function status(state, getters, rootState, rootGetters) {
-      function isDigModule(module) {
-        switch (module) {
-          case "Auth":
-          case "About":
-            return false;
-
-          default:
-            return true;
-        }
+      function isDigModule() {
+        return ["Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Fauna", "Flora", "Glass", "Metal", "Tbd"].includes(module);
       }
 
-      function isFind(module) {
-        switch (module) {
-          case "Pottery":
-          case "Lithic":
-          case "Stone":
-          case "Fauna":
-          case "Flora":
-          case "Glass":
-          case "Metal":
-          case "Tbd":
-            return true;
-
-          default:
-            return false;
-        }
+      function isFind() {
+        return ["Pottery", "Stone", "Lithic", "Fauna", "Flora", "Glass", "Metal", "Tbd"].includes(module);
       }
 
       function hasMedia() {
@@ -93532,8 +93528,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         // ? state.collections.main.collection.length : "...",
         isAreaSeason: routerStatus.module === "AreaSeason",
         isLocus: routerStatus.module === "Locus",
-        isFind: isFind(module),
-        isDigModule: isDigModule(module),
+        isFind: isFind(),
+        isDigModule: isDigModule(),
         isCreate: routerStatus.action === "create",
         isUpdate: routerStatus.action === "update",
         isFilter: routerStatus.action === "filter",
@@ -93542,7 +93538,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         isWelcome: routerStatus.action === "welcome",
         isTags: routerStatus.action === "tags",
         isCreateLocus: routerStatus.action === "create" && routerStatus.module === "Locus",
-        isCreateFind: routerStatus.action === "create" && isFind(module),
+        isCreateFind: routerStatus.action === "create" && isFind(),
         isMediaEdit: routerStatus.action === "media",
         isEdit: ["create", "update", "media", "tags"].includes(routerStatus.action),
         isPicker: state.isPicker,
@@ -93613,12 +93609,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log("index: ".concat(index));
       c.splice(index, 1);
     },
+    deleteFromCollectionByIndex: function deleteFromCollectionByIndex(state, payload) {
+      var c = state.collections["main"].collection;
+      console.log("mgr.deleteFromCollectionByIndex(".concat(payload));
+      c.splice(payload, 1);
+    },
     pushIntoCollection: function pushIntoCollection(state, item) {
       var c = state.collections["main"].collection;
       c.push(item);
     },
-    setDirtyCollection: function setDirtyCollection(state, payload) {
-      state.isDirtyCollection = payload; //console.log("setDirtyCollection: " + payload);
+    dirtyChunk: function dirtyChunk(state, payload) {
+      //console.log(`SET dirtyChunk(${payload})`);            
+      state.isDirtyChunk = payload;
     }
   },
   actions: {
@@ -93670,7 +93672,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             case "list":
               //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
               //if same module, retrieve collection if not already populated
-              if (!sameModule() || state.isDirtyCollection) {
+              if (!sameModule()) {
                 dispatch("aux/queryCollection", {
                   clear: true,
                   spinner: true,
@@ -93678,6 +93680,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 }, {
                   root: true
                 });
+              } else if (state.isDirtyChunk && getters["ready"].item && getters["ready"].collection) {
+                console.log('isDirty - calling page() ');
+                dispatch("page", {
+                  name: "main",
+                  page: state.collections["main"].pageNo + 1,
+                  forceLoad: true
+                });
+                commit('dirtyChunk', false);
               }
 
               break;
@@ -93733,10 +93743,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 root: true
               });
               break;
-            //do nothing
 
             case "welcome":
             case "filter":
+              //nothing to do
               break;
 
             default:
@@ -93746,7 +93756,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       /////////////////////////////////////////////////////////////////////////
       //if new module, wait until module's metadata (tags) is retrieved from DB.
       /////////////////////////////////////////////////////////////////////////
-      //if (getters["status"].isDigModule && !sameModule()) {
 
 
       var routerStatus = rootGetters["mgr/routes/status"];
@@ -93857,7 +93866,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           });
         }
 
-        commit('setDirtyCollection', false); //console.log(`After return from query`);
+        commit('dirtyChunk', false); //console.log(`After return from query`);
         //redirect to 'list/collection' path
 
         if (payload.gotoCollection
@@ -93870,7 +93879,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       })["catch"](function (err) {
         console.log('mgr Failed to load collection. err: ' + err);
         return err;
-      })["finally"](function () {});
+      });
     },
     loadItem: function loadItem(_ref4, payload) {
       var state = _ref4.state,
@@ -93908,7 +93917,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
         switch (getters["module"]) {
           case "About":
-            //
+            //nothing to 
             break;
 
           case "Area":
@@ -94012,17 +94021,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        console.log("mgr/delete item deleted from collection!");
-        commit('deleteFromCollectionById', res.data.id);
-        commit('setDirtyCollection', true);
+        console.log("mgr/delete() successful"); //commit('deleteFromCollectionById', res.data.id);
+
+        commit('dirtyChunk', true);
         var c = state.collections["main"].collection;
 
         if (c.length > 0) {
-          //go to the first item in the collection.
+          var index = c.findIndex(function (x) {
+            return x.id == res.data.id;
+          });
+          var newIndex = index - 1 === -1 ? 0 : index - 1;
+          commit('deleteFromCollectionByIndex', index); //go to the first item in the collection.
+
           dispatch('goToRoute', {
             module: getters["module"],
             action: "show",
-            id: c[0].id
+            id: c[newIndex].id
           });
         } else {
           //if we deleted the last item, we must load a new collection.
@@ -94104,7 +94118,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit('pushIntoCollection', res.data.item);
         }
 
-        commit('setDirtyCollection', true);
+        commit('dirtyChunk', true);
 
         if (goToItem) {
           dispatch('goToRoute', {
@@ -94820,15 +94834,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     store: function store(_ref, formData) {
       var state = _ref.state,
           getters = _ref.getters,
+          rootGetters = _ref.rootGetters,
           commit = _ref.commit,
-          dispatch = _ref.dispatch,
-          rootGetters = _ref.rootGetters;
+          dispatch = _ref.dispatch;
       var xhrRequest = {
         endpoint: "/api/media/store",
         action: "post",
         data: formData,
         spinner: true,
-        verbose: true,
+        verbose: false,
         snackbar: {
           onSuccess: true,
           onFailure: true
@@ -94842,15 +94856,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return dispatch("xhr/xhr", xhrRequest, {
         root: true
       }).then(function (res) {
-        console.log('upload media returned: ' + JSON.stringify(res.data, null, 2)); //commit('itemMedia', res.data.itemMedia);
+        console.log('upload media returned: ' + JSON.stringify(res.data, null, 2)); //commit to local item
 
         commit('mgr/collections', {
           name: "media",
-          collection: res.data.itemMedia.collection
+          collection: res.data.collection
         }, {
           root: true
         });
-        commit('mgr/setDirtyCollection', true, {
+        commit('mgr/dirtyChunk', true, {
           root: true
         });
         return res;
@@ -94869,7 +94883,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         action: "delete",
         data: payload,
         spinner: true,
-        verbose: true,
+        verbose: false,
         snackbar: {
           onSuccess: true,
           onFailure: true
@@ -94883,15 +94897,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return dispatch('xhr/xhr', xhrRequest, {
         root: true
       }).then(function (res) {
-        console.log('delete media returned: ' + JSON.stringify(res.data, null, 2)); //commit('itemMedia', res.data.itemMedia);
-
+        console.log('delete media returned: ' + JSON.stringify(res.data, null, 2));
         commit('mgr/collections', {
           name: "media",
-          collection: res.data.itemMedia.collection
+          collection: res.data.collection
         }, {
           root: true
         });
-        commit('mgr/setDirtyCollection', true, {
+        commit('mgr/dirtyChunk', true, {
           root: true
         });
         return res;

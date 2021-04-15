@@ -93,13 +93,13 @@ export default {
     },
     actions: {
         //store multiple files r/t a specific dig item
-        store({ state, getters, commit, dispatch, rootGetters }, formData) {
+        store({ state, getters, rootGetters, commit, dispatch, }, formData) {
             let xhrRequest = {
                 endpoint: `/api/media/store`,
                 action: "post",
                 data: formData,
                 spinner: true,
-                verbose: true,
+                verbose: false,
                 snackbar: { onSuccess: true, onFailure: true },
                 messages: {
                     loading: "loading files",
@@ -111,9 +111,9 @@ export default {
                 dispatch("xhr/xhr", xhrRequest, { root: true })
                     .then(res => {
                         console.log('upload media returned: ' + JSON.stringify(res.data, null, 2));
-                        //commit('itemMedia', res.data.itemMedia);
-                        commit('mgr/collections', { name: "media", collection: res.data.itemMedia.collection }, { root: true });
-                        commit('mgr/setDirtyCollection', true, { root: true });
+                        //commit to local item
+                        commit('mgr/collections', { name: "media", collection: res.data.collection }, { root: true });
+                        commit('mgr/dirtyChunk', true, { root: true });
                         return res;
                     })
                     .catch(err => {
@@ -130,16 +130,15 @@ export default {
                 action: "delete",
                 data: payload,
                 spinner: true,
-                verbose: true,
+                verbose: false,
                 snackbar: { onSuccess: true, onFailure: true, },
                 messages: { loading: `deleting image`, onSuccess: `image deletes successfully`, onFailure: "failed to delete image", },
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     console.log('delete media returned: ' + JSON.stringify(res.data, null, 2));
-                    //commit('itemMedia', res.data.itemMedia);
-                    commit('mgr/collections', { name: "media", collection: res.data.itemMedia.collection }, { root: true });
-                    commit('mgr/setDirtyCollection', true, { root: true });
+                    commit('mgr/collections', { name: "media", collection: res.data.collection }, { root: true });
+                    commit('mgr/dirtyChunk', true, { root: true });
                     return res;
                 })
                 .catch(err => {

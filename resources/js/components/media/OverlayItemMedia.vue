@@ -12,6 +12,7 @@ export default {
     index: Number,
   },
   created() {
+    /*
     console.log(
       `MediaOL page: ${this.page} index: ${this.index} item: ${JSON.stringify(
         this.item,
@@ -19,6 +20,7 @@ export default {
         2
       )}`
     );
+    */
   },
   computed: {
     showLightBoxOption() {
