@@ -2,7 +2,6 @@ export default {
     namespaced: true,
 
     state: {
-        //itemMedia: { collection: [], filler: null },
         dialogAddMedia: false,
 
         lightBox: {
@@ -19,11 +18,6 @@ export default {
     },
 
     getters: {
-        /*
-        itemMedia(state) {
-            return state.itemMedia.collection;
-        },
-        */
         mediaPrimary(state, rootState, getters, rootGetters) {
             let m = rootGetters["mgr/collections"]("media").collection;
 
@@ -50,8 +44,6 @@ export default {
 
         lightBox(state, rootState, getters, rootGetters) {
             //let storageName = rootGetters["mgr/storageName"](state.lightBox.source);
-
-
             if (state.lightBox.isOpen === false) return state.lightBox;
 
             let lb = { ...state.lightBox };
@@ -91,17 +83,10 @@ export default {
             state.lightBox.indexInChunk = payload;
         },
 
-        /*
-        itemMedia(state, payload) {
-            state.itemMedia = payload;
-        },
-        */
         appMedia(state, payload) {
             state.appMedia = payload;
         },
-        primary(state, payload) {
-            state.primary = payload;
-        },
+
         clear(state, payload) {
             //state.itemMedia = { collection: [], filler: null };
         }

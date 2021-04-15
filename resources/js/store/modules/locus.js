@@ -18,23 +18,11 @@ export default {
             registration_notes: null,
             clean: null,
         },
-        locusFinds: [],
-        locusFindsMeta: {
-            displayOptionIndex: 0,
-            displayOptions: ["Media", "Chips", "Table"],
-            page: 1,
-        },
     },
 
     getters: {
         newItem(state) {
             return state.newItem;
-        },
-        locusFinds(state) {
-            return state.locusFinds;
-        },
-        locusFindsMeta(state) {
-            return state.locusFindsMeta;
         },
     },
     mutations: {
@@ -93,11 +81,6 @@ export default {
             console.log("locus.clear");
             state.locus_no = null;
             state.loci = null;     
-        },
-
-        locusFinds(state, payload) {
-            //console.log(`loci/locusFinds: ` + JSON.stringify(payload, null, 2));
-            state.locusFinds = payload;
         },
     },
     actions: {

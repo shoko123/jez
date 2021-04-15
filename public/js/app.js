@@ -6682,7 +6682,7 @@ __webpack_require__.r(__webpack_exports__);
       } //we reach this section only if this module is implemented in code.
 
 
-      if (!this.$store.getters["mgr/status"].isDeleteable) {
+      if (!this.$store.getters["mgr/status"].mayDelete) {
         alert(" Can't delete due to existence of media or related modules");
         return;
       }
@@ -91729,18 +91729,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    areasSeasons: [],
-    loci: [],
-    areasSeasonsMeta: {
-      displayOptionIndex: 0,
-      displayOptions: ["Media", "Chips", "Table"],
-      page: 1
-    },
-    lociMeta: {
-      displayOptionIndex: 0,
-      displayOptions: ["Media", "Chips", "Table"],
-      page: 1
-    },
     newItem: {
       id: null,
       description: null,
@@ -91750,26 +91738,9 @@ __webpack_require__.r(__webpack_exports__);
   getters: {
     newItem: function newItem(state) {
       return state.newItem;
-    },
-    //if module is Area or Season it will hold related areasSeasons
-    areasSeasons: function areasSeasons(state) {
-      return state.areasSeasons;
-    },
-    areasSeasonsMeta: function areasSeasonsMeta(state) {
-      return state.areasSeasonsMeta;
-    },
-    //if module is AreaSeason it will hold related loci
-    loci: function loci(state) {
-      return state.loci;
-    },
-    lociMeta: function lociMeta(state) {
-      return state.lociMeta;
     }
   },
   mutations: {
-    areasSeasons: function areasSeasons(state, payload) {
-      state.areasSeasons = payload;
-    },
     copyCurrentToNew: function copyCurrentToNew(state, payload) {
       state.newItem = payload;
     },
@@ -91778,9 +91749,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     summary: function summary(state, payload) {
       state.newItem.summary = payload;
-    },
-    loci: function loci(state, payload) {
-      state.loci = payload;
     }
   },
   actions: {
@@ -93260,23 +93228,11 @@ __webpack_require__.r(__webpack_exports__);
       deposit: null,
       registration_notes: null,
       clean: null
-    },
-    locusFinds: [],
-    locusFindsMeta: {
-      displayOptionIndex: 0,
-      displayOptions: ["Media", "Chips", "Table"],
-      page: 1
     }
   },
   getters: {
     newItem: function newItem(state) {
       return state.newItem;
-    },
-    locusFinds: function locusFinds(state) {
-      return state.locusFinds;
-    },
-    locusFindsMeta: function locusFindsMeta(state) {
-      return state.locusFindsMeta;
     }
   },
   mutations: {
@@ -93333,10 +93289,6 @@ __webpack_require__.r(__webpack_exports__);
       console.log("locus.clear");
       state.locus_no = null;
       state.loci = null;
-    },
-    locusFinds: function locusFinds(state, payload) {
-      //console.log(`loci/locusFinds: ` + JSON.stringify(payload, null, 2));
-      state.locusFinds = payload;
     }
   },
   actions: {
@@ -93545,24 +93497,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }
 
-      function hasMedia(module) {
-        return rootGetters["med/mediaPrimary"].hasMedia;
+      function hasMedia() {
+        return state.collections["media"].collection.length > 0;
       }
 
-      function hasRelatedModules(module) {
-        if (module === "Locus") {
-          if (!getters.item || !rootGetters["loci/locusFinds"]) {
-            return true;
-          } else {
-            return rootGetters["loci/locusFinds"].length > 0;
-          }
-        } else {
-          return false;
+      function hasDependantModules() {
+        //check only for "Locus" as we only allow create/delete for "Locus" and finds.
+        switch (module) {
+          case "Locus":
+            return state.collections["related"].collection.length > 0;
+
+          default:
+            return false;
         }
-      }
-
-      function isDeleteable() {
-        return !hasMedia() && !hasRelatedModules(module);
       }
 
       var routerStatus = rootGetters["mgr/routes/status"];
@@ -93600,9 +93547,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         isEdit: ["create", "update", "media", "tags"].includes(routerStatus.action),
         isPicker: state.isPicker,
         isFilterable: !["Auth", "About", "Area", "Season"].includes(routerStatus.module),
-        hasMedia: hasMedia(module),
-        hasRelatedModules: hasRelatedModules(module),
-        isDeleteable: isDeleteable(module),
+        hasMedia: hasMedia(),
+        hasDependantModules: hasDependantModules(),
+        mayDelete: !hasMedia() && !hasDependantModules(),
         //display
         itemDisplayOptions: moduleStaticInfo.itemDisplayOptions,
         itemDisplayOptionIndex: state.itemDisplayOptionIndex
@@ -93966,7 +93913,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
           case "Area":
           case "Season":
-            //commit('arsn/areasSeasons', res.data.areasSeasons, { root: true });
             commit('collections', {
               name: "related",
               collection: res.data.areasSeasons
@@ -93974,7 +93920,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             break;
 
           case "AreaSeason":
-            //commit('arsn/loci', res.data.loci, { root: true });
             commit('collections', {
               name: "related",
               collection: res.data.loci
@@ -93982,7 +93927,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             break;
 
           case "Locus":
-            //commit('loci/locusFinds', res.data.locusFinds, { root: true });
             commit('collections', {
               name: "related",
               collection: res.data.locusFinds
@@ -94493,18 +94437,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         switch (payload) {
           case "next":
             index = c.findIndex(function (x) {
-              return x.id == state.item.id;
+              return x.id === state.item.id;
             });
             newIndex = index == c.length - 1 ? 0 : index + 1;
             break;
 
           case "prev":
             index = c.findIndex(function (x) {
-              return x.id == state.item.id;
+              return x.id === state.item.id;
             });
-            newIndex = state.index == 0 ? c.length - 1 : index - 1;
+            newIndex = index === 0 ? c.length - 1 : index - 1;
             break;
-        }
+        } //console.log(`ADJANCT length: ${c.length} index: ${index} newIndex: ${newIndex}`);
+
 
         return c[newIndex].id;
       }
@@ -94788,7 +94733,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: {
-    //itemMedia: { collection: [], filler: null },
     dialogAddMedia: false,
     lightBox: {
       isOpen: false,
@@ -94802,11 +94746,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   getters: {
-    /*
-    itemMedia(state) {
-        return state.itemMedia.collection;
-    },
-    */
     mediaPrimary: function mediaPrimary(state, rootState, getters, rootGetters) {
       var m = rootGetters["mgr/collections"]("media").collection;
 
@@ -94870,17 +94809,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       //console.log(`SET lightBoxIndexInChunk=${payload}`);//: ' + JSON.stringify(err, null, 2));
       state.lightBox.indexInChunk = payload;
     },
-
-    /*
-    itemMedia(state, payload) {
-        state.itemMedia = payload;
-    },
-    */
     appMedia: function appMedia(state, payload) {
       state.appMedia = payload;
-    },
-    primary: function primary(state, payload) {
-      state.primary = payload;
     },
     clear: function clear(state, payload) {//state.itemMedia = { collection: [], filler: null };
     }

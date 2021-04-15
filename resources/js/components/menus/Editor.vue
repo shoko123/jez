@@ -173,7 +173,7 @@ export default {
       }
 
       //we reach this section only if this module is implemented in code.
-      if (!this.$store.getters["mgr/status"].isDeleteable) {
+      if (!this.$store.getters["mgr/status"].mayDelete) {
         alert(" Can't delete due to existence of media or related modules");
         return;
       }

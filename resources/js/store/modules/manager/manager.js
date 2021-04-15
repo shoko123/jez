@@ -184,24 +184,20 @@ export default {
                 }
             }
 
-            function hasMedia(module) {
-                return rootGetters["med/mediaPrimary"].hasMedia;
+            function hasMedia() {
+                return state.collections["media"].collection.length > 0;
             }
 
-            function hasRelatedModules(module) {
-                if (module === "Locus") {
-                    if (!getters.item || !rootGetters["loci/locusFinds"]) {
-                        return true;
-                    } else {
-                        return (rootGetters["loci/locusFinds"].length > 0);
-                    }
-                } else {
-                    return false;
+            function hasDependantModules() {
+                //check only for "Locus" as we only allow create/delete for "Locus" and finds.
+                switch (module) {
+                    case "Locus":
+                        return state.collections["related"].collection.length > 0;
+                    default:
+                        return false;
                 }
             }
-            function isDeleteable() {
-                return (!hasMedia() && !hasRelatedModules(module));
-            }
+           
             let routerStatus = rootGetters["mgr/routes/status"];
             let module = routerStatus.module;
             let moduleStaticInfo = jezConfig.myModules[module];
@@ -238,9 +234,9 @@ export default {
                 isEdit: ["create", "update", "media", "tags"].includes(routerStatus.action),
                 isPicker: state.isPicker,
                 isFilterable: !["Auth", "About", "Area", "Season"].includes(routerStatus.module),
-                hasMedia: hasMedia(module),
-                hasRelatedModules: hasRelatedModules(module),
-                isDeleteable: isDeleteable(module),
+                hasMedia: hasMedia(),
+                hasDependantModules: hasDependantModules(),
+                mayDelete: !hasMedia() && !hasDependantModules(),
 
 
                 //display
@@ -254,7 +250,7 @@ export default {
     mutations: {
         baseUrl(state, payload) {
             state.baseUrl = payload;
-        },        
+        },
         collections(state, payload) {
             state.collections[payload.name].collection = payload.collection;
         },
@@ -359,7 +355,7 @@ export default {
                             //console.log('mgr.dispatch(show)');// + JSON.stringify(res, null, 2));
                             if (sameModule()) {
                                 //if no collection loaded yet, retrieve new module's collection and then item
-                                if(state.collections["main"].collection.length === 0) {
+                                if (state.collections["main"].collection.length === 0) {
                                     //if same module, but collection empty, retrieve collection and then item
                                     dispatch("aux/queryCollection", { clear: false, spinner: true, gotoCollection: false }, { root: true })
                                         .then((res) => {
@@ -476,7 +472,7 @@ export default {
                         let c = state.collections["main"].collection;
 
                         let index = c.findIndex(x => x.id == getters["item"].id);
-                        
+
 
                         let page = Math.floor((index + 1) / state.collections.main.itemsPerPage) + 1;
                         dispatch("page", { name: "main", page: page, forceLoad: true });
@@ -527,17 +523,14 @@ export default {
 
                         case "Area":
                         case "Season":
-                            //commit('arsn/areasSeasons', res.data.areasSeasons, { root: true });
                             commit('collections', { name: "related", collection: res.data.areasSeasons });
                             break;
 
                         case "AreaSeason":
-                            //commit('arsn/loci', res.data.loci, { root: true });
                             commit('collections', { name: "related", collection: res.data.loci });
                             break;
 
                         case "Locus":
-                            //commit('loci/locusFinds', res.data.locusFinds, { root: true });
                             commit('collections', { name: "related", collection: res.data.locusFinds });
                             break;
 
@@ -871,15 +864,16 @@ export default {
                 let c = m.collection;
                 switch (payload) {
                     case "next":
-                        index = c.findIndex(x => x.id == state.item.id);
+                        index = c.findIndex(x => x.id === state.item.id);
                         newIndex = (index == c.length - 1) ? 0 : index + 1;
                         break;
 
                     case "prev":
-                        index = c.findIndex(x => x.id == state.item.id);
-                        newIndex = (state.index == 0) ? c.length - 1 : index - 1;
+                        index = c.findIndex(x => x.id === state.item.id);
+                        newIndex = (index === 0) ? c.length - 1 : index - 1;
                         break;
                 }
+                //console.log(`ADJANCT length: ${c.length} index: ${index} newIndex: ${newIndex}`);
                 return c[newIndex].id;
             }
 
