@@ -168,7 +168,7 @@ class AboutPages
     {
         $item = (object) self::$items[$id];
         $formatted_item = clone $item;
-        $formatted_item->id = $id;
+        $formatted_item->id = intval($id);
         $formatted_item->title = strval($item->tab) . "." . strval($item->no) . " " . $item->title;
         $formatted_item->fullUrl = \Storage::disk('app-media')->url('about/' .  $item->image . '.jpg');
         $formatted_item->tnUrl = \Storage::disk('app-media')->url('about/' . $item->image . '-tn.jpg');

@@ -87,68 +87,7 @@ export default {
     },
 
     header() {
-      let header,
-        lb = this.lightBox,
-        media = lb.media ? lb.media : { tag: "" },
-        mod = this.$store.getters["mgr/module"],
-        page = lb.pageNo + 1,
-        index = (page - 1) * lb.itemsPerPage + lb.indexInChunk + 1,
-        length = lb.length,
-        itemTag = "";
-      if (this.$store.getters["mgr/status"].isShow) {
-        itemTag = this.$store.getters["mgr/item"]
-          ? this.$store.getters["mgr/item"].tag
-          : { tag: "" };
-      }
-
-      switch (lb.source) {
-        case "main":
-          header = `Showing ${mod} Query results (item ${index}/${length}): ${
-            this.isOpen && !this.loading ? media.tag : ""
-          } [page ${page} index ${lb.indexInChunk + 1}]`;
-          break;
-        case "media":
-          header = `Showing media for ${mod} ${itemTag} [${index}/${length}]`;
-          break;
-        case "related":
-          header = `Showing media related to ${mod} ${itemTag}: [${index}/${length}] ${media.tag}`;
-          break;
-
-        default:
-      }
-      return header;
-
-      /*
-      let page = this.lightBox.pageNo + 1;
-      let item =
-        (page - 1) * this.lightBox.itemsPerPage +
-        this.lightBox.indexInChunk +
-        1;
-      let header;
-
-      switch (this.lightBox.source) {
-        case "main":
-          header = `Showing ${
-            this.$store.getters["mgr/module"]
-          } Query results (item ${item}/${this.lightBox.length}): ${
-            this.isOpen && !this.loading ? this.media.tag : ""
-          } [page ${this.lightBox.pageNo + 1} index ${
-            this.lightBox.indexInChunk + 1
-          }]`;
-          break;
-        case "media":
-          header = `Showing media for item`;
-          break;
-        case "related":
-          header = `Showing related...`;
-          break;
-
-        default:
-      }
-      //TODO wait while loading
-
-      return header;
-      */
+      return this.lightBox.header;
     },
   },
   methods: {

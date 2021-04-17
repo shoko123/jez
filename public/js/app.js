@@ -1955,6 +1955,8 @@ __webpack_require__.r(__webpack_exports__);
       //TODO open map in a new tab
     },
     goToItem: function goToItem(direction) {
+      return this.$store.dispatch("mgr/goToRoute", direction);
+
       if (this.adjacents) {
         this.$store.dispatch("mgr/goToRoute", {
           module: "About",
@@ -2659,11 +2661,11 @@ __webpack_require__.r(__webpack_exports__);
     start: function start() {
       return this.collection.chunkStartIndex;
     },
-    fullTitle: function fullTitle() {
+    header: function header() {
       var start = this.collection.chunkStartIndex,
           end = start + this.collection.chunk.length,
           length = this.collection.collection.length;
-      return "".concat(this.title, " (").concat(length, ") ").concat(this.showPaginator ? "Showing Items ".concat(start + 1, " to ").concat(end) : "");
+      return "".concat(this.collection.header, " ").concat(this.showPaginator ? " [".concat(start + 1, "-").concat(end, "/").concat(length, "]") : "");
     },
     allowChips: function allowChips() {
       return this.source !== "media";
@@ -5757,68 +5759,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.lightBox.media;
     },
     header: function header() {
-      var header,
-          lb = this.lightBox,
-          media = lb.media ? lb.media : {
-        tag: ""
-      },
-          mod = this.$store.getters["mgr/module"],
-          page = lb.pageNo + 1,
-          index = (page - 1) * lb.itemsPerPage + lb.indexInChunk + 1,
-          length = lb.length,
-          itemTag = "";
-
-      if (this.$store.getters["mgr/status"].isShow) {
-        itemTag = this.$store.getters["mgr/item"] ? this.$store.getters["mgr/item"].tag : {
-          tag: ""
-        };
-      }
-
-      switch (lb.source) {
-        case "main":
-          header = "Showing ".concat(mod, " Query results (item ").concat(index, "/").concat(length, "): ").concat(this.isOpen && !this.loading ? media.tag : "", " [page ").concat(page, " index ").concat(lb.indexInChunk + 1, "]");
-          break;
-
-        case "media":
-          header = "Showing media for ".concat(mod, " ").concat(itemTag, " [").concat(index, "/").concat(length, "]");
-          break;
-
-        case "related":
-          header = "Showing media related to ".concat(mod, " ").concat(itemTag, ": [").concat(index, "/").concat(length, "] ").concat(media.tag);
-          break;
-
-        default:
-      }
-
-      return header;
-      /*
-      let page = this.lightBox.pageNo + 1;
-      let item =
-        (page - 1) * this.lightBox.itemsPerPage +
-        this.lightBox.indexInChunk +
-        1;
-      let header;
-       switch (this.lightBox.source) {
-        case "main":
-          header = `Showing ${
-            this.$store.getters["mgr/module"]
-          } Query results (item ${item}/${this.lightBox.length}): ${
-            this.isOpen && !this.loading ? this.media.tag : ""
-          } [page ${this.lightBox.pageNo + 1} index ${
-            this.lightBox.indexInChunk + 1
-          }]`;
-          break;
-        case "media":
-          header = `Showing media for item`;
-          break;
-        case "related":
-          header = `Showing related...`;
-          break;
-         default:
-      }
-      //TODO wait while loading
-       return header;
-      */
+      return this.lightBox.header;
     }
   },
   methods: {
@@ -13209,7 +13150,7 @@ var render = function() {
         "v-card-title",
         { staticClass: "grey py-0 mb-4" },
         [
-          _vm._v(_vm._s(_vm.fullTitle) + "\n    "),
+          _vm._v(_vm._s(_vm.header) + "\n    "),
           _c("v-spacer"),
           _vm._v(" "),
           _vm.allowChips
@@ -18383,7 +18324,7 @@ var render = function() {
                       ? _c(
                           "v-menu",
                           {
-                            attrs: { "open-on-hover": "", "offset-y": "" },
+                            attrs: { "offset-y": "" },
                             scopedSlots: _vm._u(
                               [
                                 {
@@ -93427,6 +93368,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           c.chunk = c.collection.slice(c.pageNo * c.itemsPerPage, (c.pageNo + 1) * c.itemsPerPage); //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
         }
 
+        var header;
+
+        switch (name) {
+          case "main":
+            header = rootGetters["mgr/routes/status"].module + " Query Results";
+            break;
+
+          case "related":
+            switch (rootGetters["mgr/routes/status"].module) {
+              case "Area":
+              case "Season":
+                header = "Related Areas/Seasons";
+                break;
+
+              case "AreaSeason":
+                header = "Related Loci";
+                break;
+
+              case "Locus":
+                header = "Related Small Finds";
+                break;
+            }
+
+            break;
+
+          case "media":
+            header = "Related Media";
+        }
+
+        c["header"] = header;
         c["chunkStartIndex"] = c.pageNo * c.itemsPerPage;
         return c;
       };
@@ -93440,31 +93411,37 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         c.chunk = c.collection.slice(c.pageNo * c.itemsPerPage, (c.pageNo + 1) * c.itemsPerPage); //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
       }
 
+      c["header"] = rootGetters["mgr/routes/status"].module + "Query Results";
       c["chunkStartIndex"] = c.pageNo * c.itemsPerPage;
-
-      switch (state.collections.main.views[state.collections.main.view]) {
-        case "Media":
-        case "Table":
-          //console.log(`mgr/get[collectionsMain] returns:\n${JSON.stringify(c, null, 2)}`);
-          return c;
-
-        case "Chips":
-          c.chunk = c.collection.slice(c.pageNo * c.itemsPerPage, (c.pageNo + 1) * c.itemsPerPage); //console.log(`mgr/get[collectionMain] returns:\n${JSON.stringify(c, null, 2)}`);
-
-          return c;
-
-        default:
-          console.log("*****EEEE");
-      }
+      return c;
     },
-    collectionRelated: function collectionRelated(state) {
+    collectionRelated: function collectionRelated(state, rootState, getters, rootGetters) {
       var c = state.collections.related;
       c.chunk = c.collection.slice(c.pageNo * c.itemsPerPage, (c.pageNo + 1) * c.itemsPerPage);
+      var header;
+
+      switch (rootGetters["mgr/routes/status"].module) {
+        case "Area":
+        case "Season":
+          header = "Related Areas/Seasons";
+          break;
+
+        case "AreaSeason":
+          header = "Related Loci";
+          break;
+
+        case "Locus":
+          header = "Related Small Finds";
+          break;
+      }
+
+      c["header"] = header;
       return c;
     },
     collectionMedia: function collectionMedia(state) {
       var c = state.collections.media;
       c.chunk = c.collection.slice(c.pageNo * c.itemsPerPage, (c.pageNo + 1) * c.itemsPerPage);
+      c["header"] = "Related Media";
       return c;
     },
     isImplemented: function isImplemented(state) {
@@ -94798,6 +94775,54 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       lb["length"] = c.collection.length;
       lb["chunk"] = c.chunk;
       lb["media"] = c.chunk[state.lightBox.indexInChunk];
+      var header,
+          media = lb.media ? lb.media : {
+        tag: ""
+      },
+          mod = rootGetters["mgr/module"],
+          page = lb.pageNo + 1,
+          index = (page - 1) * lb.itemsPerPage + lb.indexInChunk + 1,
+          length = lb.length,
+          itemTag = "";
+
+      if (rootGetters["mgr/status"].isShow) {
+        itemTag = rootGetters["mgr/item"] ? rootGetters["mgr/item"].tag : {
+          tag: ""
+        };
+      }
+
+      switch (state.lightBox.source) {
+        case "main":
+          header = "Showing ".concat(mod, " Query Results: ").concat(media.tag);
+          break;
+
+        case "media":
+          header = "Showing ".concat(mod, " ").concat(itemTag, " Related Media");
+          break;
+
+        case "related":
+          var related;
+
+          switch (rootGetters["mgr/routes/status"].module) {
+            case "Area":
+            case "Season":
+              related = " Areas/Seasons";
+              break;
+
+            case "AreaSeason":
+              related = "Loci";
+              break;
+
+            case "Locus":
+              related = "Small Finds";
+              break;
+          }
+
+          header = "Showing ".concat(mod, " ").concat(itemTag, " Related ").concat(related, ": ").concat(media.tag);
+          break;
+      }
+
+      lb["header"] = header + " [".concat(index, "/").concat(length, "]");
       return lb;
     },
     appMedia: function appMedia(state) {
@@ -94903,7 +94928,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           collection: res.data.collection
         }, {
           root: true
-        });
+        }); //alert manager that chunk is dirty
+
         commit('mgr/dirtyChunk', true, {
           root: true
         });

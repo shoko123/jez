@@ -79,6 +79,7 @@ export default {
       //TODO open map in a new tab
     },
     goToItem(direction) {
+      return this.$store.dispatch("mgr/goToRoute", direction);
       if (this.adjacents) {
         this.$store.dispatch("mgr/goToRoute", {
           module: "About",

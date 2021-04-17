@@ -55,7 +55,6 @@ export default {
         isDirtyChunk: false,
     },
 
-
     getters: {
         baseUrl(state) {
             return state.baseUrl;
@@ -81,6 +80,31 @@ export default {
                 );
                 //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
             }
+            let header
+            switch (name) {
+                case "main":
+                    header = rootGetters["mgr/routes/status"].module + " Query Results";
+                    break;
+
+                case "related":
+                    switch (rootGetters["mgr/routes/status"].module) {
+                        case "Area":
+                        case "Season":
+                            header = "Related Areas/Seasons"
+                            break;
+                        case "AreaSeason":
+                            header = "Related Loci"
+                            break;
+                        case "Locus":
+                            header = "Related Small Finds"
+                            break;
+                    }
+                    break;
+                case "media":
+                    header = "Related Media";
+
+            }
+            c["header"] = header;
             c["chunkStartIndex"] = c.pageNo * c.itemsPerPage;
             return c;
         },
@@ -98,32 +122,32 @@ export default {
                 );
                 //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
             }
-
+          
+            c["header"] = rootGetters["mgr/routes/status"].module + "Query Results";
             c["chunkStartIndex"] = c.pageNo * c.itemsPerPage;
-            switch (state.collections.main.views[state.collections.main.view]) {
-                case "Media":
-                case "Table":
-                    //console.log(`mgr/get[collectionsMain] returns:\n${JSON.stringify(c, null, 2)}`);
-                    return c;
-
-                case "Chips":
-                    c.chunk = c.collection.slice(
-                        c.pageNo * c.itemsPerPage,
-                        (c.pageNo + 1) * c.itemsPerPage
-                    );
-
-                    //console.log(`mgr/get[collectionMain] returns:\n${JSON.stringify(c, null, 2)}`);
-                    return c;
-                default:
-                    console.log("*****EEEE")
-            }
+            return c;
         },
-        collectionRelated(state) {
+        collectionRelated(state, rootState, getters, rootGetters) {
             let c = state.collections.related;
             c.chunk = c.collection.slice(
                 c.pageNo * c.itemsPerPage,
                 (c.pageNo + 1) * c.itemsPerPage
             );
+
+            let header;
+            switch (rootGetters["mgr/routes/status"].module) {
+                case "Area":
+                case "Season":
+                    header = "Related Areas/Seasons"
+                    break;
+                case "AreaSeason":
+                    header = "Related Loci"
+                    break;
+                case "Locus":
+                    header = "Related Small Finds"
+                    break;
+            }  
+            c["header"] = header;          
             return c;
         },
         collectionMedia(state) {
@@ -132,6 +156,7 @@ export default {
                 c.pageNo * c.itemsPerPage,
                 (c.pageNo + 1) * c.itemsPerPage
             );
+            c["header"] =  "Related Media";
             return c;
         },
 
@@ -336,8 +361,8 @@ export default {
                             //if same module, retrieve collection if not already populated
                             if (!sameModule()) {
                                 dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: true }, { root: true });
-                            } else if(state.isDirtyChunk && getters["ready"].item && getters["ready"].collection){
-                                 console.log('isDirty - calling page() ');
+                            } else if (state.isDirtyChunk && getters["ready"].item && getters["ready"].collection) {
+                                console.log('isDirty - calling page() ');
                                 dispatch("page", { name: "main", page: state.collections["main"].pageNo + 1, forceLoad: true });
                                 commit('dirtyChunk', false);
                             }
@@ -582,7 +607,7 @@ export default {
                     let c = state.collections["main"].collection;
                     if (c.length > 0) {
                         let index = c.findIndex(x => x.id == res.data.id);
-                        let newIndex =  index - 1 === -1 ? 0 : index - 1;
+                        let newIndex = index - 1 === -1 ? 0 : index - 1;
                         commit('deleteFromCollectionByIndex', index);
                         //go to the first item in the collection.
                         dispatch('goToRoute', { module: getters["module"], action: "show", id: c[newIndex].id });
@@ -816,7 +841,7 @@ export default {
                         case "Table":
                             if (state.ready["collection"] &&
                                 (payload.forceLoad ||
-                                    state.collections.main.pageNo + 1 !== payload.page )) {
+                                    state.collections.main.pageNo + 1 !== payload.page)) {
                                 res = loadChunck();
                             }
                     }

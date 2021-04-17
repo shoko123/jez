@@ -1,7 +1,7 @@
 <template>
   <v-card class="elevation-12">
     <v-card-title class="grey py-0 mb-4"
-      >{{ fullTitle }}
+      >{{ header }}
       <v-spacer></v-spacer>
 
       <v-btn
@@ -96,14 +96,11 @@ export default {
       return this.collection.chunkStartIndex;
     },
 
-    fullTitle() {
+    header() {
       let start = this.collection.chunkStartIndex,
         end = start + this.collection.chunk.length,
         length = this.collection.collection.length;
-
-      return `${this.title} (${length}) ${
-        this.showPaginator ? `Showing Items ${start + 1} to ${end}` : ``
-      }`;
+      return `${this.collection.header} ${this.showPaginator ? ` [${start + 1}-${end}/${length}]` : ``}`;
     },
     allowChips() {
       return this.source !== "media";

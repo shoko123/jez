@@ -18,7 +18,7 @@
           >
             <v-icon left dark>mdi-help-circle-outline</v-icon>About
           </v-btn>
-          <v-menu v-if="isLoggedIn" open-on-hover offset-y>
+          <v-menu v-if="isLoggedIn" offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" text>
                 <v-icon left dark>view_comfy</v-icon>

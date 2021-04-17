@@ -21,18 +21,18 @@ export default {
         mediaPrimary(state, rootState, getters, rootGetters) {
             let m = rootGetters["mgr/collections"]("media").collection;
 
-            if (m.length > 0) { 
+            if (m.length > 0) {
                 return m[0]
-             } else { 
-                 let module = rootGetters["mgr/module"];
-                 let fullName = `${module}0.jpg`;
-                 let tnName = `${module}0-tn.jpg`;
-                 let fullUrl = `${rootGetters["mgr/baseUrl"]}/app-media/fillers/${fullName}`;
-                 let tnUrl = `${rootGetters["mgr/baseUrl"]}/app-media/fillers/${tnName}`;
+            } else {
+                let module = rootGetters["mgr/module"];
+                let fullName = `${module}0.jpg`;
+                let tnName = `${module}0-tn.jpg`;
+                let fullUrl = `${rootGetters["mgr/baseUrl"]}/app-media/fillers/${fullName}`;
+                let tnUrl = `${rootGetters["mgr/baseUrl"]}/app-media/fillers/${tnName}`;
 
-                 let filler = {"fullUrl": fullUrl,"tnUrl": tnUrl, "hasMedia": false}
-                 return filler; 
-                }
+                let filler = { "fullUrl": fullUrl, "tnUrl": tnUrl, "hasMedia": false }
+                return filler;
+            }
         },
         dialogAddMedia(state, getters) {
             return state.dialogAddMedia;
@@ -54,6 +54,45 @@ export default {
             lb["length"] = c.collection.length;
             lb["chunk"] = c.chunk;
             lb["media"] = (c.chunk)[state.lightBox.indexInChunk];
+
+            let header,
+                media = lb.media ? lb.media : { tag: "" },
+                mod = rootGetters["mgr/module"],
+                page = lb.pageNo + 1,
+                index = (page - 1) * lb.itemsPerPage + lb.indexInChunk + 1,
+                length = lb.length,
+                itemTag = "";
+            if (rootGetters["mgr/status"].isShow) {
+                itemTag = rootGetters["mgr/item"]
+                    ? rootGetters["mgr/item"].tag
+                    : { tag: "" };
+            }
+
+            switch (state.lightBox.source) {
+                case "main":
+                    header = `Showing ${mod} Query Results: ${media.tag}`;
+                    break;
+                case "media":
+                    header = `Showing ${mod} ${itemTag} Related Media`;
+                    break;
+                case "related":
+                    let related;
+                    switch (rootGetters["mgr/routes/status"].module) {
+                        case "Area":
+                        case "Season":
+                            related = " Areas/Seasons"
+                            break;
+                        case "AreaSeason":
+                            related = "Loci"
+                            break;
+                        case "Locus":
+                            related = "Small Finds"
+                            break;
+                    }
+                    header = `Showing ${mod} ${itemTag} Related ${related}: ${media.tag}`;
+                    break;
+            }
+            lb["header"] = header + ` [${index}/${length}]`;
             return lb;
         },
 
@@ -138,6 +177,7 @@ export default {
                 .then((res) => {
                     console.log('delete media returned: ' + JSON.stringify(res.data, null, 2));
                     commit('mgr/collections', { name: "media", collection: res.data.collection }, { root: true });
+                    //alert manager that chunk is dirty
                     commit('mgr/dirtyChunk', true, { root: true });
                     return res;
                 })
