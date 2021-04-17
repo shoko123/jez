@@ -2187,8 +2187,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2208,8 +2206,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _elements_CollectionForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../elements/CollectionForm */ "./resources/js/components/elements/CollectionForm.vue");
-//
-//
 //
 //
 //
@@ -2412,8 +2408,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2441,8 +2435,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2462,8 +2454,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _elements_CollectionForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../elements/CollectionForm */ "./resources/js/components/elements/CollectionForm.vue");
-//
-//
 //
 //
 //
@@ -2665,7 +2655,12 @@ __webpack_require__.r(__webpack_exports__);
       var start = this.collection.chunkStartIndex,
           end = start + this.collection.chunk.length,
           length = this.collection.collection.length;
-      return "".concat(this.collection.header, " ").concat(this.showPaginator ? " [".concat(start + 1, "-").concat(end, "/").concat(length, "]") : "");
+
+      if (this.$store.getters["mgr/status"].isMediaEdit) {
+        return "Media editor for ".concat(this.$store.getters["mgr/module"], " ").concat(this.$store.getters["mgr/item"].tag);
+      } else {
+        return "".concat(this.collection.header, " ").concat(this.showPaginator ? " [".concat(start + 1, "-").concat(end, "/").concat(length, "]") : "");
+      }
     },
     allowChips: function allowChips() {
       return this.source !== "media";
@@ -4088,14 +4083,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     CollectionForm: _elements_CollectionForm__WEBPACK_IMPORTED_MODULE_0__["default"]
-  },
-  computed: {
-    props: function props() {
-      return {
-        title: "Glass Media Gallery",
-        source: "media"
-      };
-    }
   }
 });
 
@@ -4424,14 +4411,6 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     SubMenuCollection: _menus_SubMenuCollection__WEBPACK_IMPORTED_MODULE_0__["default"],
     CollectionForm: _elements_CollectionForm__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  computed: {
-    props: function props() {
-      return {
-        title: "".concat(this.$store.getters["mgr/module"], " Query Results"),
-        source: "main"
-      };
-    }
   }
 });
 
@@ -5095,14 +5074,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     CollectionForm: _elements_CollectionForm__WEBPACK_IMPORTED_MODULE_0__["default"]
-  },
-  computed: {
-    props: function props() {
-      return {
-        title: "Lithic Media Gallery",
-        source: "media"
-      };
-    }
   }
 });
 
@@ -5534,8 +5505,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5563,8 +5532,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -5584,8 +5551,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _elements_CollectionForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../elements/CollectionForm */ "./resources/js/components/elements/CollectionForm.vue");
-//
-//
 //
 //
 //
@@ -5640,12 +5605,6 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     itemType: function itemType() {
       return this.$store.getters["mgr/module"];
-    },
-    props: function props() {
-      return {
-        title: "Media editor for ".concat(this.itemType, " ").concat(this.$store.getters["mgr/item"].tag),
-        source: "media"
-      };
     },
     dialogAddMedia: {
       get: function get() {
@@ -7436,14 +7395,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     CollectionForm: _elements_CollectionForm__WEBPACK_IMPORTED_MODULE_0__["default"]
-  },
-  computed: {
-    props: function props() {
-      return {
-        title: "Metal Media Gallery",
-        source: "media"
-      };
-    }
   }
 });
 
@@ -7701,14 +7652,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     CollectionForm: _elements_CollectionForm__WEBPACK_IMPORTED_MODULE_0__["default"]
-  },
-  computed: {
-    props: function props() {
-      return {
-        title: "Pottery Media Gallery",
-        source: "media"
-      };
-    }
   }
 });
 
@@ -8295,8 +8238,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -8324,8 +8265,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -8345,8 +8284,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _elements_CollectionForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../elements/CollectionForm */ "./resources/js/components/elements/CollectionForm.vue");
-//
-//
 //
 //
 //
@@ -12595,12 +12532,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "CollectionForm",
-        _vm._b(
-          {},
-          "CollectionForm",
-          { title: "Related AreasSeasons", source: "related" },
-          false
-        )
+        _vm._b({}, "CollectionForm", { source: "related" }, false)
       )
     ],
     1
@@ -12634,12 +12566,7 @@ var render = function() {
     [
       _c(
         "CollectionForm",
-        _vm._b(
-          {},
-          "CollectionForm",
-          { title: "Area Gallery", source: "media" },
-          false
-        )
+        _vm._b({}, "CollectionForm", { source: "media" }, false)
       )
     ],
     1
@@ -12673,12 +12600,7 @@ var render = function() {
     [
       _c(
         "CollectionForm",
-        _vm._b(
-          {},
-          "CollectionForm",
-          { title: "Something New!", source: "related" },
-          false
-        )
+        _vm._b({}, "CollectionForm", { source: "related" }, false)
       )
     ],
     1
@@ -12887,12 +12809,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "CollectionForm",
-        _vm._b(
-          {},
-          "CollectionForm",
-          { title: "Loci for Area/Season", source: "related" },
-          false
-        )
+        _vm._b({}, "CollectionForm", { source: "related" }, false)
       )
     ],
     1
@@ -12926,12 +12843,7 @@ var render = function() {
     [
       _c(
         "CollectionForm",
-        _vm._b(
-          {},
-          "CollectionForm",
-          { title: "Area/Season Gallery", source: "media" },
-          false
-        )
+        _vm._b({}, "CollectionForm", { source: "media" }, false)
       )
     ],
     1
@@ -12965,12 +12877,7 @@ var render = function() {
     [
       _c(
         "CollectionForm",
-        _vm._b(
-          {},
-          "CollectionForm",
-          { title: "Loci for Area/Season", source: "related" },
-          false
-        )
+        _vm._b({}, "CollectionForm", { source: "related" }, false)
       )
     ],
     1
@@ -15034,7 +14941,12 @@ var render = function() {
   return _c(
     "v-container",
     { attrs: { fluid: "" } },
-    [_c("CollectionForm", _vm._b({}, "CollectionForm", _vm.props, false))],
+    [
+      _c(
+        "CollectionForm",
+        _vm._b({}, "CollectionForm", { source: "media" }, false)
+      )
+    ],
     1
   )
 }
@@ -15403,7 +15315,12 @@ var render = function() {
       _c(
         "v-container",
         { attrs: { fluid: "" } },
-        [_c("CollectionForm", _vm._b({}, "CollectionForm", _vm.props, false))],
+        [
+          _c(
+            "CollectionForm",
+            _vm._b({}, "CollectionForm", { source: "main" }, false)
+          )
+        ],
         1
       )
     ],
@@ -16080,7 +15997,12 @@ var render = function() {
   return _c(
     "v-container",
     { attrs: { fluid: "" } },
-    [_c("CollectionForm", _vm._b({}, "CollectionForm", _vm.props, false))],
+    [
+      _c(
+        "CollectionForm",
+        _vm._b({}, "CollectionForm", { source: "media" }, false)
+      )
+    ],
     1
   )
 }
@@ -16950,12 +16872,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "CollectionForm",
-        _vm._b(
-          {},
-          "CollectionForm",
-          { title: "Small Finds from Locus", source: "related" },
-          false
-        )
+        _vm._b({}, "CollectionForm", { source: "related" }, false)
       )
     ],
     1
@@ -16989,12 +16906,7 @@ var render = function() {
     [
       _c(
         "CollectionForm",
-        _vm._b(
-          {},
-          "CollectionForm",
-          { title: "Locus Media Gallery", source: "media" },
-          false
-        )
+        _vm._b({}, "CollectionForm", { source: "media" }, false)
       )
     ],
     1
@@ -17028,12 +16940,7 @@ var render = function() {
     [
       _c(
         "CollectionForm",
-        _vm._b(
-          {},
-          "CollectionForm",
-          { title: "Small Finds from Locus", source: "related" },
-          false
-        )
+        _vm._b({}, "CollectionForm", { source: "related" }, false)
       )
     ],
     1
@@ -17120,7 +17027,7 @@ var render = function() {
             ])
           },
           "CollectionForm",
-          _vm.props,
+          { source: "media" },
           false
         )
       )
@@ -19094,7 +19001,12 @@ var render = function() {
   return _c(
     "v-container",
     { attrs: { fluid: "" } },
-    [_c("CollectionForm", _vm._b({}, "CollectionForm", _vm.props, false))],
+    [
+      _c(
+        "CollectionForm",
+        _vm._b({}, "CollectionForm", { source: "media" }, false)
+      )
+    ],
     1
   )
 }
@@ -19356,7 +19268,12 @@ var render = function() {
   return _c(
     "v-container",
     { attrs: { fluid: "" } },
-    [_c("CollectionForm", _vm._b({}, "CollectionForm", _vm.props, false))],
+    [
+      _c(
+        "CollectionForm",
+        _vm._b({}, "CollectionForm", { source: "media" }, false)
+      )
+    ],
     1
   )
 }
@@ -20077,12 +19994,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "CollectionForm",
-        _vm._b(
-          {},
-          "CollectionForm",
-          { title: "Related AreasSeasons", source: "related" },
-          false
-        )
+        _vm._b({}, "CollectionForm", { source: "related" }, false)
       )
     ],
     1
@@ -20116,12 +20028,7 @@ var render = function() {
     [
       _c(
         "CollectionForm",
-        _vm._b(
-          {},
-          "CollectionForm",
-          { title: "Season Gallery", source: "media" },
-          false
-        )
+        _vm._b({}, "CollectionForm", { source: "media" }, false)
       )
     ],
     1
@@ -20155,12 +20062,7 @@ var render = function() {
     [
       _c(
         "CollectionForm",
-        _vm._b(
-          {},
-          "CollectionForm",
-          { title: "Something New!", source: "related" },
-          false
-        )
+        _vm._b({}, "CollectionForm", { source: "related" }, false)
       )
     ],
     1
@@ -94389,6 +94291,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           commit = _ref11.commit,
           dispatch = _ref11.dispatch;
       commit("item", null);
+      commit("collections", {
+        name: "main",
+        collection: []
+      });
+      commit("collections", {
+        name: "related",
+        collection: []
+      });
+      commit("collections", {
+        name: "media",
+        collection: []
+      });
       commit("itemDisplayOptionIndex", 0);
       commit("med/clear", null, {
         root: true

@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <CollectionForm v-bind="props"></CollectionForm>
+    <CollectionForm v-bind="{ source: 'media' }"></CollectionForm>
   </v-container>
 </template>
 
@@ -9,13 +9,5 @@ import CollectionForm from "../elements/CollectionForm";
 
 export default {
   components: { CollectionForm },
-  computed: {
-    props() {
-      return {
-        title: "Metal Media Gallery",
-        source: "media",
-      };
-    },
-  },
 };
 </script>

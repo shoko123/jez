@@ -1,7 +1,7 @@
 
 <template>
   <v-container fluid>
-    <CollectionForm v-bind="props">
+    <CollectionForm v-bind="{ source: 'media' }">
       <template v-slot:actions>
         <v-btn slot="activator" label="tag" @click="add()" class="primary--text mr-2">Add media</v-btn>
         <v-dialog v-model="dialogAddMedia" persistent>
@@ -29,12 +29,6 @@ export default {
   computed: {
     itemType() {
       return this.$store.getters["mgr/module"];
-    },
-    props() {
-      return {
-        title: `Media editor for ${this.itemType} ${this.$store.getters["mgr/item"].tag}`,
-        source: "media"
-      };
     },
 
     dialogAddMedia: {

@@ -1,9 +1,7 @@
 <template>
-<v-container fluid class="mt-1 pa-1 ma-0">
-      <CollectionForm
-        v-bind='{ title: "Locus Media Gallery", source: "media" }'
-      ></CollectionForm>
-</v-container>
+  <v-container fluid class="mt-1 pa-1 ma-0">
+    <CollectionForm v-bind="{ source: 'media' }"></CollectionForm>
+  </v-container>
 </template>
 
 <script>

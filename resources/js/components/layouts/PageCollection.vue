@@ -2,7 +2,7 @@
   <div>
     <SubMenuCollection />
     <v-container fluid>
-      <CollectionForm v-bind="props"></CollectionForm>
+      <CollectionForm  v-bind="{ source: 'main' }"></CollectionForm>
     </v-container>
   </div>
 </template>
@@ -15,15 +15,6 @@ export default {
   components: {
     SubMenuCollection,
     CollectionForm,
-  },
-
-  computed: {
-    props() {
-      return {
-        title: `${this.$store.getters["mgr/module"]} Query Results`,
-        source: "main",
-      };
-    },
   },
 };
 </script>

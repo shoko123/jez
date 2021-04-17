@@ -100,7 +100,13 @@ export default {
       let start = this.collection.chunkStartIndex,
         end = start + this.collection.chunk.length,
         length = this.collection.collection.length;
-      return `${this.collection.header} ${this.showPaginator ? ` [${start + 1}-${end}/${length}]` : ``}`;
+      if (this.$store.getters["mgr/status"].isMediaEdit) {
+        return `Media editor for ${this.$store.getters["mgr/module"]} ${this.$store.getters["mgr/item"].tag}`;
+      } else {
+        return `${this.collection.header} ${
+          this.showPaginator ? ` [${start + 1}-${end}/${length}]` : ``
+        }`;
+      }
     },
     allowChips() {
       return this.source !== "media";

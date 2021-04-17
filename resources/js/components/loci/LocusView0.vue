@@ -2,9 +2,7 @@
   <v-container fluid class="mt-1 pa-1 ma-0">
     <ItemCard />
     <v-divider inset vertical></v-divider>
-    <CollectionForm
-      v-bind='{ title: "Small Finds from Locus", source: "related" }'
-    ></CollectionForm>
+    <CollectionForm v-bind="{ source: 'related' }"></CollectionForm>
   </v-container>
 </template>
 

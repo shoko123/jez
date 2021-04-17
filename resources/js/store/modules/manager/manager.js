@@ -863,6 +863,9 @@ export default {
 
         clear({ state, getters, rootGetters, commit, dispatch }) {
             commit("item", null);
+            commit("collections", { name: "main", collection: []});
+            commit("collections", { name: "related", collection: []});
+            commit("collections", { name: "media", collection: []});
             commit("itemDisplayOptionIndex", 0);
             commit("med/clear", null, { root: true });
             commit('regs/clear', null, { root: true });

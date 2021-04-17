@@ -1,8 +1,6 @@
 <template>
-   <v-container fluid class="mt-1 pa-1 ma-0">
-    <CollectionForm
-      v-bind="{ title: 'Something New!', source: 'related' }"
-    ></CollectionForm>
+  <v-container fluid class="mt-1 pa-1 ma-0">
+    <CollectionForm v-bind="{ source: 'related' }"></CollectionForm>
   </v-container>
 </template>
 
@@ -10,7 +8,7 @@
 import CollectionForm from "../elements/CollectionForm";
 export default {
   components: {
-    CollectionForm
+    CollectionForm,
   },
 };
 </script>

@@ -1,23 +1,13 @@
 <template>
-  <CollectionForm v-bind="props">
-  </CollectionForm>
+  <CollectionForm v-bind="{ source: 'related' }"> </CollectionForm>
 </template>
 
 <script>
 import CollectionForm from "../elements/CollectionForm";
 export default {
   components: {
-    CollectionForm
+    CollectionForm,
   },
-
-  computed: {
-    props() {
-      return {
-        title: "Small Finds From Locus",
-        source: "related",
-      }
-    }
-  }
 };
 </script>
 
