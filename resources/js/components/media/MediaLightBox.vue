@@ -106,11 +106,13 @@ export default {
       let pages = Math.floor(lb.length / lb.itemsPerPage);
       let setToMax = false;
       let newPage = null;
+      /*
       console.log(
         `click(${isNext ? "next" : "prev"} pages: ${
           pages + 1
         } chunkLength ${chunkLength} index: ${this.lightBoxIndex}`
       ); //: " + JSON.stringify(lbx, null, 2));
+      */
       if (isNext) {
         if (this.lightBoxIndex === chunkLength - 1) {
           newPage = pages === lb.pageNo ? 1 : lb.pageNo + 2;

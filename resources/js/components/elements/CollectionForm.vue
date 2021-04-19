@@ -114,7 +114,6 @@ export default {
 
     showPaginator() {
       return (
-        this.displayOption !== "Table" &&
         this.collection.collection.length > this.itemsPerPage
       );
     },

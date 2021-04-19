@@ -2,17 +2,10 @@
   <v-data-table
     :headers="headers"
     :items="tableItems"
-    :items-per-page="5"
+    :items-per-page="50"
     class="elevation-1"
     hide-default-footer
-    ><template v-slot:top="{ pagination, options, updateOptions }">
-      <v-data-footer
-        :pagination="pagination"
-        :options="options"
-        @update:options="updateOptions"
-        items-per-page-text="$vuetify.dataTable.itemsPerPageText"
-      /> </template
-  ></v-data-table>
+    ></v-data-table>
 </template>
 
 <script>

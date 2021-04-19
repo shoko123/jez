@@ -50,7 +50,7 @@ export default {
         },
 
         moveToStep(state, destination) {
-            console.log("stepper.moveToStep()");
+            //console.log("stepper.moveToStep()");
             switch (destination) {
                 case "next":
                     state.step++;

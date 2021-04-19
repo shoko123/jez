@@ -112,7 +112,7 @@ export default {
                 state.lightBox.source = payload.source;
                 state.lightBox.page = payload.page;
                 state.lightBox.indexInChunk = payload.index;
-                console.log(`med/openLightBox(commit): ${JSON.stringify(payload, null, 2)}`);
+                //console.log(`med/openLightBox(commit): ${JSON.stringify(payload, null, 2)}`);
             }
 
         },

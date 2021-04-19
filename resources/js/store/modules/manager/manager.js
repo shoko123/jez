@@ -293,7 +293,7 @@ export default {
         },
 
         itemDisplayOptionIndex(state, payload) {
-            console.log("mgr/displayOptionIndex(): " + payload);
+            //console.log("mgr/itemDisplayOptionIndex(): " + payload);
             state.itemDisplayOptionIndex = payload;
         },
 
@@ -824,7 +824,7 @@ export default {
 
                         commit('chunk', res.data.collection);
                         let chunkLength = res.data.collection.length;
-                        console.log(`returning page(${payload.page}) items [${start + 1} - ${start + chunkLength}]`);
+                        //console.log(`returning page(${payload.page}) items [${start + 1} - ${start + chunkLength}]`);
                         return res;
                     })
 
