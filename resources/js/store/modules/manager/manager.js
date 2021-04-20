@@ -804,6 +804,7 @@ export default {
                 let ids = state.collections[payload.name].collection.slice(start, start + length).map(x => x.id);
                 let tags = state.collections[payload.name].collection.slice(start, start + length).map(x => x.tag);
 
+                commit("ready", { entity: "chunk", isReady: false });
                 let xhrRequest = {
                     endpoint: `${getters["status"].moduleApiBaseUrl}/${endpoint}`,
                     action: "post",
@@ -823,7 +824,8 @@ export default {
                         });
 
                         commit('chunk', res.data.collection);
-                        let chunkLength = res.data.collection.length;
+                        commit("ready", { entity: "chunk", isReady: true });
+                        //let chunkLength = res.data.collection.length;
                         //console.log(`returning page(${payload.page}) items [${start + 1} - ${start + chunkLength}]`);
                         return res;
                     })

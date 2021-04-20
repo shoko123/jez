@@ -21,6 +21,7 @@
               v-model="page"
               :length="pages"
               :total-visible="20"
+              :disabled="disable"
             ></v-pagination>
           </div>
         </template>
@@ -64,6 +65,9 @@ export default {
     },
     items() {
       return this.collection.chunk;
+    },
+    disable() {
+      return !this.$store.getters["mgr/ready"].chunk;
     },
 
     displayOption() {

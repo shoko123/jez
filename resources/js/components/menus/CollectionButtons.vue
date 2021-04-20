@@ -29,11 +29,13 @@
             class="primary--text"
           >
             <v-icon left class="primary--text">menu</v-icon>
-            {{ resultsText }}
           </v-btn>
         </template>
         <span>{{ resultsTipText }}</span>
       </v-tooltip>
+      <div v-if="showCounter">
+        <v-btn large outlined class="primary--text">{{ counterText }}</v-btn>
+      </div>
     </v-row>
   </v-container>
 </template>
@@ -62,10 +64,26 @@ export default {
     showCollectionLink() {
       return this.$store.getters["mgr/status"].isShow;
     },
+    showCounter() {
+      return this.$store.getters["mgr/status"].isShow;
+    },
+    counterText() {
+      let ready = this.$store.getters["mgr/ready"];
+      if (!this.showCounter || !ready.item || !ready.collection || !ready.chunk) {
+        return "[...]";
+      }
+      let m = this.$store.getters["mgr/collections"]("main");
+      let index = m.chunk.findIndex(
+        (x) => x.id === this.$store.getters["mgr/item"].id
+      );
+      let cnt = m.chunkStartIndex + index + 1;
+      let t = this.$store.getters["mgr/status"].count;
+      return `[${cnt}/${t}]`;
+    },
   },
   methods: {
     toWelcome() {
-       this.$store.dispatch("mgr/goToRoute", "welcome");
+      this.$store.dispatch("mgr/goToRoute", "welcome");
     },
 
     toCollection() {
