@@ -6,6 +6,8 @@ export default {
         status: {
             module: "Home",
             modulePrevious: null,
+            qParams: null,
+            qParamsPrevious: null,
             action: null,
             actionPrevious: null,
             id: null,
@@ -44,6 +46,12 @@ export default {
         idPrevious(state, payload) {
             state.status.idPrevious = payload;
         },
+        qParams(state, payload) {
+            state.status.qParams = payload;
+        },
+        qParamsPrevious(state, payload) {
+            state.status.qParamsPrevious = payload;
+        },
     },
     actions: {
 
@@ -53,23 +61,23 @@ export default {
                 let moduleBaseUrl = jezConfig.myModules[state.status.module].appBaseUrl;
                 switch (payload) {
                     case "home":
-                        return "/";
+                        return { path: "/" };
                     case "login":
-                        return "/auth/login";
+                        return { path: "/auth/login" };
                     case "welcome":
-                        return `${moduleBaseUrl}/welcome`;
+                        return { path: `${moduleBaseUrl}/welcome` };
                     case "update":
-                        return `${moduleBaseUrl}/${state.status.id}/update`;
+                        return { path: `${moduleBaseUrl}/${state.status.id}/update` };
                     case "media":
-                        return `${moduleBaseUrl}/${state.status.id}/media`;
+                        return { path: `${moduleBaseUrl}/${state.status.id}/media` };
                     case "tags":
-                        return `${moduleBaseUrl}/${state.status.id}/tags`;
-                    case "list":
-                        return `${moduleBaseUrl}/list`;
+                        return { path: `${moduleBaseUrl}/${state.status.id}/tags` };
+                    //case "list":
+                    //   return `${moduleBaseUrl}/list`;
                     case "create":
-                        return `${moduleBaseUrl}/create`;
+                        return { path: `${moduleBaseUrl}/create` };
                     case "filter":
-                        return `${moduleBaseUrl}/filter`;
+                        return { path: `${moduleBaseUrl}/filter` };
                     default:
                         console.log(`mgr.routes.goTo() illegal param: ${payload}`);
                         return null;
@@ -83,12 +91,14 @@ export default {
                 switch (payload.action) {
                     case "welcome":
                     case "filter":
+                        return { path: `${moduleBaseUrl}/${payload.action}` };
                     case "list":
+                        return { path: `${moduleBaseUrl}/list`, params: payload.params };
                     case "create":
-                        return `${moduleBaseUrl}/${payload.action}`;
+                        return { path: `${moduleBaseUrl}/${payload.action}` };
                     case "show":
                     case "update":
-                        return `${moduleBaseUrl}/${payload.id}/${payload.action}`;
+                        return { path: `${moduleBaseUrl}/${payload.id}/${payload.action}` };
                     default:
                         console.log(`mgr.routes.goTo() illegal param: ${JSON.stringify(payload, null, 2)}`);
                         return null;
@@ -96,40 +106,52 @@ export default {
             }
 
             //execution starts here
-            //console.log(`mgr.routes.goTo() payload: ${JSON.stringify(payload, null, 2)}`);
+            console.log(`mgr.routes.goTo() payload: ${JSON.stringify(payload, null, 2)}`);
 
-            let path = null;
+            let newRoute = null;
             switch (typeof payload) {
                 case "string":
                     if (payload === "back") {
                         return state.router.go(-1);
                     }
-                    path = goToString();
+                    newRoute = goToString();
                     break;
 
                 case "object":
-                    path = goToObject();
+                    newRoute = goToObject();
                     break;
                 default:
                     console.log(`mgr.routes.goTo() illegal param: ${JSON.stringify(payload, null, 2)}`);
             }
-            if (path !== null) {
-                //console.log(`mgr.routes.push() path: ${path}`);
-                state.router.push({ path: path });
+            if (newRoute !== null) {
+                console.log(`mgr.routes.push() newRoute: ${JSON.stringify(newRoute, null, 2)}`);
+                if (newRoute.hasOwnProperty("params")) {
+                    state.router.push({ path: newRoute.path, query: newRoute.params/*JSON.stringify(newRoute.params) */});//JSON.stringify(newRoute.params)
+                } else {
+                    state.router.push({ path: newRoute.path });
+                }
             } else {
-                console.log(`mgr.routes.push() error in parsing path: ${path}`);
+                console.log(`mgr.routes.push() error in parsing path: ${newRoute.path}`);
             }
         },
 
         parseRoute({ state, commit }, payload) {
-            //TODO this needs a lot of work to make more reasonable, but it works for now.
+            //TODO this needs a lot of work to make it more reasonable. However, it works for now.
 
             let sections = payload.to.path.split('/');
-
+            let action = sections[sections.length - 1];
             commit("modulePrevious", state.status.module);
             commit("idPrevious", state.status.id);
             commit("actionPrevious", state.status.action);
+            if (action === "list") {
+                commit("qParamsPrevious", state.status.qParams);
+                //let parsedQuery = payload.to.query;
+                //parsedQuery.lookups = JSON.parse(parsedQuery.lookups);
+                //parsedQuery.tagParams = JSON.parse(parsedQuery.tagParams);
+                //commit("qParams", parsedQuery);
+                commit("qParams", payload.to.query);
 
+            }
             //console.log('parsePaths.to: ' + payload.to.path);
 
             switch (sections[1]) {
@@ -142,11 +164,11 @@ export default {
 
                 case 'auth':
                     commit("module", 'Auth');
-                    commit("action", sections[sections.length - 1]);
+                    commit("action", action);
                     break;
 
                 case 'dig-modules':
-                    commit("action", sections[sections.length - 1]);
+                    commit("action", action);
                     commit("id", payload.to.params ? payload.to.params.id : null);
 
                     //console.log('parsePaths.setAction: ' + state.status.action);
@@ -186,7 +208,7 @@ export default {
                     break;
                 case 'about':
                     commit("module", 'About');
-                    commit("action", sections[sections.length - 1]);
+                    commit("action", action);
                     commit("id", payload.to.params ? payload.to.params.id : null);
                     break
                 default:

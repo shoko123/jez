@@ -78,8 +78,7 @@ export default {
         },
 
         visibleFilters(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isFilterable ||
-                !rootGetters["mgr/status"].isFilter) { return [] }
+            if (!rootGetters["mgr/status"].isFilterable) { return [] }
             return getters["all"].filter(x => {
                 switch (x.group_type) {
                     case "Registration":
@@ -208,9 +207,86 @@ export default {
                 });
         },
 
+        categoriesFilter(state, getters) {
+            return [...new Set(getters[`visibleFilters`].map(x => x.group_category))]
+                .map(y => {
+                    return {
+                        name: y,
+                        selectedCount: getters[`selectedFilters`].filter(x => x.group_category === y).reduce(
+                            (accumulator, type) => accumulator + type.count,
+                            0
+                        )
+                    }
+                });
+        },
+         categoriesNewParams(state, getters)  {
+            return [...new Set(getters[`visibleNewParams`].map(x => x.group_category))]
+                .map(y => {
+                    return {
+                        name: y,
+                        selectedCount: getters[`selectedNewParams`].filter(x => x.group_category === y).reduce(
+                            (accumulator, type) => accumulator + type.count,
+                            0
+                        )
+                    }
+                });
+        },
+
         groupsForCategory: (state, getters) => (category, isFilter) => {
             let name = isFilter ? "visibleFilters" : "visibleNewParams";
             return getters[name].filter(x => x.group_category === category);
+        },
+        getQueryString(state, getters, rootState, rootGetters) {
+
+            let areas = [];
+            let seasons = [];
+            let media = [];
+            let scopes = [];
+            let registration_categories = [];
+            let tagParams = [];
+            let lookups = [];
+
+            getters["selectedFilters"].forEach((group => {
+                switch (group.group_type) {
+                    case "Registration":
+                        switch (group.name) {
+                            case "Areas":
+                                areas = group.params.map(x => x.name);
+                                break;
+                            case "Seasons":
+                                seasons = group.params.map(x => parseInt(x.name, 10) - 2000);
+                                break;
+                            case "Media":
+                                media = group.params.map(x => x.name);
+                                break;
+                            case "registration_categories":
+                                registration_categories = group.params.map(x => x.name);
+                                break;
+                            case "scopes":
+                                scopes = group.params.map(x => x.id);
+                                break;
+                        }
+                        break;
+                    case "Lookup":
+                        //format to objects with column_name and id array.
+                        lookups.push({ column_name: group.column_name, ids: group.params.map(param => param.id) });
+                        break;
+                    case "Tag":
+                        //format tagParams according to Spatie interface (types with tags).
+                        tagParams.push({ type: group.str_id, tags: group.params.map(tag => { return { id: tag.id, name: tag.name }; }) });
+                        break;
+                }
+
+            }));
+            return {
+                lookups: JSON.stringify(lookups),
+                tagParams: JSON.stringify(tagParams),
+                areas,
+                seasons,
+                media,
+                registration_categories,
+                scopes,
+            };
         },
     },
     mutations: {
@@ -226,6 +302,7 @@ export default {
             //state.params = payload;
         },
         clearGroupsAndParams(state, payload) {
+            console.log(`aux/clearGroupsAndParams`);//(groups) ${JSON.stringify(payload, null, 2)}`);
             state.groups = Object.assign({}, {});
             state.params = Object.assign({}, {});
         },

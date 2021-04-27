@@ -109,7 +109,7 @@ const router = new Router({
                 {
                     path: 'welcome',
                     component: PageWelcome
-                },           
+                },
                 {
                     path: 'map',
                     component: PageMap
@@ -118,11 +118,11 @@ const router = new Router({
                     path: ':id/show',
                     props: true,
                     component: PageAbout
-                },              
+                },
                 {
                     path: '*',
                     component: UndefinedRoute,
-                },               
+                },
             ]
         },
         {
@@ -140,8 +140,11 @@ router.beforeEach((to, from, next) => {
     } else if (to.path == "/auth/login" && store.getters["aut/isLoggedIn"]) {
         next("/");
     } else {
-        store.dispatch("mgr/routeChanged", { to, from });
-        next();
+        store.dispatch("mgr/routeChanged", { to, from })
+            .then((res) => {
+                next();
+            })
+        //next();
     }
 });
 

@@ -61,15 +61,19 @@ export default {
     header() {
       return `${this.$store.getters["mgr/module"]} Filter Selector`;
     },
+    ready() {
+      return this.$store.getters["mgr/ready"].collection;
+    },
 
     categories() {
-      return this.$store.getters["aux/categories"](true).map((x) => ({
+      return this.$store.getters["aux/categoriesFilter"].map((x) => ({
         ...x,
         text: `${x.name}${x.selectedCount > 0 ? `(${x.selectedCount})` : ``}`,
       }));
     },
 
     groups() {
+      //console.log(`FilterSelect categories: ${JSON.stringify(this.categories, null, 2)} \nsafeIndex: ${this.safeCategoryTabIndex}`);//(groups) ${JSON.stringify(payload, null, 2)}`);
       return this.$store.getters["aux/groupsForCategory"](
         this.categories[this.safeCategoryTabIndex].name,
         true

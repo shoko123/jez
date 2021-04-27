@@ -69,7 +69,12 @@ export default {
     },
     counterText() {
       let ready = this.$store.getters["mgr/ready"];
-      if (!this.showCounter || !ready.item || !ready.collection || !ready.chunk) {
+      if (
+        !this.showCounter ||
+        !ready.item ||
+        !ready.collection ||
+        !ready.chunk
+      ) {
         return "[...]";
       }
       let m = this.$store.getters["mgr/collections"]("main");
@@ -87,7 +92,14 @@ export default {
     },
 
     toCollection() {
-      this.$store.dispatch("mgr/goToRoute", "list");
+
+      this.$store.dispatch("mgr/goToRoute", {
+        module: this.$store.getters["mgr/module"],
+        action: "list",
+        params: {seasons: [12,13,14], areas: ["S"]},
+      });
+
+      //this.$store.dispatch("mgr/goToRoute", "list");
     },
   },
 };

@@ -331,36 +331,38 @@ export default {
     },
     actions: {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
-            //console.log('store.manager.action.beforeRouteChanged to: ' + payload.to.path + '\nname: ' + payload.to.name + '\nparams: ' + JSON.stringify(payload.to.params, null, 2));
+            console.log(`mgr/routeChanged to: ${payload.to.path} \nparams: ${JSON.stringify(payload.to.params, null, 2)} \nquery: ${JSON.stringify(payload.to.query, null, 2)}`);
             dispatch('mgr/routes/parseRoute', payload, { root: true });
-            dispatch("handleRouteChange", null);
+            return dispatch("handleRouteChange", null);
         },
 
         handleRouteChange({ state, getters, rootGetters, commit, dispatch }) {
 
             function sameModule() {
-                return (routerStatus.module == routerStatus.modulePrevious)
+                return (routerStatus.module === routerStatus.modulePrevious)
             }
 
-            function updateAppStatus() {
+            function loadThings() {
                 if (getters["module"] === "Home") { return; }
+                let empty = state.collections["main"].collection.length === 0;
                 if (getters["module"] === "About") {
                     //console.log('dispatcher About...');
 
-                    if (state.collections["main"].collection.length === 0) {
-                        dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: false }, { root: true });
+                    if (empty) {
+                        return dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: false }, { root: true });
                     }
                     if (routerStatus.action === "show") {
-                        dispatch("loadItem", routerStatus.id);
+                        return dispatch("loadItem", routerStatus.id);
                     }
                 }
                 else if (getters["status"].isDigModule) {
                     switch (routerStatus.action) {
                         case "list":
-                            //console.log('mgr.routeChanged.list ');// + JSON.stringify(res, null, 2));
+                            console.log('mgr.loadThings.list ');// + JSON.stringify(res, null, 2));
                             //if same module, retrieve collection if not already populated
-                            if (!sameModule()) {
-                                dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: true }, { root: true });
+                            if (!sameModule() || empty) {
+                                return dispatch("query", { params: rootGetters["mgr/routes/status"].qParams, spinner: true, gotoCollection: true });
+                                //return dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: true }, { root: true });
                             } else if (state.isDirtyChunk && getters["ready"].item && getters["ready"].collection) {
                                 console.log('isDirty - calling page() ');
                                 dispatch("page", { name: "main", page: state.collections["main"].pageNo + 1, forceLoad: true });
@@ -372,29 +374,29 @@ export default {
                             //console.log('mgr.dispatch(show)');// + JSON.stringify(res, null, 2));
                             if (sameModule()) {
                                 //if no collection loaded yet, retrieve new module's collection and then item
-                                if (state.collections["main"].collection.length === 0) {
+                                if (empty) {
                                     //if same module, but collection empty, retrieve collection and then item
-                                    dispatch("aux/queryCollection", { clear: false, spinner: true, gotoCollection: false }, { root: true })
+                                    return dispatch("aux/queryCollection", { clear: false, spinner: true, gotoCollection: false }, { root: true })
                                         .then((res) => {
-                                            dispatch("loadItem", routerStatus.id);
-                                            return res;
+                                            return dispatch("loadItem", routerStatus.id);
+                                            //return res;
                                         })
                                 } else {
                                     if (routerStatus.idPrevious !== routerStatus.id ||
                                         routerStatus.actionPrevious === "update" ||
                                         routerStatus.actionPrevious === "tags") {
                                         //collection loaded - load item only
-                                        dispatch("loadItem", routerStatus.id);
+                                        return dispatch("loadItem", routerStatus.id);
                                     } else {
                                         console.log("mgr - same item id - not loading")
                                     }
                                 }
                             } else {
                                 //if not same module, clear old module and retrieve new module's collection and then item 
-                                dispatch("loadItem", routerStatus.id)
+                                return dispatch("loadItem", routerStatus.id)
                                     .then((res) => {
                                         //console.log('mgr.routeChanged.show after loading item. loading collection...');
-                                        dispatch("aux/queryCollection", { clear: true, spinner: false, gotoCollection: false }, { root: true });
+                                        return dispatch("aux/queryCollection", { clear: true, spinner: false, gotoCollection: false }, { root: true });
                                         return res;
                                     })
                             }
@@ -432,11 +434,82 @@ export default {
                 commit("ready", { entity: "item", isReady: false });
                 dispatch('initializeModule')
                     .then(res => {
-                        updateAppStatus();
+                        loadThings();
                     });
             } else {
-                updateAppStatus();
+                loadThings();
             }
+        },
+
+        query({ state, getters, rootGetters, commit, dispatch }, payload) {
+            commit("ready", { entity: "collection", isReady: false });
+            console.log(`mgr.query. endpoint: ${getters["status"].moduleApiBaseUrl}`);
+            //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
+            let action = (getters["module"] === "About") ? "get" : "post";
+            let endpoint;
+            switch (getters["module"]) {
+                case "Locus":
+                case "Pottery":
+                case "Stone":
+                case "Lithic":
+                case "Glass":
+                case "Metal":
+                    endpoint = `${getters["status"].moduleApiBaseUrl}/all`;
+                    break;
+                default:
+                    endpoint = getters["status"].moduleApiBaseUrl;
+
+            }
+            payload.params.lookups = JSON.parse(payload.params.lookups);
+            payload.params.tagParams = JSON.parse(payload.params.tagParams);
+
+            console.log(`params: ${JSON.stringify(payload.params, null, 2)}`);
+            let xhrRequest = {
+                endpoint: endpoint,
+                action: action,
+                data: payload.params,//rootGetters["aux/queryParams"],
+                spinner: payload.spinner,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: "loading collection", onSuccess: null, onFailure: "failed loading collection", },
+            };
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    if (res.data.collection.length < 1) {
+                        commit('snackbar/displaySnackbar', {
+                            isSuccess: false,
+                            message: "Query resulted with no matches, Please edit query and re-submit"
+                        }, { root: true });
+                        return res;
+                    }
+
+                    console.log(`mgr.collection loaded (${getters["module"]})`);
+                    commit('collections', { name: "main", collection: res.data.collection });
+                    commit("ready", { entity: "collection", isReady: true });
+
+                    if (getters["ready"]["item"]) {
+                        //set page according to item's index
+                        let c = state.collections["main"].collection;
+                        let index = c.findIndex(x => x.id == getters["item"].id);
+                        let page = Math.floor((index + 1) / state.collections.main.itemsPerPage) + 1;
+                        dispatch("page", { name: "main", page: page, forceLoad: true });
+                    } else {
+                        dispatch("page", { name: "main", page: 1, forceLoad: true });
+                    }
+                    commit('dirtyChunk', false);
+                    //console.log(`After return from query`);
+
+                    //redirect to 'list/collection' path
+                    if (payload.gotoCollection/*getters["status"].action == "filter"*/) {
+                        //dispatch('goToRoute', "list");
+                    }
+                    return res;
+                })
+                .catch(err => {
+                    console.log('mgr Failed to load collection. err: ' + err);
+                    return err;
+                })
         },
 
         queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {

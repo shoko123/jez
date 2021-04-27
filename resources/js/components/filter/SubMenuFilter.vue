@@ -22,6 +22,14 @@ export default {
   },
   methods: {
     submit() {
+      this.$store.dispatch("mgr/clear");
+      let qp = this.$store.getters["aux/getQueryString"];
+      this.$store.dispatch("mgr/goToRoute", {
+        module: this.$store.getters["mgr/module"],
+        action: "list",
+        params: qp,
+      });
+      return;
       this.$store.dispatch("aux/queryCollection", {
         clear: false,
         spinner: true,

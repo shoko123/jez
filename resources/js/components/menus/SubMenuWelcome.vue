@@ -40,6 +40,15 @@ export default {
     },
 
     showAll() {
+
+       this.$store.dispatch("mgr/goToRoute", {
+        module: this.$store.getters["mgr/module"],
+        action: "list",
+        params: JSON.stringify({seasons: [12,13,14], areas: ["S"]}),
+      });
+      return;
+
+      
       this.$store.dispatch("aux/queryCollection", {
         clear: true,
         spinner: true,
