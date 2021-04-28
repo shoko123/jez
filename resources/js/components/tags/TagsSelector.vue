@@ -1,11 +1,13 @@
 <template>
-  <v-card class="elevation-12">
+  <v-card v-if="showSelector" class="elevation-12">
     <v-card-title class="grey py-0 mb-4">{{ header }}</v-card-title>
     <v-card-text>
       <v-btn color="orange" @click="prevClicked" :disabled="overallFirst"
         >prev</v-btn
       >
-      <v-btn :color="nextButtonColor" @click="nextClicked">{{ nextButtonText }}</v-btn>
+      <v-btn :color="nextButtonColor" @click="nextClicked">{{
+        nextButtonText
+      }}</v-btn>
       <v-divider vertical></v-divider>
       <v-btn v-if="!overallLast" class="ml-4" color="green" @click="submit"
         >Submit</v-btn
@@ -59,6 +61,10 @@ export default {
   },
 
   computed: {
+    showSelector() {
+        return this.$store.getters["mgr/status"].isTags;
+    },
+
     header() {
       return `(${this.$store.getters["mgr/module"]}) ${this.$store.getters["mgr/item"].tag} Tag selector`;
     },
@@ -115,7 +121,7 @@ export default {
     nextButtonText() {
       return this.overallLast ? "submit" : "next";
     },
-      nextButtonColor() {
+    nextButtonColor() {
       return this.overallLast ? "green" : "orange";
     },
   },

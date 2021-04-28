@@ -39,9 +39,9 @@ INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `gro
 ('Stone:Type-Active','Stone','Typology',9,5,'Active Subtype',1, '[["L>base_type_id>3"]]'),
 
 ('Stone:Vessel-Part','Stone','Typology',10,1,'Vessel Part',1 , '[["L>base_type_id>5"]]'),
-('Stone:Vessel-Base','Stone','Typology',10,2,'Vessel Base',1,'[["T>Stone:Vessel-Part>101"]]'),
-('Stone:Vessel-Wall','Stone','Typology',10,3,'Vessel Wall',1,'[["T>Stone:Vessel-Part>102"]]'),
-('Stone:Vessel-Rim','Stone','Typology',10,4,'Vessel Rim',1,'[["T>Stone:Vessel-Part>103"]]'),
+('Stone:Vessel-Base','Stone','Typology',10,2,'Vessel Base',1,'[["T>101"]]'),
+('Stone:Vessel-Wall','Stone','Typology',10,3,'Vessel Wall',1,'[["T>102"]]'),
+('Stone:Vessel-Rim','Stone','Typology',10,4,'Vessel Rim',1,'[["T>103"]]'),
 
 ('Stone:Type-Non-Processor','Stone','Typology',10,6,'Non-Processor Subtype',1,'[["L>base_type_id>6"]]');
 

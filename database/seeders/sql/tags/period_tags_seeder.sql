@@ -3,28 +3,28 @@ INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `gro
 ('Periods:Top-Level','Period','Period',2,1,'Periods (Top-Level)',1,NULL),
 
 ('Periods:Neolithic','Period','Period',2,3,'Neolithic Subperiods',1,
-'[["T>Periods:Top-Level>10300"]]'),
+'[["T>10300"]]'),
 
 ('Periods:Bronze','Period','Period',2,6,'Bronze Subperiods',1,
-'[["T>Periods:Top-Level>10500"]]'),
+'[["T>10500"]]'),
 
 ('Periods:Iron','Period','Period',2,7,'Iron Subperiods',1,
-'[["T>Periods:Top-Level>10600"]]'),
+'[["T>10600"]]'),
 
 ('Periods:Hellenistic','Period','Period',2,9,'Hellenistic Subperiods',1,
-'[["T>Periods:Top-Level>10800"]]'),
+'[["T>10800"]]'),
 
 ('Periods:Roman','Period','Period',2,10,'Roman Subperiods',1,
-'[["T>Periods:Top-Level>10900"]]'),
+'[["T>10900"]]'),
 
 ('Periods:Early-Islamic','Period','Period',2,12,'Early-Islamic Subperiods',1,
-'[["T>Periods:Top-Level>11100"]]'),
+'[["T>11100"]]'),
 
 ('Periods:Medieval','Period','Period',2,15,'Medieval Subperiods',1,
-'[["T>Periods:Top-Level>11200"]]'),
+'[["T>11200"]]'),
 
 ('Periods:Modern','Period','Period',2,20,'Modern Subperiods',1,
-'[["T>Periods:Top-Level>11400"]]');
+'[["T>11400"]]');
 
 
 

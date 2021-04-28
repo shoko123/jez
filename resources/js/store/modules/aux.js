@@ -307,7 +307,7 @@ export default {
             state.params = Object.assign({}, {});
         },
         paramAffectsAddTagGroups(state, payload) {
-            //console.log(`paramAffectsAddTagGroups()\nkey: ${payload.paramKey}\naffects: ${JSON.stringify(payload.affects, null, 2)}`);
+            console.log(`paramAffectsAddTagGroups()\nkey: ${payload.paramKey}\naffects: ${JSON.stringify(payload.affects, null, 2)}`);
             state.params[payload.paramKey].affectsTagGroups.push(payload.affects);
         },
 
@@ -352,7 +352,7 @@ export default {
             commit("clearParams", false);//clear itemParams (not filters)
             payload.forEach(x => {
                 commit("selectParam", {
-                    key: "T>" + x.type + ">" + x.id,
+                    key: `T>${x.id}`,
                     source: "itemParams",
                     value: true
                 });
@@ -563,11 +563,11 @@ export default {
 
             //tags
             const tagParamSchema = new schema.Entity('tagParams', {}, {
-                idAttribute: (value, parent, key) => `T>${parent.str_id}>${value.id}`,
+                idAttribute: (value, parent, key) => `T>${value.id}`,
                 processStrategy: (value, parent, key) => {
                     return {
                         ...value,
-                        key: `T>${parent.str_id}>${value.id}`,
+                        key: `T>${value.id}`,
                         groupKey: `T>${parent.str_id}`,
                         selectedIn: { filters: false, itemParams: false, newParams: false },
                         affectsTagGroups: [],
@@ -600,6 +600,7 @@ export default {
             //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
             commit("clearGroupsAndParams", null);
             commit("groupKeys", normalizedData.result);
+            //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
 
             commit("groupsAddProperties", normalizedData.entities.registrationGroups);
             commit("groupsAddProperties", normalizedData.entities.lookupGroups);
@@ -612,7 +613,7 @@ export default {
             //make params aware of their dependant groups
             getters["all"].forEach(x => {
                 if (x.group_type === "Tag" && x.dependency !== null) {
-                    //console.log(`PUSH dependencies key: ${x.key} dependency: ${JSON.stringify(x.dependency, null, 2)}`);
+                    console.log(`PUSH dependencies key: ${x.key} dependency: ${JSON.stringify(x.dependency, null, 2)}`);
                     x.dependency.forEach(y => {
                         y.forEach(z => {
                             commit("paramAffectsAddTagGroups", { paramKey: z, affects: [x.key] });
