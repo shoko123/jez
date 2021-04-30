@@ -361,7 +361,9 @@ export default {
                             console.log('mgr.loadThings.list ');// + JSON.stringify(res, null, 2));
                             //if same module, retrieve collection if not already populated
                             if (!sameModule() || empty) {
-                                return dispatch("query", { params: rootGetters["mgr/routes/status"].qParams, spinner: true, gotoCollection: true });
+                                let params = rootGetters["aux/xhrFiltersFromNewQueryString"];
+                                  console.log(`params: ${JSON.stringify(params, null, 2)}`);
+                                return dispatch("query", { params: params, spinner: true, gotoCollection: true });
                                 //return dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: true }, { root: true });
                             } else if (state.isDirtyChunk && getters["ready"].item && getters["ready"].collection) {
                                 console.log('isDirty - calling page() ');
@@ -460,8 +462,8 @@ export default {
                     endpoint = getters["status"].moduleApiBaseUrl;
 
             }
-            payload.params.lookups = JSON.parse(payload.params.lookups);
-            payload.params.tagParams = JSON.parse(payload.params.tagParams);
+            //payload.params.lookups = JSON.parse(payload.params.lookups);
+            //payload.params.tagParams = JSON.parse(payload.params.tagParams);
 
             console.log(`params: ${JSON.stringify(payload.params, null, 2)}`);
             let xhrRequest = {

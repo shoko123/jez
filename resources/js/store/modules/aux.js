@@ -219,7 +219,7 @@ export default {
                     }
                 });
         },
-         categoriesNewParams(state, getters)  {
+        categoriesNewParams(state, getters) {
             return [...new Set(getters[`visibleNewParams`].map(x => x.group_category))]
                 .map(y => {
                     return {
@@ -236,14 +236,14 @@ export default {
             let name = isFilter ? "visibleFilters" : "visibleNewParams";
             return getters[name].filter(x => x.group_category === category);
         },
-        getQueryString(state, getters, rootState, rootGetters) {
 
-            let areas = [];
-            let seasons = [];
-            let media = [];
-            let scopes = [];
-            let registration_categories = [];
-            let tagParams = [];
+        filtersToQueryString(state, getters) {
+            let areas = "";
+            let seasons = "";
+            let media = "";
+            let scopes = "";
+            let registration_categories = "";
+            let tags = "";
             let lookups = [];
 
             getters["selectedFilters"].forEach((group => {
@@ -251,43 +251,171 @@ export default {
                     case "Registration":
                         switch (group.name) {
                             case "Areas":
-                                areas = group.params.map(x => x.name);
+                                group.params.forEach(x => {
+                                    areas += x.name + ",";
+                                })
                                 break;
                             case "Seasons":
-                                seasons = group.params.map(x => parseInt(x.name, 10) - 2000);
+                                group.params.forEach(x => {
+                                    seasons += (parseInt(x.name, 10) - 2000) + ",";
+                                })
+                                //seasons += parseInt(group.params.name, 10) - 2000 + ",";
                                 break;
                             case "Media":
-                                media = group.params.map(x => x.name);
+                                group.params.forEach(x => {
+                                    media += x.name + ",";
+                                })
+
                                 break;
                             case "registration_categories":
-                                registration_categories = group.params.map(x => x.name);
+                                group.params.forEach(x => {
+                                    registration_categories += x.name + ",";
+                                })
+                                //registration_categories += group.params.name + ",";
                                 break;
                             case "scopes":
-                                scopes = group.params.map(x => x.id);
+                                group.params.forEach(x => {
+                                    scopes += x.id + ",";
+                                })
+                                //scopes += group.params.id + ",";
                                 break;
                         }
                         break;
                     case "Lookup":
                         //format to objects with column_name and id array.
-                        lookups.push({ column_name: group.column_name, ids: group.params.map(param => param.id) });
+                        let ids = "";
+                        group.params.forEach(x => {
+                            ids += x.id + ",";
+                        })
+                        lookups.push({ column_name: group.column_name, ids: ids });
                         break;
                     case "Tag":
                         //format tagParams according to Spatie interface (types with tags).
-                        tagParams.push({ type: group.str_id, tags: group.params.map(tag => { return { id: tag.id, name: tag.name }; }) });
+                        group.params.forEach(x => {
+                            tags += x.id + ",";
+                        })
                         break;
                 }
 
             }));
-            return {
-                lookups: JSON.stringify(lookups),
-                tagParams: JSON.stringify(tagParams),
-                areas,
-                seasons,
-                media,
-                registration_categories,
-                scopes,
-            };
+            let qs = {};
+            if (areas.length > 0) {
+                qs["areas"] = areas.substring(0, areas.length - 1);
+            }
+            if (seasons.length > 0) {
+                qs["seasons"] = seasons.substring(0, seasons.length - 1);
+            }
+            if (registration_categories.length > 0) {
+                qs["registration_categories"] = registration_categories.substring(0, registration_categories.length - 1);
+            }
+            if (scopes.length > 0) {
+                qs["scopes"] = scopes.substring(0, scopes.length - 1);
+            }
+            if (media.length > 0) {
+                qs["media"] = media.substring(0, media.length - 1);
+            }
+            if (tags.length > 0) {
+                qs["tags"] = tags.substring(0, tags.length - 1);
+            }
+            if (lookups.length > 0) {
+                lookups.forEach(x => {
+                    qs[x.column_name] = x.ids.substring(0, x.ids.length - 1);
+                });
+            }
+            return qs
         },
+
+        xhrFiltersFromNewQueryString(state, getters, rootState, rootGetters) {
+            let qs = rootGetters["mgr/routes/status"].newQueryString;
+            let areas = [];
+            let seasons = [];
+
+            let registration_categories = [];
+            let scopes = [];
+            let media = [];
+            let tags = [];
+            let lookups = [];
+            let ids = [];
+            for (const prop in qs) {
+                console.log(`xhrFiltersFromNewQueryString BAD group: ${prop}`);
+                ids = qs[prop].split(",")
+                switch (prop) {
+
+                    case "areas":
+
+                        ids.forEach(x => {
+                            areas.push(x);
+                        });
+
+                        break;
+                    case "seasons":
+                        ids.forEach(x => {
+                            seasons.push(parseInt(x, 10));
+                        });
+                        //seasons.push(x => parseInt(x.name, 10) - 2000);
+                        break;
+                    case "media":
+                        ids.forEach(x => {
+                            media.push(x);
+                        });
+                        //media = group.params.map(x => x.name);
+                        break;
+                    case "registration_categories":
+                        ids.forEach(x => {
+                            registration_categories.push(x);
+                        });
+                        registration_categories = group.params.map(x => x.name);
+                        break;
+                    case "scopes":
+                        ids.forEach(x => {
+                            scopes.push(x);
+                        });
+                        //scopes = group.params.map(x => x.id);
+                        break;
+
+                    case "lookup":
+                        //format to objects with column_name and id array.
+                        //lookups.push({ column_name: group.column_name, ids: group.params.map(param => param.id) });
+                        break;
+                    case "tags":
+                        ids.forEach(x => {
+                            tags.push(parseInt(x, 10));
+                        });
+                        break;
+                    default:
+                        console.log(`aux/xhrFiltersFromNewQueryString BAD group: ${prop}`);//(groups) ${JSON.stringify(payload, null, 2)}`);
+                }
+
+            };
+            let xhrParams = {};
+            if (areas.length > 0) {
+                xhrParams["areas"] = areas;
+            }
+            if (seasons.length > 0) {
+                xhrParams["seasons"] = seasons;
+            }
+            if (registration_categories.length > 0) {
+                xhrParams["registration_categories"] = registration_categories;
+            }
+            if (scopes.length > 0) {
+                xhrParams["scopes"] = scopes;
+            }
+            if (media.length > 0) {
+                xhrParams["media"] = media;
+            }
+            if (tags.length > 0) {
+                xhrParams["tags"] = tags;
+            }
+            if (lookups.length > 0) {
+                lookups.forEach(x => {
+                    xhrParams[x.column_name] = x.ids;
+                });
+            }
+            return xhrParams;
+        },
+
+
+
     },
     mutations: {
         groupKeys(state, payload) {
@@ -800,4 +928,7 @@ export default {
                 });
         },
     },
+    queryStringToFilters({ state, getters, rootGetters, commit, dispatch }, payload) {
+
+    }
 }

@@ -6,12 +6,14 @@ export default {
         status: {
             module: "Home",
             modulePrevious: null,
-            qParams: null,
-            qParamsPrevious: null,
+            queryString: null,
+            queryStringPrevious: null,
             action: null,
             actionPrevious: null,
             id: null,
             idPrevious: null,
+            newId: null,
+            newQueryString: null,
         },
     },
     getters: {
@@ -46,11 +48,17 @@ export default {
         idPrevious(state, payload) {
             state.status.idPrevious = payload;
         },
-        qParams(state, payload) {
-            state.status.qParams = payload;
+        queryString(state, payload) {
+            state.status.queryString = payload;
         },
-        qParamsPrevious(state, payload) {
-            state.status.qParamsPrevious = payload;
+        queryStringPrevious(state, payload) {
+            state.status.queryStringPrevious = payload;
+        },
+        newId(state, payload) {
+            state.status.newId = payload;
+        },
+        newQueryString(state, payload) {
+            state.status.newQueryString = payload;
         },
     },
     actions: {
@@ -144,12 +152,22 @@ export default {
             commit("idPrevious", state.status.id);
             commit("actionPrevious", state.status.action);
             if (action === "list") {
-                commit("qParamsPrevious", state.status.qParams);
+                if(state.status.queryString !== payload.to.query) {
+                    commit("newQueryString", payload.to.query);
+                    console.log(`ParseRoute.list Change in queryString checking validity:  ${payload.to.query}`);
+                    if(true){
+
+                    }else {
+
+                    }
+                }
+                commit("queryStringPrevious", state.status.queryString);
+
                 //let parsedQuery = payload.to.query;
                 //parsedQuery.lookups = JSON.parse(parsedQuery.lookups);
                 //parsedQuery.tagParams = JSON.parse(parsedQuery.tagParams);
-                //commit("qParams", parsedQuery);
-                commit("qParams", payload.to.query);
+                //commit("queryString", parsedQuery);
+                commit("queryString", payload.to.query);
 
             }
             //console.log('parsePaths.to: ' + payload.to.path);

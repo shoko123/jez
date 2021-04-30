@@ -25,10 +25,14 @@ use App\Http\Controllers\Dig\StoneController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ModuleInitializerController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\TestController;
 
 //download media used by app before getting token.
 Route::get('media/app-media', [MediaController::class, 'app_media']);
 
+  //test (dev only)
+    Route::post('test', [TestController::class, 'test']);
+    
 Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
@@ -38,6 +42,8 @@ Route::group(['prefix' => 'auth'], function ($router) {
 });
 
 Route::group(['middleware' => 'jwt.auth'], function ($router) {
+
+  
 
     //media
     Route::post('media/store', [MediaController::class, 'store']);

@@ -47,13 +47,6 @@ export default {
         params: JSON.stringify({seasons: [12,13,14], areas: ["S"]}),
       });
       return;
-
-      
-      this.$store.dispatch("aux/queryCollection", {
-        clear: true,
-        spinner: true,
-        gotoCollection: true,
-      });
     },
 
     goToItem() {

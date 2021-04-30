@@ -2,11 +2,11 @@
 
 namespace App\Traits;
 
+use App\Models\ItemTag;
 use Illuminate\Database\Eloquent\Builder;
 
 trait FilterTrait
 {
-
     /**
      * add filtering.
      *
@@ -49,7 +49,7 @@ trait FilterTrait
 
                     break;
                 case 2:
-                     if ($b && $a) {
+                    if ($b && $a) {
                         $builder->where('piece_no', 0);
                     } elseif ($b && $p) {
                         $builder->where('artifact_no', 0)->orWhere('piece_no', '!=', 0);
@@ -78,14 +78,32 @@ trait FilterTrait
         }
 
         //filter by tags
-        if (!empty($queryParams["tagParams"])) {
-            foreach ($queryParams["tagParams"] as $param) {
-                $names = [];
-                foreach ($param["tags"] as $index => $tag) {
-                    $names[$index] = $tag["name"];
-                }
-                $builder->withAnyTags($names, $param["type"]);
+        if (!empty($queryParams["tags"])) {
+            $tag_types = (object)[];
+            foreach ($queryParams["tags"] as $index => $tag_id) {
+                $t = ItemTag::select('type', 'name')->findOrFail($tag_id);
+                $type = $t->type;
+                
+                if(property_exists($tag_types, $type)){
+                    array_push($tag_types->$type, $t->name);
+                }else {
+                    $tag_types->$type = array($t->name);
+                }     
             }
+
+            foreach ($tag_types as $key => $value) {
+                $builder->withAnyTags($value, $key );
+            }
+
+            /*
+        foreach ($queryParams["tagParams"] as $param) {
+        $names = [];
+        foreach ($param["tags"] as $index => $tag) {
+        $names[$index] = $tag["name"];
+        }
+        $builder->withAnyTags($names, $param["type"]);
+        }
+         */
         }
 
         //filter by media
