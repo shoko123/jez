@@ -40,29 +40,21 @@ export default {
     },
 
     showAll() {
-
-       this.$store.dispatch("mgr/goToRoute", {
+      this.$store.dispatch("mgr/goToRoute", {
         module: this.$store.getters["mgr/module"],
         action: "list",
-        params: JSON.stringify({seasons: [12,13,14], areas: ["S"]}),
+        params: {},
       });
       return;
     },
 
     goToItem() {
-      this.$store
-        .dispatch("aux/queryCollection", {
-          clear: true,
-          spinner: true,
-          gotoCollection: false,
-        })
-        .then((res) => {
-          this.$store.dispatch("mgr/goToRoute", {
-            module: this.$store.getters["mgr/module"],
-            action: "show",
-            id: this.$store.getters["mgr/collections"]("main").collection[0].id,
-          });
-        });
+
+      this.$store.dispatch("mgr/goToRoute", {
+        module: this.$store.getters["mgr/module"],
+        action: "show",
+        id: this.$store.getters["mgr/welcomeData"].firstId
+      });
     },
 
     goToAreas() {

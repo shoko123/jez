@@ -48,6 +48,7 @@ export default {
         welcomeData: {
             counts: { items: null, media: null, baskets: null, artifacts: null, pieces: null },
             welcomePageParams: {},
+            firstId: null,
         },
 
         isPicker: false,
@@ -122,7 +123,7 @@ export default {
                 );
                 //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
             }
-          
+
             c["header"] = rootGetters["mgr/routes/status"].module + "Query Results";
             c["chunkStartIndex"] = c.pageNo * c.itemsPerPage;
             return c;
@@ -146,8 +147,8 @@ export default {
                 case "Locus":
                     header = "Related Small Finds"
                     break;
-            }  
-            c["header"] = header;          
+            }
+            c["header"] = header;
             return c;
         },
         collectionMedia(state) {
@@ -156,7 +157,7 @@ export default {
                 c.pageNo * c.itemsPerPage,
                 (c.pageNo + 1) * c.itemsPerPage
             );
-            c["header"] =  "Related Media";
+            c["header"] = "Related Media";
             return c;
         },
 
@@ -331,7 +332,7 @@ export default {
     },
     actions: {
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`mgr/routeChanged to: ${payload.to.path} \nparams: ${JSON.stringify(payload.to.params, null, 2)} \nquery: ${JSON.stringify(payload.to.query, null, 2)}`);
+            //console.log(`mgr/routeChanged to: ${payload.to.path} \nparams: ${JSON.stringify(payload.to.params, null, 2)} \nquery: ${JSON.stringify(payload.to.query, null, 2)}`);
             dispatch('mgr/routes/parseRoute', payload, { root: true });
             return dispatch("handleRouteChange", null);
         },
@@ -349,7 +350,7 @@ export default {
                     //console.log('dispatcher About...');
 
                     if (empty) {
-                        return dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: false }, { root: true });
+                        return dispatch("query", { params: {}, spinner: true });
                     }
                     if (routerStatus.action === "show") {
                         return dispatch("loadItem", routerStatus.id);
@@ -362,13 +363,13 @@ export default {
                             //if same module, retrieve collection if not already populated
                             if (!sameModule() || empty) {
                                 let params = rootGetters["aux/xhrFiltersFromNewQueryString"];
-                                  console.log(`params: ${JSON.stringify(params, null, 2)}`);
-                                return dispatch("query", { params: params, spinner: true, gotoCollection: true });
-                                //return dispatch("aux/queryCollection", { clear: true, spinner: true, gotoCollection: true }, { root: true });
+                                console.log(`params from queryString: ${JSON.stringify(params, null, 2)}`);
+                                return dispatch("query", { params: params, spinner: true });
                             } else if (state.isDirtyChunk && getters["ready"].item && getters["ready"].collection) {
                                 console.log('isDirty - calling page() ');
                                 dispatch("page", { name: "main", page: state.collections["main"].pageNo + 1, forceLoad: true });
                                 commit('dirtyChunk', false);
+                                return 0;
                             }
                             break;
 
@@ -378,7 +379,7 @@ export default {
                                 //if no collection loaded yet, retrieve new module's collection and then item
                                 if (empty) {
                                     //if same module, but collection empty, retrieve collection and then item
-                                    return dispatch("aux/queryCollection", { clear: false, spinner: true, gotoCollection: false }, { root: true })
+                                    return dispatch("query", { params: {}, spinner: true })
                                         .then((res) => {
                                             return dispatch("loadItem", routerStatus.id);
                                             //return res;
@@ -398,7 +399,7 @@ export default {
                                 return dispatch("loadItem", routerStatus.id)
                                     .then((res) => {
                                         //console.log('mgr.routeChanged.show after loading item. loading collection...');
-                                        return dispatch("aux/queryCollection", { clear: true, spinner: false, gotoCollection: false }, { root: true });
+                                        return dispatch("query", { params: {}, spinner: true });
                                         return res;
                                     })
                             }
@@ -407,16 +408,19 @@ export default {
                         case "create":
                         case "update":
                             dispatch("prepare", true);
+                            return 0;
                             break;
 
                         case "tags":
                             dispatch(`aux/prepareTagger`, null, { root: true });
+                            return 0;
                             break;
 
 
                         case "welcome":
                         case "filter":
-                            //nothing to do
+                            commit("ready", { entity: "item", isReady: false });
+                            return 0;
                             break;
                         default:
                     }
@@ -426,7 +430,7 @@ export default {
             //actual code starts running here
 
             /////////////////////////////////////////////////////////////////////////
-            //if new module, wait until module's metadata (tags) is retrieved from DB.
+            //if new module, wait until module's metadata (tags, lookups) are retrieved from DB.
             /////////////////////////////////////////////////////////////////////////
 
 
@@ -436,15 +440,15 @@ export default {
                 commit("ready", { entity: "item", isReady: false });
                 dispatch('initializeModule')
                     .then(res => {
-                        loadThings();
+                        return loadThings();
                     });
             } else {
-                loadThings();
+                return loadThings();
             }
         },
 
         query({ state, getters, rootGetters, commit, dispatch }, payload) {
-            commit("ready", { entity: "collection", isReady: false });
+            commit("ready", { entity: "collection", isReady: false });           
             console.log(`mgr.query. endpoint: ${getters["status"].moduleApiBaseUrl}`);
             //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
             let action = (getters["module"] === "About") ? "get" : "post";
@@ -469,7 +473,7 @@ export default {
             let xhrRequest = {
                 endpoint: endpoint,
                 action: action,
-                data: payload.params,//rootGetters["aux/queryParams"],
+                data: payload.params,
                 spinner: payload.spinner,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
@@ -503,82 +507,11 @@ export default {
                     //console.log(`After return from query`);
 
                     //redirect to 'list/collection' path
-                    if (payload.gotoCollection/*getters["status"].action == "filter"*/) {
-                        //dispatch('goToRoute', "list");
-                    }
+
                     return res;
                 })
                 .catch(err => {
-                    console.log('mgr Failed to load collection. err: ' + err);
-                    return err;
-                })
-        },
-
-        queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
-            commit("ready", { entity: "collection", isReady: false });
-            console.log(`mgr.queryCollection. endpoint: ${getters["status"].moduleApiBaseUrl}`);
-            //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
-            let action = (getters["module"] === "About") ? "get" : "post";
-            let endpoint;
-            switch (getters["module"]) {
-                case "Locus":
-                case "Pottery":
-                case "Stone":
-                case "Lithic":
-                case "Glass":
-                case "Metal":
-                    endpoint = `${getters["status"].moduleApiBaseUrl}/all`;
-                    break;
-                default:
-                    endpoint = getters["status"].moduleApiBaseUrl;
-
-            }
-
-            console.log(`params: ${JSON.stringify(payload.queryParams, null, 2)}`);
-            let xhrRequest = {
-                endpoint: endpoint,
-                action: action,
-                data: payload.queryParams,//rootGetters["aux/queryParams"],
-                spinner: payload.spinner,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: "loading collection", onSuccess: null, onFailure: "failed loading collection", },
-            };
-
-            return dispatch('xhr/xhr', xhrRequest, { root: true })
-                .then((res) => {
-                    if (res.data.collection.length < 1) {
-                        commit('snackbar/displaySnackbar', {
-                            isSuccess: false,
-                            message: "Query resulted with no matches, Please edit query and re-submit"
-                        }, { root: true });
-                        return res;
-                    }
-
-                    console.log(`mgr.collection loaded (${getters["module"]})`);
-                    commit('collections', { name: "main", collection: res.data.collection });
-                    commit("ready", { entity: "collection", isReady: true });
-
-                    if (getters["ready"]["item"]) {
-                        //set page according to item's index
-                        let c = state.collections["main"].collection;
-                        let index = c.findIndex(x => x.id == getters["item"].id);
-                        let page = Math.floor((index + 1) / state.collections.main.itemsPerPage) + 1;
-                        dispatch("page", { name: "main", page: page, forceLoad: true });
-                    } else {
-                        dispatch("page", { name: "main", page: 1, forceLoad: true });
-                    }
-                    commit('dirtyChunk', false);
-                    //console.log(`After return from query`);
-
-                    //redirect to 'list/collection' path
-                    if (payload.gotoCollection/*getters["status"].action == "filter"*/) {
-                        dispatch('goToRoute', "list");
-                    }
-                    return res;
-                })
-                .catch(err => {
-                    console.log('mgr Failed to load collection. err: ' + err);
+                    console.log('mgr/query - Failed to load collection. err: ' + err);
                     return err;
                 })
         },
@@ -940,9 +873,9 @@ export default {
 
         clear({ state, getters, rootGetters, commit, dispatch }) {
             commit("item", null);
-            commit("collections", { name: "main", collection: []});
-            commit("collections", { name: "related", collection: []});
-            commit("collections", { name: "media", collection: []});
+            commit("collections", { name: "main", collection: [] });
+            commit("collections", { name: "related", collection: [] });
+            commit("collections", { name: "media", collection: [] });
             commit("itemDisplayOptionIndex", 0);
             commit("med/clear", null, { root: true });
             commit('regs/clear', null, { root: true });

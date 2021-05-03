@@ -132,9 +132,9 @@ export default {
                     console.log(`mgr.routes.goTo() illegal param: ${JSON.stringify(payload, null, 2)}`);
             }
             if (newRoute !== null) {
-                console.log(`mgr.routes.push() newRoute: ${JSON.stringify(newRoute, null, 2)}`);
+                //console.log(`mgr.routes.push() newRoute: ${JSON.stringify(newRoute, null, 2)}`);
                 if (newRoute.hasOwnProperty("params")) {
-                    state.router.push({ path: newRoute.path, query: newRoute.params/*JSON.stringify(newRoute.params) */});//JSON.stringify(newRoute.params)
+                    state.router.push({ path: newRoute.path, query: newRoute.params/*JSON.stringify(newRoute.params) */ });//JSON.stringify(newRoute.params)
                 } else {
                     state.router.push({ path: newRoute.path });
                 }
@@ -146,18 +146,20 @@ export default {
         parseRoute({ state, commit }, payload) {
             //TODO this needs a lot of work to make it more reasonable. However, it works for now.
 
+            console.log(`\nParseRoute. *** From ***\nPath: ${JSON.stringify(payload.from.path, null, 2)}\nParams: ${JSON.stringify(payload.from.params, null, 2)}\nQuery: ${JSON.stringify(payload.from.query, null, 2)}`);
+            console.log(`*** To ***\nPath: ${JSON.stringify(payload.to.path, null, 2)}\nParams: ${JSON.stringify(payload.to.params, null, 2)}\nQuery: ${JSON.stringify(payload.to.query, null, 2)}\n`);            
             let sections = payload.to.path.split('/');
             let action = sections[sections.length - 1];
             commit("modulePrevious", state.status.module);
             commit("idPrevious", state.status.id);
             commit("actionPrevious", state.status.action);
             if (action === "list") {
-                if(state.status.queryString !== payload.to.query) {
+                if (state.status.queryString !== payload.to.query) {
                     commit("newQueryString", payload.to.query);
-                    console.log(`ParseRoute.list Change in queryString checking validity:  ${payload.to.query}`);
-                    if(true){
+                    console.log(`ParseRoute.list Change in queryString checking validity:  ${JSON.stringify(payload.to.query, null, 2)}`);
+                    if (true) {
 
-                    }else {
+                    } else {
 
                     }
                 }

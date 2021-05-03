@@ -237,6 +237,10 @@ export default {
             return getters[name].filter(x => x.group_category === category);
         },
 
+        lookupNames(state, getters) {
+            return getters["all"].filter(x => x.group_type === "Lookup").map(y => y.column_name);
+        },
+
         filtersToQueryString(state, getters) {
             let areas = "";
             let seasons = "";
@@ -326,90 +330,43 @@ export default {
         },
 
         xhrFiltersFromNewQueryString(state, getters, rootState, rootGetters) {
+
             let qs = rootGetters["mgr/routes/status"].newQueryString;
-            let areas = [];
-            let seasons = [];
-
-            let registration_categories = [];
-            let scopes = [];
-            let media = [];
-            let tags = [];
-            let lookups = [];
-            let ids = [];
-            for (const prop in qs) {
-                console.log(`xhrFiltersFromNewQueryString BAD group: ${prop}`);
-                ids = qs[prop].split(",")
-                switch (prop) {
-
-                    case "areas":
-
-                        ids.forEach(x => {
-                            areas.push(x);
-                        });
-
-                        break;
-                    case "seasons":
-                        ids.forEach(x => {
-                            seasons.push(parseInt(x, 10));
-                        });
-                        //seasons.push(x => parseInt(x.name, 10) - 2000);
-                        break;
-                    case "media":
-                        ids.forEach(x => {
-                            media.push(x);
-                        });
-                        //media = group.params.map(x => x.name);
-                        break;
-                    case "registration_categories":
-                        ids.forEach(x => {
-                            registration_categories.push(x);
-                        });
-                        registration_categories = group.params.map(x => x.name);
-                        break;
-                    case "scopes":
-                        ids.forEach(x => {
-                            scopes.push(x);
-                        });
-                        //scopes = group.params.map(x => x.id);
-                        break;
-
-                    case "lookup":
-                        //format to objects with column_name and id array.
-                        //lookups.push({ column_name: group.column_name, ids: group.params.map(param => param.id) });
-                        break;
-                    case "tags":
-                        ids.forEach(x => {
-                            tags.push(parseInt(x, 10));
-                        });
-                        break;
-                    default:
-                        console.log(`aux/xhrFiltersFromNewQueryString BAD group: ${prop}`);//(groups) ${JSON.stringify(payload, null, 2)}`);
-                }
-
-            };
             let xhrParams = {};
-            if (areas.length > 0) {
-                xhrParams["areas"] = areas;
-            }
-            if (seasons.length > 0) {
-                xhrParams["seasons"] = seasons;
-            }
-            if (registration_categories.length > 0) {
-                xhrParams["registration_categories"] = registration_categories;
-            }
-            if (scopes.length > 0) {
-                xhrParams["scopes"] = scopes;
-            }
-            if (media.length > 0) {
-                xhrParams["media"] = media;
-            }
-            if (tags.length > 0) {
-                xhrParams["tags"] = tags;
-            }
-            if (lookups.length > 0) {
-                lookups.forEach(x => {
-                    xhrParams[x.column_name] = x.ids;
+
+            function setIds(prop, ids) {
+                ids.forEach(x => {
+                    switch (prop) {
+                        case "areas":
+                        case "media":
+                        case "registration_categories":
+                        case "scopes":
+                            xhrParams[prop].push(x);
+                            break;
+                        case "seasons":
+                        case "tags":
+                            xhrParams[prop].push(parseInt(x, 10));
+                            break;
+                        default:
+                            if (getters["lookupNames"].includes(prop)) {
+                                xhrParams[prop].push(parseInt(x, 10));
+                            } else {
+                                console.log(`aux/xhrFiltersFromNewQueryString BAD group: ${prop}`);//(groups) ${JSON.stringify(payload, null, 2)}`);
+                            }
+                    }
                 });
+            }
+
+            for (const prop in qs) {
+                //console.log(`xhrFiltersFromNewQueryString BAD group: ${prop}`);
+                let ids = qs[prop].split(",")
+
+                if (xhrParams.hasOwnProperty(prop)) {
+                    setIds(prop, ids);
+                } else {
+                    xhrParams[prop] = [];
+                    setIds(prop, ids);
+                }
             }
             return xhrParams;
         },
@@ -435,7 +392,7 @@ export default {
             state.params = Object.assign({}, {});
         },
         paramAffectsAddTagGroups(state, payload) {
-            console.log(`paramAffectsAddTagGroups()\nkey: ${payload.paramKey}\naffects: ${JSON.stringify(payload.affects, null, 2)}`);
+            //console.log(`paramAffectsAddTagGroups()\nkey: ${payload.paramKey}\naffects: ${JSON.stringify(payload.affects, null, 2)}`);
             state.params[payload.paramKey].affectsTagGroups.push(payload.affects);
         },
 
@@ -741,7 +698,7 @@ export default {
             //make params aware of their dependant groups
             getters["all"].forEach(x => {
                 if (x.group_type === "Tag" && x.dependency !== null) {
-                    console.log(`PUSH dependencies key: ${x.key} dependency: ${JSON.stringify(x.dependency, null, 2)}`);
+                    //console.log(`PUSH dependencies key: ${x.key} dependency: ${JSON.stringify(x.dependency, null, 2)}`);
                     x.dependency.forEach(y => {
                         y.forEach(z => {
                             commit("paramAffectsAddTagGroups", { paramKey: z, affects: [x.key] });
@@ -749,68 +706,6 @@ export default {
                     })
                 }
             })
-        },
-
-        queryCollection({ state, getters, rootGetters, commit, dispatch }, payload) {
-            function queryParams() {
-                let areas = [];
-                let seasons = [];
-                let media = [];
-                let scopes = [];
-                let registration_categories = [];
-                let tagParams = [];
-                let lookups = [];
-
-                getters["selectedFilters"].forEach((group => {
-                    switch (group.group_type) {
-                        case "Registration":
-                            switch (group.name) {
-                                case "Areas":
-                                    areas = group.params.map(x => x.name);
-                                    break;
-                                case "Seasons":
-                                    seasons = group.params.map(x => parseInt(x.name, 10) - 2000);
-                                    break;
-                                case "Media":
-                                    media = group.params.map(x => x.name);
-                                    break;
-                                case "registration_categories":
-                                    registration_categories = group.params.map(x => x.name);
-                                    break;
-                                case "scopes":
-                                    scopes = group.params.map(x => x.id);
-                                    break;
-                            }
-                            break;
-                        case "Lookup":
-                            //format to objects with column_name and id array.
-                            lookups.push({ column_name: group.column_name, ids: group.params.map(param => param.id) });
-                            break;
-                        case "Tag":
-                            //format tagParams according to Spatie interface (types with tags).
-                            tagParams.push({ type: group.str_id, tags: group.params.map(tag => { return { id: tag.id, name: tag.name }; }) });
-                            break;
-                    }
-
-                }));
-                return {
-                    lookups: lookups,
-                    tagParams: tagParams,
-                    areas: areas,
-                    seasons: seasons,
-                    media: media,
-                    registration_categories: registration_categories,
-                    scopes: scopes,
-                };
-            }
-
-            //let activeFilters = state.filterParams.filter(x => x.selectedInFilter);
-            //console.log(`query() activeFilters: ${JSON.stringify(activeFilters, null, 2)}`);
-            //return;
-            if (payload.clear) {
-                dispatch("clearFilters");
-            }
-            return dispatch("mgr/queryCollection", { queryParams: queryParams(), spinner: payload.spinner, gotoCollection: payload.gotoCollection }, { root: true });
         },
 
         sync({ state, getters, rootGetters, commit, dispatch }, payload) {

@@ -94,16 +94,6 @@ trait FilterTrait
             foreach ($tag_types as $key => $value) {
                 $builder->withAnyTags($value, $key );
             }
-
-            /*
-        foreach ($queryParams["tagParams"] as $param) {
-        $names = [];
-        foreach ($param["tags"] as $index => $tag) {
-        $names[$index] = $tag["name"];
-        }
-        $builder->withAnyTags($names, $param["type"]);
-        }
-         */
         }
 
         //filter by media

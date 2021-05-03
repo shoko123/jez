@@ -19,7 +19,7 @@ class ModuleInitializerController extends Controller
     {
         self::$isFind = false;
         self::$moduleHasTaggingSystem = true;
-        
+
         switch ($request->input('moduleName')) {
             case "About":
             case "Area":
@@ -63,10 +63,13 @@ class ModuleInitializerController extends Controller
 
         //get counts
         $counts = [];
+        $firstId = null;
 
         if (self::$moduleName !== 'About') {
             $counts['items'] = self::$fullModuleName::count();
             $counts['media'] = \DB::table('media')->where('model_type', self::$moduleName)->count();
+            $firstRecord = self::$fullModuleName::first();
+            $firstId = $firstRecord->id;
         }
 
         /*
@@ -84,7 +87,9 @@ class ModuleInitializerController extends Controller
             "welcomeData" => [
                 "counts" => $counts,
                 "welcomePageParams" => WelcomePages::welcome(self::$moduleName),
+                "firstId" => $firstId,
             ],
+
         ], 200);
     }
 

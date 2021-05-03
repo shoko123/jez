@@ -96,7 +96,7 @@ export default {
       this.$store.dispatch("mgr/goToRoute", {
         module: this.$store.getters["mgr/module"],
         action: "list",
-        params: {seasons: [12,13,14], areas: ["S"]},
+        params: {},
       });
 
       //this.$store.dispatch("mgr/goToRoute", "list");
