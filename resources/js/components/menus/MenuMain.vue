@@ -152,8 +152,6 @@ export default {
     menuItems() {
       return this.isLoggedIn
         ? this.loggedInMenu
-        : this.$store.getters["mgr/status"].action == "login"
-        ? []
         : this.guestMenu;
     },
   },

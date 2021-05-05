@@ -40,6 +40,9 @@ const router = new Router({
                 requiresAuth: false
             }
         },
+
+
+        /*
         {
             path: '/auth/login',
             name: 'login',
@@ -50,6 +53,26 @@ const router = new Router({
             name: 'register',
             component: Login
         },
+ */
+
+
+       
+        {
+            path: '/:module(auth)',
+            component: RouterElement,
+            props: true,            
+            children: [
+                {
+                    path: ':action(login)',
+                    component: Login
+                },
+                {
+                    path: ':action(register)',
+                    component: Login
+                }
+            ]
+        },
+       
         {
             path: '/dig-modules/:module',
             component: RouterElement,
@@ -59,66 +82,78 @@ const router = new Router({
             },
             children: [
                 {
-                    path: 'welcome',
+                    path: ':action(welcome)',
                     component: PageWelcome
                 },
                 {
-                    path: 'Filter',
+                    path: ':action(Filter)',
                     component: Filter,
                 },
                 {
-                    path: 'list',
+                    path: ':action(list)',
                     component: PageCollection
                 },
                 {
-                    path: 'create',
+                    path: ':action(create)',
                     component: stepper
                 },
+
                 {
-                    path: ':id/show',
-                    props: true,
-                    component: PageItem
-                },
-                {
-                    path: ':id/update',
-                    props: true,
-                    component: stepper
-                },
-                {
-                    path: ':id/media',
-                    props: true,
-                    component: MediaEdit
-                },
-                {
-                    path: ':id/tags',
-                    props: true,
-                    component: Tagger
-                },
+                    path: ':id(\\d+)',
+                    component: RouterElement,
+                    children: [ 
+                        {
+                            path: ':action(show)',
+                            props: true,
+                            component: PageItem
+                        },
+                        {
+                            path: ':action(update)',
+                            props: true,
+                            component: stepper
+                        },
+                        {
+                            path: ':action(media)',
+                            props: true,
+                            component: MediaEdit
+                        },
+                        {
+                            path: ':action(tags)',
+                            props: true,
+                            component: Tagger
+                        },
+                    ],
+                },           
             ]
         },
-
-
         {
-            path: '/about',
+            path: '/:module(about)',
             component: RouterElement,
             props: true,
             meta: {
                 requiresAuth: true
             },
-            children: [
+            children: [ 
                 {
-                    path: 'welcome',
+                    path: ':id(\\d+)',
+                    component: RouterElement,
+                    children: [ 
+                        {
+                            path: ':action(show)',
+                            component: PageAbout,
+                       
+                        },
+                    ],
+                },
+                {
+                    path: ':action(welcome)',
                     component: PageWelcome
                 },
                 {
-                    path: 'map',
+                    path: ':action(map)',
                     component: PageMap
                 },
-                {
-                    path: ':id/show',
-                    props: true,
-                    component: PageAbout
-                },
+               
                 {
                     path: '*',
                     component: UndefinedRoute,

@@ -15,6 +15,18 @@ export default {
             newId: null,
             newQueryString: null,
         },
+        current: {
+            module: null,
+            action: null,
+            id: null,
+            queryString: null
+        },
+        to: {
+            module: null,
+            action: null,
+            id: null,
+            queryString: null
+        },
     },
     getters: {
         getRouter(state) {
@@ -32,6 +44,11 @@ export default {
 
         module(state, payload) {
             state.status.module = payload;
+        },
+        to(state, payload) {
+            console.log(`mgr/router SET("to"): ${JSON.stringify(payload, null, 2)}`);//
+            state.to = Object.assign({}, payload);
+            //state.to = payload;
         },
         modulePrevious(state, payload) {
             state.status.modulePrevious = payload;
@@ -62,92 +79,72 @@ export default {
         },
     },
     actions: {
+        parseTo({ state, commit }, payload) {
+            //console.log(`mgr/router parseTo payload: ${JSON.stringify(payload, null, 2)}`);//            
+            let to = {};
 
-        goTo({ state, rootState, getters, rootGetters }, payload) {
-            //an abstraction layer above vue router to enable less cumbersome calls from components/vuex.
-            function goToString() {
-                let moduleBaseUrl = jezConfig.myModules[state.status.module].appBaseUrl;
-                switch (payload) {
-                    case "home":
-                        return { path: "/" };
-                    case "login":
-                        return { path: "/auth/login" };
-                    case "welcome":
-                        return { path: `${moduleBaseUrl}/welcome` };
-                    case "update":
-                        return { path: `${moduleBaseUrl}/${state.status.id}/update` };
-                    case "media":
-                        return { path: `${moduleBaseUrl}/${state.status.id}/media` };
-                    case "tags":
-                        return { path: `${moduleBaseUrl}/${state.status.id}/tags` };
-                    //case "list":
-                    //   return `${moduleBaseUrl}/list`;
-                    case "create":
-                        return { path: `${moduleBaseUrl}/create` };
-                    case "filter":
-                        return { path: `${moduleBaseUrl}/filter` };
-                    default:
-                        console.log(`mgr.routes.goTo() illegal param: ${payload}`);
-                        return null;
-                }
-            }
-            function goToObject() {
-                //console.log(`mgr.routes.goToObject: ${JSON.stringify(payload, null, 2)}`);
-                let moduleBaseUrl = jezConfig.myModules[payload.module].appBaseUrl;
-
-                //verify that module, action and id (optional) exist
-                switch (payload.action) {
-                    case "welcome":
-                    case "filter":
-                        return { path: `${moduleBaseUrl}/${payload.action}` };
-                    case "list":
-                        return { path: `${moduleBaseUrl}/list`, params: payload.params };
-                    case "create":
-                        return { path: `${moduleBaseUrl}/${payload.action}` };
-                    case "show":
-                    case "update":
-                        return { path: `${moduleBaseUrl}/${payload.id}/${payload.action}` };
-                    default:
-                        console.log(`mgr.routes.goTo() illegal param: ${JSON.stringify(payload, null, 2)}`);
-                        return null;
-                }
-            }
-
-            //execution starts here
-            console.log(`mgr.routes.goTo() payload: ${JSON.stringify(payload, null, 2)}`);
-
-            let newRoute = null;
-            switch (typeof payload) {
-                case "string":
-                    if (payload === "back") {
-                        return state.router.go(-1);
-                    }
-                    newRoute = goToString();
-                    break;
-
-                case "object":
-                    newRoute = goToObject();
-                    break;
-                default:
-                    console.log(`mgr.routes.goTo() illegal param: ${JSON.stringify(payload, null, 2)}`);
-            }
-            if (newRoute !== null) {
-                //console.log(`mgr.routes.push() newRoute: ${JSON.stringify(newRoute, null, 2)}`);
-                if (newRoute.hasOwnProperty("params")) {
-                    state.router.push({ path: newRoute.path, query: newRoute.params/*JSON.stringify(newRoute.params) */ });//JSON.stringify(newRoute.params)
-                } else {
-                    state.router.push({ path: newRoute.path });
+            if (payload.params.hasOwnProperty("module")) {
+                switch (payload.params.module) {
+                    case "about":
+                        to.module = "About";
+                        break;
+                    case "auth":
+                        to.module = "Auth";
+                        break;
+                    case "areas":
+                        to.module = "Area";
+                        break;
+                    case "seasons":
+                        to.module = "Season";
+                        break;
+                    case "areas-seasons":
+                        to.module = "AreaSeason";
+                        break;
+                    case "loci":
+                        to.module = "Locus";
+                        break;
+                    case "pottery":
+                        to.module = "Pottery";
+                        break;
+                    case "stones":
+                        to.module = "Stone";
+                        break;
+                    case "lithics":
+                        to.module = "Lithic";
+                        break;
+                    case "glass":
+                        to.module = "Glass";
+                        break;
+                    case 'metals':
+                        to.module = "Metal";
+                        break;
+                        default:
+                    console.log(`******* Parser can\'t find module name path ${payload.params.module} *********`);                            
                 }
             } else {
-                console.log(`mgr.routes.push() error in parsing path: ${newRoute.path}`);
+                to.module = "Home";
             }
+            if (payload.params.hasOwnProperty("id")) {
+                to.id = parseInt(payload.params.id, 10);
+            }
+            if (payload.params.hasOwnProperty("action")) {
+                to.action = payload.params.action;
+            }
+            if (Object.keys(payload.query).length > 0) {
+                to.queryString = payload.query;
+            }
+
+            //console.log(`parsedTo: ${JSON.stringify(to, null, 2)}`);
+            commit("to", to /*{ module, action, queryString, id }*/);
         },
 
-        parseRoute({ state, commit }, payload) {
+        parseRoute({ state, commit, dispatch }, payload) {
             //TODO this needs a lot of work to make it more reasonable. However, it works for now.
 
             console.log(`\nParseRoute. *** From ***\nPath: ${JSON.stringify(payload.from.path, null, 2)}\nParams: ${JSON.stringify(payload.from.params, null, 2)}\nQuery: ${JSON.stringify(payload.from.query, null, 2)}`);
-            console.log(`*** To ***\nPath: ${JSON.stringify(payload.to.path, null, 2)}\nParams: ${JSON.stringify(payload.to.params, null, 2)}\nQuery: ${JSON.stringify(payload.to.query, null, 2)}\n`);            
+            console.log(`*** To ***\nPath: ${JSON.stringify(payload.to.path, null, 2)}\nParams: ${JSON.stringify(payload.to.params, null, 2)}\nQuery: ${JSON.stringify(payload.to.query, null, 2)}\n`);
+            dispatch("parseTo", payload.to);
+
             let sections = payload.to.path.split('/');
             let action = sections[sections.length - 1];
             commit("modulePrevious", state.status.module);
@@ -233,6 +230,86 @@ export default {
                     break
                 default:
                     console.log(`******* Parser can\'t parse path ${payload.to.path} *********`);
+            }
+        },
+
+        goTo({ state, rootState, getters, rootGetters }, payload) {
+            //an abstraction layer above vue router to enable less cumbersome calls from components/vuex.
+            function goToString() {
+                let moduleBaseUrl = jezConfig.myModules[state.status.module].appBaseUrl;
+                switch (payload) {
+                    case "home":
+                        return { path: "/" };
+                    case "login":
+                        return { path: "/auth/login" };
+                    case "welcome":
+                        return { path: `${moduleBaseUrl}/welcome` };
+                    case "update":
+                        return { path: `${moduleBaseUrl}/${state.status.id}/update` };
+                    case "media":
+                        return { path: `${moduleBaseUrl}/${state.status.id}/media` };
+                    case "tags":
+                        return { path: `${moduleBaseUrl}/${state.status.id}/tags` };
+                    //case "list":
+                    //   return `${moduleBaseUrl}/list`;
+                    case "create":
+                        return { path: `${moduleBaseUrl}/create` };
+                    case "filter":
+                        return { path: `${moduleBaseUrl}/filter` };
+                    default:
+                        console.log(`mgr.routes.goTo() illegal param: ${payload}`);
+                        return null;
+                }
+            }
+            function goToObject() {
+                //console.log(`mgr.routes.goToObject: ${JSON.stringify(payload, null, 2)}`);
+                let moduleBaseUrl = jezConfig.myModules[payload.module].appBaseUrl;
+
+                //verify that module, action and id (optional) exist
+                switch (payload.action) {
+                    case "welcome":
+                    case "filter":
+                        return { path: `${moduleBaseUrl}/${payload.action}` };
+                    case "list":
+                        return { path: `${moduleBaseUrl}/list`, params: payload.params };
+                    case "create":
+                        return { path: `${moduleBaseUrl}/${payload.action}` };
+                    case "show":
+                    case "update":
+                        return { path: `${moduleBaseUrl}/${payload.id}/${payload.action}` };
+                    default:
+                        console.log(`mgr.routes.goTo() illegal param: ${JSON.stringify(payload, null, 2)}`);
+                        return null;
+                }
+            }
+
+            //execution starts here
+            console.log(`mgr.routes.goTo() payload: ${JSON.stringify(payload, null, 2)}`);
+
+            let newRoute = null;
+            switch (typeof payload) {
+                case "string":
+                    if (payload === "back") {
+                        return state.router.go(-1);
+                    }
+                    newRoute = goToString();
+                    break;
+
+                case "object":
+                    newRoute = goToObject();
+                    break;
+                default:
+                    console.log(`mgr.routes.goTo() illegal param: ${JSON.stringify(payload, null, 2)}`);
+            }
+            if (newRoute !== null) {
+                //console.log(`mgr.routes.push() newRoute: ${JSON.stringify(newRoute, null, 2)}`);
+                if (newRoute.hasOwnProperty("params")) {
+                    state.router.push({ path: newRoute.path, query: newRoute.params/*JSON.stringify(newRoute.params) */ });//JSON.stringify(newRoute.params)
+                } else {
+                    state.router.push({ path: newRoute.path });
+                }
+            } else {
+                console.log(`mgr.routes.push() error in parsing path: ${newRoute.path}`);
             }
         },
     },
