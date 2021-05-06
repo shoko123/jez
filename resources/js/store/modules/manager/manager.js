@@ -60,6 +60,9 @@ export default {
         baseUrl(state) {
             return state.baseUrl;
         },
+        module(state, rootState, getters, rootGetters) {
+            return state.routes.current.module;
+        },        
 
         collections: (state, rootState, getters, rootGetters) => (name) => {
             if (!["main", "related", "media"].includes(name)) {
@@ -69,7 +72,7 @@ export default {
             let c = { ...state.collections[name] };
 
             if (name === "main" &&
-                ["Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(rootGetters["mgr/routes/status"].module) &&
+                ["Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(state.routes.current.module) &&
                 ["Media", "Table"].includes(state.collections.main.views[state.collections.main.view])
             ) {
                 //do nothing - chunk loaded by 'page()'
@@ -84,11 +87,11 @@ export default {
             let header
             switch (name) {
                 case "main":
-                    header = rootGetters["mgr/routes/status"].module + " Query Results";
+                    header = state.routes.current.module + " Query Results";
                     break;
 
                 case "related":
-                    switch (rootGetters["mgr/routes/status"].module) {
+                    switch (state.routes.current.module) {
                         case "Area":
                         case "Season":
                             header = "Related Areas/Seasons"
@@ -113,7 +116,7 @@ export default {
         //The following 3 are for debug only:
         collectionMain(state, rootState, getters, rootGetters) {
             let c = { ...state.collections.main };
-            if (["Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(rootGetters["mgr/routes/status"].module) &&
+            if (["Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(state.routes.current.module) &&
                 ["Media", "Table"].includes(state.collections.main.views[state.collections.main.view])) {
                 //chunk was loaded in 'page()'
             } else {
@@ -124,7 +127,7 @@ export default {
                 //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
             }
 
-            c["header"] = rootGetters["mgr/routes/status"].module + "Query Results";
+            c["header"] = state.routes.current.module + "Query Results";
             c["chunkStartIndex"] = c.pageNo * c.itemsPerPage;
             return c;
         },
@@ -136,7 +139,7 @@ export default {
             );
 
             let header;
-            switch (rootGetters["mgr/routes/status"].module) {
+            switch (state.routes.current.module) {
                 case "Area":
                 case "Season":
                     header = "Related Areas/Seasons"
@@ -167,11 +170,6 @@ export default {
 
         item(state) {
             return state.item;
-        },
-
-
-        module(state, rootState, getters, rootGetters) {
-            return rootGetters["mgr/routes/status"].module;
         },
 
         welcomeData(state) {
@@ -331,129 +329,13 @@ export default {
         },
     },
     actions: {
-        routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
-            //console.log(`mgr/routeChanged to: ${payload.to.path} \nparams: ${JSON.stringify(payload.to.params, null, 2)} \nquery: ${JSON.stringify(payload.to.query, null, 2)}`);
-            dispatch('mgr/routes/parseRoute', payload, { root: true });
-            return dispatch("handleRouteChange", null);
-        },
-
-        handleRouteChange({ state, getters, rootGetters, commit, dispatch }) {
-
-            function sameModule() {
-                return (routerStatus.module === routerStatus.modulePrevious)
-            }
-
-            function loadThings() {
-                if (getters["module"] === "Home") { return; }
-                let empty = state.collections["main"].collection.length === 0;
-                if (getters["module"] === "About") {
-                    //console.log('dispatcher About...');
-
-                    if (empty) {
-                        return dispatch("query", { params: {}, spinner: true });
-                    }
-                    if (routerStatus.action === "show") {
-                        return dispatch("loadItem", routerStatus.id);
-                    }
-                }
-                else if (getters["status"].isDigModule) {
-                    switch (routerStatus.action) {
-                        case "list":
-                            console.log('mgr.loadThings.list ');// + JSON.stringify(res, null, 2));
-                            //if same module, retrieve collection if not already populated
-                            if (!sameModule() || empty) {
-                                let params = rootGetters["aux/xhrFiltersFromNewQueryString"];
-                                console.log(`params from queryString: ${JSON.stringify(params, null, 2)}`);
-                                return dispatch("query", { params: params, spinner: true });
-                            } else if (state.isDirtyChunk && getters["ready"].item && getters["ready"].collection) {
-                                console.log('isDirty - calling page() ');
-                                dispatch("page", { name: "main", page: state.collections["main"].pageNo + 1, forceLoad: true });
-                                commit('dirtyChunk', false);
-                                return 0;
-                            }
-                            break;
-
-                        case "show":
-                            //console.log('mgr.dispatch(show)');// + JSON.stringify(res, null, 2));
-                            if (sameModule()) {
-                                //if no collection loaded yet, retrieve new module's collection and then item
-                                if (empty) {
-                                    //if same module, but collection empty, retrieve collection and then item
-                                    return dispatch("query", { params: {}, spinner: true })
-                                        .then((res) => {
-                                            return dispatch("loadItem", routerStatus.id);
-                                            //return res;
-                                        })
-                                } else {
-                                    if (routerStatus.idPrevious !== routerStatus.id ||
-                                        routerStatus.actionPrevious === "update" ||
-                                        routerStatus.actionPrevious === "tags") {
-                                        //collection loaded - load item only
-                                        return dispatch("loadItem", routerStatus.id);
-                                    } else {
-                                        console.log("mgr - same item id - not loading")
-                                    }
-                                }
-                            } else {
-                                //if not same module, clear old module and retrieve new module's collection and then item 
-                                return dispatch("loadItem", routerStatus.id)
-                                    .then((res) => {
-                                        //console.log('mgr.routeChanged.show after loading item. loading collection...');
-                                        return dispatch("query", { params: {}, spinner: true });
-                                        return res;
-                                    })
-                            }
-                            break;
-
-                        case "create":
-                        case "update":
-                            dispatch("prepare", true);
-                            return 0;
-                            break;
-
-                        case "tags":
-                            dispatch(`aux/prepareTagger`, null, { root: true });
-                            return 0;
-                            break;
-
-
-                        case "welcome":
-                        case "filter":
-                            commit("ready", { entity: "item", isReady: false });
-                            return 0;
-                            break;
-                        default:
-                    }
-                }
-            }
-
-            //actual code starts running here
-
-            /////////////////////////////////////////////////////////////////////////
-            //if new module, wait until module's metadata (tags, lookups) are retrieved from DB.
-            /////////////////////////////////////////////////////////////////////////
-
-
-            let routerStatus = rootGetters["mgr/routes/status"];
-            if (!sameModule() && !["Home", "Auth"].includes(getters["module"])) {
-                commit("ready", { entity: "collection", isReady: false });
-                commit("ready", { entity: "item", isReady: false });
-                dispatch('initializeModule')
-                    .then(res => {
-                        return loadThings();
-                    });
-            } else {
-                return loadThings();
-            }
-        },
-
         query({ state, getters, rootGetters, commit, dispatch }, payload) {
             commit("ready", { entity: "collection", isReady: false });           
             console.log(`mgr.query. endpoint: ${getters["status"].moduleApiBaseUrl}`);
             //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
-            let action = (getters["module"] === "About") ? "get" : "post";
+            let action = (state.routes.current.module === "About") ? "get" : "post";
             let endpoint;
-            switch (getters["module"]) {
+            switch (state.routes.current.module) {
                 case "Locus":
                 case "Pottery":
                 case "Stone":
@@ -490,7 +372,7 @@ export default {
                         return res;
                     }
 
-                    console.log(`mgr.collection loaded (${getters["module"]})`);
+                    console.log(`mgr.collection loaded (${state.routes.current.module})`);
                     commit('collections', { name: "main", collection: res.data.collection });
                     commit("ready", { entity: "collection", isReady: true });
 
@@ -536,7 +418,7 @@ export default {
                     let arr = ["media", "related"];
                     commit("collectionResetView", "related");
                     //save related collections
-                    switch (getters["module"]) {
+                    switch (state.routes.current.module) {
                         case "About":
                             //nothing to 
                             break;
@@ -568,7 +450,7 @@ export default {
                     }
 
                     commit('item', res.data.item);
-                    if (getters["module"] !== "About") {
+                    if (state.routes.current.module !== "About") {
                         //console.log(`mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
                         commit('collections', { name: "media", collection: res.data.itemMedia.collection });
                     }
@@ -618,10 +500,10 @@ export default {
                         let newIndex = index - 1 === -1 ? 0 : index - 1;
                         commit('deleteFromCollectionByIndex', index);
                         //go to the first item in the collection.
-                        dispatch('goToRoute', { module: getters["module"], action: "show", id: c[newIndex].id });
+                        dispatch('goToRoute', { module: state.routes.current.module, action: "show", id: c[newIndex].id });
                     } else {
                         //if we deleted the last item, we must load a new collection.
-                        dispatch('goToRoute', { module: getters["module"], action: "filter" });
+                        dispatch('goToRoute', { module: state.routes.current.module, action: "filter" });
                     }
                     return res;
                 })
@@ -633,7 +515,7 @@ export default {
 
         store({ state, getters, commit, dispatch, rootGetters }, goToItem) {
             let newItem = {};
-            switch (getters["module"]) {
+            switch (state.routes.current.module) {
                 case "Area":
                     newItem = rootGetters["area/newItem"];
                     break;
@@ -678,13 +560,13 @@ export default {
                     }
                     commit('dirtyChunk', true);
                     if (goToItem) {
-                        dispatch('goToRoute', { module: getters["module"], action: "show", id: res.data.item.id });
+                        dispatch('goToRoute', { module: state.routes.current.module, action: "show", id: res.data.item.id });
                     }
                     return res;
                 })
                 .catch(err => {
                     console.log('mgr/store err: ' + err);
-                    dispatch('goToRoute', { module: getters["module"], action: "show", id: state.item.id });
+                    dispatch('goToRoute', { module: state.routes.current.module, action: "show", id: state.item.id });
                     return err;
                 });
         },
@@ -721,11 +603,11 @@ export default {
             let xhrRequest = {
                 endpoint: `/api/module-initializer`,
                 action: "post",
-                data: { "moduleName": getters["module"], },
+                data: { "moduleName": state.routes.to.module, },
                 spinner: false,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `initializing ${getters["module"]} module info`, onSuccess: null, onFailure: "failed loading module info", },
+                messages: { loading: `initializing ${state.routes.to.module} module info`, onSuccess: null, onFailure: "failed loading module info", },
             };
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
@@ -784,7 +666,7 @@ export default {
 
         page({ state, getters, commit, dispatch }, payload) {
             function loadChunck() {
-                switch (getters["module"]) {
+                switch (state.routes.current.module) {
                     case "Locus":
                     case "Pottery":
                     case "Stone":
@@ -820,7 +702,7 @@ export default {
                     spinner: getters["status"].isList,
                     verbose: false,
                     snackbar: { onSuccess: false, onFailure: true, },
-                    messages: { loading: `loading ${getters["module"]} chunk`, onSuccess: null, onFailure: "failed!!!", },
+                    messages: { loading: `loading ${state.routes.current.module} chunk`, onSuccess: null, onFailure: "failed!!!", },
                 };
 
                 return dispatch('xhr/xhr', xhrRequest, { root: true })
@@ -909,7 +791,7 @@ export default {
             switch (payload) {
                 case "next":
                 case "prev":
-                    payload = { module: rootGetters["mgr/routes/status"].module, id: getAdjancentId(), action: "show" };
+                    payload = { module: state.routes.current.module, id: getAdjancentId(), action: "show" };
                     break;
                 default:
             }

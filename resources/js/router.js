@@ -40,23 +40,6 @@ const router = new Router({
                 requiresAuth: false
             }
         },
-
-
-        /*
-        {
-            path: '/auth/login',
-            name: 'login',
-            component: Login
-        },
-        {
-            path: '/auth/register',
-            name: 'register',
-            component: Login
-        },
- */
-
-
-       
         {
             path: '/:module(auth)',
             component: RouterElement,
@@ -71,8 +54,7 @@ const router = new Router({
                     component: Login
                 }
             ]
-        },
-       
+        },   
         {
             path: '/dig-modules/:module',
             component: RouterElement,
@@ -97,7 +79,6 @@ const router = new Router({
                     path: ':action(create)',
                     component: stepper
                 },
-
                 {
                     path: ':id(\\d+)',
                     component: RouterElement,
@@ -140,8 +121,7 @@ const router = new Router({
                     children: [ 
                         {
                             path: ':action(show)',
-                            component: PageAbout,
-                       
+                            component: PageAbout,                     
                         },
                     ],
                 },
@@ -152,8 +132,7 @@ const router = new Router({
                 {
                     path: ':action(map)',
                     component: PageMap
-                },
-               
+                },             
                 {
                     path: '*',
                     component: UndefinedRoute,
@@ -175,8 +154,9 @@ router.beforeEach((to, from, next) => {
     } else if (to.path == "/auth/login" && store.getters["aut/isLoggedIn"]) {
         next("/");
     } else {
-        store.dispatch("mgr/routeChanged", { to, from })
+        store.dispatch("mgr/routes/routeChanged", { to, from })
             .then((res) => {
+                store.commit("mgr/routes/navigationSuccess", null);
                 next();
             })
         //next();
