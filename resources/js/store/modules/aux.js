@@ -331,7 +331,7 @@ export default {
 
         xhrFiltersFromNewQueryString(state, getters, rootState, rootGetters) {
 
-            let qs = rootGetters["mgr/routes/status"].newQueryString;
+            let qs = rootGetters["mgr/routes/to"].queryParams;
             let xhrParams = {};
 
             function setIds(prop, ids) {
@@ -370,10 +370,8 @@ export default {
             }
             return xhrParams;
         },
-
-
-
     },
+
     mutations: {
         groupKeys(state, payload) {
             state.groupKeys = payload;

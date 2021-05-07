@@ -28,14 +28,15 @@
             v-on="on"
             class="primary--text"
           >
-            <v-icon left class="primary--text">menu</v-icon>
+            <v-icon left class="primary--text">menu</v-icon>{{ counterText }}
           </v-btn>
         </template>
         <span>{{ resultsTipText }}</span>
       </v-tooltip>
-      <div v-if="showCounter">
-        <v-btn large outlined class="primary--text">{{ counterText }}</v-btn>
-      </div>
+      
+      <!--div v-if="showCounter">
+        <v-btn large outlined class="primary--text"></v-btn>
+      </div-->
     </v-row>
   </v-container>
 </template>
@@ -96,7 +97,7 @@ export default {
       this.$store.dispatch("mgr/goToRoute", {
         module: this.$store.getters["mgr/module"],
         action: "list",
-        params: {},
+        params: this.$store.getters["mgr/routes/current"].queryParams,
       });
 
       //this.$store.dispatch("mgr/goToRoute", "list");

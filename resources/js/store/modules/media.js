@@ -77,7 +77,7 @@ export default {
                     break;
                 case "related":
                     let related;
-                    switch (rootGetters["mgr/routes/status"].module) {
+                    switch (rootGetters["mgr/module"]) {
                         case "Area":
                         case "Season":
                             related = " Areas/Seasons"

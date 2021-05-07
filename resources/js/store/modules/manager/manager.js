@@ -203,8 +203,10 @@ export default {
                 }
             }
 
-            let routerStatus = rootGetters["mgr/routes/status"];
-            let module = routerStatus.module;
+          
+            let rs = state.routes.current;//routerStatus
+            
+            let module = rs.module;
             let moduleStaticInfo = jezConfig.myModules[module];
 
             let status = {
@@ -214,30 +216,27 @@ export default {
                 moduleApiBaseUrl: moduleStaticInfo.apiBaseUrl,
                 moduleStoreName: moduleStaticInfo.storeName,
                 moduleRegistrationOptions: moduleStaticInfo.registrationOptions,
-                module: routerStatus.module,
-                modulePrevious: routerStatus.modulePrevious,
-                action: routerStatus.action,
-                actionPrevious: routerStatus.actionPrevious,
-                id: routerStatus.id,
-                idPrevious: routerStatus.idPrevious,
-                count: state.collections.main.collection.length,// ? state.collections.main.collection.length : "...",
-                isAreaSeason: (routerStatus.module === "AreaSeason"),
-                isLocus: (routerStatus.module === "Locus"),
+                module: rs.module,
+                action: rs.action,
+                id: rs.id,
+                count: state.collections.main.collection.length,
+                isAreaSeason: (rs.module === "AreaSeason"),
+                isLocus: (rs.module === "Locus"),
                 isFind: isFind(),
                 isDigModule: isDigModule(),
-                isCreate: (routerStatus.action === "create"),
-                isUpdate: (routerStatus.action === "update"),
-                isFilter: (routerStatus.action === "filter"),
-                isShow: (routerStatus.action === "show"),
-                isList: (routerStatus.action === "list"),
-                isWelcome: (routerStatus.action === "welcome"),
-                isTags: (routerStatus.action === "tags"),
-                isCreateLocus: (routerStatus.action === "create" && routerStatus.module === "Locus"),
-                isCreateFind: (routerStatus.action === "create" && isFind()),
-                isMediaEdit: (routerStatus.action === "media"),
-                isEdit: ["create", "update", "media", "tags"].includes(routerStatus.action),
+                isCreate: (rs.action === "create"),
+                isUpdate: (rs.action === "update"),
+                isFilter: (rs.action === "filter"),
+                isShow: (rs.action === "show"),
+                isList: (rs.action === "list"),
+                isWelcome: (rs.action === "welcome"),
+                isTags: (rs.action === "tags"),
+                isCreateLocus: (rs.action === "create" && rs.module === "Locus"),
+                isCreateFind: (rs.action === "create" && isFind()),
+                isMediaEdit: (rs.action === "media"),
+                isEdit: ["create", "update", "media", "tags"].includes(rs.action),
                 isPicker: state.isPicker,
-                isFilterable: !["Auth", "About", "Area", "Season"].includes(routerStatus.module),
+                isFilterable: !["Auth", "About", "Area", "Season"].includes(rs.module),
                 hasMedia: hasMedia(),
                 hasDependantModules: hasDependantModules(),
                 mayDelete: !hasMedia() && !hasDependantModules(),

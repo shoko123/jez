@@ -3,37 +3,22 @@ export default {
     namespaced: true,
     state: {
         router: null,
-        status: {
-            module: "Home",
-            modulePrevious: null,
-            queryString: null,
-            queryStringPrevious: null,
-            action: null,
-            actionPrevious: null,
-            id: null,
-            idPrevious: null,
-            newId: null,
-            newQueryString: null,
-        },
         current: {
-            module: null,
+            module: "Home",
             action: null,
             id: null,
-            queryString: null
+            queryParams: null,
         },
         to: {
             module: null,
             action: null,
             id: null,
-            queryString: null
+            queryParams: null,
         },
     },
     getters: {
         getRouter(state) {
             return state.router;
-        },
-        status(state) {
-            return state.status;
         },
         to(state) {
             return state.to;
@@ -48,51 +33,30 @@ export default {
             state.router = payload;
         },
 
-        module(state, payload) {
-            state.status.module = payload;
-        },
+  
         to(state, payload) {
             console.log(`mgr/router SET("to"): ${JSON.stringify(payload, null, 2)}`);//
             state.to = Object.assign({}, payload);
             //state.to = payload;
         },
         current(state, payload) {
-            console.log(`mgr/router SET("current"): ${JSON.stringify(payload, null, 2)}`);//
+            console.log(`mgr/router SET("current"): ${JSON.stringify(payload, null, 2)}`);
             state.to = Object.assign({}, state.current, payload);
             //state.to = payload;
         },
         navigationSuccess(state) {
-            
-            state.current = Object.assign({}, state.current, state.to);
+            state.current.module = state.to.module;
+            if (state.to.hasOwnProperty("id")) {
+                state.current.id = state.to.id;
+            }
+            if (state.to.hasOwnProperty("action")) {
+                state.current.action = state.to.action;
+            }
+            if (state.to.hasOwnProperty("queryParams")) {
+                state.current.queryParams = state.to.queryParams;
+            } 
+            //state.current = Object.assign({}, state.current, state.to);
             console.log(`NAV success update 'to' -> 'current': ${JSON.stringify(state.current, null, 2)}`);//
-        },
-
-        modulePrevious(state, payload) {
-            state.status.modulePrevious = payload;
-        },
-        action(state, payload) {
-            state.status.action = payload;
-        },
-        actionPrevious(state, payload) {
-            state.status.actionPrevious = payload;
-        },
-        id(state, payload) {
-            state.status.id = payload;
-        },
-        idPrevious(state, payload) {
-            state.status.idPrevious = payload;
-        },
-        queryString(state, payload) {
-            state.status.queryString = payload;
-        },
-        queryStringPrevious(state, payload) {
-            state.status.queryStringPrevious = payload;
-        },
-        newId(state, payload) {
-            state.status.newId = payload;
-        },
-        newQueryString(state, payload) {
-            state.status.newQueryString = payload;
         },
     },
     actions: {
@@ -135,8 +99,8 @@ export default {
                     case 'metals':
                         to.module = "Metal";
                         break;
-                        default:
-                    console.log(`******* Parser can\'t find module name path ${payload.params.module} *********`);                            
+                    default:
+                        console.log(`******* Parser can\'t find module name path ${payload.params.module} *********`);
                 }
             } else {
                 to.module = "Home";
@@ -148,13 +112,14 @@ export default {
                 to.action = payload.params.action;
             }
             if (Object.keys(payload.query).length > 0) {
-                to.queryString = payload.query;
-            }
+                to.queryParams = payload.query;
+            } 
+    
 
             //console.log(`parsedTo: ${JSON.stringify(to, null, 2)}`);
             commit("to", to /*{ module, action, queryString, id }*/);
         },
-
+   /*
         parseRoute({ state, commit, dispatch }, payload) {
             //TODO this needs a lot of work to make it more reasonable. However, it works for now.
 
@@ -162,32 +127,9 @@ export default {
             console.log(`*** To ***\nPath: ${JSON.stringify(payload.to.path, null, 2)}\nParams: ${JSON.stringify(payload.to.params, null, 2)}\nQuery: ${JSON.stringify(payload.to.query, null, 2)}\n`);
             dispatch("parseTo", payload.to);
 
+         
             let sections = payload.to.path.split('/');
             let action = sections[sections.length - 1];
-            commit("modulePrevious", state.status.module);
-            commit("idPrevious", state.status.id);
-            commit("actionPrevious", state.status.action);
-            if (action === "list") {
-                if (state.status.queryString !== payload.to.query) {
-                    commit("newQueryString", payload.to.query);
-                    console.log(`ParseRoute.list Change in queryString checking validity:  ${JSON.stringify(payload.to.query, null, 2)}`);
-                    if (true) {
-
-                    } else {
-
-                    }
-                }
-                commit("queryStringPrevious", state.status.queryString);
-
-                //let parsedQuery = payload.to.query;
-                //parsedQuery.lookups = JSON.parse(parsedQuery.lookups);
-                //parsedQuery.tagParams = JSON.parse(parsedQuery.tagParams);
-                //commit("queryString", parsedQuery);
-                commit("queryString", payload.to.query);
-
-            }
-            //console.log('parsePaths.to: ' + payload.to.path);
-
             switch (sections[1]) {
                 case '':
                     //whenever we change module we clear the old one. so let make the old one 'aut'
@@ -250,7 +192,7 @@ export default {
             }
         },
 
-        /*
+     
         routeChanged({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`mgr/routeChanged to: ${payload.to.path} \nparams: ${JSON.stringify(payload.to.params, null, 2)} \nquery: ${JSON.stringify(payload.to.query, null, 2)}`);
             
@@ -281,7 +223,7 @@ export default {
                         case "list":
                             console.log('mgr.loadThings.list ');// + JSON.stringify(res, null, 2));
                             //if same module, retrieve collection if not already populated
-                            if (!sameModule() || empty) {
+                            if (!sameModule() || empty || state.current.queryParams !== state.to.queryParams) {
                                 let params = rootGetters["aux/xhrFiltersFromNewQueryString"];
                                 console.log(`params from queryString: ${JSON.stringify(params, null, 2)}`);
                                 return dispatch("mgr/query", { params: params, spinner: true }, { root: true });
@@ -354,8 +296,7 @@ export default {
             /////////////////////////////////////////////////////////////////////////
 
 
-            //let routerStatus = rootGetters["mgr/routes/status"];
-            dispatch('parseRoute', payload);
+            dispatch('parseTo', payload.to);
             if (!sameModule() && !["Home", "Auth"].includes(state.to.module)) {
                 commit("mgr/ready", { entity: "collection", isReady: false }, { root: true });
                 commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
@@ -366,12 +307,12 @@ export default {
             } else {
                 return loadThings();
             }
-        },        
+        },
 
         goTo({ state, rootState, getters, rootGetters }, payload) {
             //an abstraction layer above vue router to enable less cumbersome calls from components/vuex.
             function goToString() {
-                let moduleBaseUrl = jezConfig.myModules[state.status.module].appBaseUrl;
+                let moduleBaseUrl = jezConfig.myModules[state.current.module].appBaseUrl;
                 switch (payload) {
                     case "home":
                         return { path: "/" };
@@ -380,11 +321,11 @@ export default {
                     case "welcome":
                         return { path: `${moduleBaseUrl}/welcome` };
                     case "update":
-                        return { path: `${moduleBaseUrl}/${state.status.id}/update` };
+                        return { path: `${moduleBaseUrl}/${state.current.id}/update` };
                     case "media":
-                        return { path: `${moduleBaseUrl}/${state.status.id}/media` };
+                        return { path: `${moduleBaseUrl}/${state.current.id}/media` };
                     case "tags":
-                        return { path: `${moduleBaseUrl}/${state.status.id}/tags` };
+                        return { path: `${moduleBaseUrl}/${state.current.id}/tags` };
                     //case "list":
                     //   return `${moduleBaseUrl}/list`;
                     case "create":

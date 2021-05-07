@@ -159,6 +159,7 @@ router.beforeEach((to, from, next) => {
                 store.commit("mgr/routes/navigationSuccess", null);
                 next();
             })
+            //return false will cancel the navigation.
         //next();
     }
 });

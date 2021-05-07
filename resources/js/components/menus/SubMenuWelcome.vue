@@ -40,6 +40,7 @@ export default {
     },
 
     showAll() {
+      this.$store.dispatch("aux/clearFilters");
       this.$store.dispatch("mgr/goToRoute", {
         module: this.$store.getters["mgr/module"],
         action: "list",
@@ -49,7 +50,7 @@ export default {
     },
 
     goToItem() {
-
+      this.$store.dispatch("aux/clearFilters");
       this.$store.dispatch("mgr/goToRoute", {
         module: this.$store.getters["mgr/module"],
         action: "show",
