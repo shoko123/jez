@@ -27,80 +27,81 @@ trait FilterTrait
             ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
         $builder->with('media');
 
-        //filter by registration_categories
-        if (!empty($queryParams["registration_categories"])) {
-            $builder->whereIn('registration_category', $queryParams["registration_categories"]);
-        }
+        if (!empty($queryParams["registration"])) {
+            foreach ($queryParams["registration"] as $key => $ids) {
+                switch ($key) {
+                    case "areas":
+                        $builder->whereIn("area", $ids);
+                        break;
 
-        //filter by scopes: "b" - basket, "a" - artifact, "p" - piece
-        if (!empty($queryParams["scopes"])) {
-            $b = in_array("b", $queryParams["scopes"]);
-            $a = in_array("a", $queryParams["scopes"]);
-            $p = in_array("p", $queryParams["scopes"]);
-            switch (count($queryParams["scopes"])) {
-                case 1:
-                    if ($b) {
-                        $builder->where('basket_no', '!=', 0)->where('artifact_no', 0)->where('piece_no', 0);
-                    } elseif ($a) {
-                        $builder->where('artifact_no', '!=', 0)->where('piece_no', 0);
-                    } elseif ($p) {
-                        $builder->where('piece_no', '!=', 0);
-                    }
+                    case "seasons":
+                        $builder->whereIn("season", $ids);
+                        break;
 
-                    break;
-                case 2:
-                    if ($b && $a) {
-                        $builder->where('piece_no', 0);
-                    } elseif ($b && $p) {
-                        $builder->where('artifact_no', 0)->orWhere('piece_no', '!=', 0);
-                    } elseif ($a && $p) {
-                        $builder->where('artifact_no', '!=', 0)->orWhere('piece_no', '!=', 0);
-                    }
-                    break;
+                    case "registration_categories":
+                        $builder->whereIn("registration_category", $ids);
+                        break;
+
+                    case "media":
+                        $builder->whereHas('media', function (Builder $mediaQuery) use ($ids) {
+                            $mediaQuery->whereIn('collection_name', $ids);});
+                        break;
+
+                    case "scopes":
+                        $b = in_array("b", $ids);
+                        $a = in_array("a", $ids);
+                        $p = in_array("p", $ids);
+                        switch (count($ids)) {
+                            case 1:
+                                if ($b) {
+                                    $builder->where('basket_no', '!=', 0)->where('artifact_no', 0)->where('piece_no', 0);
+                                } elseif ($a) {
+                                    $builder->where('artifact_no', '!=', 0)->where('piece_no', 0);
+                                } elseif ($p) {
+                                    $builder->where('piece_no', '!=', 0);
+                                }
+                                break;
+                            case 2:
+                                if ($b && $a) {
+                                    $builder->where('piece_no', 0);
+                                } elseif ($b && $p) {
+                                    $builder->where('artifact_no', 0)->orWhere('piece_no', '!=', 0);
+                                } elseif ($a && $p) {
+                                    $builder->where('artifact_no', '!=', 0)->orWhere('piece_no', '!=', 0);
+                                }
+                                break;
+                        }
+                        break;
+                    default:
+                    //throw Error
+                }
             }
         }
 
         //filter by lookup fields
         if (!empty($queryParams["lookups"])) {
-            foreach ($queryParams["lookups"] as $index => $lookup) {
-                $builder->whereIn($lookup["column_name"], $lookup["ids"]);
+            foreach ($queryParams["lookups"] as $key => $ids) {
+                //TODO validate column name.
+                $builder->whereIn($key, $ids);
             }
-        }
-
-        //filter by area
-        if (!empty($queryParams["areas"])) {
-            $builder->whereIn('area', $queryParams["areas"]);
-        }
-
-        //filter by season
-        if (!empty($queryParams["seasons"])) {
-            $builder->whereIn('season', $queryParams["seasons"]);
         }
 
         //filter by tags
         if (!empty($queryParams["tags"])) {
-            $tag_types = (object)[];
-            foreach ($queryParams["tags"] as $index => $tag_id) {
+            $tag_types = (object) [];
+            foreach ($queryParams["tags"]["tags"] as $index => $tag_id) {
                 $t = ItemTag::select('type', 'name')->findOrFail($tag_id);
                 $type = $t->type;
-                
-                if(property_exists($tag_types, $type)){
+                if (property_exists($tag_types, $type)) {
                     array_push($tag_types->$type, $t->name);
-                }else {
+                } else {
                     $tag_types->$type = array($t->name);
-                }     
+                }
             }
 
             foreach ($tag_types as $key => $value) {
-                $builder->withAnyTags($value, $key );
+                $builder->withAnyTags($value, $key);
             }
-        }
-
-        //filter by media
-        if (!empty($queryParams["media"])) {
-            $med = $queryParams["media"];
-            $builder->whereHas('media', function (Builder $mediaQuery) use ($med) {
-                $mediaQuery->whereIn('collection_name', $med);});
         }
 
         //order
