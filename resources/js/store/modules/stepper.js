@@ -69,11 +69,11 @@ export default {
     },
     actions: {
         populateSteps({ state, getters, rootGetters, commit, dispatch }, payload) {
-            console.log("populateSteps()");
+            console.log(`populateSteps() payload: ${payload}`);
             let module = rootGetters["mgr/module"];
             let steps = [];
             let stepsWithStepNumber = [];
-            if (rootGetters["mgr/status"].isCreate) {
+            if (payload === "create") {
                 steps.push({ name: "Registrar", header: `${module} Registration` });
             }
 

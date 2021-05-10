@@ -32,6 +32,29 @@ class AreaSeasonController extends Controller
 
         $builder = AreaSeason::with('media');
 
+        if (!empty($request["registration"])) {
+            foreach ($request["registration"] as $key => $ids) {
+                switch ($key) {
+                    case "areas":
+                        $builder->whereIn("area", $ids);
+                        break;
+
+                    case "seasons":
+                        $builder->whereIn("season", $ids);
+                        break;
+
+                    case "media":
+                        $builder->whereHas('media', function (Builder $mediaQuery) use ($ids) {
+                            $mediaQuery->whereIn('collection_name', $ids);});
+                        break;
+
+                    default:
+                        //throw Error
+                }
+            }
+        }
+
+        /*
         //filter by area.
         if (!empty($request["areas"])) {
             $builder->whereIn('area', $request["areas"]);
@@ -49,6 +72,7 @@ class AreaSeasonController extends Controller
                 $mediaQuery->whereIn('collection_name', $med);
             });
         }
+        */
 
         //order
         $collection = $builder->orderBy('id', 'asc')->get();

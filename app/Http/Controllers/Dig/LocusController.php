@@ -85,35 +85,28 @@ class LocusController extends Controller
         $builder = Locus::leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
             ->with('media');
 
-        //filter by tags
-        if (!empty($request["tagParams"])) {
-            foreach ($request["tagParams"] as $param) {
-                $names = [];
-                foreach ($param["tags"] as $index => $tag) {
-                    $names[$index] = $tag["name"];
+        if (!empty($request["registration"])) {
+            foreach ($request["registration"] as $key => $ids) {
+                switch ($key) {
+                    case "areas":
+                        $builder->whereIn("area", $ids);
+                        break;
+
+                    case "seasons":
+                        $builder->whereIn("season", $ids);
+                        break;
+
+                    case "media":
+                        $builder->whereHas('media', function (Builder $mediaQuery) use ($ids) {
+                            $mediaQuery->whereIn('collection_name', $ids);});
+                        break;
+
+                    default:
+                        //throw Error
                 }
-                $builder->withAnyTags($names, $param["type"]);
             }
         }
-
-        //filter by media
-        if (!empty($request["media"])) {
-            $med = $request["media"];
-            $builder->whereHas('media', function (Builder $mediaQuery) use ($med) {
-                $mediaQuery->whereIn('collection_name', $med);
-            });
-        }
-
-        //filter by area
-        if (!empty($request["areas"])) {
-            $builder->whereIn('area', $request["areas"]);
-        }
-
-        //filter by season
-        if (!empty($request["seasons"])) {
-            $builder->whereIn('season', $request["seasons"]);
-        }
-
+    
         //order
         $builder->orderBy('areas_seasons.id', 'asc')
             ->orderBy('loci.locus_no', 'asc');
@@ -154,7 +147,7 @@ class LocusController extends Controller
             "collection" => $items,
         ], 200);
     }
-    
+
     public function chunkTable(Request $request)
     {
         $itemIds = $request["ids"];
@@ -167,7 +160,7 @@ class LocusController extends Controller
         return response()->json([
             "collection" => $items,
         ], 200);
-    }    
+    }
 
     //used by only create new find
     public function finds(Request $request, $id)

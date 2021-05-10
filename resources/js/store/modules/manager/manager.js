@@ -53,7 +53,6 @@ export default {
 
         isPicker: false,
         itemDisplayOptionIndex: 0,
-        isDirtyChunk: false,
     },
 
     getters: {
@@ -62,7 +61,7 @@ export default {
         },
         module(state, rootState, getters, rootGetters) {
             return state.routes.current.module;
-        },        
+        },
 
         collections: (state, rootState, getters, rootGetters) => (name) => {
             if (!["main", "related", "media"].includes(name)) {
@@ -203,9 +202,9 @@ export default {
                 }
             }
 
-          
+
             let rs = state.routes.current;//routerStatus
-            
+
             let module = rs.module;
             let moduleStaticInfo = jezConfig.myModules[module];
 
@@ -321,15 +320,10 @@ export default {
             let c = state.collections["main"].collection;
             c.push(item);
         },
-        dirtyChunk(state, payload) {
-            //console.log(`SET dirtyChunk(${payload})`);            
-            state.isDirtyChunk = payload;
-
-        },
     },
     actions: {
         query({ state, getters, rootGetters, commit, dispatch }, payload) {
-            commit("ready", { entity: "collection", isReady: false });           
+            commit("ready", { entity: "collection", isReady: false });
             console.log(`mgr.query. endpoint: ${getters["status"].moduleApiBaseUrl}`);
             //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
             let action = (state.routes.current.module === "About") ? "get" : "post";
@@ -384,11 +378,6 @@ export default {
                     } else {
                         dispatch("page", { name: "main", page: 1, forceLoad: true });
                     }
-                    commit('dirtyChunk', false);
-                    //console.log(`After return from query`);
-
-                    //redirect to 'list/collection' path
-
                     return res;
                 })
                 .catch(err => {
@@ -492,7 +481,6 @@ export default {
                 .then((res) => {
                     console.log("mgr/delete() successful");
                     //commit('deleteFromCollectionById', res.data.id);
-                    commit('dirtyChunk', true);
                     let c = state.collections["main"].collection;
                     if (c.length > 0) {
                         let index = c.findIndex(x => x.id == res.data.id);
@@ -556,8 +544,9 @@ export default {
                     if (rootGetters["mgr/status"].isCreate) {
                         //the server returns an item that is formatted to be inserted into "collection".
                         commit('pushIntoCollection', res.data.item);
+                    } else {
+                        commit("ready", { entity: "item", isReady: false });
                     }
-                    commit('dirtyChunk', true);
                     if (goToItem) {
                         dispatch('goToRoute', { module: state.routes.current.module, action: "show", id: res.data.item.id });
                     }
@@ -569,13 +558,12 @@ export default {
                     return err;
                 });
         },
-
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
-            console.log("mgr/prepare()");
+            console.log(`mgr/prepare() payload" ${payload}`);
             //if we create a new item (locus or find), we must copy some data from current item
             //to the registration module.
-            let toCopy = getters["status"].isUpdate;
-            if (getters["status"].isCreate) {
+            let toCopy = (payload === "update");// getters["status"].isUpdate;
+            if (payload === "create") {
                 console.log("mgr/prepare calling regs/prepare");
                 dispatch("regs/prepare", null, { root: true });
             } else {
@@ -593,12 +581,13 @@ export default {
             //after these preliminary actions, we finally call the item's prepare method in order to
             //copy data and load item specific tables (e.g. stone categories).
             dispatch(`${getters["status"].moduleStoreName}/prepare`, toCopy, { root: true });
-            dispatch('stp/populateSteps', null, { root: true });
+            dispatch('stp/populateSteps', payload, { root: true });
         },
-
+        
         initializeModule({ state, getters, commit, dispatch }, payload) {
             //console.log('mgr.initializeModule. apiBaseUrl: ' + getters["status"].moduleApiBaseUrl);
-            dispatch("clear");
+            dispatch("clearModule");
+            if (["Home", "Auth"].includes(state.routes.to.module)) { return }
             let xhrRequest = {
                 endpoint: `/api/module-initializer`,
                 action: "post",
@@ -752,15 +741,17 @@ export default {
             }
         },
 
-        clear({ state, getters, rootGetters, commit, dispatch }) {
+        clearModule({ state, getters, rootGetters, commit, dispatch }) {
             commit("item", null);
             commit("collections", { name: "main", collection: [] });
             commit("collections", { name: "related", collection: [] });
             commit("collections", { name: "media", collection: [] });
-            commit("itemDisplayOptionIndex", 0);
+            commit("ready", { entity: "collection", isReady: false });
+            commit("ready", { entity: "item", isReady: false });
+            dispatch('aux/clearFilters', null, { root: true })
             commit("med/clear", null, { root: true });
             commit('regs/clear', null, { root: true });
-
+            commit("itemDisplayOptionIndex", 0);
             commit("collectionViewIndex", { name: "main", viewIndex: 0 });
             commit("itemsPerPage", { name: "main", ipp: 18 });
             commit("collectionViewIndex", { name: "related", viewIndex: 0 });

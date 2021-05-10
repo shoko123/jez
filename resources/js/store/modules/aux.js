@@ -398,14 +398,14 @@ export default {
                 console.log(`cat: ${cat} catCode: ${catCode} name: ${name} idsString: ${idsString}`);
                 if (xhrParams.hasOwnProperty(cat)) {
                     //if (xhrParams[cat].hasOwnProperty(name)) {
-                        xhrParams[cat][name] = idsStringToArray(catCode, name, idsString);
+                    xhrParams[cat][name] = idsStringToArray(catCode, name, idsString);
                     //} else {
                     //    xhrParams[cat][name] = idsStringToArray(catCode, name, idsString);
                     //}
                 } else {
-                    xhrParams[cat] = {[name]: idsStringToArray(catCode, name, idsString)};
+                    xhrParams[cat] = { [name]: idsStringToArray(catCode, name, idsString) };
                     console.log(`add "${cat}" property. xhrParams: ${JSON.stringify(xhrParams, null, 2)}`);
-                    
+
                     //(xhrParams[cat])[name] = idsStringToArray(catCode, name, idsString);
                     //Object.assign(xhrParams[cat], {[name]: idsStringToArray(catCode, name, idsString)});
                     //console.log(`add "${name}" property to ${cat}. xhrParams: ${JSON.stringify(xhrParams, null, 2)}`);
@@ -848,13 +848,15 @@ export default {
             var p2 = requiresUpdateItem ? updateItem(state, getters, rootGetters, lookupGroupsToUpdate) : null;
 
 
-            Promise.all([p1, p2])
+            return Promise.all([p1, p2])
                 .then(values => {
                     commit('snackbar/displaySnackbar', {
                         isSuccess: true,
                         message: "Tags updated successfully"
                     }, { root: true });
                     console.log("aux/sync success"); // [3, 1337, "foo"]
+                    commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
+                    return;
                 }).catch(err => {
                     commit('snackbar/displaySnackbar', {
                         isSuccess: false,

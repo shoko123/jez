@@ -152,7 +152,7 @@ export default {
                         console.log('upload media returned: ' + JSON.stringify(res.data, null, 2));
                         //commit to local item
                         commit('mgr/collections', { name: "media", collection: res.data.collection }, { root: true });
-                        commit('mgr/dirtyChunk', true, { root: true });
+                        commit("mgr/ready", { entity: "item", isReady: false }, { root: true });                        
                         return res;
                     })
                     .catch(err => {
@@ -177,8 +177,8 @@ export default {
                 .then((res) => {
                     console.log('delete media returned: ' + JSON.stringify(res.data, null, 2));
                     commit('mgr/collections', { name: "media", collection: res.data.collection }, { root: true });
-                    //alert manager that chunk is dirty
-                    commit('mgr/dirtyChunk', true, { root: true });
+                    //alert manager that item is dirty
+                    commit("mgr/ready", { entity: "item", isReady: false }, { root: true });  
                     return res;
                 })
                 .catch(err => {

@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     submit() {
-      this.$store.dispatch("mgr/clear");
+      //this.$store.dispatch("mgr/clearModule");
       let qp = this.$store.getters["aux/filtersToQueryString"];
       this.$store.dispatch("mgr/goToRoute", {
         module: this.$store.getters["mgr/module"],
