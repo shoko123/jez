@@ -62,7 +62,7 @@ export default {
 
   computed: {
     showSelector() {
-        return this.$store.getters["mgr/status"].isTags;
+      return this.$store.getters["mgr/status"].isTags;
     },
 
     header() {
@@ -158,9 +158,15 @@ export default {
     },
 
     submit() {
+      let id = this.$store.getters["mgr/status"].id;
       this.$store.dispatch(`aux/sync`).then((res) => {
         console.log(`NewParamSelector.after sync, going back to item.show()`);
-        this.$store.dispatch("mgr/goToRoute", "back");
+        this.$store.dispatch("mgr/goToRoute", {
+          module: this.$store.getters["mgr/module"],
+          action: "show",
+          id: id,
+        });
+        //this.$store.dispatch("mgr/goToRoute", "back");
       });
     },
 

@@ -785,7 +785,7 @@ export default {
                     })
             }
 
-            function updateItem(state, getters, rootGetters, lookupGroupsToUpdate) {
+            function updateLookups(state, getters, rootGetters, lookupGroupsToUpdate) {
                 let moduleName = rootGetters["mgr/status"].moduleStoreName;
 
                 dispatch(`${moduleName}/prepare`, true, { root: true });
@@ -808,10 +808,10 @@ export default {
 
                 return dispatch("mgr/store", false, { root: true })
                     .then(res => {
-                        console.log("aux/updateItem - returned success");
+                        console.log("aux/updateLookups - returned success");
                     })
                     .catch(err => {
-                        console.log('aux/updateItem err: ' + err);
+                        console.log('aux/updateLookups err: ' + err);
                         return err;
                     })
             }
@@ -845,9 +845,9 @@ export default {
 
             //////////////////
             var p1 = requiresSyncTags ? syncTags(state, getters, rootGetters, tagGroupsToSync) : null;
-            var p2 = requiresUpdateItem ? updateItem(state, getters, rootGetters, lookupGroupsToUpdate) : null;
+            var p2 = requiresUpdateItem ? updateLookups(state, getters, rootGetters, lookupGroupsToUpdate) : null;
 
-
+            commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
             return Promise.all([p1, p2])
                 .then(values => {
                     commit('snackbar/displaySnackbar', {
@@ -855,19 +855,17 @@ export default {
                         message: "Tags updated successfully"
                     }, { root: true });
                     console.log("aux/sync success"); // [3, 1337, "foo"]
-                    commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
+                    //commit("mgr/ready", { entity: "item", isReady: true }, { root: true });
                     return;
                 }).catch(err => {
                     commit('snackbar/displaySnackbar', {
                         isSuccess: false,
                         message: "Tags update failed!"
                     }, { root: true });
+                    commit("mgr/ready", { entity: "item", isReady: true }, { root: true });
                     console.log('aux/sync failed err: ' + err);
                     return err;
                 });
         },
     },
-    queryStringToFilters({ state, getters, rootGetters, commit, dispatch }, payload) {
-
-    }
 }

@@ -558,7 +558,7 @@ export default {
                     return err;
                 });
         },
-        prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
+        prepareNew({ state, getters, rootGetters, commit, dispatch }, payload) {
             console.log(`mgr/prepare() payload" ${payload}`);
             //if we create a new item (locus or find), we must copy some data from current item
             //to the registration module.
