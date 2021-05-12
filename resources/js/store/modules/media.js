@@ -143,7 +143,7 @@ export default {
                 messages: {
                     loading: "loading files",
                     onSuccess: "Files uploaded successfully",
-                    onFailure: "failed loading files"
+                    onFailure: "failed loading media"
                 }
             };
             return (
@@ -156,7 +156,7 @@ export default {
                         return res;
                     })
                     .catch(err => {
-                        console.log("Upload Failed to load files. err: " + err);
+                        console.log("Failed to load files. " + err);
                         return err;
                     })
             );

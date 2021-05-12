@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+const { isNavigationFailure, NavigationFailureType } = Router;
 import store from './store/store.js';
 
 import Home from './components/Home.vue';
@@ -20,12 +21,21 @@ import Tagger from './components/tags/Tagger.vue';
 import UndefinedRoute from './components/elements/UndefinedRoute.vue';
 import RouterElement from './components/elements/RouterElement.vue';
 
-//prevent NavigationDuplicated error
+//catch NavigationDuplicated and Failures (due to next(false) on BeforeEach) Errors 
+//and supress logging to console.
 const originalPush = Router.prototype.push;
+
 Router.prototype.push = function push(location) {
-    return originalPush.call(this, location).catch(err => {
-        if (err.name !== 'NavigationDuplicated') throw err
-    });
+    return originalPush.call(this, location)
+        .catch(err => {
+            if (err.name === 'NavigationDuplicated') {
+                console.log("duplicate");
+            } else if (isNavigationFailure(err)) {
+                    console.log("nav error");
+            } else {
+                throw err;
+            }
+        });
 }
 
 Vue.use(Router)
@@ -43,7 +53,7 @@ const router = new Router({
         {
             path: '/:module(auth)',
             component: RouterElement,
-            props: true,            
+            props: true,
             children: [
                 {
                     path: ':action(login)',
@@ -54,7 +64,7 @@ const router = new Router({
                     component: Login
                 }
             ]
-        },   
+        },
         {
             path: '/dig-modules/:module',
             component: RouterElement,
@@ -82,7 +92,7 @@ const router = new Router({
                 {
                     path: ':id(\\d+)',
                     component: RouterElement,
-                    children: [ 
+                    children: [
                         {
                             path: ':action(show)',
                             props: true,
@@ -104,7 +114,7 @@ const router = new Router({
                             component: Tagger
                         },
                     ],
-                },           
+                },
             ]
         },
         {
@@ -114,14 +124,14 @@ const router = new Router({
             meta: {
                 requiresAuth: true
             },
-            children: [ 
+            children: [
                 {
                     path: ':id(\\d+)',
                     component: RouterElement,
-                    children: [ 
+                    children: [
                         {
                             path: ':action(show)',
-                            component: PageAbout,                     
+                            component: PageAbout,
                         },
                     ],
                 },
@@ -132,7 +142,7 @@ const router = new Router({
                 {
                     path: ':action(map)',
                     component: PageMap
-                },             
+                },
                 {
                     path: '*',
                     component: UndefinedRoute,
@@ -158,9 +168,10 @@ router.beforeEach((to, from, next) => {
             .then((res) => {
                 store.commit("mgr/routes/navigationSuccess", null);
                 next();
-            })
-            //return false will cancel the navigation.
-        //next();
+            }).catch(err => {
+                console.log(`navigation error: ${JSON.stringify(err, null, 2)}`);
+                next(false);
+            });
     }
 });
 

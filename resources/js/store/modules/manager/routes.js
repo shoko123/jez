@@ -1,4 +1,5 @@
 import jezConfig from '../../../jezConfig.js';
+
 export default {
     namespaced: true,
     state: {
@@ -318,7 +319,7 @@ export default {
                 if (newRoute.hasOwnProperty("params")) {
                     state.router.push({ path: newRoute.path, query: newRoute.params/*JSON.stringify(newRoute.params) */ });//JSON.stringify(newRoute.params)
                 } else {
-                    state.router.push({ path: newRoute.path });
+                    state.router.push({ path: newRoute.path })
                 }
             } else {
                 console.log(`mgr.routes.push() error in parsing path: ${newRoute.path}`);

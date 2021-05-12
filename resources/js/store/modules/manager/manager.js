@@ -1,5 +1,6 @@
 import routes from './routes.js';
 import jezConfig from '../../../jezConfig.js';
+import { NavigationError, EmptyResultSetError, } from '../../../errors.js';
 
 
 export default {
@@ -362,7 +363,7 @@ export default {
                             isSuccess: false,
                             message: "Query resulted with no matches, Please edit query and re-submit"
                         }, { root: true });
-                        return res;
+                        throw new EmptyResultSetError("Empty result set");
                     }
 
                     console.log(`mgr.collection loaded (${state.routes.current.module})`);
@@ -381,8 +382,8 @@ export default {
                     return res;
                 })
                 .catch(err => {
-                    console.log('mgr/query - Failed to load collection. err: ' + err);
-                    return err;
+                    console.log(`mgr/query - Failed to load collection. err: ${JSON.stringify(err, null, 2)}`);
+                    throw err;
                 })
         },
 
@@ -500,6 +501,7 @@ export default {
                 })
         },
 
+        //goToItem is true for any new Item, false when called in the context of updating a lookup field.
         store({ state, getters, commit, dispatch, rootGetters }, goToItem) {
             let newItem = {};
             switch (state.routes.current.module) {
@@ -583,7 +585,7 @@ export default {
             dispatch(`${getters["status"].moduleStoreName}/prepare`, toCopy, { root: true });
             dispatch('stp/populateSteps', payload, { root: true });
         },
-        
+
         initializeModule({ state, getters, commit, dispatch }, payload) {
             //console.log('mgr.initializeModule. apiBaseUrl: ' + getters["status"].moduleApiBaseUrl);
             dispatch("clearModule");
