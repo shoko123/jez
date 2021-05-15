@@ -106,7 +106,7 @@ class LocusController extends Controller
                 }
             }
         }
-    
+
         //order
         $builder->orderBy('areas_seasons.id', 'asc')
             ->orderBy('loci.locus_no', 'asc');
@@ -201,12 +201,15 @@ class LocusController extends Controller
         $itemMedia = $this->model->itemMediaCollection('Locus', $locus);
 
         //LocusFinds
+
+        $order = array("Pottery" => 1, "Stone" => 2, "Lithic" => 3, "Metal" => 4, "Glass" => 5, "Flora" => 6, "Fauna" => 7, "Tbd" => 8);
         $locusFinds = [];
+
         foreach ($locus->finds as $index => $find) {
             //format tag
             $tag = "(" . $find->findable_type . ") ";
             $tag .= $this->model->tag($find);
-
+            $type = $find->findable_type;
             //load find instance with media and pick primary media item
             $findModelName = 'App\Models\Dig\\' . $find->findable_type;
             $instance = $findModelName::with('media')->findOrFail($find->findable_id);
@@ -215,7 +218,19 @@ class LocusController extends Controller
             $findMediaItem->findable_type = $find->findable_type;
             $findMediaItem->findable_id = $find->findable_id;
             $findMediaItem->description = $instance->description;
+            $findMediaItem->type_order = $order[$type];
             array_push($locusFinds, $findMediaItem);
+        }
+
+        //sort finds by type, registration (Pottery, Stone, Lithic, Metal...)
+        usort($locusFinds, function($a, $b) {
+            if($a->type_order === $b->type_order)
+                return strcmp($a->tag, $b->tag);
+            return $a->type_order < $b->type_order ? -1 : 1;
+        });
+        
+        foreach ($locusFinds as $index => $find) {
+            unset($find->type_order);
         }
 
         //get tags
