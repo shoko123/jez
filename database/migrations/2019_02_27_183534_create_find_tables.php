@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFindsTable extends Migration
+class CreateFindTables extends Migration
 {
     /**
      * Run the migrations.
@@ -13,6 +13,11 @@ class CreateFindsTable extends Migration
      */
     public function up()
     {
+        Schema::create('preservations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 50);
+        });
+
         Schema::create('finds', function (Blueprint $table) {
 
             //composite primary key and polymorphic relation to the different find tables
@@ -65,6 +70,7 @@ class CreateFindsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('preservations');
         Schema::dropIfExists('finds');
     }
 }

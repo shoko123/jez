@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGlassTable extends Migration
+class CreateGlassTables extends Migration
 {
     /**
      * Run the migrations.
@@ -13,6 +13,11 @@ class CreateGlassTable extends Migration
      */
     public function up()
     {
+        Schema::create('glass_base_types', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 50);
+        });
+
         Schema::create('glass', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('base_type_id')->default(1);
@@ -36,6 +41,7 @@ class CreateGlassTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('glass_base_types');
         Schema::dropIfExists('glass');
     }
 }

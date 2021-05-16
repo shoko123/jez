@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStonesTable extends Migration
+class CreateStoneTables extends Migration
 {
     /**
      * Run the migrations.
@@ -13,6 +13,16 @@ class CreateStonesTable extends Migration
      */
     public function up()
     {
+        Schema::create('stone_base_types', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 50);
+        });
+
+        Schema::create('stone_materials', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 50);
+        });
+
         Schema::create('stones', function (Blueprint $table) {
             $table->increments('id');
 
@@ -55,7 +65,9 @@ class CreateStonesTable extends Migration
      */
     public function down()
     {
-        //drop dependant tables to avoid fk violations.
+        //drop dependant tables first to avoid fk violations.
+        Schema::dropIfExists('stone_materials');
+        Schema::dropIfExists('stone_base_types');
         Schema::dropIfExists('stones');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLithicsTable extends Migration
+class CreateMetalTables extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,18 @@ class CreateLithicsTable extends Migration
      */
     public function up()
     {
-        Schema::create('lithics', function (Blueprint $table) {
+        Schema::create('metal_base_types', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 50);
+        });
+
+        Schema::create('metals', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('base_type_id')->default(1);
             $table->string('description', 400)->nullable();
-            $table->unsignedInteger('width')->nullable();
-            $table->unsignedInteger('length')->nullable();
-            $table->unsignedInteger('thickness')->nullable();
-            $table->unsignedInteger('weight')->nullable();
-            $table->boolean('burnt')->nullable();
-            $table->boolean('rolled')->nullable();
-            $table->boolean('hinge')->nullable();
-
+            $table->string('measurements', 200)->nullable();
             $table->foreign('base_type_id')
-                ->references('id')->on('lithic_base_types')
+                ->references('id')->on('metal_base_types')
                 ->onUpdate('cascade');
         });
     }
@@ -38,6 +36,7 @@ class CreateLithicsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lithics');
+        Schema::dropIfExists('metal_base_types');
+        Schema::dropIfExists('metals');
     }
 }
