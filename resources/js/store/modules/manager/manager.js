@@ -677,7 +677,7 @@ export default {
                         endpoint = "chunk-table";
                         break;
                 }
-                console.log(`mgr/loadPage(${payload.page})`);//meta: ${JSON.stringify(meta, null, 2)}
+                //console.log(`mgr/loadPage(${payload.page})`);//meta: ${JSON.stringify(meta, null, 2)}
                 let start = (payload.page - 1) * state.collections[payload.name].itemsPerPage;
                 let length = state.collections[payload.name].itemsPerPage;
                 //console.log(`mgr/page(${payload.page})`);

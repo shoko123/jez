@@ -376,7 +376,7 @@ export default {
             let xhrParams = {};
             //iterate thru queryString, add properties to xhrParams and push ids 
             for (const prop in qs) {
-                console.log(`parse qs prop: ${prop}`);
+                //console.log(`parse qs prop: ${prop}`);
                 let idsString = qs[prop];
                 let catCode = prop.substring(0, 1);
                 let name = prop.slice(2);
@@ -395,7 +395,7 @@ export default {
                         //console.log(`parse qs BAD cat: ${cat} ids: ${ids} name: ${name}`);
                         console.log(`parse qs BAD cat: ${cat} idsString: ${idsString} name: ${name}`);
                 }
-                console.log(`cat: ${cat} catCode: ${catCode} name: ${name} idsString: ${idsString}`);
+                //console.log(`cat: ${cat} catCode: ${catCode} name: ${name} idsString: ${idsString}`);
                 if (xhrParams.hasOwnProperty(cat)) {
                     //if (xhrParams[cat].hasOwnProperty(name)) {
                     xhrParams[cat][name] = idsStringToArray(catCode, name, idsString);
@@ -404,7 +404,7 @@ export default {
                     //}
                 } else {
                     xhrParams[cat] = { [name]: idsStringToArray(catCode, name, idsString) };
-                    console.log(`add "${cat}" property. xhrParams: ${JSON.stringify(xhrParams, null, 2)}`);
+                    //console.log(`add "${cat}" property. xhrParams: ${JSON.stringify(xhrParams, null, 2)}`);
 
                     //(xhrParams[cat])[name] = idsStringToArray(catCode, name, idsString);
                     //Object.assign(xhrParams[cat], {[name]: idsStringToArray(catCode, name, idsString)});

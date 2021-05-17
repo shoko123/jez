@@ -36,12 +36,12 @@ export default {
 
 
         to(state, payload) {
-            console.log(`mgr/router SET("to"): ${JSON.stringify(payload, null, 2)}`);//
+            //console.log(`mgr/router SET("to"): ${JSON.stringify(payload, null, 2)}`);//
             state.to = Object.assign({}, payload);
             //state.to = payload;
         },
         current(state, payload) {
-            console.log(`mgr/router SET("current"): ${JSON.stringify(payload, null, 2)}`);
+            //console.log(`mgr/router SET("current"): ${JSON.stringify(payload, null, 2)}`);
             state.to = Object.assign({}, state.current, payload);
             //state.to = payload;
         },
@@ -57,7 +57,7 @@ export default {
                 state.current.queryParams = state.to.queryParams;
             }
             //state.current = Object.assign({}, state.current, state.to);
-            console.log(`NAV success update 'to' -> 'current': ${JSON.stringify(state.current, null, 2)}`);//
+            //console.log(`NAV success update 'to' -> 'current': ${JSON.stringify(state.current, null, 2)}`);//
         },
     },
     actions: {
@@ -157,14 +157,14 @@ export default {
                 else if (rootGetters["mgr/status"].isDigModule) {
                     switch (state.to.action) {
                         case "list":
-                            console.log('mgr.loadPrepare.list ');// + JSON.stringify(res, null, 2));
+                            //console.log('mgr.loadPrepare.list ');// + JSON.stringify(res, null, 2));
                             //if same module, retrieve collection if not already populated
                             let readyCollection = rootGetters["mgr/ready"].collection;
                             let sameQuery = sameQueryString();
-                            console.log(`loadPrepare(list) ready: ${readyCollection} same: ${sameQuery}`);
+                            //console.log(`loadPrepare(list) ready: ${readyCollection} same: ${sameQuery}`);
                             if (!readyCollection || !sameQuery) {
                                 let params = rootGetters["aux/xhrFiltersFromNewQueryString"];
-                                console.log(`params from queryString: ${JSON.stringify(params, null, 2)}`);
+                                //console.log(`params from queryString: ${JSON.stringify(params, null, 2)}`);
                                 return dispatch("mgr/query", { params: params, spinner: true }, { root: true });
                             }
                             break;
@@ -187,7 +187,7 @@ export default {
                                             //return res;
                                         })
                                 } else {
-                                    console.log(`routes("show") ready: ${JSON.stringify(rootGetters["mgr/ready"], null, 2)} same item id: ${sameItem}`)
+                                    //console.log(`routes("show") ready: ${JSON.stringify(rootGetters["mgr/ready"], null, 2)} same item id: ${sameItem}`)
                                     //if collection is OK check if a new item needs to be loded or the same item needs to be reloaded
                                     if (!sameItem || !readyItem) {
                                         //collection loaded - load item only
@@ -297,7 +297,7 @@ export default {
             }
 
             //execution starts here
-            console.log(`mgr.routes.goTo() payload: ${JSON.stringify(payload, null, 2)}`);
+            //console.log(`mgr.routes.goTo() payload: ${JSON.stringify(payload, null, 2)}`);
 
             let newRoute = null;
             switch (typeof payload) {

@@ -121,17 +121,7 @@ export default {
                 piece_no: toCopy ? current.piece_no : 0,
             }
 
-            //set default date year to reduce clicks
-            let newDate;
-            if (!toCopy || current.date === null) {
-                let defaultYear = parseInt(rootGetters["mgr/item"].tag.slice(0, 2), 10) + 2000;
-                newDate = new Date(defaultYear, 0, 1).toISOString().substr(0, 10);
-            } else {
-                newDate = current.date
-            }
-            commit("date", newDate);
-
-
+            commit("date", current.date);
             commit("registrationData", registrationData);
             commit("preservation_id", toCopy ? current.preservation_id : 1);
             commit("related_pottery_basket", toCopy ? current.related_pottery_basket : null);
