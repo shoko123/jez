@@ -26,7 +26,8 @@ class MetalStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'item.base_type_id' => 'numeric|min:1|max:50',
+            'item.material_id' =>  'exists:metal_materials,id',
+            'item.base_type_id' => 'exists:metal_base_types,id',
             'item.description' => 'max:500',
             'item.measurements' => 'max:200',
         ];

@@ -5,6 +5,7 @@ namespace App\Models\Dig;
 use App\Models\Dig\Find;
 use App\Models\ItemTag;
 use App\Models\Lookups\MetalBaseType;
+use App\Models\Lookups\MetalMaterial;
 use App\Models\Scene;
 use App\Traits\FilterTrait;
 use App\Traits\MediaTrait;
@@ -58,5 +59,10 @@ class Metal extends Model implements HasMedia
     public function baseType()
     {
         return $this->belongsTo(MetalBaseType::class, 'base_type_id');
+    }
+
+    public function material()
+    {
+        return $this->belongsTo(MetalMaterial::class, 'material_id');
     }
 }

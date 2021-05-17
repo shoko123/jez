@@ -248,6 +248,13 @@ class ModuleInitializerController extends Controller
 
             case "Metal":
                 $order = [3, 1];
+                array_push($lookups, [
+                    "table_name" => "metal_materials",
+                    "column_name" => "material_id",
+                    "display_name" => "Material",
+                    "category_order" => 3,
+                    "group_order" => 2]);
+                    
                 array_push($lookups, ["table_name" => "metal_base_types",
                     "column_name" => "base_type_id",
                     "display_name" => "Base Typology",

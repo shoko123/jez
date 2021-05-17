@@ -1,13 +1,28 @@
-INSERT INTO `metal_base_types` (`id`, `name`) VALUES
+INSERT INTO `metal_base_types` (`id`, `name`) VALUES 
 (1,'Unassigned'),
-(2, 'Coin'),
-(3, 'Nail/Pin'),
-(4, 'Modern Weaponry'),
-(5, 'TBD'),
-(6, 'Unknown');
+(20,'Nail'),
+(21,'Horseshoe'),
+(30,'Ornament/Accessory'),
+(40,'Modern Weaponry'),
+(50,'Coin'),
+(100,'Unknown');
+
+INSERT INTO `metal_materials` (`id`, `name`) VALUES
+(1,'Unassigned'),
+(2, 'Iron'),
+(3, 'Steele'),
+(4, 'Copper'),
+(5, 'Brass'),
+(6, 'Bronze'),
+(7, 'Lead'),
+(8, 'Tin'),
+(9, 'Zinc'),
+(10, 'Silver'),
+(11, 'Gold'),
+(20, 'Unknown');
 
 INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `group_order`, `display_name`, `multiple`, `dependency`) VALUES 
-('Metal:Modern-Weaponry','Metal','Modern Weaponry Partition',4,1,'Modern-weaponry',0, '[["L>base_type_id>4"]]');
+('Metal:Modern-Weaponry','Metal','Modern Weaponry Partition',4,1,'Modern-weaponry',0, '[["L>base_type_id>40"]]');
 
 INSERT INTO `tags` (`id`, `type`, `order_column`, `name`, `created_at`, `updated_at`, `slug`) VALUES 
 (5001,'Metal:Modern-Weaponry',1,'{"en": "Cartridge"}',NULL,NULL,'{"en": ""}'),

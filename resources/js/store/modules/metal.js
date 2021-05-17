@@ -4,6 +4,7 @@ export default {
     state: {
         newItem: {
             id: null,
+            material_id: 1,
             base_type_id: 1,
             description: null,
             measurements: null,
@@ -20,6 +21,9 @@ export default {
         id(state, payload) {
             state.newItem.id = payload;
         },
+        material_id(state, payload) {
+            state.newItem.material_id = payload;
+        },        
         base_type_id(state, payload) {
             state.newItem.base_type_id = payload;
         },
@@ -36,7 +40,9 @@ export default {
             let toCopy = payload;
             let current = rootGetters["mgr/item"];
             commit("id", toCopy ? current.id : null);
-            commit("base_type_id", toCopy ? current.base_type_id : 1);
+            commit("material_id", toCopy ? current.base_type_id : 1);
+
+            commit("base_type_id", toCopy ? current.material_id : 1);
             commit("description", toCopy ? current.description : null);
             commit("measurements", toCopy ? current.measurements : null);
         },
