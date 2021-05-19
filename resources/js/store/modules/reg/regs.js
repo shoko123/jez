@@ -339,12 +339,19 @@ export default {
 
             if (rootGetters["mgr/status"].isCreate) {
                 u.loadAreaSeasonLoci(commit, dispatch, getters["areasSeasons"][state.newItem.areaSeasonIndex].id);
+            } else {
+                //console.log(`picker areaSeason selected loci.length: ${getters["loci"].length}`);
+                //if picker and loci contain only one item, select it.
+                if(getters["loci"].length === 1){
+                    dispatch ("locusSelected", 0);
+                }
             }
         },
 
         locusSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             console.log("regs/locusSelected");
             commit("locusIndex", payload);
+
 
             if (rootGetters["mgr/status"].isCreate) {
                 if (rootGetters["mgr/status"].isLocus) {
@@ -359,6 +366,13 @@ export default {
                         .then(res => {
                             console.log("picker.afterlocusFinds returned");
                         });
+                }
+            } else {
+                commit("findIndex", null);
+                //console.log(`picker locus selected finds.length: ${getters["finds"].length}`);
+                //if picker and finds contain only one item, select it.
+                if(getters["finds"].length === 1){
+                    dispatch ("findSelected", 0);
                 }
             }
         },
@@ -420,8 +434,13 @@ export default {
 
         //called before picker is displayed; put default behaviour here
         preparePicker({ state, getters, rootGetters, commit, dispatch }) {
-            //console.log("preparePicker - clear()");
+            //console.log(`preparePicker length: ${getters["areasSeasons"].length} clear()`);
             commit("clear");
+            //if we have only one areaSeason in current collection, choose it.
+            if(getters["areasSeasons"].length === 1) {
+                dispatch ("areaSeasonSelected", 0);
+            };
+            
         },
 
         //copy data from registration module to new item (locus or find)
