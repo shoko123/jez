@@ -32,6 +32,7 @@ Route::get('media/app-media', [MediaController::class, 'app_media']);
 
   //test (dev only)
     Route::post('test', [TestController::class, 'test']);
+    Route::post('get-id', [TestController::class, 'getId']);
     
 Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('login', [AuthController::class, 'login']);
@@ -40,6 +41,7 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('me', [AuthController::class, 'me']);
     Route::post('permissions', [AuthController::class, 'permissions']);
 });
+
 
 Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
@@ -51,7 +53,6 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     //tags
     Route::post('tags/sync', [TagController::class, 'sync']);
-
     Route::post('module-initializer', [ModuleInitializerController::class, 'index']);
 
     //areas
