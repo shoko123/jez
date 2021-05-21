@@ -146,8 +146,7 @@ export default {
                 //let empty = rootState.mgr.collections["main"].collection.length === 0;
                 if (state.to.module === "About") {
                     //console.log('dispatcher About...');
-
-                    if (rootGetters["mgr/ready"].collection) {
+                    if (!rootGetters["mgr/ready"].collection) {
                         return dispatch("mgr/query", { params: {}, spinner: true }, { root: true });
                     }
                     if (state.to.action === "show") {

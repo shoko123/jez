@@ -116,7 +116,7 @@ class AboutPages
             "no" => 4,
             "image" => "hierarchy",
             "title" => "Database Organization",
-            "text" => ["This database may be abstracted as four tiers, each containing modules of interest as shown. 
+            "text" => ["This database may be abstracted as having four tiers, each containing modules of interest as shown. 
             The different modules may be reached from the main menu. Within each module, facilities for filtering and 
             viewing are available in the submenu. Since excavation revealed only partial architectural remains, 
             more detailed spatial information (e.g. buildings, rooms, walls, etc.) were not given

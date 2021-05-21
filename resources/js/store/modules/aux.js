@@ -429,7 +429,7 @@ export default {
             //state.params = payload;
         },
         clearGroupsAndParams(state, payload) {
-            console.log(`aux/clearGroupsAndParams`);//(groups) ${JSON.stringify(payload, null, 2)}`);
+            //console.log(`aux/clearGroupsAndParams`);//(groups) ${JSON.stringify(payload, null, 2)}`);
             state.groups = Object.assign({}, {});
             state.params = Object.assign({}, {});
         },

@@ -589,7 +589,9 @@ export default {
         initializeModule({ state, getters, commit, dispatch }, payload) {
             //console.log('mgr.initializeModule. apiBaseUrl: ' + getters["status"].moduleApiBaseUrl);
             dispatch("clearModule");
+            //only dig modules and 'About' are initialized
             if (["Home", "Auth"].includes(state.routes.to.module)) { return }
+
             let xhrRequest = {
                 endpoint: `/api/module-initializer`,
                 action: "post",
@@ -605,8 +607,15 @@ export default {
                     //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
                     commit('welcomeData', res.data.welcomeData);
                     //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
-                    dispatch("aux/groups", res.data.groups, { root: true });
-                    return res;
+
+                    if (state.routes.to.module === "About") {
+                        //About doesn't have any associated groups of parameters .
+                        return res;
+                    } else {
+                        //Save dig modules` parameters in the category/group/param structure. 
+                        dispatch("aux/groups", res.data.groups, { root: true });
+                        return res;
+                    }
                 })
         },
 
@@ -665,6 +674,8 @@ export default {
                     case "Metal":
                         break;
                     default:
+                        //Area, Season, and AreaSeason don't need to load page (All data is in collection).
+                        commit("ready", { entity: "chunk", isReady: true });
                         return;
                 }
 

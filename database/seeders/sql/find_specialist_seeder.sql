@@ -1,6 +1,6 @@
 INSERT INTO `specialists` (`id`, `name`) VALUES
 (1,'Eliot Brown'),
-(2,'Elysia Fischer'),
+(2,'Alysia Fischer'),
 (3,'Esttelle'),
 (4,'Tamar'),
 (5,'Danny Rosenberg'),
