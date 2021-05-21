@@ -19,8 +19,9 @@ class CreateFindTables extends Migration
         });
 
         Schema::create('finds', function (Blueprint $table) {
-
-            //composite primary key and polymorphic relation to the different find tables
+            $table->increments('id')->index();
+            
+            //composite key and polymorphic relation to the different find tables        
             $table->string('findable_type', 20);
             $table->unsignedInteger('findable_id');
 
@@ -32,11 +33,9 @@ class CreateFindTables extends Migration
             $table->unsignedInteger('piece_no')->default(0);
 
             //common fields to all small finds
-            $table->unsignedInteger('artifact_count')->default(1); //used only on find_quantity_code B-basket
-
+            $table->unsignedInteger('artifact_count')->default(1); //used only on scope = 'basket'
             $table->unsignedInteger('preservation_id')->default(1);
             $table->unsignedInteger('related_pottery_basket')->nullable();
-
             $table->date('date')->nullable();
             $table->string('description', 400)->nullable();
             $table->string('notes', 400)->nullable();
@@ -45,7 +44,8 @@ class CreateFindTables extends Migration
             $table->string('level_top', 20)->nullable();
             $table->string('level_bottom', 20)->nullable();
 
-            $table->primary(['findable_type', 'findable_id']);
+            //$table->dropPrimary("id");
+            $table->index(['findable_type', 'findable_id']);
 
             $table->foreign('locus_id')
                 ->references('id')->on('loci')

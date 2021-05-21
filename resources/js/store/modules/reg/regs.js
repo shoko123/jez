@@ -331,7 +331,7 @@ export default {
             //if we are picking from an existing collection, data is already available, and just needs to be filtered.
             //so all left to be done is reset locus_id.
             //area_season_id is already set by the two way binding with the element locus
-            console.log("regs/areaSeasonSelected");
+            //console.log("regs/areaSeasonSelected");
             commit("areaSeasonIndex", payload);
             commit("stp/disableNextButton", true, { root: true });//Because we now need to reselect locus/find.
             commit("locusIndex", null);
@@ -349,7 +349,7 @@ export default {
         },
 
         locusSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            console.log("regs/locusSelected");
+            //console.log("regs/locusSelected");
             commit("locusIndex", payload);
 
 

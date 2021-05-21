@@ -10,6 +10,7 @@ use Database\Seeders\PermissionSeeder;
 use Database\Seeders\StaticTablesSeeder;
 use Database\Seeders\TagTablesSeeder;
 use Database\Seeders\UsersTableSeeder;
+use Database\Seeders\SpecialistTablesSeeder;
 //use Database\Seeders\EliotSeeder;
 use Illuminate\Database\Seeder;
 
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TagTablesSeeder::class);
         $this->call(AllFindsTablesSeeder::class);
         $this->call(MediaTablesSeeder::class);
+        $this->call(SpecialistTablesSeeder::class);
         //$this->call(EliotSeeder::class);
     }
 }

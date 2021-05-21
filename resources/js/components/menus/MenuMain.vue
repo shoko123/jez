@@ -2,12 +2,7 @@
   <div>
     <template v-if="isReadMode">
       <v-toolbar dark class="primary" fixed dense>
-        <v-toolbar-title>
-          <router-link to="/" tag="span" style="cursor: pointer"
-            >JEZREEL EXPEDITION</router-link
-          >
-          {{ moduleName }}
-        </v-toolbar-title>
+        <v-toolbar-title @click="home"> {{ moduleName }} </v-toolbar-title>
         <v-spacer></v-spacer>
 
         <v-toolbar-items class="hidden-xs-only">
@@ -146,13 +141,11 @@ export default {
     },
     moduleName() {
       return ["Home", "Auth"].includes(this.$store.getters["mgr/module"])
-        ? ` (${this.$store.getters["mgr/module"]})`
-        : ` (${this.$store.getters["mgr/status"].collectionName})`;
+        ? ` Jezreel Expedition (${this.$store.getters["mgr/module"]})`
+        : `  Jezreel Expedition (${this.$store.getters["mgr/status"].collectionName})`;
     },
     menuItems() {
-      return this.isLoggedIn
-        ? this.loggedInMenu
-        : this.guestMenu;
+      return this.isLoggedIn ? this.loggedInMenu : this.guestMenu;
     },
   },
   methods: {
@@ -179,6 +172,9 @@ export default {
             action: "welcome",
           });
       }
+    },
+    home() {
+      console.log("home ");
     },
   },
 };

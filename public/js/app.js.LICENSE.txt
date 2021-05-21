@@ -938,6 +938,8 @@
 
 /*! ./sr-Cyrl */
 
+/*! ./sr-Latn */
+
 /*! ./stack */
 
 /*! ./sv */
@@ -973,6 +975,8 @@
 /*! ./util/timestamp */
 
 /*! ./utils */
+
+/*! ./vi */
 
 /*! ./zh-Hans */
 
@@ -1188,7 +1192,7 @@
 
 /*! exports provided: VWindow, VWindowItem, default */
 
-/*! exports provided: af, ar, bg, ca, ckb, cs, de, el, en, es, et, fa, fi, fr, hr, hu, he, id, it, ja, ko, lv, lt, nl, no, pl, pt, ro, ru, sk, sl, srCyrl, sv, th, tr, az, uk, zhHans, zhHant */
+/*! exports provided: af, ar, bg, ca, ckb, cs, de, el, en, es, et, fa, fi, fr, hr, hu, he, id, it, ja, ko, lv, lt, nl, no, pl, pt, ro, ru, sk, sl, srCyrl, srLatn, sv, th, tr, az, uk, vi, zhHans, zhHant */
 
 /*! exports provided: attachedRoot */
 
@@ -1420,6 +1424,10 @@
   !*** ./src/locale/uk.ts ***!
   \**************************/
 
+/*!**************************!*\
+  !*** ./src/locale/vi.ts ***!
+  \**************************/
+
 /*!***************************!*\
   !*** ./src/locale/ckb.ts ***!
   \***************************/
@@ -1450,6 +1458,10 @@
 
 /*!*******************************!*\
   !*** ./src/locale/sr-Cyrl.ts ***!
+  \*******************************/
+
+/*!*******************************!*\
+  !*** ./src/locale/sr-Latn.ts ***!
   \*******************************/
 
 /*!*******************************!*\

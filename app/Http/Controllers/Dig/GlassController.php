@@ -90,7 +90,7 @@ class GlassController extends Controller
             "collection" => $items,
         ], 200);
     }
-    
+
     public function chunkTable(Request $request)
     {
         $itemIds = $request["ids"];
@@ -103,10 +103,10 @@ class GlassController extends Controller
         return response()->json([
             "collection" => $items,
         ], 200);
-    }    
+    }
 
     public function show($id)
-    {       
+    {
         $item = Glass::with(
             ['find',
                 'find.locus' => function ($query) {
@@ -114,22 +114,23 @@ class GlassController extends Controller
                 'find.locus.areaSeason',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');},
-                'media'
+                'media',
+                'find.specialists',
             ])
             ->findOrFail($id);
 
-         //format tag
-         $find = $item->find;
-         $item->tag = $this->model->tag($find);
+        //format tag
+        $find = $item->find;
+        $item->tag = $this->model->tag($find);
 
-         //add fields
-         
-         $item->locus_id = $find->locus->id;
-         $item->area_season_id = $find->locus->areaSeason->id;
-         $item->locus_id = $find->locus->id;
- 
-         $find->locus_id = $find->locus->id;
-         $find->area_season_id = $find->locus->areaSeason->id;
+        //add fields
+
+        $item->locus_id = $find->locus->id;
+        $item->area_season_id = $find->locus->areaSeason->id;
+        $item->locus_id = $find->locus->id;
+
+        $find->locus_id = $find->locus->id;
+        $find->area_season_id = $find->locus->areaSeason->id;
 
         //get related media.
         $itemMedia = $this->model->itemMediaCollection('Glass', $item);
@@ -142,20 +143,27 @@ class GlassController extends Controller
                 'id' => $tag->pivot->tag_id,
             ]);
         }
-
+        //get tags
+        $specialists = [];
+        foreach ($find->specialists as $s) {
+            array_push($specialists, $s->name);
+        }
+        $item->specialists = $specialists;
+        //$specialists = $find->specialists;
 
         //cleanup
         unset($item->find);
         unset($item->media);
         unset($item->tags);
         unset($find->locus);
-        unset($stone->baseType);
+        unset($find->specialists);
 
         return response()->json([
             "item" => $item,
             "find" => $find,
             "itemMedia" => $itemMedia,
             "tags" => $tags,
+            //"specialists" => $specialists,
         ], 200);
     }
 
