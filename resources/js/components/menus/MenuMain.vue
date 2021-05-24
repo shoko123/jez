@@ -6,14 +6,10 @@
         <v-spacer></v-spacer>
 
         <v-toolbar-items class="hidden-xs-only">
-          <v-btn
-            v-if="isLoggedIn"
-            text
-            @click="moduleClick({ module: 'About' })"
-          >
+          <v-btn text @click="moduleClick({ module: 'About' })">
             <v-icon left dark>mdi-help-circle-outline</v-icon>About
           </v-btn>
-          <v-menu v-if="isLoggedIn" offset-y>
+          <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-btn v-bind="attrs" v-on="on" text>
                 <v-icon left dark>view_comfy</v-icon>
@@ -30,10 +26,9 @@
               </v-list-item>
             </v-list>
           </v-menu>
-
           <v-btn
             text
-            v-for="item in menuItems"
+            v-for="item in btns"
             :key="item.title"
             :loading="item.loading"
             @click="moduleClick(item)"
@@ -41,22 +36,34 @@
             <v-icon left dark>{{ item.icon }}</v-icon>
             {{ item.title }}
           </v-btn>
-          <v-menu v-if="isLoggedIn" offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn color="purple" dark v-bind="attrs" v-on="on">{{
-                userName
-              }}</v-btn>
-            </template>
-            <v-list>
-              <v-list-item
-                v-for="(item, index) in items"
-                :key="index"
-                @click="userMenu(index)"
-              >
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
+          <template v-if="isLoggedIn">
+            <v-menu offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn color="purple" dark v-bind="attrs" v-on="on">{{
+                  userName
+                }}</v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="(item, index) in items"
+                  :key="index"
+                  @click="userMenu(index)"
+                >
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </template>
+          <template v-else>
+            <v-btn
+              text
+              :loading="loginBtn.loading"
+              @click="moduleClick(loginBtn)"
+            >
+              <v-icon left dark>{{ loginBtn.icon }}</v-icon>
+              {{ loginBtn.title }}
+            </v-btn>
+          </template>
         </v-toolbar-items>
       </v-toolbar>
     </template>
@@ -77,7 +84,7 @@ export default {
         { title: "Areas/Seasons", module: "AreaSeason" },
       ],
       sideNav: false,
-      loggedInMenu: [
+      btns: [
         {
           icon: "style",
           title: "loci",
@@ -109,20 +116,11 @@ export default {
           module: "Metal",
         },
       ],
-      guestMenu: [
-        /*
-        {
-          icon: "face",
-          title: "Sign up",
-          module: this.registerClick
-        },
-        */
-        {
-          icon: "lock_open",
-          title: "login",
-          module: "Login",
-        },
-      ],
+      loginBtn: {
+        icon: "lock_open",
+        title: "login",
+        module: "Login",
+      },
     };
   },
 
@@ -143,9 +141,6 @@ export default {
       return ["Home", "Auth"].includes(this.$store.getters["mgr/module"])
         ? ` Jezreel Expedition (${this.$store.getters["mgr/module"]})`
         : `  Jezreel Expedition (${this.$store.getters["mgr/status"].collectionName})`;
-    },
-    menuItems() {
-      return this.isLoggedIn ? this.loggedInMenu : this.guestMenu;
     },
   },
   methods: {
@@ -174,7 +169,7 @@ export default {
       }
     },
     home() {
-      console.log("home ");
+      this.$store.dispatch("mgr/goToRoute", "home");
     },
   },
 };

@@ -16,6 +16,7 @@ export default {
             id: null,
             queryParams: null,
         },
+        localFilters: null,
     },
     getters: {
         getRouter(state) {
@@ -26,6 +27,9 @@ export default {
         },
         current(state) {
             return state.current;
+        },
+        localFilters(state) {
+            return state.localFilters;
         },
     },
     mutations: {
@@ -45,20 +49,11 @@ export default {
             state.to = Object.assign({}, state.current, payload);
             //state.to = payload;
         },
-        navigationSuccess(state) {
-            state.current.module = state.to.module;
-            if (state.to.hasOwnProperty("id")) {
-                state.current.id = state.to.id;
-            }
-            if (state.to.hasOwnProperty("action")) {
-                state.current.action = state.to.action;
-            }
-            if (state.to.hasOwnProperty("queryParams")) {
-                state.current.queryParams = state.to.queryParams;
-            }
-            //state.current = Object.assign({}, state.current, state.to);
-            //console.log(`NAV success update 'to' -> 'current': ${JSON.stringify(state.current, null, 2)}`);//
+        localFilters(state, payload) {
+            console.log(`routes/setLocalFilters: ${JSON.stringify(payload, null, 2)}`);
+            state.localFilters = payload;
         },
+
     },
     actions: {
         parseTo({ state, commit }, payload) {
@@ -119,6 +114,7 @@ export default {
 
             //console.log(`parsedTo: ${JSON.stringify(to, null, 2)}`);
             commit("to", to /*{ module, action, queryString, id }*/);
+            return to;
         },
 
         routeChanged({ state, getters, rootState, rootGetters, commit, dispatch }, payload) {
@@ -154,17 +150,19 @@ export default {
                     }
                 }
                 else if (rootGetters["mgr/status"].isDigModule) {
+                    console.log('loadPrepare');
                     switch (state.to.action) {
                         case "list":
-                            //console.log('mgr.loadPrepare.list ');// + JSON.stringify(res, null, 2));
+                            console.log('mgr.loadPrepare.list ');// + JSON.stringify(res, null, 2));
                             //if same module, retrieve collection if not already populated
                             let readyCollection = rootGetters["mgr/ready"].collection;
                             let sameQuery = sameQueryString();
                             //console.log(`loadPrepare(list) ready: ${readyCollection} same: ${sameQuery}`);
                             if (!readyCollection || !sameQuery) {
-                                let params = rootGetters["aux/xhrFiltersFromNewQueryString"];
-                                //console.log(`params from queryString: ${JSON.stringify(params, null, 2)}`);
-                                return dispatch("mgr/query", { params: params, spinner: true }, { root: true });
+                                let params = rootGetters["aux/filtersFromNewQueryString"];
+                                console.log(`params from queryString: ${JSON.stringify(params, null, 2)}`);
+                                commit("localFilters", params.local);
+                                return dispatch("mgr/query", { params: params.xhr, spinner: true }, { root: true });
                             }
                             break;
 
@@ -232,17 +230,24 @@ export default {
             //if new module, block wait until module's metadata (tags, lookups) are retrieved from DB.
             /////////////////////////////////////////////////////////////////////////
 
+            console.log("routeChanged");
+            return dispatch('parseTo', payload.to)
+                .then(res => {
 
-            dispatch('parseTo', payload.to);
-            //If navigation is to a different module, initialize it (block async)
-            if (!sameModule()) {
-                dispatch('mgr/initializeModule', null, { root: true })
-                    .then(res => {
+                    console.log(`after parseTo`);
+                    console.log(`current: ${JSON.stringify(state.current, null, 2)}`);
+                    console.log(`to: ${JSON.stringify(state.to, null, 2)}`);
+                    //If navigation is to a different module, initialize it (block async)
+                    if (!sameModule()) {
+                        return dispatch('mgr/initializeModule', null, { root: true })
+                            .then(res => {
+                                return loadPrepare();
+                            });
+                    } else {
                         return loadPrepare();
-                    });
-            } else {
-                return loadPrepare();
-            }
+                    }
+                });
+
         },
 
         goTo({ state, rootState, getters, rootGetters }, payload) {
@@ -323,6 +328,27 @@ export default {
             } else {
                 console.log(`mgr.routes.push() error in parsing path: ${newRoute.path}`);
             }
+        },
+        navigationSuccess({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
+            console.log(`routes/navigation success()`);
+            state.current.module = state.to.module;
+            if (state.to.hasOwnProperty("id")) {
+                state.current.id = state.to.id;
+            }
+            if (state.to.hasOwnProperty("action")) {
+                state.current.action = state.to.action;
+
+                if (state.to.action === 'list') {
+                    dispatch("aux/setLocalFilters", state.localFilters, { root: true }).then(res => {
+                        console.log(`routes/navigation success() calling setlocalFilters() with params: ${JSON.stringify(state.localFilters, null, 2)}`);
+                    });
+                }
+            }
+            if (state.to.hasOwnProperty("queryParams")) {
+                state.current.queryParams = state.to.queryParams;
+            }
+            //state.current = Object.assign({}, state.current, state.to);
+            //console.log(`NAV success update 'to' -> 'current': ${JSON.stringify(state.current, null, 2)}`);//
         },
     },
 

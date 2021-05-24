@@ -1,5 +1,5 @@
 <template>
-  <v-container class="ma-0 pa-0 min_width">
+  <v-container v-if="isLoggedIn" class="ma-0 pa-0 min_width">
     <v-row align="center">
       <v-tooltip v-if="isAllowed('update')" top>
         <template v-slot:activator="{ on }">
@@ -94,6 +94,10 @@ export default {
   },
 
   methods: {
+    isLoggedIn() {
+      return this.store.getters["aut/isLoggedIn"];
+    },
+    
     isAllowed(permissionName) {
       let fullPermissionName =
         this.$store.getters["mgr/module"] + "-" + permissionName;

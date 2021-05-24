@@ -76,7 +76,7 @@ export default new Vuex.Store({
             });
 
             //load images used by app
-            dispatch("med/loadAppMedia")
+            dispatch("med/loadAppMedia");
         },
     }
 });

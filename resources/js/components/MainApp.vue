@@ -31,7 +31,7 @@ export default {
   },
 
   created() {
-    this.$store.dispatch("init", this.$router);
+    //this.$store.dispatch("init", this.$router);
   },
  
   computed: {

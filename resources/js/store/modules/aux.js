@@ -329,7 +329,7 @@ export default {
             return qs
         },
 
-        xhrFiltersFromNewQueryString(state, getters, rootState, rootGetters) {
+        filtersFromNewQueryString(state, getters, rootState, rootGetters) {
 
             function idsStringToArray(catCode, prop, idsString) {
 
@@ -354,7 +354,7 @@ export default {
                         case "T":
                             return false;
                         default:
-                            console.log(`aux/xhrFiltersFromNewQueryString BAD group: ${prop}`);//(groups) ${JSON.stringify(payload, null, 2)}`);
+                            console.log(`aux/filtersFromNewQueryString BAD group: ${prop}`);//(groups) ${JSON.stringify(payload, null, 2)}`);
                             return true
                     }
                 }
@@ -374,12 +374,14 @@ export default {
             //start here.
             let qs = rootGetters["mgr/routes/to"].queryParams;
             let xhrParams = {};
+            let localParams = [];
             //iterate thru queryString, add properties to xhrParams and push ids 
             for (const prop in qs) {
-                //console.log(`parse qs prop: ${prop}`);
+                
                 let idsString = qs[prop];
                 let catCode = prop.substring(0, 1);
                 let name = prop.slice(2);
+               
                 let cat;
                 switch (catCode) {
                     case "T":
@@ -396,6 +398,42 @@ export default {
                         console.log(`parse qs BAD cat: ${cat} idsString: ${idsString} name: ${name}`);
                 }
                 //console.log(`cat: ${cat} catCode: ${catCode} name: ${name} idsString: ${idsString}`);
+                console.log(`[${prop}]: ${idsString} cat: ${cat} catCode: ${catCode} name: ${name}`);
+
+                let filtersArray = idsStringToArray(catCode, name, idsString);
+                
+                //localParams
+                filtersArray.forEach(x => {
+                    switch(catCode){
+                        case "T":
+                            localParams.push(catCode + ">" + name + ">" + x);
+                            break;
+                        case "R":
+                            switch (name) {
+                                case "areas":
+                                    localParams.push(catCode + ">Areas>" + x);
+                                    break;
+                                case "seasons":
+                                    localParams.push(catCode + ">Seasons>" + (parseInt(x, 10) + 2000).toString());
+                                    break;
+                                case "media":
+                                    localParams.push(catCode + ">Media>" + x);
+    
+                                    break;
+                                case "registration_categories":
+                                case "scopes":
+                                    localParams.push(catCode + ">" + name + ">" + x);
+                                    break;
+                            }
+                            break;
+                        case "L":
+                            localParams.push(catCode + ">" + name + ">" + x);
+                            break;
+                    }
+
+                })
+
+                //xhrParams
                 if (xhrParams.hasOwnProperty(cat)) {
                     //if (xhrParams[cat].hasOwnProperty(name)) {
                     xhrParams[cat][name] = idsStringToArray(catCode, name, idsString);
@@ -412,7 +450,8 @@ export default {
 
                 }
             }
-            return xhrParams;
+            //return xhrParams;
+            return { xhr: xhrParams, local: localParams };
         },
     },
 
@@ -452,7 +491,7 @@ export default {
         },
 
         selectParam(state, payload) {
-            //console.log(`******selectParam()\npayload: ${JSON.stringify(payload, null, 2)}`);
+            console.log(`******selectParam()\npayload: ${JSON.stringify(payload, null, 2)}`);
 
             let group = state.groups[(state.params[payload.key]).groupKey];
             switch (group.group_type) {
@@ -484,6 +523,25 @@ export default {
                     value: true
                 });
             });
+        },
+
+        setLocalFilters({ state, getters, rootGetters, commit, dispatch }, payload) {
+            if(payload === null) {return;}
+            console.log(`setLocalFilters: ${JSON.stringify(payload, null, 2)}`);
+        
+            //clear currently selected
+            for (const [key, value] of Object.entries(state.params)) {
+                value.selectedIn["filters"] = false;
+            }
+           
+
+            //set filters from queryString
+            payload.forEach(x => commit("selectParam", {
+                key: x,
+                source: "filters",
+                value: true
+            }));
+            return;
         },
 
         toggleOneParam({ state, getters, rootGetters, commit, dispatch }, payload) {
@@ -748,6 +806,7 @@ export default {
                     })
                 }
             })
+            return;
         },
 
         sync({ state, getters, rootGetters, commit, dispatch }, payload) {

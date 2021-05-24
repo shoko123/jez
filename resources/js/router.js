@@ -31,7 +31,7 @@ Router.prototype.push = function push(location) {
             if (err.name === 'NavigationDuplicated') {
                 console.log("duplicate");
             } else if (isNavigationFailure(err)) {
-                    console.log("nav error");
+                console.log(`Navigation error: ${err}`);
             } else {
                 throw err;
             }
@@ -46,9 +46,6 @@ const router = new Router({
         {
             path: '/',
             component: Home,
-            meta: {
-                requiresAuth: false
-            }
         },
         {
             path: '/:module(auth)',
@@ -69,9 +66,6 @@ const router = new Router({
             path: '/dig-modules/:module',
             component: RouterElement,
             props: true,
-            meta: {
-                requiresAuth: true
-            },
             children: [
                 {
                     path: ':action(welcome)',
@@ -87,7 +81,8 @@ const router = new Router({
                 },
                 {
                     path: ':action(create)',
-                    component: stepper
+                    component: stepper,
+                    meta: { requiresAuth: true },
                 },
                 {
                     path: ':id(\\d+)',
@@ -101,17 +96,20 @@ const router = new Router({
                         {
                             path: ':action(update)',
                             props: true,
-                            component: stepper
+                            component: stepper,
+                            meta: { requiresAuth: true },
                         },
                         {
                             path: ':action(media)',
                             props: true,
-                            component: MediaEdit
+                            component: MediaEdit,
+                            meta: { requiresAuth: true },
                         },
                         {
                             path: ':action(tags)',
                             props: true,
-                            component: Tagger
+                            component: Tagger,
+                            meta: { requiresAuth: true },
                         },
                     ],
                 },
@@ -121,9 +119,6 @@ const router = new Router({
             path: '/:module(about)',
             component: RouterElement,
             props: true,
-            meta: {
-                requiresAuth: true
-            },
             children: [
                 {
                     path: ':id(\\d+)',
@@ -156,6 +151,7 @@ const router = new Router({
     ]
 })
 
+
 router.beforeEach((to, from, next) => {
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
@@ -164,9 +160,10 @@ router.beforeEach((to, from, next) => {
     } else if (to.path == "/auth/login" && store.getters["aut/isLoggedIn"]) {
         next("/");
     } else {
+        console.log(`router/beforeEach from: ${from.path} to: ${to.path}`);
         store.dispatch("mgr/routes/routeChanged", { to, from })
             .then((res) => {
-                store.commit("mgr/routes/navigationSuccess", null);
+                store.dispatch("mgr/routes/navigationSuccess", null);
                 next();
             }).catch(err => {
                 console.log(`navigation error: ${JSON.stringify(err, null, 2)}`);
@@ -174,5 +171,8 @@ router.beforeEach((to, from, next) => {
             });
     }
 });
+
+
+
 
 export default router

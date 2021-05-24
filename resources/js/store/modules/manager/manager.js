@@ -587,7 +587,7 @@ export default {
         },
 
         initializeModule({ state, getters, commit, dispatch }, payload) {
-            //console.log('mgr.initializeModule. apiBaseUrl: ' + getters["status"].moduleApiBaseUrl);
+            console.log('mgr.initializeModule. apiBaseUrl: ' + state.routes.to.module);
             dispatch("clearModule");
             //only dig modules and 'About' are initialized
             if (["Home", "Auth"].includes(state.routes.to.module)) { return }
@@ -604,7 +604,7 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
+                    console.log('initModule returned: ');// + JSON.stringify(res, null, 2));
                     commit('welcomeData', res.data.welcomeData);
                     //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
 
@@ -613,7 +613,7 @@ export default {
                         return res;
                     } else {
                         //Save dig modules` parameters in the category/group/param structure. 
-                        dispatch("aux/groups", res.data.groups, { root: true });
+                        return dispatch("aux/groups", res.data.groups, { root: true });
                         return res;
                     }
                 })
