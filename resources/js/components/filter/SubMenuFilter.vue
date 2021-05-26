@@ -23,7 +23,7 @@ export default {
   methods: {
     submit() {
       //this.$store.dispatch("mgr/clearModule");
-      let qp = this.$store.getters["aux/filtersToQueryString"];
+      let qp = this.$store.getters["mgr/routes/filtersToQueryString"];
       this.$store.dispatch("mgr/goToRoute", {
         module: this.$store.getters["mgr/module"],
         action: "list",

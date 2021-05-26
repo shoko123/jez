@@ -27,6 +27,7 @@ const originalPush = Router.prototype.push;
 
 Router.prototype.push = function push(location) {
     return originalPush.call(this, location)
+    
         .catch(err => {
             if (err.name === 'NavigationDuplicated') {
                 console.log("duplicate");
@@ -151,7 +152,6 @@ const router = new Router({
     ]
 })
 
-
 router.beforeEach((to, from, next) => {
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
@@ -160,6 +160,7 @@ router.beforeEach((to, from, next) => {
     } else if (to.path == "/auth/login" && store.getters["aut/isLoggedIn"]) {
         next("/");
     } else {
+        store.commit("mgr/routes/inTransition", true);
         console.log(`router/beforeEach from: ${from.path} to: ${to.path}`);
         store.dispatch("mgr/routes/routeChanged", { to, from })
             .then((res) => {
@@ -168,6 +169,8 @@ router.beforeEach((to, from, next) => {
             }).catch(err => {
                 console.log(`navigation error: ${JSON.stringify(err, null, 2)}`);
                 next(false);
+            }).finally(() => {
+                store.commit("mgr/routes/inTransition", false);
             });
     }
 });

@@ -2,7 +2,7 @@
   <div>
     <template v-if="isReadMode">
       <v-toolbar dark class="primary" fixed dense>
-        <v-toolbar-title @click="home"> {{ moduleName }} </v-toolbar-title>
+        <v-btn text @click="home"> {{ moduleName }} </v-btn>
         <v-spacer></v-spacer>
 
         <v-toolbar-items class="hidden-xs-only">

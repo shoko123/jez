@@ -66,7 +66,7 @@ export default new Vuex.Store({
             //set server base addresses
             let baseUrl = `${window.location.protocol}//${window.location.host}`;
             commit("mgr/baseUrl", baseUrl, { root: true });
-            console.log("setting axios.baseURL to " + baseUrl);
+            console.log("vuex.init() setting axios.baseURL to " + baseUrl);
             axios.defaults.baseURL = baseUrl;
 
             //enables axios debug
