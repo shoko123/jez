@@ -155,8 +155,8 @@ export default {
             if (!rootGetters["mgr/status"].isShow || !rootGetters["mgr/item"]) { return [] };
             let scopeIsBasket = (rootGetters["mgr/status"].isFind &&
                 rootGetters["fnd/item"] &&
-                rootGetters["fnd/item"].basket_no !== null &&
-                (rootGetters["fnd/item"].artifact_no === null));
+                rootGetters["fnd/item"].basket_no > 0 &&
+                (rootGetters["fnd/item"].artifact_no === 0));
 
             //2 filters:
             // (1) if scope is basket (currently only Pottery) allow only period tags.
@@ -266,13 +266,20 @@ export default {
             state.params[payload.paramKey].affectsTagGroups.push(payload.affects);
         },
 
-        clearParams(state, payload) {
+        clear(state, payload) {
+            let filters = payload.includes("filters");
+            let itemParams = payload.includes("itemParams");
+            let newParams = payload.includes("newParams");
+
             for (const [key, value] of Object.entries(state.params)) {
-                if (payload) {
+                if (filters && value.selectedIn["filters"]) {
                     value.selectedIn["filters"] = false;
-                } else {
-                    if (value.groupKey.charAt(0) === "T") {
+                }
+                if (value.groupKey.charAt(0) === "T") {
+                    if (itemParams && value.selectedIn["itemParams"]) {
                         value.selectedIn["itemParams"] = false;
+                    }
+                    if (newParams && value.selectedIn["newParams"]) {
                         value.selectedIn["newParams"] = false;
                     }
                 }
@@ -299,12 +306,13 @@ export default {
                     break;
             }
         },
+
     },
 
     actions: {
         itemTags({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`aux/itemTags: ${JSON.stringify(payload, null, 2)}`);
-            commit("clearParams", false);//clear itemParams (not filters)
+            commit("clear", ["itemParams"]);//clear itemParams (not filters)
             payload.forEach(x => {
                 commit("selectParam", {
                     key: `T>${x.id}`,
@@ -315,23 +323,17 @@ export default {
         },
 
         setLocalFilters({ state, getters, rootGetters, commit, dispatch }, payload) {
-            if (payload === null) { return; }
-            //console.log(`setLocalFilters: ${JSON.stringify(payload, null, 2)}`);
-
-            //clear currently selected
-            for (const [key, value] of Object.entries(state.params)) {
-                value.selectedIn["filters"] = false;
-            }
+            //if (payload === null) { return; }
+            commit("clear", ["filters"]);
 
             //set filters from queryString
             payload.forEach(x => commit("selectParam", {
                 key: x,
                 source: "filters",
                 value: true
-            })); 
-            return Promise.resolve(payload);
+            }));
         },
-       
+
 
         toggleOneParam({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`aux/toggleOneParam(): payload: ${JSON.stringify(payload, null, 2)}`);
@@ -436,11 +438,7 @@ export default {
 
 
         clearFilters({ state, commit }) {
-            for (const [key, value] of Object.entries(state.params)) {
-                if (value.selectedIn.filters) {
-                    commit("selectParam", { key: key, source: "filters", value: false });
-                }
-            }
+            commit("clear", ["filters"]);
         },
 
         prepareTagger({ state, rootState, getters, rootGetters, commit, dispatch }) {

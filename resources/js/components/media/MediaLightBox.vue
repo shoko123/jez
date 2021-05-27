@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid v-if="isReady">
     <v-card>
       <v-card-title class="grey py-0 mb-4">
         {{ header }}
@@ -19,7 +19,6 @@
       </v-card-title>
       <v-card-text>
         <v-carousel
-          v-if="isOpen"
           v-model="lightBoxIndex"
           height="100%"
           :show-arrows="false"
@@ -34,7 +33,6 @@
           >
             <v-row class="fill-height" align="center" justify="center">
               <v-img
-                v-if="!loading"
                 id="lbmedia"
                 :src="media.fullUrl"
                 :lazy-src="media.tnUrl"
@@ -61,8 +59,8 @@ export default {
       return this.$store.getters["med/lightBox"];
     },
 
-    isOpen() {
-      return this.lightBox.isOpen;
+    isReady() {
+      return this.lightBox && this.lightBox.isOpen;
     },
 
     showArrows() {

@@ -160,7 +160,7 @@ router.beforeEach((to, from, next) => {
     } else if (to.path == "/auth/login" && store.getters["aut/isLoggedIn"]) {
         next("/");
     } else {
-        store.commit("mgr/routes/inTransition", true);
+        store.commit("mgr/routes/loading", true);
         console.log(`router/beforeEach from: ${from.path} to: ${to.path}`);
         store.dispatch("mgr/routes/routeChanged", { to, from })
             .then((res) => {
@@ -170,7 +170,7 @@ router.beforeEach((to, from, next) => {
                 console.log(`navigation error: ${JSON.stringify(err, null, 2)}`);
                 next(false);
             }).finally(() => {
-                store.commit("mgr/routes/inTransition", false);
+                store.commit("mgr/routes/loading", false);
             });
     }
 });

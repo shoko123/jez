@@ -44,7 +44,7 @@ export default {
 
         lightBox(state, rootState, getters, rootGetters) {
             //let storageName = rootGetters["mgr/storageName"](state.lightBox.source);
-            if (state.lightBox.isOpen === false) return state.lightBox;
+            if (state.lightBox.isOpen === false) return null;
 
             let lb = { ...state.lightBox };
             //let c = rootGetters["mgr/collectionMain"];

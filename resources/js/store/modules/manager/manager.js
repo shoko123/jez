@@ -212,8 +212,6 @@ export default {
             let status = {
                 itemName: moduleStaticInfo.itemName,
                 collectionName: moduleStaticInfo.collectionName,
-                moduleAppBaseUrl: moduleStaticInfo.appBaseUrl,
-                moduleApiBaseUrl: moduleStaticInfo.apiBaseUrl,
                 moduleStoreName: moduleStaticInfo.storeName,
                 moduleRegistrationOptions: moduleStaticInfo.registrationOptions,
                 module: rs.module,
@@ -329,7 +327,7 @@ export default {
             console.log(`mgr.query. endpoint: ${state.routes.to.apiModuleUrl}`);
             
             let action = (state.routes.to.module === "About") ? "get" : "post";
-            let endpoint = state.routes.to.apiModuleUrl;// jezConfig.myModules[payload.module].apiBaseUrl;
+            let endpoint = state.routes.to.apiModuleUrl;
             switch (payload.module) {
                 case "Locus":
                 case "Pottery":
@@ -471,7 +469,7 @@ export default {
             //console.log(`mgr/delete id: ${id}\ncollection: ${JSON.stringify(state.collection, null, 2)}`);
             //prepare delete request
             let xhrRequest = {
-                endpoint: `${getters["status"].moduleApiBaseUrl}/${getters["item"].id}`,
+                endpoint: `${state.routes.current.apiModuleUrl}/${getters["item"].id}`,
                 action: "delete",
                 data: null,
                 spinner: true,
@@ -532,7 +530,7 @@ export default {
             //return;
 
             let xhrRequest = {
-                endpoint: `${getters.status.moduleApiBaseUrl}/store`,
+                endpoint: `${state.routes.current.apiModuleUrl}/store`,
                 action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
                 data: newItem,
                 spinner: true,
@@ -667,7 +665,7 @@ export default {
 
         page({ state, getters, commit, dispatch }, payload) {
             function loadChunck() {
-                let source = state.routes.inTransition ? state.routes.to : state.routes.current;
+                let source = state.routes.loading ? state.routes.to : state.routes.current;
                 switch (source.module) {
                     case "Locus":
                     case "Pottery":

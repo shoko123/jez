@@ -7,6 +7,7 @@ export default {
         current: {
             module: "Home",
             apiModuleUrl: "/api",
+            moduleStoreFolder: "/",
             action: null,
             id: null,
             queryParams: null,
@@ -14,12 +15,13 @@ export default {
         to: {
             module: null,
             apiModuleUrl: null,
+            moduleStoreFolder: "/",
             action: null,
             id: null,
             queryParams: null,
         },
         localFilters: null,
-        inTransition: false,
+        loading: false,
     },
     getters: {
         getRouter(state) {
@@ -269,8 +271,8 @@ export default {
             console.log(`routes/setLocalFilters: ${JSON.stringify(payload, null, 2)}`);
             state.localFilters = payload;
         },
-        inTransition(state, payload) {
-            state.inTransition = payload;
+        loading(state, payload) {
+            state.loading = payload;
         },
 
     },
@@ -340,7 +342,6 @@ export default {
         },
 
         routeChanged({ state, getters, rootState, rootGetters, commit, dispatch }, payload) {
-
             function sameModule() {
                 return (state.current.module === state.to.module)
             }
@@ -388,7 +389,7 @@ export default {
                                 commit("localFilters", params.local);
                                 return dispatch("mgr/query", { params: params.xhr, spinner: true }, { root: true });
                             }
-                            break;
+                            return;
 
                         case "show":
                             //console.log('mgr.dispatch(show)');// + JSON.stringify(res, null, 2));
@@ -422,28 +423,31 @@ export default {
                                         //console.log('mgr.routeChanged.show after loading item. loading collection...');
                                         return dispatch("mgr/query", { params: {}, spinner: true }, { root: true });
                                     })
-                            } current
-                            break;
+                            }
 
                         case "create":
                         case "update":
+
                             //TODO validate that we came from same module, item and that current.action == 'show'.
 
                             return dispatch("mgr/prepareNew", state.to.action, { root: true });
-                            break;
+
 
                         case "tags":
-                            dispatch(`aux/prepareTagger`, null, { root: true });
-                            return 0;
-                            break;
+                            return dispatch(`aux/prepareTagger`, null, { root: true });
 
 
                         case "welcome":
                         case "filter":
-                            commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
-                            return 0;
-                            break;
+                            return commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
+                        case "media":
+                        //currently no initialization needed (TODO reorder media screen )
+                        return;
+
                         default:
+                            alert("loadPrepare() invalid params");
+                            throw new Error("loadPrepare() invalid params");
+
                     }
                 }
             }
@@ -468,8 +472,29 @@ export default {
             } else {
                 return loadPrepare();
             }
+        },
 
+        navigationSuccess({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
+            console.log(`routes/navigation success()`);
+            state.current.module = state.to.module;
+            if (state.to.hasOwnProperty("id")) {
+                state.current.id = state.to.id;
+            }
+            if (state.to.hasOwnProperty("action")) {
+                state.current.action = state.to.action;
 
+                if (state.to.action === 'list') {
+                    dispatch("aux/setLocalFilters", state.localFilters, { root: true });
+                }
+            }
+            if (state.to.hasOwnProperty("queryParams")) {
+                state.current.queryParams = state.to.queryParams;
+            }
+            if (state.to.hasOwnProperty("apiModuleUrl")) {
+                state.current.apiModuleUrl = state.to.apiModuleUrl;
+            }
+            //state.current = Object.assign({}, state.current, state.to);
+            //console.log(`NAV success update 'to' -> 'current': ${JSON.stringify(state.current, null, 2)}`);//
         },
 
         goTo({ state, rootState, getters, rootGetters }, payload) {
@@ -550,30 +575,6 @@ export default {
             } else {
                 console.log(`mgr.routes.push() error in parsing path: ${newRoute.path}`);
             }
-        },
-        navigationSuccess({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`routes/navigation success()`);
-            state.current.module = state.to.module;
-            if (state.to.hasOwnProperty("id")) {
-                state.current.id = state.to.id;
-            }
-            if (state.to.hasOwnProperty("action")) {
-                state.current.action = state.to.action;
-
-                if (state.to.action === 'list') {
-                    dispatch("aux/setLocalFilters", state.localFilters, { root: true });
-                        //.then(res => { console.log(`Local filters were set with params: ${JSON.stringify(res, null, 2)}`); })
-
-                }
-            }
-            if (state.to.hasOwnProperty("queryParams")) {
-                state.current.queryParams = state.to.queryParams;
-            }
-            if (state.to.hasOwnProperty("apiModuleUrl")) {
-                state.current.apiModuleUrl = state.to.apiModuleUrl;
-            }
-            //state.current = Object.assign({}, state.current, state.to);
-            //console.log(`NAV success update 'to' -> 'current': ${JSON.stringify(state.current, null, 2)}`);//
         },
     },
 };
