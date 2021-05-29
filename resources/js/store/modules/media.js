@@ -3,7 +3,6 @@ export default {
 
     state: {
         dialogAddMedia: false,
-        disableHover: false,
         lightBox: {
             isOpen: false,
             source: "main",
@@ -18,10 +17,6 @@ export default {
     },
 
     getters: {
-        disableHover(state) {
-            return state.disableHover;
-        },
-
         mediaPrimary(state, rootState, getters, rootGetters) {
             let m = rootGetters["mgr/collections"]("media").collection;
 
@@ -105,28 +100,15 @@ export default {
         },
     },
     mutations: {
-        disableHover(state, payload) {
-            return state.disableHover = payload;
-        },
-
         dialogAddMedia(state, payload) {
             state.dialogAddMedia = payload;
         },
 
         openLightBox(state, payload) {
-            //console.log('med/dialogLightBox: ' + JSON.stringify(payload, null, 2));
-
             if (payload.value) {
-                state.disableHover = true;
                 state.lightBox.source = payload.source;
                 state.lightBox.page = payload.page;
                 state.lightBox.indexInChunk = payload.index;
-                //console.log(`med/openLightBox(commit): ${JSON.stringify(payload, null, 2)}`);
-            } else {
-                state.disableHover = false;
-                state.lightBox.source = "main";
-                state.lightBox.page = 0;
-                state.lightBox.indexInChunk = 0;
                 //console.log(`med/openLightBox(commit): ${JSON.stringify(payload, null, 2)}`);
             }
             state.lightBox.isOpen = payload.value;

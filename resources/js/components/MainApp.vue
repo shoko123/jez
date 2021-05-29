@@ -35,9 +35,14 @@ export default {
   },
  
   computed: {
-    dialogMediaLightBox() {
-      return this.$store.getters["med/dialogMediaLightBox"];
-    }
+    dialogMediaLightBox: {
+      get() {
+        return this.$store.getters["med/dialogMediaLightBox"];
+      },
+      set(data) {
+        //do nothing - set by openLightBox
+      },
+    },
   }
 };
 </script>

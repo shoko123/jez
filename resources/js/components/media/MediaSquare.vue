@@ -1,6 +1,6 @@
 <template>
   <div v-if="item">
-    <v-hover :disabled="hoverDisabled" >
+    <v-hover>
       <template v-slot:default="{ hover }">
         <v-card class="mx-auto" max-width="size" max-height="size">
           <v-img
@@ -63,11 +63,6 @@ export default {
     //);
   },
   computed: {
-    //////
-
-    hoverDisabled() {
-      return this.$store.getters["med/disableHover"];
-    },
     tagText() {
       switch (this.source) {
         case "main":
@@ -99,6 +94,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-</style>
 

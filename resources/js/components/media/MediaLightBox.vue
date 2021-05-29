@@ -5,11 +5,24 @@
         {{ header }}
         <v-spacer></v-spacer>
         <template v-if="showArrows">
-          <v-btn fab small text @click="clicked(false)">
+          <v-btn
+            fab
+            small
+            text
+            @click="clicked(false)"
+            :disabled="disableArrows"
+          >
             <v-icon color="primary">arrow_back</v-icon>
           </v-btn>
 
-          <v-btn fab small text class="ml-2" @click="clicked(true)">
+          <v-btn
+            fab
+            small
+            text
+            class="ml-2"
+            @click="clicked(true)"
+            :disabled="disableArrows"
+          >
             <v-icon color="primary">arrow_forward</v-icon>
           </v-btn></template
         >
@@ -18,7 +31,7 @@
         </v-btn>
       </v-card-title>
       <v-card-text>
-        <LightBoxCarousel/>
+        <LightBoxCarousel />
       </v-card-text>
     </v-card>
   </v-container>
@@ -27,19 +40,15 @@
 <script>
 import LightBoxCarousel from "./LightBoxCarousel";
 export default {
-   components: {
+  components: {
     LightBoxCarousel,
-   },
+  },
   data() {
     return {
-      loading: false,
+      disableArrows: false,
     };
   },
-
   computed: {
-    forceReRender() {
-      return this.$store.getters["med/lightBoxForceReRender"];
-    },
     lightBox() {
       return this.$store.getters["med/lightBox"];
     },
@@ -64,9 +73,6 @@ export default {
         //console.log("MLB set " + data); //JSON.stringify(data, null, 2));
         this.$store.dispatch("med/lightBoxIndex", data);
       },
-    },
-    media() {
-      return this.lightBox.media;
     },
 
     header() {
@@ -119,7 +125,7 @@ export default {
       }
 
       //console.log("Need to load");
-      this.loading = true;
+      this.disableArrows = true;
       this.$store
         .dispatch("mgr/page", { name: this.lightBox.source, page: newPage })
         .then((res) => {
@@ -129,14 +135,9 @@ export default {
           if (setToMax) {
             this.lightBoxIndex = this.lightBox.chunk.length - 1;
           }
-          this.loading = false;
+          this.disableArrows = false;
         });
     },
   },
 };
 </script>
-<style scoped>
-#lbmedia {
-  height: 90vh;
-}
-</style>

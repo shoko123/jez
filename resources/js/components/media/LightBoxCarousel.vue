@@ -27,13 +27,12 @@ export default {
       return this.lightBox.chunk;
     },
 
-    lightBoxIndex: {
+   lightBoxIndex: {
       get() {
         return this.lightBox.indexInChunk;
       },
       set(data) {
-        //console.log("MLB set " + data); //JSON.stringify(data, null, 2));
-        this.$store.dispatch("med/lightBoxIndex", data);
+        //do nothing - handled by MediaLightBox
       },
     },
     media() {
