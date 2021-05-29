@@ -18,36 +18,18 @@
         </v-btn>
       </v-card-title>
       <v-card-text>
-        <v-carousel
-          v-model="lightBoxIndex"
-          height="100%"
-          :show-arrows="false"
-          hide-delimiters
-        >
-          <v-carousel-item
-            v-for="(item, index) in chunk"
-            :key="index"
-            class="fill-height"
-            align="center"
-            justify="center"
-          >
-            <v-row class="fill-height" align="center" justify="center">
-              <v-img
-                id="lbmedia"
-                :src="media.fullUrl"
-                :lazy-src="media.tnUrl"
-                contain
-              ></v-img>
-            </v-row>
-          </v-carousel-item>
-        </v-carousel>
+        <LightBoxCarousel/>
       </v-card-text>
     </v-card>
   </v-container>
 </template>
 
 <script>
+import LightBoxCarousel from "./LightBoxCarousel";
 export default {
+   components: {
+    LightBoxCarousel,
+   },
   data() {
     return {
       loading: false,
@@ -55,6 +37,9 @@ export default {
   },
 
   computed: {
+    forceReRender() {
+      return this.$store.getters["med/lightBoxForceReRender"];
+    },
     lightBox() {
       return this.$store.getters["med/lightBox"];
     },
@@ -90,7 +75,7 @@ export default {
   },
   methods: {
     closeLightBox() {
-      this.$store.commit("med/openLightBox", {
+      this.$store.dispatch("med/openLightBox", {
         value: false,
       });
     },

@@ -3,7 +3,7 @@ export default {
 
     state: {
         dialogAddMedia: false,
-
+        disableHover: false,
         lightBox: {
             isOpen: false,
             source: "main",
@@ -18,6 +18,10 @@ export default {
     },
 
     getters: {
+        disableHover(state) {
+            return state.disableHover;
+        },
+
         mediaPrimary(state, rootState, getters, rootGetters) {
             let m = rootGetters["mgr/collections"]("media").collection;
 
@@ -101,20 +105,31 @@ export default {
         },
     },
     mutations: {
+        disableHover(state, payload) {
+            return state.disableHover = payload;
+        },
+
         dialogAddMedia(state, payload) {
             state.dialogAddMedia = payload;
         },
 
         openLightBox(state, payload) {
             //console.log('med/dialogLightBox: ' + JSON.stringify(payload, null, 2));
-            state.lightBox.isOpen = payload.value;
+
             if (payload.value) {
+                state.disableHover = true;
                 state.lightBox.source = payload.source;
                 state.lightBox.page = payload.page;
                 state.lightBox.indexInChunk = payload.index;
                 //console.log(`med/openLightBox(commit): ${JSON.stringify(payload, null, 2)}`);
+            } else {
+                state.disableHover = false;
+                state.lightBox.source = "main";
+                state.lightBox.page = 0;
+                state.lightBox.indexInChunk = 0;
+                //console.log(`med/openLightBox(commit): ${JSON.stringify(payload, null, 2)}`);
             }
-
+            state.lightBox.isOpen = payload.value;
         },
 
         lightBoxIndexInChunk(state, payload) {
@@ -131,6 +146,17 @@ export default {
         }
     },
     actions: {
+        //We used to do pagination and loading here. That is why we don't call a commit directly.
+        lightBoxIndex({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
+            //console.log(`mgr/action.lightBoxIndex(index: ${payload})`);//: ' + JSON.stringify(err, null, 2));
+            commit("lightBoxIndexInChunk", payload);
+        },
+
+        openLightBox({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
+            console.log(`med/openLB payload: ${JSON.stringify(payload, null, 2)}`);
+            commit("openLightBox", payload);
+        },
+
         //store multiple files r/t a specific dig item
         store({ state, getters, rootGetters, commit, dispatch, }, formData) {
             let xhrRequest = {
@@ -152,7 +178,7 @@ export default {
                         console.log('upload media returned: ' + JSON.stringify(res.data, null, 2));
                         //commit to local item
                         commit('mgr/collections', { name: "media", collection: res.data.collection }, { root: true });
-                        commit("mgr/ready", { entity: "item", isReady: false }, { root: true });                        
+                        commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
                         return res;
                     })
                     .catch(err => {
@@ -178,7 +204,7 @@ export default {
                     console.log('delete media returned: ' + JSON.stringify(res.data, null, 2));
                     commit('mgr/collections', { name: "media", collection: res.data.collection }, { root: true });
                     //alert manager that item is dirty
-                    commit("mgr/ready", { entity: "item", isReady: false }, { root: true });  
+                    commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
                     return res;
                 })
                 .catch(err => {
@@ -187,16 +213,6 @@ export default {
                 })
         },
 
-        //We used to do pagination and loading here. That is why we don't call a commit directly.
-        lightBoxIndex({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
-            //console.log(`mgr/action.lightBoxIndex(index: ${payload})`);//: ' + JSON.stringify(err, null, 2));
-            commit("lightBoxIndexInChunk", payload);
-        },
-
-        openLightBox({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`med/openLB payload: ${JSON.stringify(payload, null, 2)}`);
-            commit("openLightBox", payload);
-        },
 
 
         //load general media used by the app (backgrounds, fillers, etc.).

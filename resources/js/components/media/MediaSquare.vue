@@ -1,6 +1,6 @@
 <template>
   <div v-if="item">
-    <v-hover>
+    <v-hover :disabled="hoverDisabled" >
       <template v-slot:default="{ hover }">
         <v-card class="mx-auto" max-width="size" max-height="size">
           <v-img
@@ -65,6 +65,9 @@ export default {
   computed: {
     //////
 
+    hoverDisabled() {
+      return this.$store.getters["med/disableHover"];
+    },
     tagText() {
       switch (this.source) {
         case "main":
@@ -88,7 +91,9 @@ export default {
         case "related":
           return OverlayRelated;
         case "media":
-            return this.$store.getters["mgr/status"].isMediaEdit ? OverlayMediaEdit : OverlayItemMedia;       
+          return this.$store.getters["mgr/status"].isMediaEdit
+            ? OverlayMediaEdit
+            : OverlayItemMedia;
       }
     },
   },
