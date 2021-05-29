@@ -31,17 +31,17 @@
         </v-btn>
       </v-card-title>
       <v-card-text>
-        <LightBoxCarousel />
+        <MediaCarousel />
       </v-card-text>
     </v-card>
   </v-container>
 </template>
 
 <script>
-import LightBoxCarousel from "./LightBoxCarousel";
+import MediaCarousel from "./MediaCarousel";
 export default {
   components: {
-    LightBoxCarousel,
+    MediaCarousel,
   },
   data() {
     return {

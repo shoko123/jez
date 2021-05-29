@@ -1,6 +1,6 @@
 import routes from './routes.js';
 import jezConfig from '../../../jezConfig.js';
-import { NavigationError, EmptyResultSetError, } from '../../../errors.js';
+import { NavigationError, EmptyResultSetError, } from '../../../routing/errors.js';
 
 
 export default {
