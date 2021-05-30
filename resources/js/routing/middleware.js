@@ -1,7 +1,7 @@
 import authorize from './authorize'
-import load from './load'
+import prepareForNewRoute from './prepareForNewRoute'
 
 export default function middleware (router) {
     authorize(router);
-    load(router);
+    prepareForNewRoute(router);
 }

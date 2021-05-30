@@ -1,4 +1,4 @@
-import routes from './routes.js';
+import routes from '../../../routing/routesStore.js';
 import jezConfig from '../../../jezConfig.js';
 import { NavigationError, EmptyResultSetError, } from '../../../routing/errors.js';
 
@@ -376,7 +376,6 @@ export default {
                         let page = Math.floor((index + 1) / state.collections.main.itemsPerPage) + 1;
                         dispatch("page", { name: "main", page: page, forceLoad: true });
                     } else {
-
                         dispatch("page", { name: "main", page: 1, forceLoad: true });
                     }
                     return res;
@@ -665,7 +664,9 @@ export default {
 
         page({ state, getters, commit, dispatch }, payload) {
             function loadChunck() {
-                let source = state.routes.loading ? state.routes.to : state.routes.current;
+                let source = state.routes.to;
+                
+                //let source = state.routes.loading ? state.routes.to : state.routes.current;
                 switch (source.module) {
                     case "Locus":
                     case "Pottery":
@@ -689,7 +690,8 @@ export default {
                         endpoint = "chunk-table";
                         break;
                 }
-                //console.log(`mgr/loadPage(${payload.page})`);//meta: ${JSON.stringify(meta, null, 2)}
+
+                //console.log(`mgr/loadChunk(${payload.page})`);//meta: ${JSON.stringify(meta, null, 2)}
                 let start = (payload.page - 1) * state.collections[payload.name].itemsPerPage;
                 let length = state.collections[payload.name].itemsPerPage;
                 //console.log(`mgr/page(${payload.page})`);
@@ -730,13 +732,15 @@ export default {
 
             switch (payload.name) {
                 case "main":
-                    //console.log(`page: ${payload.page} forceLoad: ${payload.forceLoad} currentPage: ${state.collections.main.pageNo + 1}`);
+                    //console.log(`collectionReady: ${state.ready["collection"]} forceLoad: ${payload.forceLoad} currentPage: ${state.collections.main.pageNo + 1}`);
+                    //console.log(`view: ${state.collections[payload.name].views[state.collections[payload.name].view]}`);
                     switch (state.collections[payload.name].views[state.collections[payload.name].view]) {
                         case "Media":
                         case "Table":
                             if (state.ready["collection"] &&
                                 (payload.forceLoad ||
                                     state.collections.main.pageNo + 1 !== payload.page)) {
+                                        //console.log(`Calling loadChunk()`);
                                 res = loadChunck();
                             }
                     }

@@ -40,7 +40,7 @@ export default {
         return this.$store.getters["med/dialogMediaLightBox"];
       },
       set(data) {
-        //do nothing - set by openLightBox
+        //do nothing - handled by openLightBox
       },
     },
   }

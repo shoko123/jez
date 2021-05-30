@@ -50,7 +50,11 @@ export default new Vuex.Store({
         about: about,
     },
     state: {
-        baseUrl: null
+        baseUrl: null,
+        globalSettings: {
+            readOnly: false,
+            loggedUsersOnly: true,
+        }
     },
     getters: {
 
@@ -77,6 +81,8 @@ export default new Vuex.Store({
 
             //load images used by app
             dispatch("med/loadAppMedia");
+            //TODO load app's globalSettings
+
         },
     }
 });

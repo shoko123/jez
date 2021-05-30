@@ -323,15 +323,17 @@ export default {
         },
 
         setLocalFilters({ state, getters, rootGetters, commit, dispatch }, payload) {
-            //if (payload === null) { return; }
+            console.log(`aux/setLocalFilters: ${JSON.stringify(payload, null, 2)}`);
             commit("clear", ["filters"]);
 
             //set filters from queryString
-            payload.forEach(x => commit("selectParam", {
-                key: x,
-                source: "filters",
-                value: true
-            }));
+            if (payload !== null) {
+                payload.forEach(x => commit("selectParam", {
+                    key: x,
+                    source: "filters",
+                    value: true
+                }));
+            }
         },
 
 

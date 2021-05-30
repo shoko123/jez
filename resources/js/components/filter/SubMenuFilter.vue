@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { filtersToQueryString } from "../../routing/queryString.js"
 export default {
   data() {
     return {};
@@ -23,7 +24,7 @@ export default {
   methods: {
     submit() {
       //this.$store.dispatch("mgr/clearModule");
-      let qp = this.$store.getters["mgr/routes/filtersToQueryString"];
+      let qp = filtersToQueryString(this.$store.getters["aux/selectedFilters"]);
       this.$store.dispatch("mgr/goToRoute", {
         module: this.$store.getters["mgr/module"],
         action: "list",

@@ -1,7 +1,7 @@
 import store from '../store/store.js';
 
 export default function autorize(router) {
-    console.log("authorize()");
+    console.log("authorize.init()");
 
     router.beforeEach((to, from, next) => {
         const requiresAuth = to.matched.some(record => record.meta.requiresAuth);

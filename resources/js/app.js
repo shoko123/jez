@@ -7,16 +7,15 @@ import store from './store/store.js';
 import MainApp from './components/MainApp.vue';
 import 'vuetify/dist/vuetify.min.css'
 
+Vue.use(Vuelidate);
 store.dispatch("init", router);
 
 const app = new Vue({
-    el: '#app',
     store,
     router,
     vuetify,
     components: {
         MainApp
     }
-});
+}).$mount('#app');
 
-Vue.use(Vuelidate);
