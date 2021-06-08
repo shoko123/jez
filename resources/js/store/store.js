@@ -50,22 +50,10 @@ export default new Vuex.Store({
         about: about,
     },
     state: {
-        baseUrl: null,
-        globalSettings: {
-            readOnly: false,
-            loggedUsersOnly: true,
-            mediaPerPage: 18,
-            chipsPerPage: 100,
-            baseUrl: "",
-            mediaUrl: "",
-            appMediaUrl: "",
-        }
     },
     getters: {
-
     },
     mutations: {
-
     },
     actions: {
         init({ state, getters, rootGetters, commit, dispatch }, payload) {
@@ -85,7 +73,7 @@ export default new Vuex.Store({
             });
 
             //load images used by app
-            dispatch("med/loadAppMedia");
+            dispatch("med/initAppMedia");
             //TODO load app's globalSettings
 
         },

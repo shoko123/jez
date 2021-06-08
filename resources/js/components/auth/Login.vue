@@ -1,5 +1,5 @@
 <template>
-  <v-img id="jez-login" dark :src="fullUrl" :lazy-src="tnUrl" :cover="true">
+  <v-img id="jez-login" v-if="back" dark :src="back.fullUrl" :lazy-src="back.tnUrl" :cover="true">
     <v-container fill-height fluid>
       <v-row align="center" justify="center">
         <v-theme-provider light>
@@ -49,14 +49,8 @@ export default {
     };
   },
   computed: {
-    imageUrls() {
-      return this.$store.getters["med/appMedia"].backgroundUrls["App"];
-    },
-    fullUrl() {
-      return this.imageUrls ? this.imageUrls.fullUrl : null;
-    },
-    tnUrl() {
-      return this.imageUrls ? this.imageUrls.tnUrl : null;
+    back() {
+      return this.$store.getters["med/background"];
     },
   },
   methods: {

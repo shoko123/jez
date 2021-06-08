@@ -19,7 +19,7 @@
 export default {
   computed: {
     items() {
-      return this.$store.getters["med/appMedia"].carouselItems;
+      return this.$store.getters["med/carousel"];
     }
   }
 };

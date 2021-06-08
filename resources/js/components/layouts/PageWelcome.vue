@@ -86,9 +86,7 @@ export default {
     },
 
     imageUrls() {
-      return this.$store.getters["med/appMedia"].backgroundUrls[
-        this.$store.getters["mgr/module"]
-      ];
+      return this.$store.getters["med/background"];
     },
   },
   methods: {},

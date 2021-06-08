@@ -174,43 +174,4 @@ class AboutPages
         $formatted_item->tnUrl = \Storage::disk('app-media')->url('about/' . $item->image . '-tn.jpg');
         return $formatted_item;
     }
-
-    public function app_media(Request $request)
-    {
-        $backgroundUrls = [];
-
-        $myModels = array("App", "About", "Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass", "Flora", "Fauna", "Tbd");
-
-        foreach ($myModels as $modelName) {
-            $fullMediaName = 'backgrounds/' . $modelName . '.jpg';
-            $thumbMediaName = 'backgrounds/' . $modelName . '-tn.jpg';
-            //$backgroundUrls[$modelName] = \Storage::disk('app-media')->url($fullMediaName);
-
-            $backgroundUrls[$modelName] = (object) [
-                'fullUrl' => \Storage::disk('app-media')->url($fullMediaName),
-                'tnUrl' => \Storage::disk('app-media')->url($thumbMediaName),
-            ];
-        }
-        $carouselItems = [];
-        $carouselTexts = ["Welcome! This website displays the results of an 8-year expedition to Tel-Ein-Jezreel.",
-            "It is aimed at a fuller expopsure of the dig`s data than available in paper format.",
-            "We strive to facilitate intuitive search and links to context data",
-            "The database was design from its inception to be media rich.",
-            "I am very tired and fat.",
-            "",
-            ""];
-
-        foreach ($carouselTexts as $index => $text) {
-            $fullMediaName = 'carousel/item' . $index . '.jpg';
-            array_push($carouselItems, (object) ['text' => $text, 'url' => \Storage::disk('app-media')->url($fullMediaName)]);
-        }
-
-        return response()->json([
-            "message" => "succesfully loaded app_media",
-            "appMedia" => [
-                "backgroundUrls" => $backgroundUrls,
-                "carouselItems" => $carouselItems,
-            ],
-        ], 200);
-    }
 }

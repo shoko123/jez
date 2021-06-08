@@ -9,7 +9,14 @@ export default {
         routes: routes,
     },
     state: {
-        baseUrl: null,
+        globalSettings: {
+            readOnly: false,
+            loggedUsersOnly: true,
+            perPageMedia: 18,
+            perPageChips: 100,
+            perPageTableRecords: 50,
+            baseUrl: "",
+        },        
 
         collection: [],
 
@@ -57,8 +64,12 @@ export default {
     },
 
     getters: {
+        globalSettings(state) {
+            return state.globalSettings;
+        },
+
         baseUrl(state) {
-            return state.baseUrl;
+            return state.globalSettings.baseUrl;
         },
         module(state, rootState, getters, rootGetters) {
             return state.routes.current.module;
@@ -250,7 +261,7 @@ export default {
 
     mutations: {
         baseUrl(state, payload) {
-            state.baseUrl = payload;
+            state.globalSettings.baseUrl = payload;
         },
         collections(state, payload) {
             state.collections[payload.name].collection = payload.collection;
@@ -618,7 +629,7 @@ export default {
                 })
         },
 
-        toggleCollectionView({ state, getters, commit, dispatch }, payload) {
+        toggleCollectionView({ state, getters, rootGetters, commit, dispatch }, payload) {
             console.log(`******mgr/toggle(${payload})`);
             let c = state.collections[payload];
             let newViewIndex = (c.view + 1) % c.views.length;
@@ -627,15 +638,15 @@ export default {
                 case "main":
                     switch (newView) {
                         case "Media":
-                            commit("itemsPerPage", { name: "main", ipp: 18 });
+                            commit("itemsPerPage", { name: "main", ipp: rootGetters["globalSettings"].perPageMedia });
                             break;
 
                         case "Chips":
-                            commit("itemsPerPage", { name: "main", ipp: 100 });
+                            commit("itemsPerPage", { name: "main", ipp: rootGetters["globalSettings"].perPageChips });
 
                             break;
                         case "Table":
-                            commit("itemsPerPage", { name: "main", ipp: 50 });
+                            commit("itemsPerPage", { name: "main", ipp: rootGetters["globalSettings"].perPageTableRecords });
                             break;
                     }
                     commit("collectionViewIndex", { name: "main", viewIndex: newViewIndex });

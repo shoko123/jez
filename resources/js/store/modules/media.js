@@ -2,6 +2,7 @@ export default {
     namespaced: true,
 
     state: {
+        appMediaUrl: null,
         dialogAddMedia: false,
         lightBox: {
             isOpen: false,
@@ -9,11 +10,7 @@ export default {
             pageNo: 0,
             indexInChunk: 0,
         },
-
-        appMedia: {
-            backgroundUrls: [],
-            carouselItems: [],
-        }
+        carousel: [],
     },
 
     getters: {
@@ -95,8 +92,16 @@ export default {
             return lb;
         },
 
-        appMedia(state) {
-            return state.appMedia;
+        
+        carousel(state) {
+            return state.carousel;
+        },
+        
+        background(state, rootState, getters, rootGetters) {   
+            let module = rootGetters["mgr/module"];
+            let fullUrl = `${state.appMediaUrl}/backgrounds/${module}.jpg`;
+            let tnUrl = `${state.appMediaUrl}/backgrounds/${module}-tn.jpg`;
+            return {fullUrl, tnUrl};
         },
     },
     mutations: {
@@ -118,11 +123,12 @@ export default {
             //console.log(`SET lightBoxIndexInChunk=${payload}`);//: ' + JSON.stringify(err, null, 2));
             state.lightBox.indexInChunk = payload;
         },
-
-        appMedia(state, payload) {
-            state.appMedia = payload;
+        appMediaUrl(state, payload) {
+            state.appMediaUrl = payload;
         },
-
+        carousel(state, payload) {
+            state.carousel = payload;
+        },
         clear(state, payload) {
             //state.itemMedia = { collection: [], filler: null };
         }
@@ -199,9 +205,9 @@ export default {
 
         //load general media used by the app (backgrounds, fillers, etc.).
         //This media is unrelated to media stored in the DB.
-        loadAppMedia({ state, commit, dispatch }, payload) {
+        initAppMedia({ state, commit, dispatch }, payload) {
             let xhrRequest = {
-                endpoint: `/api/media/app-media`,
+                endpoint: `/api/media/init`,
                 action: "get",
                 data: null,
                 spinner: false,
@@ -212,10 +218,12 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     //console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
-                    commit('appMedia', res.data.appMedia);
+                    commit('appMediaUrl', res.data.appMediaUrl);
+                    commit('carousel', res.data.carousel);                    
                     return res;
+
                 }).catch(err => {
-                    console.log('loadAppMedia failure. err: ' + JSON.stringify(err, null, 2));
+                    console.log('initAppMedia failure. err: ' + JSON.stringify(err, null, 2));
                     return err;
                 })
         },

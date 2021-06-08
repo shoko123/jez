@@ -28,7 +28,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\TestController;
 
 //download media used by app before getting token.
-Route::get('media/app-media', [MediaController::class, 'app_media']);
+Route::get('media/init', [MediaController::class, 'init']);
 
 //test (dev only)
 Route::post('test', [TestController::class, 'test']);

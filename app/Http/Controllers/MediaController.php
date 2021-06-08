@@ -90,16 +90,16 @@ class MediaController extends Controller
         return response()->json([
             "message" => "succesfully deleted media",
             "primary" => $primaryMedia,
-            "collection" => $itemMedia->collection,            
-            "item_id" => $id
+            "collection" => $itemMedia->collection,
+            "item_id" => $id,
         ], 200);
     }
 
-    public function app_media(Request $request)
+    public function init(Request $request)
     {
         $backgroundUrls = [];
 
-        $myModels = array("App", "About", "Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass", "Flora", "Fauna", "Tbd");
+        $myModels = array("Auth", "About", "Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass", "Flora", "Fauna", "Tbd");
 
         foreach ($myModels as $modelName) {
             $fullMediaName = 'backgrounds/' . $modelName . '.jpg';
@@ -111,29 +111,20 @@ class MediaController extends Controller
                 'tnUrl' => \Storage::disk('app-media')->url($thumbMediaName),
             ];
         }
-        $carouselItems = [];
-        $carouselTexts = ["Welcome! This website displays the results of an 8-year expedition to Tel-Ein-Jezreel.",
-            "It is aimed at a fuller expopsure of the dig`s data than available in paper format.",
-            "We strive to facilitate intuitive search and links to context data",
-            "The database was design from its inception to be media rich.",
-            "I am very tired and fat.",
-            "",
-            ""];
 
-        foreach ($carouselTexts as $index => $text) {
+        $carouselItems = [];
+        for ($index = 0; $index <= 6; $index++) {
             $fullMediaName = 'carousel/item' . $index . '.jpg';
             $thumbMediaName = 'carousel/item' . $index . '-tn.jpg';
-            array_push($carouselItems, (object) ['text' => $text,
+            array_push($carouselItems, (object) [
                 'fullUrl' => \Storage::disk('app-media')->url($fullMediaName),
                 'tnUrl' => \Storage::disk('app-media')->url($fullMediaName)]);
         }
 
         return response()->json([
-            "message" => "succesfully loaded app_media",
-            "appMedia" => [
-                "backgroundUrls" => $backgroundUrls,
-                "carouselItems" => $carouselItems,
-            ],
+            "message" => "succesfully initiated app_media (carousel item, etc...)",
+            "appMediaUrl" => env('APP_URL') . '/app-media',
+            "carousel" => $carouselItems,
         ], 200);
     }
 
@@ -168,6 +159,5 @@ class MediaController extends Controller
             "primary" => $primary,
         ], 200);
 
-       
     }
 }
