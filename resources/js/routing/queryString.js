@@ -174,11 +174,12 @@ export function filtersFromQueryString(qs) {
                             break;
                         case "media":
                             localParams.push(catCode + ">Media>" + x);
-
                             break;
                         case "registration_categories":
-                        case "scopes":
                             localParams.push(catCode + ">" + name + ">" + x);
+                            break;
+                        case "scopes":
+                            localParams.push(catCode + ">" + name + ">" + x.charAt(0).toUpperCase() + x.slice(1));
                             break;
                     }
                     break;

@@ -54,6 +54,11 @@ export default new Vuex.Store({
         globalSettings: {
             readOnly: false,
             loggedUsersOnly: true,
+            mediaPerPage: 18,
+            chipsPerPage: 100,
+            baseUrl: "",
+            mediaUrl: "",
+            appMediaUrl: "",
         }
     },
     getters: {
