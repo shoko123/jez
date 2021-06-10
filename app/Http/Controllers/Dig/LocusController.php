@@ -28,32 +28,42 @@ class LocusController extends Controller
             ->with('media');
 
         //filter by tags
-        if (!empty($request["tagParams"])) {
-            foreach ($request["tagParams"] as $param) {
-                $names = [];
-                foreach ($param["tags"] as $index => $tag) {
-                    $names[$index] = $tag["name"];
+        if (!empty($request["tags"])) {
+            $tag_types = (object) [];
+            foreach ($request["tags"]["tags"] as $index => $tag_id) {
+                $t = ItemTag::select('type', 'name')->findOrFail($tag_id);
+                $type = $t->type;
+                if (property_exists($tag_types, $type)) {
+                    array_push($tag_types->$type, $t->name);
+                } else {
+                    $tag_types->$type = array($t->name);
                 }
-                $builder->withAnyTags($names, $param["type"]);
+            }
+
+            foreach ($tag_types as $key => $value) {
+                $builder->withAnyTags($value, $key);
             }
         }
 
-        //filter by media
-        if (!empty($request["media"])) {
-            $med = $request["media"];
-            $builder->whereHas('media', function (Builder $mediaQuery) use ($med) {
-                $mediaQuery->whereIn('collection_name', $med);
-            });
-        }
+        if (!empty($request["registration"])) {
+            foreach ($request["registration"] as $key => $ids) {
+                switch ($key) {
+                    case "areas":
+                        $builder->whereIn("area", $ids);
+                        break;
 
-        //filter by area
-        if (!empty($request["areas"])) {
-            $builder->whereIn('area', $request["areas"]);
-        }
+                    case "seasons":
+                        $builder->whereIn("season", $ids);
+                        break;
 
-        //filter by season
-        if (!empty($request["seasons"])) {
-            $builder->whereIn('season', $request["seasons"]);
+                    case "media":
+                        $builder->whereHas('media', function (Builder $mediaQuery) use ($ids) {
+                            $mediaQuery->whereIn('collection_name', $ids);});
+                        break;
+                    default:
+                        //TODO throw Error
+                }
+            }
         }
 
         //order
@@ -223,12 +233,14 @@ class LocusController extends Controller
         }
 
         //sort finds by type, registration (Pottery, Stone, Lithic, Metal...)
-        usort($locusFinds, function($a, $b) {
-            if($a->type_order === $b->type_order)
+        usort($locusFinds, function ($a, $b) {
+            if ($a->type_order === $b->type_order) {
                 return strcmp($a->tag, $b->tag);
+            }
+
             return $a->type_order < $b->type_order ? -1 : 1;
         });
-        
+
         foreach ($locusFinds as $index => $find) {
             unset($find->type_order);
         }

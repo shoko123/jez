@@ -54,26 +54,6 @@ class AreaSeasonController extends Controller
             }
         }
 
-        /*
-        //filter by area.
-        if (!empty($request["areas"])) {
-            $builder->whereIn('area', $request["areas"]);
-        }
-
-        //filter by season.
-        if (!empty($request["seasons"])) {
-            $builder->whereIn('season', $request["seasons"]);
-        }
-
-        //filter by media
-        if (!empty($request["media"])) {
-            $med = $request["media"];
-            $builder->whereHas('media', function (Builder $mediaQuery) use ($med) {
-                $mediaQuery->whereIn('collection_name', $med);
-            });
-        }
-        */
-
         //order
         $collection = $builder->orderBy('id', 'asc')->get();
 

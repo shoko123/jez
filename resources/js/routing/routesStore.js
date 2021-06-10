@@ -151,13 +151,19 @@ export default {
                 if (state.to.module === "Home") { return; }
                 //let empty = rootState.mgr.collections["main"].collection.length === 0;
                 if (state.to.module === "About") {
-                    //console.log('dispatcher About...');
-                    if (!rootGetters["mgr/ready"].collection) {
-                        return dispatch("mgr/query", { params: {}, spinner: true }, { root: true });
-                    }
-                    if (state.to.action === "show") {
+                    console.log('dispatcher About...');
+                    if (!sameModule()) {
+                        return dispatch("mgr/query", { params: {}, spinner: true }, { root: true })
+                            .then((res) => {
+                                if (state.to.action === "show") {
+                                    return dispatch("mgr/loadItem", state.to.id, { root: true });
+                                }
+                            })
+                    } else if (state.to.action === "show") {
                         return dispatch("mgr/loadItem", state.to.id, { root: true });
                     }
+                    //return dispatch("mgr/loadItem", state.to.id, { root: true });
+
                 }
                 // else if (rootGetters["mgr/status"].isDigModule) {
                 else if (["Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Fauna", "Flora", "Glass", "Metal", "Tbd"].includes(state.to.module)) {

@@ -8,7 +8,7 @@ import MainApp from './components/MainApp.vue';
 import 'vuetify/dist/vuetify.min.css'
 
 Vue.use(Vuelidate);
-store.dispatch("init", router);
+store.dispatch("mgr/initApp", router, { root: true });
 
 const app = new Vue({
     store,

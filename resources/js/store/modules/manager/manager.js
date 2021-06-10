@@ -16,7 +16,7 @@ export default {
             perPageChips: 100,
             perPageTableRecords: 50,
             baseUrl: "",
-        },        
+        },
 
         collection: [],
 
@@ -332,11 +332,33 @@ export default {
         },
     },
     actions: {
+        initApp({ state, getters, rootGetters, commit, dispatch }, payload) {
+            //set router to store for generic goTo() used by components, and navigation after delete, store, etc...)
+            commit("mgr/routes/setRouter", payload, { root: true });
+
+            //set server base addresses
+            let baseUrl = `${window.location.protocol}//${window.location.host}`;
+            commit("baseUrl", baseUrl);
+            console.log("vuex.init() setting axios.baseURL to " + baseUrl);
+            axios.defaults.baseURL = baseUrl;
+
+            //enables axios debug
+            axios.interceptors.response.use(null, error => {
+                //console.log("axios interceptor error: " + JSON.stringify(error, null, 2));
+                return Promise.reject(error);
+            });
+
+            //dispatch("mgr/initApp", null, { root: true });
+            //load global settings and load media used by app
+            dispatch("med/initAppMedia", null, { root: true });
+
+        },
+
         query({ state, getters, rootGetters, commit, dispatch }, payload) {
             commit("ready", { entity: "collection", isReady: false });
             console.log(`mgr/query() to: ${JSON.stringify(state.routes.to, null, 2)}`);
             console.log(`mgr.query. endpoint: ${state.routes.to.apiModuleUrl}`);
-            
+
             let action = (state.routes.to.module === "About") ? "get" : "post";
             let endpoint = state.routes.to.apiModuleUrl;
             switch (payload.module) {
@@ -676,7 +698,7 @@ export default {
         page({ state, getters, commit, dispatch }, payload) {
             function loadChunck() {
                 let source = state.routes.to;
-                
+
                 //let source = state.routes.loading ? state.routes.to : state.routes.current;
                 switch (source.module) {
                     case "Locus":
@@ -751,7 +773,7 @@ export default {
                             if (state.ready["collection"] &&
                                 (payload.forceLoad ||
                                     state.collections.main.pageNo + 1 !== payload.page)) {
-                                        //console.log(`Calling loadChunk()`);
+                                //console.log(`Calling loadChunk()`);
                                 res = loadChunck();
                             }
                     }
