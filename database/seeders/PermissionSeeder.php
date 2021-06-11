@@ -16,6 +16,8 @@ class PermissionSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
+        Permission::create(['guard_name' => 'api', 'name' => 'Admin']);
+
         Permission::create(['guard_name' => 'api', 'name' => 'Area-read']);
         Permission::create(['guard_name' => 'api', 'name' => 'Area-update']);
         Permission::create(['guard_name' => 'api', 'name' => 'Area-media']);
@@ -135,8 +137,14 @@ class PermissionSeeder extends Seeder
         $roleMetalManager->givePermissionTo('Metal-media');
         $roleMetalManager->givePermissionTo('Metal-tag');
 
+        $roleAdmin = Role::create(['guard_name' => 'api', 'name' => 'Admin']);
+        $roleAdmin->givePermissionTo('Admin');
+
         $roleReader = Role::create(['guard_name' => 'api', 'name' => 'reader']);
         $roleReader->givePermissionTo(['Area-read', 'Season-read', 'AreaSeason-read', 'Locus-read', 'Stone-read', 'Pottery-read', 'Lithic-read', 'Glass-read', 'Metal-read']);
+
+        $admin = User::where('email', 'baby@opendigreports.com')->firstOrFail();
+        $admin->assignRole($roleAdmin, $roleAreaManager, $roleSeasonManager, $roleAreaSeasonManager, $roleLocusManager, $roleStoneManager, $rolePotteryManager, $roleLithicManager, $roleGlassManager, $roleMetalManager);
 
         $reader = User::where('email', 'guest@opendigreports.com')->firstOrFail();
         $reader->assignRole($roleReader);
@@ -146,6 +154,6 @@ class PermissionSeeder extends Seeder
 
         $pottery = User::where('email', 'pottery@opendigreports.com')->firstOrFail();
         $pottery->assignRole($roleReader, $rolePotteryManager);
- 
+
     }
 }

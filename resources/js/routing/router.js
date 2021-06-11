@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '../components/Home.vue';
+import Admin from '../components/admin/Admin.vue';
 import Login from '../components/auth/Login.vue';
 
 import PageItem from '../components/layouts/PageItem.vue';
@@ -28,6 +29,10 @@ const router = new Router({
         {
             path: '/',
             component: Home,
+        },
+        {
+            path: '/:module(admin)',
+            component: Admin,
         },
         {
             path: '/:module(auth)',

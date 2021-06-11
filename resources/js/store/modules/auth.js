@@ -29,7 +29,7 @@ export default {
 
         clear(state) {
             state.user = null;
-            state.permissions = null;
+            state.permissions = [];
         },
     },
 

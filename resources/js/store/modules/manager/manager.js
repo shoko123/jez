@@ -243,6 +243,8 @@ export default {
                 isCreateLocus: (rs.action === "create" && rs.module === "Locus"),
                 isCreateFind: (rs.action === "create" && isFind()),
                 isMediaEdit: (rs.action === "media"),
+                isAdmin: (rs.module === "Admin"),
+                isRead: (rs.module === "Home" || rs.module === "Auth" || ["welcome", "show", "list", "filter"].includes(rs.action)),
                 isEdit: ["create", "update", "media", "tags"].includes(rs.action),
                 isPicker: state.isPicker,
                 isFilterable: !["Auth", "About", "Area", "Season"].includes(rs.module),
@@ -263,6 +265,12 @@ export default {
         baseUrl(state, payload) {
             state.globalSettings.baseUrl = payload;
         },
+        appSettings(state, payload) {
+            state.globalSettings.loggedUsersOnly = payload.loggedUsersOnly;
+            state.globalSettings.readOnly = payload.readOnly;
+        },
+       
+
         collections(state, payload) {
             state.collections[payload.name].collection = payload.collection;
         },
@@ -352,6 +360,31 @@ export default {
             //load global settings and load media used by app
             dispatch("med/initAppMedia", null, { root: true });
 
+            //get current app setting (loggedUsersOnly, readOnly)
+            let xhrRequest = {
+                endpoint: `${baseUrl}/api/settings`,
+                action: "get",
+                data: null,
+                spinner: true,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: false, },
+                messages: { loading: `checking app status`, onSuccess: null, onFailure: null },
+            };
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    commit('appSettings', res.data);
+                    commit('snackbar/displaySnackbar', {
+                        isSuccess: true,
+                        message: `App status: loggedUsersOnly = ${res.data.settings.loggedUsersOnly}`
+                    }, { root: true });
+                    //console.log(`mgr/setting: ${res}`);
+                    return res;
+                })
+                .catch(err => {
+                    console.log('mgr settings Failed! err: ' + err);
+                    return err;
+                })
         },
 
         query({ state, getters, rootGetters, commit, dispatch }, payload) {

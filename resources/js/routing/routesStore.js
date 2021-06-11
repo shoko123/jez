@@ -69,6 +69,9 @@ export default {
 
             if (payload.params.hasOwnProperty("module")) {
                 switch (payload.params.module) {
+                    case "admin":
+                        to.module = "Admin";
+                        break;                    
                     case "about":
                         to.module = "About";
                         break;

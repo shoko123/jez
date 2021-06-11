@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="isReadMode">
+    <template v-if="isRead">
       <v-toolbar dark class="primary" fixed dense>
         <v-btn text @click="home"> {{ moduleName }} </v-btn>
         <v-spacer></v-spacer>
@@ -67,8 +67,11 @@
         </v-toolbar-items>
       </v-toolbar>
     </template>
-    <template v-else>
-      <v-toolbar dark class="orange">JEZ - EDIT MODE</v-toolbar>
+    <template v-else-if="isEdit">
+      <v-toolbar dark class="orange" fixed dense>JEZ - EDIT MODE</v-toolbar>
+    </template>
+    <template v-else-if="isAdmin">
+      <v-toolbar dark class="red" fixed dense>JEZ - Admin Mode</v-toolbar>
     </template>
   </div>
 </template>
@@ -125,14 +128,23 @@ export default {
   },
 
   computed: {
+    status() {
+      return this.$store.getters["mgr/status"];
+    },
     isLoggedIn() {
       return this.$store.getters["aut/isLoggedIn"];
     },
     userName() {
       return this.$store.getters["aut/userName"];
     },
-    isReadMode() {
-      return !this.$store.getters["mgr/status"].isEdit;
+    isRead() {
+      return this.status.isRead;
+    },
+    isEdit() {
+      return this.status.isEdit;
+    },
+    isAdmin() {
+      return this.status.isAdmin;
     },
     isNotHome() {
       return this.$store.getters["mgr/status"].module !== "Home";
