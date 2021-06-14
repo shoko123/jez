@@ -30,10 +30,10 @@ class GlobalSettings
             $this->loggedUsersOnly = $payload->loggedUsersOnly;
         }
 
-        return response()->json([
+        return (object)[
             "readOnly" => $this->readOnly,
             "loggedUsersOnly" => $this->loggedUsersOnly,
-        ], 200);
+        ];
     }
 
     public function readOnly()

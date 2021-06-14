@@ -4,6 +4,10 @@ export default {
     namespaced: true,
     state: {
         router: null,
+        appSettings: {
+            readOnly: false,
+            loggedUsersOnly: true,
+        },
         current: {
             module: "Home",
             apiModuleUrl: "/api",
@@ -27,6 +31,10 @@ export default {
         getRouter(state) {
             return state.router;
         },
+        appSettings(state) {
+            return state.appSettings;
+        },
+
         to(state) {
             return state.to;
         },
@@ -41,6 +49,11 @@ export default {
         setRouter(state, payload) {
             //console.log(`mgr/setRouter() payload: `);//${JSON.stringify(payload, null, 2)}
             state.router = payload;
+        },
+        appSettings(state, payload) {
+            console.log(`mgr/routes/appSettings(): ${JSON.stringify(payload, null, 2)}`);
+            state.appSettings.loggedUsersOnly = payload.settings.loggedUsersOnly;
+            state.appSettings.readOnly = payload.settings.readOnly;
         },
 
         to(state, payload) {
@@ -71,7 +84,7 @@ export default {
                 switch (payload.params.module) {
                     case "admin":
                         to.module = "Admin";
-                        break;                    
+                        break;
                     case "about":
                         to.module = "About";
                         break;
@@ -179,7 +192,7 @@ export default {
                             let sameQuery = sameQueryString();
                             console.log(`loadPrepare(list) ready: ${readyCollection} same: ${sameQuery}`);
                             if (!readyCollection || !sameQuery) {
-                                let params = filtersFromQueryString(state.to.queryParams);                                                    
+                                let params = filtersFromQueryString(state.to.queryParams);
                                 console.log(`params from queryString: ${JSON.stringify(params, null, 2)}`);
                                 commit("localFilters", params.local);
                                 return dispatch("mgr/query", { params: params.xhr, spinner: true }, { root: true });
@@ -236,8 +249,8 @@ export default {
                         case "filter":
                             return commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
                         case "media":
-                        //currently no initialization needed (TODO reorder media screen )
-                        return;
+                            //currently no initialization needed (TODO reorder media screen )
+                            return;
 
                         default:
                             alert("loadPrepare() invalid params");
@@ -254,7 +267,7 @@ export default {
             /////////////////////////////////////////////////////////////////////////
 
             console.log("routeChanged");
-            dispatch('parseTo', payload.to)
+            //dispatch('parseTo', payload.to)
             console.log(`current: ${JSON.stringify(state.current, null, 2)}`);
             console.log(`to: ${JSON.stringify(state.to, null, 2)}`);
             //If navigation is to a different module, initialize it (block async)
@@ -263,7 +276,7 @@ export default {
                     .then(res => {
                         console.log(`initializedModule done`);
                         return loadPrepare();
-                    });
+                    })
             } else {
                 return loadPrepare();
             }
@@ -271,7 +284,7 @@ export default {
 
         navigationSuccess({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
             console.log(`routes/navigation success()`);
-           
+
             if (state.to.hasOwnProperty("id")) {
                 state.current.id = state.to.id;
             }
@@ -295,7 +308,7 @@ export default {
             if (state.to.hasOwnProperty("apiModuleUrl")) {
                 state.current.apiModuleUrl = state.to.apiModuleUrl;
             }
-             state.current.module = state.to.module;
+            state.current.module = state.to.module;
             //state.current = Object.assign({}, state.current, state.to);
             //console.log(`NAV success update 'to' -> 'current': ${JSON.stringify(state.current, null, 2)}`);//
         },

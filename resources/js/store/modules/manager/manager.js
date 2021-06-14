@@ -10,8 +10,6 @@ export default {
     },
     state: {
         globalSettings: {
-            readOnly: false,
-            loggedUsersOnly: true,
             perPageMedia: 18,
             perPageChips: 100,
             perPageTableRecords: 50,
@@ -265,11 +263,7 @@ export default {
         baseUrl(state, payload) {
             state.globalSettings.baseUrl = payload;
         },
-        appSettings(state, payload) {
-            state.globalSettings.loggedUsersOnly = payload.loggedUsersOnly;
-            state.globalSettings.readOnly = payload.readOnly;
-        },
-       
+           
 
         collections(state, payload) {
             state.collections[payload.name].collection = payload.collection;
@@ -373,7 +367,7 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    commit('appSettings', res.data);
+                    commit('mgr/routes/appSettings', res.data, { root: true });
                     commit('snackbar/displaySnackbar', {
                         isSuccess: true,
                         message: `App status: loggedUsersOnly = ${res.data.settings.loggedUsersOnly}`

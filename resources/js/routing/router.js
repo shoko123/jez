@@ -33,6 +33,7 @@ const router = new Router({
         {
             path: '/:module(admin)',
             component: Admin,
+            meta: { authorize: "Admin" } 
         },
         {
             path: '/:module(auth)',
