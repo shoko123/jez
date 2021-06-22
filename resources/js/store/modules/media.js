@@ -7,7 +7,6 @@ export default {
         lightBox: {
             isOpen: false,
             source: "main",
-            pageNo: 0,
             indexInChunk: 0,
         },
         carousel: [],
@@ -92,16 +91,16 @@ export default {
             return lb;
         },
 
-        
+
         carousel(state) {
             return state.carousel;
         },
-        
-        background(state, rootState, getters, rootGetters) {   
+
+        background(state, rootState, getters, rootGetters) {
             let module = rootGetters["mgr/module"];
             let fullUrl = `${state.appMediaUrl}/backgrounds/${module}.jpg`;
             let tnUrl = `${state.appMediaUrl}/backgrounds/${module}-tn.jpg`;
-            return {fullUrl, tnUrl};
+            return { fullUrl, tnUrl };
         },
     },
     mutations: {
@@ -119,8 +118,8 @@ export default {
             state.lightBox.isOpen = payload.value;
         },
 
-        lightBoxIndexInChunk(state, payload) {
-            //console.log(`SET lightBoxIndexInChunk=${payload}`);//: ' + JSON.stringify(err, null, 2));
+        indexInChunk(state, payload) {
+            //console.log(`SET indexInChunk=${payload}`);//: ' + JSON.stringify(err, null, 2));
             state.lightBox.indexInChunk = payload;
         },
         appMediaUrl(state, payload) {
@@ -134,15 +133,55 @@ export default {
         }
     },
     actions: {
+        /*
         //We used to do pagination and loading here. That is why we don't call a commit directly.
         lightBoxIndex({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`mgr/action.lightBoxIndex(index: ${payload})`);//: ' + JSON.stringify(err, null, 2));
             commit("lightBoxIndexInChunk", payload);
         },
+        */
 
         openLightBox({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
             console.log(`med/openLB payload: ${JSON.stringify(payload, null, 2)}`);
             commit("openLightBox", payload);
+        },
+
+        lightBoxNext({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
+            console.log(`med/lightbox(${payload ? "next" : "prev"}) lightBox: ${JSON.stringify(state.lightBox, null, 2)}`);
+            let lb = getters["lightBox"];
+            let pages = Math.floor(lb.length / lb.itemsPerPage);
+            let newPage;
+
+            if (payload) {
+                //next
+                if (state.lightBox.indexInChunk === lb.chunk.length - 1) {
+                    //need to load a new page
+                    newPage = pages === lb.pageNo ? 1 : lb.pageNo + 2;
+                    commit("indexInChunk", 0);
+                    return dispatch("mgr/page", { name: state.lightBox.source, page: newPage }, { root: true })
+                        .then((res) => {
+                            return;
+                        });
+
+                } else {
+                    commit("indexInChunk", lb.indexInChunk + 1);
+                }
+            } else {
+                //'prev'
+                if (state.lightBox.indexInChunk === 0) {
+                     newPage = lb.pageNo === 0 ? pages + 1 : lb.pageNo;
+                    
+                     //new index will be the index of the last item in the last chunk.
+                    //lets find it:
+                   
+                    let newIndexInChunk = lb.pageNo === 0 ? lb.length - pages * lb.itemsPerPage - 1 : lb.itemsPerPage - 1;
+                    console.log(`length: ${lb.length} pages: ${pages} ipp: ${lb.itemsPerPage} newIndexInChunk=${newIndexInChunk}`);
+                    commit("indexInChunk", newIndexInChunk);
+                    return dispatch("mgr/page", { name: state.lightBox.source, page: newPage }, { root: true });
+                } else {
+                    commit("indexInChunk", lb.indexInChunk - 1);
+                }
+            }
         },
 
         //store multiple files r/t a specific dig item
@@ -219,7 +258,7 @@ export default {
                 .then((res) => {
                     //console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
                     commit('appMediaUrl', res.data.appMediaUrl);
-                    commit('carousel', res.data.carousel);                    
+                    commit('carousel', res.data.carousel);
                     return res;
 
                 }).catch(err => {

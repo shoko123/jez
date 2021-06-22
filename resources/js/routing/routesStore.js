@@ -58,8 +58,12 @@ export default {
 
         to(state, payload) {
             //console.log(`mgr/router SET("to"): ${JSON.stringify(payload, null, 2)}`);//
-            state.to = Object.assign({}, payload);
-            //state.to = payload;
+            state.to = { ...state.to, ...payload };
+        },
+        
+        copyToToCurrent(state, payload) {
+            //payload holds the name of property to copy.
+            state.current[payload] = state.to[payload];
         },
         current(state, payload) {
             //console.log(`mgr/router SET("current"): ${JSON.stringify(payload, null, 2)}`);
@@ -286,10 +290,12 @@ export default {
             console.log(`routes/navigation success()`);
 
             if (state.to.hasOwnProperty("id")) {
-                state.current.id = state.to.id;
+                commit("copyToToCurrent", "id");
+                //state.current.id = state.to.id;
             }
             if (state.to.hasOwnProperty("action")) {
-                state.current.action = state.to.action;
+                commit("copyToToCurrent", "action");
+                //state.current.action = state.to.action;
 
                 if (state.to.action === 'list') {
                     dispatch("aux/setLocalFilters", state.localFilters, { root: true });
@@ -303,12 +309,16 @@ export default {
                 }
             }
             if (state.to.hasOwnProperty("queryParams")) {
-                state.current.queryParams = state.to.queryParams;
+                commit("copyToToCurrent", "queryParams");
+                //state.current.queryParams = state.to.queryParams;
             }
             if (state.to.hasOwnProperty("apiModuleUrl")) {
-                state.current.apiModuleUrl = state.to.apiModuleUrl;
+                commit("copyToToCurrent", "apiModuleUrl");
+                //state.current.apiModuleUrl = state.to.apiModuleUrl;
             }
-            state.current.module = state.to.module;
+            
+            commit("copyToToCurrent", "module");
+            //state.current.module = state.to.module;
             //state.current = Object.assign({}, state.current, state.to);
             //console.log(`NAV success update 'to' -> 'current': ${JSON.stringify(state.current, null, 2)}`);//
         },

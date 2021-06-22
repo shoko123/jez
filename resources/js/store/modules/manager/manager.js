@@ -21,6 +21,7 @@ export default {
         collections: {
             main: {
                 collection: [],
+                index: null,
                 chunk: [],
                 view: 0,
                 views: ["Media", "Chips", "Table"],
@@ -263,10 +264,12 @@ export default {
         baseUrl(state, payload) {
             state.globalSettings.baseUrl = payload;
         },
-           
 
         collections(state, payload) {
             state.collections[payload.name].collection = payload.collection;
+        },
+        index(state, payload) {
+            state.collections.main.index = payload;
         },
         chunk(state, payload) {
             state.collections.main.chunk = payload;
@@ -329,8 +332,7 @@ export default {
         },
 
         pushIntoCollection(state, item) {
-            let c = state.collections["main"].collection;
-            c.push(item);
+            state.collections["main"].collection.push(item);
         },
     },
     actions: {
@@ -507,10 +509,10 @@ export default {
                     if (getters["ready"].collection) {
                         //set page according to item's index
                         let index = state.collections.main.collection.findIndex(x => x.id == res.data.item.id);
-                        let page = Math.floor((index + 1) / state.collections.main.itemsPerPage) + 1;
-                        //console.log(`index: ${index} ipp: ${state.collections.main.itemsPerPage} page: ${page}`);//mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
-
-                        dispatch("page", { name: "main", page: page, forceLoad: false });
+                        let page = Math.floor(index / state.collections.main.itemsPerPage) + 1;
+                        //console.log(`index: ${index} length: ${state.collections.main.collection.length} ipp: ${state.collections.main.itemsPerPage} page: ${page}`);
+                        //dispatch("page", { name: "main", page: page, forceLoad: false });
+                        dispatch("indexOfItemInMainCollection", index);
                     }
                     // get index of current item in collection
                     return res;
@@ -722,6 +724,23 @@ export default {
             }
         },
 
+
+        indexOfItemInMainCollection({ state, getters, commit, dispatch }, payload) {
+
+            //commit index and if needed load chunk,
+            let newPage = Math.floor(payload / state.collections.main.itemsPerPage);
+            console.log(`mgr/indexOfItemInMainCollection(${payload}) currentPage: ${state.collections.main.pageNo} nwPage: ${newPage}`);
+
+ 
+
+            commit("index", payload);
+            if(newPage !== state.collections.main.pageNo) {
+                return dispatch("page", { name: "main", page: newPage + 1, forceLoad: false });
+            }
+        },
+
+        //////////////////////////
+
         page({ state, getters, commit, dispatch }, payload) {
             function loadChunck() {
                 let source = state.routes.to;
@@ -751,7 +770,7 @@ export default {
                         break;
                 }
 
-                //console.log(`mgr/loadChunk(${payload.page})`);//meta: ${JSON.stringify(meta, null, 2)}
+                console.log(`mgr/loadChunk(${payload.page})`);//meta: ${JSON.stringify(meta, null, 2)}
                 let start = (payload.page - 1) * state.collections[payload.name].itemsPerPage;
                 let length = state.collections[payload.name].itemsPerPage;
                 //console.log(`mgr/page(${payload.page})`);
@@ -839,22 +858,18 @@ export default {
 
         goToRoute({ state, getters, rootGetters, commit, dispatch }, payload) {
             function getAdjancentId() {
-                let index, newIndex;
-                let m = rootGetters["mgr/collections"]("main");
-                let c = m.collection;
+                let newIndex, m = state.collections["main"];
                 switch (payload) {
                     case "next":
-                        index = c.findIndex(x => x.id === state.item.id);
-                        newIndex = (index == c.length - 1) ? 0 : index + 1;
+                        newIndex = (m.index === m.collection.length - 1) ? 0 : m.index + 1;
                         break;
 
                     case "prev":
-                        index = c.findIndex(x => x.id === state.item.id);
-                        newIndex = (index === 0) ? c.length - 1 : index - 1;
+                        newIndex = (m.index === 0) ? m.collection.length - 1 : m.index - 1;
                         break;
                 }
-                //console.log(`ADJANCT length: ${c.length} index: ${index} newIndex: ${newIndex}`);
-                return c[newIndex].id;
+                //console.log(`ADJANCT length: ${m.collection.length} index: ${m.index} newIndex: ${newIndex}`);
+                return m.collection[newIndex].id;
             }
 
             switch (payload) {

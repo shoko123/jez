@@ -71,7 +71,7 @@ export default {
       },
       set(data) {
         //console.log("MLB set " + data); //JSON.stringify(data, null, 2));
-        this.$store.dispatch("med/lightBoxIndex", data);
+        //this.$store.dispatch("med/lightBoxIndex", data);
       },
     },
 
@@ -90,6 +90,15 @@ export default {
       if (lb.length === 1) {
         return;
       }
+      //console.log(`click(${isNext ? "next" : "prev"} `);
+      this.disableArrows = true;
+      this.$store.dispatch("med/lightBoxNext", isNext).then(() => {
+        this.disableArrows = false;
+      });
+
+      return;
+
+      ///////////////////////
       let chunkLength = lb.chunk.length;
 
       let pages = Math.floor(lb.length / lb.itemsPerPage);
