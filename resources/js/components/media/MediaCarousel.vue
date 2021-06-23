@@ -27,7 +27,7 @@ export default {
       return this.lightBox.chunk;
     },
 
-   lightBoxIndex: {
+    lightBoxIndex: {
       get() {
         return this.lightBox.indexInChunk;
       },
@@ -36,7 +36,11 @@ export default {
       },
     },
     media() {
-      return this.lightBox.media;
+      if (this.$store.getters["mgr/ready"].chunk) {
+        return this.lightBox.media;
+      } else {
+        return { fullUrl: null, tnUrl: null };
+      }
     },
   },
 };

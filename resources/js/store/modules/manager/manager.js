@@ -509,9 +509,7 @@ export default {
                     if (getters["ready"].collection) {
                         //set page according to item's index
                         let index = state.collections.main.collection.findIndex(x => x.id == res.data.item.id);
-                        let page = Math.floor(index / state.collections.main.itemsPerPage) + 1;
                         //console.log(`index: ${index} length: ${state.collections.main.collection.length} ipp: ${state.collections.main.itemsPerPage} page: ${page}`);
-                        //dispatch("page", { name: "main", page: page, forceLoad: false });
                         dispatch("indexOfItemInMainCollection", index);
                     }
                     // get index of current item in collection
@@ -726,23 +724,17 @@ export default {
 
 
         indexOfItemInMainCollection({ state, getters, commit, dispatch }, payload) {
-
             //commit index and if needed load chunk,
             let newPage = Math.floor(payload / state.collections.main.itemsPerPage);
-            console.log(`mgr/indexOfItemInMainCollection(${payload}) currentPage: ${state.collections.main.pageNo} nwPage: ${newPage}`);
-
- 
-
+            //console.log(`mgr/indexOfItemInMainCollection(${payload}) currentPage: ${state.collections.main.pageNo} nwPage: ${newPage}`);
             commit("index", payload);
             if(newPage !== state.collections.main.pageNo) {
                 return dispatch("page", { name: "main", page: newPage + 1, forceLoad: false });
             }
         },
 
-        //////////////////////////
-
         page({ state, getters, commit, dispatch }, payload) {
-            function loadChunck() {
+            function loadChunk() {
                 let source = state.routes.to;
 
                 //let source = state.routes.loading ? state.routes.to : state.routes.current;
@@ -770,7 +762,7 @@ export default {
                         break;
                 }
 
-                console.log(`mgr/loadChunk(${payload.page})`);//meta: ${JSON.stringify(meta, null, 2)}
+                //console.log(`mgr/loadChunk(${payload.page})`);//meta: ${JSON.stringify(meta, null, 2)}
                 let start = (payload.page - 1) * state.collections[payload.name].itemsPerPage;
                 let length = state.collections[payload.name].itemsPerPage;
                 //console.log(`mgr/page(${payload.page})`);
@@ -820,7 +812,7 @@ export default {
                                 (payload.forceLoad ||
                                     state.collections.main.pageNo + 1 !== payload.page)) {
                                 //console.log(`Calling loadChunk()`);
-                                res = loadChunck();
+                                res = loadChunk();
                             }
                     }
 
@@ -846,8 +838,8 @@ export default {
             commit("collections", { name: "media", collection: [] });
             commit("ready", { entity: "collection", isReady: false });
             commit("ready", { entity: "item", isReady: false });
+            commit("ready", { entity: "chunk", isReady: false });
             dispatch('aux/clearFilters', null, { root: true })
-            commit("med/clear", null, { root: true });
             commit('regs/clear', null, { root: true });
             commit("itemDisplayOptionIndex", 0);
             commit("collectionViewIndex", { name: "main", viewIndex: 0 });

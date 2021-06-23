@@ -12,9 +12,12 @@
       </v-tabs>
 
       <v-tabs v-model="groupTabIndex" class="primary">
-        <v-tab v-for="(tab, index) in groups" :key="index" class="no-uppercase">{{
-          tab.text
-        }}</v-tab>
+        <v-tab
+          v-for="(tab, index) in groups"
+          :key="index"
+          class="no-uppercase"
+          >{{ tab.text }}</v-tab
+        >
       </v-tabs>
 
       <v-tabs-items v-model="groupTabIndex">
@@ -72,6 +75,20 @@ export default {
       }));
     },
 
+    safeCategoryTabIndex() {
+      //As categories changes length according to visibility of members,
+      //(and categoryTabIndex is unaware of this) we must protect array access.
+      return this.categoryTabIndex >= this.categories.length
+        ? 0
+        : this.categoryTabIndex;
+    },
+
+    safeGroupTabIndex() {
+      //As groups changes length according to visibility of members,
+      //(and groupTabIndex is unaware of this) we must protect array access.
+      return this.groupTabIndex >= this.groups.length ? 0 : this.groupTabIndex;
+    },
+    
     groups() {
       //console.log(`FilterSelect categories: ${JSON.stringify(this.categories, null, 2)} \nsafeIndex: ${this.safeCategoryTabIndex}`);//(groups) ${JSON.stringify(payload, null, 2)}`);
       return this.$store.getters["aux/groupsForCategory"](
@@ -83,18 +100,6 @@ export default {
       }));
     },
 
-    safeCategoryTabIndex() {
-      //As categories changes length according to visibility of members,
-      //(and categoryTabIndex is unaware of this) we must protect array access.
-      return this.categoryTabIndex >= this.categories.length
-        ? 0
-        : this.categoryTabIndex;
-    },
-    safeGroupTabIndex() {
-      //As groups changes length according to visibility of members,
-      //(and groupTabIndex is unaware of this) we must protect array access.
-      return this.groupTabIndex >= this.groups.length ? 0 : this.groupTabIndex;
-    },
     params() {
       return this.groups[this.safeGroupTabIndex].params; //
     },

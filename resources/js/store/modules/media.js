@@ -87,7 +87,11 @@ export default {
                     header = `Showing ${mod} ${itemTag} Related ${related}: ${media.tag}`;
                     break;
             }
-            lb["header"] = header + ` [${index}/${length}]`;
+            let counter = ` [.../...]`;
+            if (rootGetters["mgr/ready"].chunk) {
+                counter = ` [${index}/${length}]`;
+            }
+            lb["header"] = header + counter; //[${index}/${length}]`;
             return lb;
         },
 
@@ -109,17 +113,16 @@ export default {
         },
 
         openLightBox(state, payload) {
+            state.lightBox.isOpen = payload.value;
             if (payload.value) {
                 state.lightBox.source = payload.source;
-                state.lightBox.page = payload.page;
                 state.lightBox.indexInChunk = payload.index;
                 //console.log(`med/openLightBox(commit): ${JSON.stringify(payload, null, 2)}`);
             }
-            state.lightBox.isOpen = payload.value;
+
         },
 
         indexInChunk(state, payload) {
-            //console.log(`SET indexInChunk=${payload}`);//: ' + JSON.stringify(err, null, 2));
             state.lightBox.indexInChunk = payload;
         },
         appMediaUrl(state, payload) {
@@ -128,39 +131,25 @@ export default {
         carousel(state, payload) {
             state.carousel = payload;
         },
-        clear(state, payload) {
-            //state.itemMedia = { collection: [], filler: null };
-        }
     },
     actions: {
-        /*
-        //We used to do pagination and loading here. That is why we don't call a commit directly.
-        lightBoxIndex({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
-            //console.log(`mgr/action.lightBoxIndex(index: ${payload})`);//: ' + JSON.stringify(err, null, 2));
-            commit("lightBoxIndexInChunk", payload);
-        },
-        */
-
-        openLightBox({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`med/openLB payload: ${JSON.stringify(payload, null, 2)}`);
-            commit("openLightBox", payload);
-        },
-
         lightBoxNext({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`med/lightbox(${payload ? "next" : "prev"}) lightBox: ${JSON.stringify(state.lightBox, null, 2)}`);
+            //console.log(`med/lightbox(${payload ? "next" : "prev"}) lightBox: ${JSON.stringify(state.lightBox, null, 2)}`);
             let lb = getters["lightBox"];
-            let pages = Math.floor(lb.length / lb.itemsPerPage);
-            let newPage;
+            let pages = Math.floor((lb.length - 1) / lb.itemsPerPage) + 1;
+            let newPage;//base 1
 
             if (payload) {
                 //next
                 if (state.lightBox.indexInChunk === lb.chunk.length - 1) {
-                    //need to load a new page
-                    newPage = pages === lb.pageNo ? 1 : lb.pageNo + 2;
+                    //need to load a new page  (either next or first [if current is last])            
+                    commit("mgr/ready", { entity: "chunk", isReady: false }, { root: true });
+                    let newPage = pages === lb.pageNo + 1 ? 1 : lb.pageNo + 2;
+                    //console.log(`**next(last)** length: ${lb.length} indexInChunk: ${state.lightBox.indexInChunk} chunkLength: ${lb.chunk.length} currentPageNo(Base0) : ${lb.pageNo} pages: ${pages} ipp: ${lb.itemsPerPage} newPage(base1): ${newPage}`);      
                     commit("indexInChunk", 0);
                     return dispatch("mgr/page", { name: state.lightBox.source, page: newPage }, { root: true })
                         .then((res) => {
-                            return;
+                            commit("mgr/ready", { entity: "chunk", isReady: true }, { root: true });
                         });
 
                 } else {
@@ -169,15 +158,16 @@ export default {
             } else {
                 //'prev'
                 if (state.lightBox.indexInChunk === 0) {
-                     newPage = lb.pageNo === 0 ? pages + 1 : lb.pageNo;
-                    
-                     //new index will be the index of the last item in the last chunk.
-                    //lets find it:
-                   
-                    let newIndexInChunk = lb.pageNo === 0 ? lb.length - pages * lb.itemsPerPage - 1 : lb.itemsPerPage - 1;
-                    console.log(`length: ${lb.length} pages: ${pages} ipp: ${lb.itemsPerPage} newIndexInChunk=${newIndexInChunk}`);
-                    commit("indexInChunk", newIndexInChunk);
-                    return dispatch("mgr/page", { name: state.lightBox.source, page: newPage }, { root: true });
+                    newPage = lb.pageNo === 0 ? pages : lb.pageNo;
+                    //new index will be the index of the last item in the last chunk. Lets find it:
+                    let newIndexInChunk = lb.pageNo === 0 ? lb.length - (pages - 1) * lb.itemsPerPage - 1 : lb.itemsPerPage - 1;
+
+                    //console.log(`**prev(0)** length: ${lb.length} pages: ${pages} ipp: ${lb.itemsPerPage} pageNo: ${lb.pageNo} newIndexInChunk=${newIndexInChunk}`);       
+                    commit("mgr/ready", { entity: "chunk", isReady: false }, { root: true });
+                    return dispatch("mgr/page", { name: state.lightBox.source, page: newPage }, { root: true }).then(() => {
+                        commit("indexInChunk", newIndexInChunk);
+                        commit("mgr/ready", { entity: "chunk", isReady: true }, { root: true });
+                    });
                 } else {
                     commit("indexInChunk", lb.indexInChunk - 1);
                 }

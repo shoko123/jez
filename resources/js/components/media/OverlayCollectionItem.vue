@@ -36,10 +36,9 @@ export default {
   methods: {
     openLightBox() {
         let c = this.$store.getters["mgr/collections"]("main");
-        this.$store.dispatch("med/openLightBox", {
+        this.$store.commit("med/openLightBox", {
         value: true,
         source: "main",
-        page: c.pageNo + 1,
         index: this.index % c.itemsPerPage,
       });
     },

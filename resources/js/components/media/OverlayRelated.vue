@@ -45,7 +45,6 @@ export default {
       this.$store.commit("med/openLightBox", {
         value: true,
         source: "related",
-        page: c.pageNo + 1,
         index: this.index % c.itemsPerPage,
       });
     },

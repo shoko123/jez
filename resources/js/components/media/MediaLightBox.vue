@@ -81,71 +81,16 @@ export default {
   },
   methods: {
     closeLightBox() {
-      this.$store.dispatch("med/openLightBox", {
+      this.$store.commit("med/openLightBox", {
         value: false,
       });
     },
     clicked(isNext) {
-      let lb = this.lightBox;
-      if (lb.length === 1) {
-        return;
-      }
-      //console.log(`click(${isNext ? "next" : "prev"} `);
+      //guaranteed lightBox.length > 1
       this.disableArrows = true;
       this.$store.dispatch("med/lightBoxNext", isNext).then(() => {
         this.disableArrows = false;
       });
-
-      return;
-
-      ///////////////////////
-      let chunkLength = lb.chunk.length;
-
-      let pages = Math.floor(lb.length / lb.itemsPerPage);
-      let setToMax = false;
-      let newPage = null;
-      /*
-      console.log(
-        `click(${isNext ? "next" : "prev"} pages: ${
-          pages + 1
-        } chunkLength ${chunkLength} index: ${this.lightBoxIndex}`
-      ); //: " + JSON.stringify(lbx, null, 2));
-      */
-      if (isNext) {
-        if (this.lightBoxIndex === chunkLength - 1) {
-          newPage = pages === lb.pageNo ? 1 : lb.pageNo + 2;
-          this.lightBoxIndex = 0;
-        } else {
-          ++this.lightBoxIndex;
-        }
-      } else {
-        //'prev' clicked
-        if (this.lightBoxIndex === 0) {
-          newPage = lb.pageNo === 0 ? pages + 1 : lb.pageNo;
-
-          //we will set lightBoxIndex after the page is loaded
-          setToMax = true;
-        } else {
-          --this.lightBoxIndex;
-        }
-      }
-      if (newPage === null) {
-        return;
-      }
-
-      //console.log("Need to load");
-      this.disableArrows = true;
-      this.$store
-        .dispatch("mgr/page", { name: this.lightBox.source, page: newPage })
-        .then((res) => {
-          //console.log(
-          //  `Loaded Chunk. setToMax=${setToMax} length=${this.lightBox.chunk.length - 1}`
-          //);
-          if (setToMax) {
-            this.lightBoxIndex = this.lightBox.chunk.length - 1;
-          }
-          this.disableArrows = false;
-        });
     },
   },
 };
