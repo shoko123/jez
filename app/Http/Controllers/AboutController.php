@@ -9,11 +9,9 @@ class AboutController extends Controller
 {
     public function index(GlobalSettings $gs)
     {
-        if ($gs->readOnly()) {
-            return response()->json([
-                "collection" => AboutPages::index(),
-            ], 200);
-        }
+        return response()->json([
+            "collection" => AboutPages::index(),
+        ], 200);
     }
 
     public function show($id)

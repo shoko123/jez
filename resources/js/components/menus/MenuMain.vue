@@ -4,39 +4,39 @@
       <v-toolbar dark class="primary" fixed dense>
         <v-btn text @click="home"> {{ moduleName }} </v-btn>
         <v-spacer></v-spacer>
+        <template v-if="showLinks">
+          <v-toolbar-items class="hidden-xs-only">
+            <v-btn text @click="moduleClick({ module: 'About' })">
+              <v-icon left dark>mdi-help-circle-outline</v-icon>About
+            </v-btn>
+            <v-menu offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn v-bind="attrs" v-on="on" text>
+                  <v-icon left dark>view_comfy</v-icon>
+                  Areas/Seasons
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="(item, index) in areaSeasonDropList"
+                  :key="index"
+                  @click="moduleClick(item)"
+                >
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+            <v-btn
+              text
+              v-for="item in btns"
+              :key="item.title"
+              :loading="item.loading"
+              @click="moduleClick(item)"
+            >
+              <v-icon left dark>{{ item.icon }}</v-icon>
+              {{ item.title }}
+            </v-btn>
 
-        <v-toolbar-items class="hidden-xs-only">
-          <v-btn text @click="moduleClick({ module: 'About' })">
-            <v-icon left dark>mdi-help-circle-outline</v-icon>About
-          </v-btn>
-          <v-menu offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn v-bind="attrs" v-on="on" text>
-                <v-icon left dark>view_comfy</v-icon>
-                Areas/Seasons
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item
-                v-for="(item, index) in areaSeasonDropList"
-                :key="index"
-                @click="moduleClick(item)"
-              >
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-          <v-btn
-            text
-            v-for="item in btns"
-            :key="item.title"
-            :loading="item.loading"
-            @click="moduleClick(item)"
-          >
-            <v-icon left dark>{{ item.icon }}</v-icon>
-            {{ item.title }}
-          </v-btn>
-          <template v-if="isLoggedIn">
             <v-menu offset-y>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn color="purple" dark v-bind="attrs" v-on="on">{{
@@ -53,18 +53,18 @@
                 </v-list-item>
               </v-list>
             </v-menu>
-          </template>
-          <template v-else>
-            <v-btn
-              text
-              :loading="loginBtn.loading"
-              @click="moduleClick(loginBtn)"
-            >
-              <v-icon left dark>{{ loginBtn.icon }}</v-icon>
-              {{ loginBtn.title }}
-            </v-btn>
-          </template>
-        </v-toolbar-items>
+          </v-toolbar-items>
+        </template>
+        <template v-else>
+          <v-btn
+            text
+            :loading="loginBtn.loading"
+            @click="moduleClick(loginBtn)"
+          >
+            <v-icon left dark>{{ loginBtn.icon }}</v-icon>
+            {{ loginBtn.title }}
+          </v-btn>
+        </template>
       </v-toolbar>
     </template>
     <template v-else-if="isEdit">
@@ -130,6 +130,9 @@ export default {
   computed: {
     status() {
       return this.$store.getters["mgr/status"];
+    },
+    showLinks() {
+      return this.$store.getters["aut/isLoggedIn"];
     },
     isLoggedIn() {
       return this.$store.getters["aut/isLoggedIn"];
