@@ -134,9 +134,6 @@ export default {
     showLinks() {
       return this.$store.getters["aut/isLoggedIn"];
     },
-    isLoggedIn() {
-      return this.$store.getters["aut/isLoggedIn"];
-    },
     userName() {
       return this.$store.getters["aut/userName"];
     },

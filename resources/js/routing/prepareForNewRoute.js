@@ -2,8 +2,6 @@
 import store from '../store/store.js';
 
 export default function prepareForNewRoute(router) {
-    console.log("prepareForNewRoute.init()");
-
     router.beforeEach((to, from, next) => {
         store.dispatch("mgr/routes/routeChanged", { to, from })
         .then((res) => {

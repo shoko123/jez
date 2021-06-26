@@ -323,7 +323,7 @@ export default {
         },
 
         setLocalFilters({ state, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`aux/setLocalFilters: ${JSON.stringify(payload, null, 2)}`);
+            //console.log(`aux/setLocalFilters: ${JSON.stringify(payload, null, 2)}`);
             commit("clear", ["filters"]);
 
             //set filters from queryString
@@ -437,7 +437,6 @@ export default {
                     }
             }
         },
-
 
         clearFilters({ state, commit }) {
             commit("clear", ["filters"]);

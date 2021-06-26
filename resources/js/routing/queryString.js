@@ -128,7 +128,7 @@ export function filtersFromQueryString(qs) {
         return idsArray;
     }
 
-    //start here.
+    //code run starts here.
     let xhrParams = {};
     let localParams = [];
     //iterate thru queryString, add properties to xhrParams and push ids 
@@ -150,12 +150,9 @@ export function filtersFromQueryString(qs) {
                 cat = "lookups";
                 break;
             default:
-                //console.log(`parse qs BAD cat: ${cat} ids: ${ids} name: ${name}`);
                 console.log(`parse qs BAD cat: ${cat} idsString: ${idsString} name: ${name}`);
         }
-        //console.log(`cat: ${cat} catCode: ${catCode} name: ${name} idsString: ${idsString}`);
-        console.log(`[${prop}]: ${idsString} cat: ${cat} catCode: ${catCode} name: ${name}`);
-
+        //console.log(`[${prop}]: ${idsString} cat: ${cat} catCode: ${catCode} name: ${name}`);
         let filtersArray = idsStringToArray(catCode, name, idsString);
 
         //localParams

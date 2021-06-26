@@ -51,7 +51,6 @@ export default {
             state.router = payload;
         },
         appSettings(state, payload) {
-            console.log(`mgr/routes/appSettings(): ${JSON.stringify(payload, null, 2)}`);
             state.appSettings.loggedUsersOnly = payload.settings.loggedUsersOnly;
             state.appSettings.readOnly = payload.settings.readOnly;
         },
@@ -60,18 +59,14 @@ export default {
             //console.log(`mgr/router SET("to"): ${JSON.stringify(payload, null, 2)}`);//
             state.to = { ...state.to, ...payload };
         },
-        
+
         copyToToCurrent(state, payload) {
             //payload holds the name of property to copy.
             state.current[payload] = state.to[payload];
         },
-        current(state, payload) {
-            //console.log(`mgr/router SET("current"): ${JSON.stringify(payload, null, 2)}`);
-            state.to = Object.assign({}, state.current, payload);
-            //state.to = payload;
-        },
+
         localFilters(state, payload) {
-            console.log(`routes/setLocalFilters: ${JSON.stringify(payload, null, 2)}`);
+            //console.log(`routes/setLocalFilters: ${JSON.stringify(payload, null, 2)}`);
             state.localFilters = payload;
         },
         loading(state, payload) {
@@ -81,7 +76,7 @@ export default {
     },
     actions: {
         parseTo({ state, commit }, payload) {
-            //console.log(`mgr/router parseTo payload: ${JSON.stringify(payload, null, 2)}`);//            
+            //console.log(`mgr/router parseTo payload.params: ${JSON.stringify(payload.params, null, 2)}`);
             let to = {};
 
             if (payload.params.hasOwnProperty("module")) {
@@ -137,13 +132,15 @@ export default {
             if (payload.params.hasOwnProperty("action")) {
                 to.action = payload.params.action;
             }
-            if (Object.keys(payload.query).length > 0) {
+
+            //query params will only be copied on 'list' action. (We don't want to reload list if we observed items).
+            if (payload.params.hasOwnProperty("action") && payload.params.action === "list") {
+                console.log(`setting to.queryParams to: ${JSON.stringify(payload.query, null, 2)}`);
                 to.queryParams = payload.query;
             }
 
-
-            //console.log(`parsedTo: ${JSON.stringify(to, null, 2)}`);
-            commit("to", to /*{ module, action, queryString, id }*/);
+            commit("to", to);
+            //console.log(`parseTo.done to: ${JSON.stringify(state.to, null, 2)}`);
             return to;
         },
 
@@ -190,14 +187,13 @@ export default {
                     //console.log('loadPrepare');
                     switch (state.to.action) {
                         case "list":
-                            console.log('mgr.loadPrepare.list ');// + JSON.stringify(res, null, 2));
                             //if same module, retrieve collection if not already populated
                             let readyCollection = rootGetters["mgr/ready"].collection;
                             let sameQuery = sameQueryString();
-                            console.log(`loadPrepare(list) ready: ${readyCollection} same: ${sameQuery}`);
+                            //console.log(`loadPrepare(list) ready: ${readyCollection} same: ${sameQuery}`);
                             if (!readyCollection || !sameQuery) {
                                 let params = filtersFromQueryString(state.to.queryParams);
-                                console.log(`params from queryString: ${JSON.stringify(params, null, 2)}`);
+                                //console.log(`params from queryString: ${JSON.stringify(params, null, 2)}`);
                                 commit("localFilters", params.local);
                                 return dispatch("mgr/query", { params: params.xhr, spinner: true }, { root: true });
                             }
@@ -211,14 +207,11 @@ export default {
                                 let readyItem = rootGetters["mgr/ready"].item;
                                 let sameItem = sameItemId();
 
-
-
                                 if (!readyCollection) {
                                     //if same module, but collection empty, retrieve collection and then item
                                     return dispatch("mgr/query", { params: {}, spinner: true }, { root: true })
                                         .then((res) => {
                                             return dispatch("mgr/loadItem", state.to.id, { root: true });
-                                            //return res;
                                         })
                                 } else {
                                     //console.log(`routes("show") ready: ${JSON.stringify(rootGetters["mgr/ready"], null, 2)} same item id: ${sameItem}`)
@@ -236,22 +229,23 @@ export default {
                                         return dispatch("mgr/query", { params: {}, spinner: true }, { root: true });
                                     })
                             }
+                            return;
 
                         case "create":
                         case "update":
 
                             //TODO validate that we came from same module, item and that current.action == 'show'.
-
                             return dispatch("mgr/prepareNew", state.to.action, { root: true });
-
 
                         case "tags":
                             return dispatch(`aux/prepareTagger`, null, { root: true });
 
-
                         case "welcome":
                         case "filter":
-                            return commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
+                            commit("mgr/ready", { entity: "collection", isReady: false }, { root: true });
+                            commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
+                            return;
+
                         case "media":
                             //currently no initialization needed (TODO reorder media screen )
                             return;
@@ -259,26 +253,20 @@ export default {
                         default:
                             alert("loadPrepare() invalid params");
                             throw new Error("loadPrepare() invalid params");
-
                     }
                 }
             }
 
-            //actual code starts running here
+            //Code starts running here.
 
             /////////////////////////////////////////////////////////////////////////
-            //if new module, block wait until module's metadata (tags, lookups) are retrieved from DB.
+            //if new module, block wait until initialization is done -
+            //module's metadata (tags, lookups) are retrieved from DB.
             /////////////////////////////////////////////////////////////////////////
-
-            console.log("routeChanged");
-            //dispatch('parseTo', payload.to)
-            console.log(`current: ${JSON.stringify(state.current, null, 2)}`);
-            console.log(`to: ${JSON.stringify(state.to, null, 2)}`);
-            //If navigation is to a different module, initialize it (block async)
+            //console.log(`routeChanged() current: ${JSON.stringify(state.current, null, 2)}\nto: ${JSON.stringify(state.to, null, 2)}`);
             if (!sameModule()) {
                 return dispatch('mgr/initializeModule', null, { root: true })
-                    .then(res => {
-                        console.log(`initializedModule done`);
+                    .then(() => {
                         return loadPrepare();
                     })
             } else {
@@ -287,7 +275,7 @@ export default {
         },
 
         navigationSuccess({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`routes/navigation success()`);
+            //console.log(`routes/navigation success()`);
 
             if (state.to.hasOwnProperty("id")) {
                 commit("copyToToCurrent", "id");
@@ -303,7 +291,7 @@ export default {
                 //if we move to containing item (e.g. Pottery -> Locus(show)), we must clear filters
                 //both locally "localFilters" & at aux module.
                 if (state.to.action === 'show' && state.to.module !== state.current.module) {
-                    console.log(`Going to containing ${state.to.module}`)
+                    //console.log(`Going to item in a different module ${state.to.module}`)
                     commit("localFilters", null)
                     dispatch("aux/setLocalFilters", null, { root: true });
                 }
@@ -314,13 +302,9 @@ export default {
             }
             if (state.to.hasOwnProperty("apiModuleUrl")) {
                 commit("copyToToCurrent", "apiModuleUrl");
-                //state.current.apiModuleUrl = state.to.apiModuleUrl;
             }
-            
+
             commit("copyToToCurrent", "module");
-            //state.current.module = state.to.module;
-            //state.current = Object.assign({}, state.current, state.to);
-            //console.log(`NAV success update 'to' -> 'current': ${JSON.stringify(state.current, null, 2)}`);//
         },
 
         goTo({ state, rootState, getters, rootGetters }, payload) {

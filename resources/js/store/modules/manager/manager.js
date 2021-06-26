@@ -286,11 +286,8 @@ export default {
             state.collections[payload.name].view = payload.viewIndex;
 
         },
-        collectionResetView(state, payload) {
+        collectionResetPageNo(state, payload) {
             state.collections[payload].pageNo = 0;
-            if (payload === "main") {
-                state.collections[payload].view = 0;
-            }
         },
         item(state, payload) {
             state.item = payload;
@@ -343,7 +340,7 @@ export default {
             //set server base addresses
             let baseUrl = `${window.location.protocol}//${window.location.host}`;
             commit("baseUrl", baseUrl);
-            console.log("vuex.init() setting axios.baseURL to " + baseUrl);
+            console.log("app.init() setting axios.baseURL to " + baseUrl);
             axios.defaults.baseURL = baseUrl;
 
             //enables axios debug
@@ -369,24 +366,24 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
+                    console.log(`app.init() OK. appSettings: ${JSON.stringify(res.data.settings, null, 2)}`);
                     commit('mgr/routes/appSettings', res.data, { root: true });
+                    /*
                     commit('snackbar/displaySnackbar', {
                         isSuccess: true,
                         message: `App status: loggedUsersOnly = ${res.data.settings.loggedUsersOnly}`
                     }, { root: true });
-                    //console.log(`mgr/setting: ${res}`);
+                    */
                     return res;
                 })
                 .catch(err => {
-                    console.log('mgr settings Failed! err: ' + err);
+                    console.log('initApp() failed! err: ' + err);
                     return err;
                 })
         },
 
         query({ state, getters, rootGetters, commit, dispatch }, payload) {
             commit("ready", { entity: "collection", isReady: false });
-            console.log(`mgr/query() to: ${JSON.stringify(state.routes.to, null, 2)}`);
-            console.log(`mgr.query. endpoint: ${state.routes.to.apiModuleUrl}`);
 
             let action = (state.routes.to.module === "About") ? "get" : "post";
             let endpoint = state.routes.to.apiModuleUrl;
@@ -406,7 +403,7 @@ export default {
             //payload.params.lookups = JSON.parse(payload.params.lookups);
             //payload.params.tagParams = JSON.parse(payload.params.tagParams);
 
-            console.log(`params: ${JSON.stringify(payload.params, null, 2)}`);
+            console.log(`mgr.query() endpoint: ${state.routes.to.apiModuleUrl}. params: ${JSON.stringify(payload.params, null, 2)}`);
             let xhrRequest = {
                 endpoint: endpoint,
                 action: action,
@@ -419,6 +416,7 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
+                    console.log(`mgr.query() OK. ${res.data.collection.length} records returned`);
                     if (res.data.collection.length < 1) {
                         commit('snackbar/displaySnackbar', {
                             isSuccess: false,
@@ -427,7 +425,6 @@ export default {
                         throw new EmptyResultSetError("Empty result set");
                     }
 
-                    console.log(`mgr.collection loaded (${state.routes.to.module})`);
                     commit('collections', { name: "main", collection: res.data.collection });
                     commit("ready", { entity: "collection", isReady: true });
 
@@ -464,13 +461,11 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-
-                    let arr = ["media", "related"];
-                    commit("collectionResetView", "related");
+                    commit("collectionResetPageNo", "related");
                     //save related collections
                     switch (state.routes.to.module) {
                         case "About":
-                            //nothing to 
+                            //nothing to do.
                             break;
 
                         case "Area":
@@ -496,7 +491,6 @@ export default {
                         case "Tbd":
                             commit('fnd/item', res.data.find, { root: true });
                             dispatch('aux/itemTags', res.data.tags, { root: true });
-
                     }
 
                     commit('item', res.data.item);
@@ -507,12 +501,11 @@ export default {
 
                     commit("ready", { entity: "item", isReady: true });
                     if (getters["ready"].collection) {
-                        //set page according to item's index
+                        //set item's index
                         let index = state.collections.main.collection.findIndex(x => x.id == res.data.item.id);
                         //console.log(`index: ${index} length: ${state.collections.main.collection.length} ipp: ${state.collections.main.itemsPerPage} page: ${page}`);
-                        dispatch("indexOfItemInMainCollection", index);
+                        return dispatch("indexOfItemInMainCollection", index);
                     }
-                    // get index of current item in collection
                     return res;
                 })
                 .catch(err => {
@@ -646,7 +639,7 @@ export default {
         },
 
         initializeModule({ state, getters, commit, dispatch }, payload) {
-            console.log('mgr.initializeModule. apiBaseUrl: ' + state.routes.to.module);
+            //console.log('mgr.initializeModule. apiBaseUrl: ' + state.routes.to.module);
             dispatch("clearModule");
             //only dig modules and 'About' are initialized
             if (["Home", "Auth"].includes(state.routes.to.module)) { return }
@@ -665,6 +658,7 @@ export default {
                 .then((res) => {
                     //console.log('initModule returned: ');// + JSON.stringify(res, null, 2));
                     commit('welcomeData', res.data.welcomeData);
+                    console.log(`initializedModule '${state.routes.to.module}' OK`);                    
                     //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
 
                     if (state.routes.to.module === "About") {
@@ -673,7 +667,6 @@ export default {
                     } else {
                         //Save dig modules` parameters in the category/group/param structure. 
                         return dispatch("aux/groups", res.data.groups, { root: true });
-                        return res;
                     }
                 })
         },
@@ -724,7 +717,7 @@ export default {
 
 
         indexOfItemInMainCollection({ state, getters, commit, dispatch }, payload) {
-            //commit index and if needed load chunk,
+            //commit index and if needed load chunk and set new pageNo,
             let newPage = Math.floor(payload / state.collections.main.itemsPerPage);
             //console.log(`mgr/indexOfItemInMainCollection(${payload}) currentPage: ${state.collections.main.pageNo} nwPage: ${newPage}`);
             commit("index", payload);

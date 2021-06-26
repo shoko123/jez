@@ -10,7 +10,7 @@ class GlobalSettings
     public function __construct()
     {
         $this->readOnly = false;
-        $this->loggedUsersOnly = false;
+        $this->loggedUsersOnly = true;
     }
 
     public function get()
