@@ -40,9 +40,8 @@ export default {
             let toCopy = payload;
             let current = rootGetters["mgr/item"];
             commit("id", toCopy ? current.id : null);
-            commit("material_id", toCopy ? current.base_type_id : 1);
-
-            commit("base_type_id", toCopy ? current.material_id : 1);
+            commit("material_id", toCopy ? current.material_id : 1);
+            commit("base_type_id", toCopy ? current.base_type_id : 1);
             commit("description", toCopy ? current.description : null);
             commit("measurements", toCopy ? current.measurements : null);
         },
