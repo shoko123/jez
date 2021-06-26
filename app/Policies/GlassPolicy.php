@@ -10,12 +10,12 @@ class GlassPolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user)
+    public function viewAny(?User $user)
     {
         return true;
     }
 
-    public function view(User $user, Glass $glass)
+    public function view(?User $user, Glass $glass)
     {
         return true;
     }

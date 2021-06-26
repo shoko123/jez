@@ -1,15 +1,28 @@
 <template>
-  <v-container fluid>
+  <v-container fluid v-if="isReady">
     <v-card>
       <v-card-title class="grey py-0 mb-4">
         {{ header }}
         <v-spacer></v-spacer>
         <template v-if="showArrows">
-          <v-btn fab small text @click="clicked(false)">
+          <v-btn
+            fab
+            small
+            text
+            @click="clicked(false)"
+            :disabled="disableArrows"
+          >
             <v-icon color="primary">arrow_back</v-icon>
           </v-btn>
 
-          <v-btn fab small text class="ml-2" @click="clicked(true)">
+          <v-btn
+            fab
+            small
+            text
+            class="ml-2"
+            @click="clicked(true)"
+            :disabled="disableArrows"
+          >
             <v-icon color="primary">arrow_forward</v-icon>
           </v-btn></template
         >
@@ -18,51 +31,30 @@
         </v-btn>
       </v-card-title>
       <v-card-text>
-        <v-carousel
-          v-if="isOpen"
-          v-model="lightBoxIndex"
-          height="100%"
-          :show-arrows="false"
-          hide-delimiters
-        >
-          <v-carousel-item
-            v-for="(item, index) in chunk"
-            :key="index"
-            class="fill-height"
-            align="center"
-            justify="center"
-          >
-            <v-row class="fill-height" align="center" justify="center">
-              <v-img
-                v-if="!loading"
-                id="lbmedia"
-                :src="media.fullUrl"
-                :lazy-src="media.tnUrl"
-                contain
-              ></v-img>
-            </v-row>
-          </v-carousel-item>
-        </v-carousel>
+        <MediaCarousel />
       </v-card-text>
     </v-card>
   </v-container>
 </template>
 
 <script>
+import MediaCarousel from "./MediaCarousel";
 export default {
+  components: {
+    MediaCarousel,
+  },
   data() {
     return {
-      loading: false,
+      disableArrows: false,
     };
   },
-
   computed: {
     lightBox() {
       return this.$store.getters["med/lightBox"];
     },
 
-    isOpen() {
-      return this.lightBox.isOpen;
+    isReady() {
+      return this.lightBox && this.lightBox.isOpen;
     },
 
     showArrows() {
@@ -79,11 +71,8 @@ export default {
       },
       set(data) {
         //console.log("MLB set " + data); //JSON.stringify(data, null, 2));
-        this.$store.dispatch("med/lightBoxIndex", data);
+        //this.$store.dispatch("med/lightBoxIndex", data);
       },
-    },
-    media() {
-      return this.lightBox.media;
     },
 
     header() {
@@ -97,63 +86,12 @@ export default {
       });
     },
     clicked(isNext) {
-      let lb = this.lightBox;
-      if (lb.length === 1) {
-        return;
-      }
-      let chunkLength = lb.chunk.length;
-
-      let pages = Math.floor(lb.length / lb.itemsPerPage);
-      let setToMax = false;
-      let newPage = null;
-      /*
-      console.log(
-        `click(${isNext ? "next" : "prev"} pages: ${
-          pages + 1
-        } chunkLength ${chunkLength} index: ${this.lightBoxIndex}`
-      ); //: " + JSON.stringify(lbx, null, 2));
-      */
-      if (isNext) {
-        if (this.lightBoxIndex === chunkLength - 1) {
-          newPage = pages === lb.pageNo ? 1 : lb.pageNo + 2;
-          this.lightBoxIndex = 0;
-        } else {
-          ++this.lightBoxIndex;
-        }
-      } else {
-        //'prev' clicked
-        if (this.lightBoxIndex === 0) {
-          newPage = lb.pageNo === 0 ? pages + 1 : lb.pageNo;
-
-          //we will set lightBoxIndex after the page is loaded
-          setToMax = true;
-        } else {
-          --this.lightBoxIndex;
-        }
-      }
-      if (newPage === null) {
-        return;
-      }
-
-      //console.log("Need to load");
-      this.loading = true;
-      this.$store
-        .dispatch("mgr/page", { name: this.lightBox.source, page: newPage })
-        .then((res) => {
-          //console.log(
-          //  `Loaded Chunk. setToMax=${setToMax} length=${this.lightBox.chunk.length - 1}`
-          //);
-          if (setToMax) {
-            this.lightBoxIndex = this.lightBox.chunk.length - 1;
-          }
-          this.loading = false;
-        });
+      //guaranteed lightBox.length > 1
+      this.disableArrows = true;
+      this.$store.dispatch("med/lightBoxNext", isNext).then(() => {
+        this.disableArrows = false;
+      });
     },
   },
 };
 </script>
-<style scoped>
-#lbmedia {
-  height: 90vh;
-}
-</style>

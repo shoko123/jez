@@ -10,12 +10,12 @@ class StonePolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user)
+    public function viewAny(?User $user)
     {
         return true;
     }
 
-    public function view(User $user, Stone $stone)
+    public function view(?User $user, Stone $stone)
     {
         return true;
     }

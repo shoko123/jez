@@ -10,12 +10,12 @@ class PotteryPolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user)
+    public function viewAny(?User $user)
     {
         return true;
     }
 
-    public function view(User $user, Pottery $pottery)
+    public function view(?User $user, Pottery $pottery)
     {
         return true;
     }

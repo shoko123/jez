@@ -3,10 +3,12 @@
 //lookups - field name & ids.
 //tags - tag_type & tag name (uses Spatie tagging system). 
 
-import { normalize, schema } from 'normalizr';
-
+import normalizeGroups from './aux_groups.js';
 export default {
     namespaced: true,
+    modules: {
+        normalizeGroups: normalizeGroups,
+    },
     state: {
         filters: null,
         filterParams: null,
@@ -153,8 +155,8 @@ export default {
             if (!rootGetters["mgr/status"].isShow || !rootGetters["mgr/item"]) { return [] };
             let scopeIsBasket = (rootGetters["mgr/status"].isFind &&
                 rootGetters["fnd/item"] &&
-                rootGetters["fnd/item"].basket_no !== null &&
-                (rootGetters["fnd/item"].artifact_no === null));
+                rootGetters["fnd/item"].basket_no > 0 &&
+                (rootGetters["fnd/item"].artifact_no === 0));
 
             //2 filters:
             // (1) if scope is basket (currently only Pottery) allow only period tags.
@@ -240,180 +242,6 @@ export default {
         lookupNames(state, getters) {
             return getters["all"].filter(x => x.group_type === "Lookup").map(y => y.column_name);
         },
-
-        filtersToQueryString(state, getters) {
-            let areas = "";
-            let seasons = "";
-            let media = "";
-            let scopes = "";
-            let registration_categories = "";
-            let tags = "";
-            let lookups = [];
-
-            getters["selectedFilters"].forEach((group => {
-                switch (group.group_type) {
-                    case "Registration":
-                        switch (group.name) {
-                            case "Areas":
-                                group.params.forEach(x => {
-                                    areas += x.name + ",";
-                                })
-                                break;
-                            case "Seasons":
-                                group.params.forEach(x => {
-                                    seasons += (parseInt(x.name, 10) - 2000) + ",";
-                                })
-                                //seasons += parseInt(group.params.name, 10) - 2000 + ",";
-                                break;
-                            case "Media":
-                                group.params.forEach(x => {
-                                    media += x.name + ",";
-                                })
-
-                                break;
-                            case "registration_categories":
-                                group.params.forEach(x => {
-                                    registration_categories += x.name + ",";
-                                })
-                                //registration_categories += group.params.name + ",";
-                                break;
-                            case "scopes":
-                                group.params.forEach(x => {
-                                    scopes += x.id + ",";
-                                })
-                                //scopes += group.params.id + ",";
-                                break;
-                        }
-                        break;
-                    case "Lookup":
-                        //format to objects with column_name and id array.
-                        let ids = "";
-                        group.params.forEach(x => {
-                            ids += x.id + ",";
-                        })
-                        lookups.push({ column_name: group.column_name, ids: ids });
-                        break;
-                    case "Tag":
-                        //format tagParams according to Spatie interface (types with tags).
-                        group.params.forEach(x => {
-                            tags += x.id + ",";
-                        })
-                        break;
-                }
-
-            }));
-            let qs = {};
-            if (areas.length > 0) {
-                qs["R>areas"] = areas.substring(0, areas.length - 1);
-            }
-            if (seasons.length > 0) {
-                qs["R>seasons"] = seasons.substring(0, seasons.length - 1);
-            }
-            if (registration_categories.length > 0) {
-                qs["R>registration_categories"] = registration_categories.substring(0, registration_categories.length - 1);
-            }
-            if (scopes.length > 0) {
-                qs["R>scopes"] = scopes.substring(0, scopes.length - 1);
-            }
-            if (media.length > 0) {
-                qs["R>media"] = media.substring(0, media.length - 1);
-            }
-            if (tags.length > 0) {
-                qs["T>tags"] = tags.substring(0, tags.length - 1);
-            }
-            if (lookups.length > 0) {
-                lookups.forEach(x => {
-                    qs["L>" + x.column_name] = x.ids.substring(0, x.ids.length - 1);
-                });
-            }
-            return qs
-        },
-
-        xhrFiltersFromNewQueryString(state, getters, rootState, rootGetters) {
-
-            function idsStringToArray(catCode, prop, idsString) {
-
-                function asString(catCode, prop) {
-                    switch (catCode) {
-                        case "R":
-                            switch (prop) {
-                                case "areas":
-                                case "media":
-                                case "registration_categories":
-                                case "scopes":
-                                    return true;
-                                case "seasons":
-                                case "tags":
-                                    return false;
-                                default:
-                                    console.log(`BAD Registration: ${prop}`);//(groups) ${JSON.stringify(payload, null, 2)}`);
-                                    return true
-                            }
-
-                        case "L":
-                        case "T":
-                            return false;
-                        default:
-                            console.log(`aux/xhrFiltersFromNewQueryString BAD group: ${prop}`);//(groups) ${JSON.stringify(payload, null, 2)}`);
-                            return true
-                    }
-                }
-
-                let ids = idsString.split(',');
-                let idsArray = [];
-                ids.forEach(x => {
-                    if (asString(catCode, prop)) {
-                        idsArray.push(x);
-                    } else {
-                        idsArray.push(parseInt(x, 10));
-                    }
-                });
-                return idsArray;
-            }
-
-            //start here.
-            let qs = rootGetters["mgr/routes/to"].queryParams;
-            let xhrParams = {};
-            //iterate thru queryString, add properties to xhrParams and push ids 
-            for (const prop in qs) {
-                //console.log(`parse qs prop: ${prop}`);
-                let idsString = qs[prop];
-                let catCode = prop.substring(0, 1);
-                let name = prop.slice(2);
-                let cat;
-                switch (catCode) {
-                    case "T":
-                        cat = "tags";
-                        break;
-                    case "R":
-                        cat = "registration";
-                        break;
-                    case "L":
-                        cat = "lookups";
-                        break;
-                    default:
-                        //console.log(`parse qs BAD cat: ${cat} ids: ${ids} name: ${name}`);
-                        console.log(`parse qs BAD cat: ${cat} idsString: ${idsString} name: ${name}`);
-                }
-                //console.log(`cat: ${cat} catCode: ${catCode} name: ${name} idsString: ${idsString}`);
-                if (xhrParams.hasOwnProperty(cat)) {
-                    //if (xhrParams[cat].hasOwnProperty(name)) {
-                    xhrParams[cat][name] = idsStringToArray(catCode, name, idsString);
-                    //} else {
-                    //    xhrParams[cat][name] = idsStringToArray(catCode, name, idsString);
-                    //}
-                } else {
-                    xhrParams[cat] = { [name]: idsStringToArray(catCode, name, idsString) };
-                    //console.log(`add "${cat}" property. xhrParams: ${JSON.stringify(xhrParams, null, 2)}`);
-
-                    //(xhrParams[cat])[name] = idsStringToArray(catCode, name, idsString);
-                    //Object.assign(xhrParams[cat], {[name]: idsStringToArray(catCode, name, idsString)});
-                    //console.log(`add "${name}" property to ${cat}. xhrParams: ${JSON.stringify(xhrParams, null, 2)}`);
-
-                }
-            }
-            return xhrParams;
-        },
     },
 
     mutations: {
@@ -438,13 +266,20 @@ export default {
             state.params[payload.paramKey].affectsTagGroups.push(payload.affects);
         },
 
-        clearParams(state, payload) {
+        clear(state, payload) {
+            let filters = payload.includes("filters");
+            let itemParams = payload.includes("itemParams");
+            let newParams = payload.includes("newParams");
+
             for (const [key, value] of Object.entries(state.params)) {
-                if (payload) {
+                if (filters && value.selectedIn["filters"]) {
                     value.selectedIn["filters"] = false;
-                } else {
-                    if (value.groupKey.charAt(0) === "T") {
+                }
+                if (value.groupKey.charAt(0) === "T") {
+                    if (itemParams && value.selectedIn["itemParams"]) {
                         value.selectedIn["itemParams"] = false;
+                    }
+                    if (newParams && value.selectedIn["newParams"]) {
                         value.selectedIn["newParams"] = false;
                     }
                 }
@@ -471,12 +306,13 @@ export default {
                     break;
             }
         },
+
     },
 
     actions: {
         itemTags({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`aux/itemTags: ${JSON.stringify(payload, null, 2)}`);
-            commit("clearParams", false);//clear itemParams (not filters)
+            commit("clear", ["itemParams"]);//clear itemParams (not filters)
             payload.forEach(x => {
                 commit("selectParam", {
                     key: `T>${x.id}`,
@@ -485,6 +321,21 @@ export default {
                 });
             });
         },
+
+        setLocalFilters({ state, getters, rootGetters, commit, dispatch }, payload) {
+            //console.log(`aux/setLocalFilters: ${JSON.stringify(payload, null, 2)}`);
+            commit("clear", ["filters"]);
+
+            //set filters from queryString
+            if (payload !== null) {
+                payload.forEach(x => commit("selectParam", {
+                    key: x,
+                    source: "filters",
+                    value: true
+                }));
+            }
+        },
+
 
         toggleOneParam({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`aux/toggleOneParam(): payload: ${JSON.stringify(payload, null, 2)}`);
@@ -587,13 +438,8 @@ export default {
             }
         },
 
-
         clearFilters({ state, commit }) {
-            for (const [key, value] of Object.entries(state.params)) {
-                if (value.selectedIn.filters) {
-                    commit("selectParam", { key: key, source: "filters", value: false });
-                }
-            }
+            commit("clear", ["filters"]);
         },
 
         prepareTagger({ state, rootState, getters, rootGetters, commit, dispatch }) {
@@ -632,126 +478,10 @@ export default {
         },
 
         groups({ state, getters, rootGetters, commit, dispatch }, payload) {
-            //console.log(`aux/savetypesAndParams() payload: ${JSON.stringify(payload, null, 2)}`);
-
-            if (!rootGetters["mgr/status"].isFilterable) { return }
-
-            const registrationParamSchema = new schema.Entity('registrationParams', {}, {
-                idAttribute: (value, parent, key) => `R>${parent.name}>${value.name}`,
-                processStrategy: (value, parent, key) => {
-                    return {
-                        ...value,
-                        key: `R>${parent.name}>${value.name}`,
-                        groupKey: `R>${parent.name}`,
-                        selectedIn: { filters: false },
-                    };
-                },
-            });
-
-            const registrationGroupSchema = new schema.Entity('registrationGroups', {
-                params: [registrationParamSchema],
-            }, {
-                idAttribute: (value, parent, key) => `R>${value.name}`,
-                processStrategy: (value, parent, key) => {
-                    return {
-                        ...value,
-                        key: `R>${value.name}`,
-                        //selectedFilterParamKeys: [],
-                    };
-                },
-            });
-
-            //lookups
-            const lookupParamSchema = new schema.Entity('lookupParams', {}, {
-                idAttribute: (value, parent, key) => `L>${parent.column_name}>${value.id}`,
-                processStrategy: (value, parent, key) => {
-                    return {
-                        ...value,
-                        key: `L>${parent.column_name}>${value.id}`,
-                        groupKey: `L>${parent.column_name}`,
-                        selectedIn: { filters: false },
-                        affectsTagGroups: [],
-                    };
-                },
-            });
-
-            const lookupGroupSchema = new schema.Entity('lookupGroups', {
-                params: [lookupParamSchema],
-            }, {
-                idAttribute: (value, parent, key) => `L>${value.column_name}`,
-                processStrategy: (value, parent, key) => {
-                    return {
-                        ...value,
-                        key: `L>${value.column_name}`,
-                        newLookupId: 1,
-                    };
-                },
-            });
-
-            //tags
-            const tagParamSchema = new schema.Entity('tagParams', {}, {
-                idAttribute: (value, parent, key) => `T>${value.id}`,
-                processStrategy: (value, parent, key) => {
-                    return {
-                        ...value,
-                        key: `T>${value.id}`,
-                        groupKey: `T>${parent.str_id}`,
-                        selectedIn: { filters: false, itemParams: false, newParams: false },
-                        affectsTagGroups: [],
-                    };
-                },
-            });
-
-            const tagGroupSchema = new schema.Entity('tagGroups', {
-                params: [tagParamSchema],
-            }, {
-                idAttribute: (value, parent, key) => `T>${value.str_id}`,
-                processStrategy: (value, parent, key) => {
-                    return {
-                        ...value,
-                        key: `T>${value.str_id}`,
-                    };
-                },
-            });
-
-            const typeSchema = new schema.Array(
-                {
-                    Registration: registrationGroupSchema,
-                    Lookup: lookupGroupSchema,
-                    Tag: tagGroupSchema,
-                },
-                (input, parent, key) => input.group_type
-            );
-
-            let normalizedData = normalize(payload, typeSchema);
-            //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
-            commit("clearGroupsAndParams", null);
-            commit("groupKeys", normalizedData.result);
-            //console.log(`normalizedData: ${JSON.stringify(normalizedData, null, 2)}`);
-
-            commit("groupsAddProperties", normalizedData.entities.registrationGroups);
-            commit("groupsAddProperties", normalizedData.entities.lookupGroups);
-            commit("groupsAddProperties", normalizedData.entities.tagGroups);
-
-            commit("paramsAddProperties", normalizedData.entities.registrationParams);
-            commit("paramsAddProperties", normalizedData.entities.lookupParams);
-            commit("paramsAddProperties", normalizedData.entities.tagParams);
-
-            //make params aware of their dependant groups
-            getters["all"].forEach(x => {
-                if (x.group_type === "Tag" && x.dependency !== null) {
-                    //console.log(`PUSH dependencies key: ${x.key} dependency: ${JSON.stringify(x.dependency, null, 2)}`);
-                    x.dependency.forEach(y => {
-                        y.forEach(z => {
-                            commit("paramAffectsAddTagGroups", { paramKey: z, affects: [x.key] });
-                        })
-                    })
-                }
-            })
+            dispatch("normalizeGroups", payload);
         },
 
         sync({ state, getters, rootGetters, commit, dispatch }, payload) {
-
             //First define the two db access functions (one for tags, one for lookup columns).
             //Entry point is below them.
             function syncTags(state, getters, rootGetters, tagGroupsToSync) {

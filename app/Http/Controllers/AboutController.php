@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\JezStatic\AboutPages;
+use App\Settings\GlobalSettings;
 
 class AboutController extends Controller
 {
-    public function index()
+    public function index(GlobalSettings $gs)
     {
         return response()->json([
             "collection" => AboutPages::index(),

@@ -2,19 +2,14 @@ export default {
     namespaced: true,
 
     state: {
+        appMediaUrl: null,
         dialogAddMedia: false,
-
         lightBox: {
             isOpen: false,
             source: "main",
-            pageNo: 0,
             indexInChunk: 0,
         },
-
-        appMedia: {
-            backgroundUrls: [],
-            carouselItems: [],
-        }
+        carousel: [],
     },
 
     getters: {
@@ -44,7 +39,7 @@ export default {
 
         lightBox(state, rootState, getters, rootGetters) {
             //let storageName = rootGetters["mgr/storageName"](state.lightBox.source);
-            if (state.lightBox.isOpen === false) return state.lightBox;
+            if (state.lightBox.isOpen === false) return null;
 
             let lb = { ...state.lightBox };
             //let c = rootGetters["mgr/collectionMain"];
@@ -92,12 +87,24 @@ export default {
                     header = `Showing ${mod} ${itemTag} Related ${related}: ${media.tag}`;
                     break;
             }
-            lb["header"] = header + ` [${index}/${length}]`;
+            let counter = ` [.../...]`;
+            if (rootGetters["mgr/ready"].chunk) {
+                counter = ` [${index}/${length}]`;
+            }
+            lb["header"] = header + counter; //[${index}/${length}]`;
             return lb;
         },
 
-        appMedia(state) {
-            return state.appMedia;
+
+        carousel(state) {
+            return state.carousel;
+        },
+
+        background(state, rootState, getters, rootGetters) {
+            let module = rootGetters["mgr/module"];
+            let fullUrl = `${state.appMediaUrl}/backgrounds/${module}.jpg`;
+            let tnUrl = `${state.appMediaUrl}/backgrounds/${module}-tn.jpg`;
+            return { fullUrl, tnUrl };
         },
     },
     mutations: {
@@ -106,31 +113,67 @@ export default {
         },
 
         openLightBox(state, payload) {
-            //console.log('med/dialogLightBox: ' + JSON.stringify(payload, null, 2));
             state.lightBox.isOpen = payload.value;
             if (payload.value) {
                 state.lightBox.source = payload.source;
-                state.lightBox.page = payload.page;
                 state.lightBox.indexInChunk = payload.index;
                 //console.log(`med/openLightBox(commit): ${JSON.stringify(payload, null, 2)}`);
             }
 
         },
 
-        lightBoxIndexInChunk(state, payload) {
-            //console.log(`SET lightBoxIndexInChunk=${payload}`);//: ' + JSON.stringify(err, null, 2));
+        indexInChunk(state, payload) {
             state.lightBox.indexInChunk = payload;
         },
-
-        appMedia(state, payload) {
-            state.appMedia = payload;
+        appMediaUrl(state, payload) {
+            state.appMediaUrl = payload;
         },
-
-        clear(state, payload) {
-            //state.itemMedia = { collection: [], filler: null };
-        }
+        carousel(state, payload) {
+            state.carousel = payload;
+        },
     },
     actions: {
+        lightBoxNext({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
+            //console.log(`med/lightbox(${payload ? "next" : "prev"}) lightBox: ${JSON.stringify(state.lightBox, null, 2)}`);
+            let lb = getters["lightBox"];
+            let pages = Math.floor((lb.length - 1) / lb.itemsPerPage) + 1;
+            let newPage;//base 1
+
+            if (payload) {
+                //next
+                if (state.lightBox.indexInChunk === lb.chunk.length - 1) {
+                    //need to load a new page  (either next or first [if current is last])            
+                    commit("mgr/ready", { entity: "chunk", isReady: false }, { root: true });
+                    let newPage = pages === lb.pageNo + 1 ? 1 : lb.pageNo + 2;
+                    //console.log(`**next(last)** length: ${lb.length} indexInChunk: ${state.lightBox.indexInChunk} chunkLength: ${lb.chunk.length} currentPageNo(Base0) : ${lb.pageNo} pages: ${pages} ipp: ${lb.itemsPerPage} newPage(base1): ${newPage}`);      
+                    commit("indexInChunk", 0);
+                    return dispatch("mgr/page", { name: state.lightBox.source, page: newPage }, { root: true })
+                        .then((res) => {
+                            commit("mgr/ready", { entity: "chunk", isReady: true }, { root: true });
+                        });
+
+                } else {
+                    commit("indexInChunk", lb.indexInChunk + 1);
+                }
+            } else {
+                //'prev'
+                if (state.lightBox.indexInChunk === 0) {
+                    newPage = lb.pageNo === 0 ? pages : lb.pageNo;
+                    //new index will be the index of the last item in the last chunk. Lets find it:
+                    let newIndexInChunk = lb.pageNo === 0 ? lb.length - (pages - 1) * lb.itemsPerPage - 1 : lb.itemsPerPage - 1;
+
+                    //console.log(`**prev(0)** length: ${lb.length} pages: ${pages} ipp: ${lb.itemsPerPage} pageNo: ${lb.pageNo} newIndexInChunk=${newIndexInChunk}`);       
+                    commit("mgr/ready", { entity: "chunk", isReady: false }, { root: true });
+                    return dispatch("mgr/page", { name: state.lightBox.source, page: newPage }, { root: true }).then(() => {
+                        commit("indexInChunk", newIndexInChunk);
+                        commit("mgr/ready", { entity: "chunk", isReady: true }, { root: true });
+                    });
+                } else {
+                    commit("indexInChunk", lb.indexInChunk - 1);
+                }
+            }
+        },
+
         //store multiple files r/t a specific dig item
         store({ state, getters, rootGetters, commit, dispatch, }, formData) {
             let xhrRequest = {
@@ -152,7 +195,7 @@ export default {
                         console.log('upload media returned: ' + JSON.stringify(res.data, null, 2));
                         //commit to local item
                         commit('mgr/collections', { name: "media", collection: res.data.collection }, { root: true });
-                        commit("mgr/ready", { entity: "item", isReady: false }, { root: true });                        
+                        commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
                         return res;
                     })
                     .catch(err => {
@@ -178,7 +221,7 @@ export default {
                     console.log('delete media returned: ' + JSON.stringify(res.data, null, 2));
                     commit('mgr/collections', { name: "media", collection: res.data.collection }, { root: true });
                     //alert manager that item is dirty
-                    commit("mgr/ready", { entity: "item", isReady: false }, { root: true });  
+                    commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
                     return res;
                 })
                 .catch(err => {
@@ -187,23 +230,13 @@ export default {
                 })
         },
 
-        //We used to do pagination and loading here. That is why we don't call a commit directly.
-        lightBoxIndex({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
-            //console.log(`mgr/action.lightBoxIndex(index: ${payload})`);//: ' + JSON.stringify(err, null, 2));
-            commit("lightBoxIndexInChunk", payload);
-        },
-
-        openLightBox({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`med/openLB payload: ${JSON.stringify(payload, null, 2)}`);
-            commit("openLightBox", payload);
-        },
 
 
         //load general media used by the app (backgrounds, fillers, etc.).
         //This media is unrelated to media stored in the DB.
-        loadAppMedia({ state, commit, dispatch }, payload) {
+        initAppMedia({ state, commit, dispatch }, payload) {
             let xhrRequest = {
-                endpoint: `/api/media/app-media`,
+                endpoint: `/api/media/init`,
                 action: "get",
                 data: null,
                 spinner: false,
@@ -214,10 +247,12 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     //console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
-                    commit('appMedia', res.data.appMedia);
+                    commit('appMediaUrl', res.data.appMediaUrl);
+                    commit('carousel', res.data.carousel);
                     return res;
+
                 }).catch(err => {
-                    console.log('loadAppMedia failure. err: ' + JSON.stringify(err, null, 2));
+                    console.log('initAppMedia failure. err: ' + JSON.stringify(err, null, 2));
                     return err;
                 })
         },

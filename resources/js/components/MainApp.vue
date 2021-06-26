@@ -31,13 +31,18 @@ export default {
   },
 
   created() {
-    this.$store.dispatch("init", this.$router);
+    //this.$store.dispatch("init", this.$router);
   },
  
   computed: {
-    dialogMediaLightBox() {
-      return this.$store.getters["med/dialogMediaLightBox"];
-    }
+    dialogMediaLightBox: {
+      get() {
+        return this.$store.getters["med/dialogMediaLightBox"];
+      },
+      set(data) {
+        //do nothing - handled by openLightBox
+      },
+    },
   }
 };
 </script>

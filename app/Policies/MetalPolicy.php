@@ -10,12 +10,12 @@ class MetalPolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user)
+    public function viewAny(?User $user)
     {
         return true;
     }
 
-    public function view(User $user, Metal $metal)
+    public function view(?User $user, Metal $metal)
     {
         return true;
     }

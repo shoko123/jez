@@ -141,9 +141,9 @@ class ModuleInitializerController extends Controller
                 "name" => "scopes",
                 "display_name" => "Scopes",
                 "params" => [
-                    ["id" => "b", "name" => "Basket"],
-                    ["id" => "a", "name" => "Artifact"],
-                    ["id" => "p", "name" => "Piece"],
+                    ["id" => "basket", "name" => "Basket"],
+                    ["id" => "artifact", "name" => "Artifact"],
+                    ["id" => "piece", "name" => "Piece"],
                 ]]);
         }
         if (self::$isFind) {

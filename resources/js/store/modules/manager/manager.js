@@ -1,6 +1,6 @@
-import routes from './routes.js';
+import routes from '../../../routing/routesStore.js';
 import jezConfig from '../../../jezConfig.js';
-import { NavigationError, EmptyResultSetError, } from '../../../errors.js';
+import { NavigationError, EmptyResultSetError, } from '../../../routing/errors.js';
 
 
 export default {
@@ -9,13 +9,19 @@ export default {
         routes: routes,
     },
     state: {
-        baseUrl: null,
+        globalSettings: {
+            perPageMedia: 18,
+            perPageChips: 100,
+            perPageTableRecords: 50,
+            baseUrl: "",
+        },
 
         collection: [],
 
         collections: {
             main: {
                 collection: [],
+                index: null,
                 chunk: [],
                 view: 0,
                 views: ["Media", "Chips", "Table"],
@@ -57,8 +63,12 @@ export default {
     },
 
     getters: {
+        globalSettings(state) {
+            return state.globalSettings;
+        },
+
         baseUrl(state) {
-            return state.baseUrl;
+            return state.globalSettings.baseUrl;
         },
         module(state, rootState, getters, rootGetters) {
             return state.routes.current.module;
@@ -212,8 +222,6 @@ export default {
             let status = {
                 itemName: moduleStaticInfo.itemName,
                 collectionName: moduleStaticInfo.collectionName,
-                moduleAppBaseUrl: moduleStaticInfo.appBaseUrl,
-                moduleApiBaseUrl: moduleStaticInfo.apiBaseUrl,
                 moduleStoreName: moduleStaticInfo.storeName,
                 moduleRegistrationOptions: moduleStaticInfo.registrationOptions,
                 module: rs.module,
@@ -234,6 +242,8 @@ export default {
                 isCreateLocus: (rs.action === "create" && rs.module === "Locus"),
                 isCreateFind: (rs.action === "create" && isFind()),
                 isMediaEdit: (rs.action === "media"),
+                isAdmin: (rs.module === "Admin"),
+                isRead: (rs.module === "Home" || rs.module === "Auth" || ["welcome", "show", "list", "filter"].includes(rs.action)),
                 isEdit: ["create", "update", "media", "tags"].includes(rs.action),
                 isPicker: state.isPicker,
                 isFilterable: !["Auth", "About", "Area", "Season"].includes(rs.module),
@@ -252,10 +262,14 @@ export default {
 
     mutations: {
         baseUrl(state, payload) {
-            state.baseUrl = payload;
+            state.globalSettings.baseUrl = payload;
         },
+
         collections(state, payload) {
             state.collections[payload.name].collection = payload.collection;
+        },
+        index(state, payload) {
+            state.collections.main.index = payload;
         },
         chunk(state, payload) {
             state.collections.main.chunk = payload;
@@ -272,11 +286,8 @@ export default {
             state.collections[payload.name].view = payload.viewIndex;
 
         },
-        collectionResetView(state, payload) {
+        collectionResetPageNo(state, payload) {
             state.collections[payload].pageNo = 0;
-            if (payload === "main") {
-                state.collections[payload].view = 0;
-            }
         },
         item(state, payload) {
             state.item = payload;
@@ -318,34 +329,81 @@ export default {
         },
 
         pushIntoCollection(state, item) {
-            let c = state.collections["main"].collection;
-            c.push(item);
+            state.collections["main"].collection.push(item);
         },
     },
     actions: {
+        initApp({ state, getters, rootGetters, commit, dispatch }, payload) {
+            //set router to store for generic goTo() used by components, and navigation after delete, store, etc...)
+            commit("mgr/routes/setRouter", payload, { root: true });
+
+            //set server base addresses
+            let baseUrl = `${window.location.protocol}//${window.location.host}`;
+            commit("baseUrl", baseUrl);
+            console.log("app.init() setting axios.baseURL to " + baseUrl);
+            axios.defaults.baseURL = baseUrl;
+
+            //enables axios debug
+            axios.interceptors.response.use(null, error => {
+                //console.log("axios interceptor error: " + JSON.stringify(error, null, 2));
+                return Promise.reject(error);
+            });
+
+            //dispatch("mgr/initApp", null, { root: true });
+            //load global settings and load media used by app
+            dispatch("med/initAppMedia", null, { root: true });
+
+            //get current app setting (loggedUsersOnly, readOnly)
+            let xhrRequest = {
+                endpoint: `${baseUrl}/api/settings`,
+                action: "get",
+                data: null,
+                spinner: true,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: false, },
+                messages: { loading: `checking app status`, onSuccess: null, onFailure: null },
+            };
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    console.log(`app.init() OK. appSettings: ${JSON.stringify(res.data.settings, null, 2)}`);
+                    commit('mgr/routes/appSettings', res.data, { root: true });
+                    /*
+                    commit('snackbar/displaySnackbar', {
+                        isSuccess: true,
+                        message: `App status: loggedUsersOnly = ${res.data.settings.loggedUsersOnly}`
+                    }, { root: true });
+                    */
+                    return res;
+                })
+                .catch(err => {
+                    console.log('initApp() failed! err: ' + err);
+                    return err;
+                })
+        },
+
         query({ state, getters, rootGetters, commit, dispatch }, payload) {
             commit("ready", { entity: "collection", isReady: false });
-            console.log(`mgr.query. endpoint: ${getters["status"].moduleApiBaseUrl}`);
-            //console.log(`tagParams: ${JSON.stringify(tagQueryParams, null, 2)}`);
-            let action = (state.routes.current.module === "About") ? "get" : "post";
-            let endpoint;
-            switch (state.routes.current.module) {
+
+            let action = (state.routes.to.module === "About") ? "get" : "post";
+            let endpoint = state.routes.to.apiModuleUrl;
+            switch (payload.module) {
                 case "Locus":
                 case "Pottery":
                 case "Stone":
                 case "Lithic":
                 case "Glass":
                 case "Metal":
-                    endpoint = `${getters["status"].moduleApiBaseUrl}/all`;
+                    endpoint += `/all`;
                     break;
                 default:
-                    endpoint = getters["status"].moduleApiBaseUrl;
+                    break;//endpoint = endpoint;
 
             }
             //payload.params.lookups = JSON.parse(payload.params.lookups);
             //payload.params.tagParams = JSON.parse(payload.params.tagParams);
 
-            console.log(`params: ${JSON.stringify(payload.params, null, 2)}`);
+            console.log(`mgr.query() endpoint: ${state.routes.to.apiModuleUrl}. params: ${JSON.stringify(payload.params, null, 2)}`);
             let xhrRequest = {
                 endpoint: endpoint,
                 action: action,
@@ -358,6 +416,7 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
+                    console.log(`mgr.query() OK. ${res.data.collection.length} records returned`);
                     if (res.data.collection.length < 1) {
                         commit('snackbar/displaySnackbar', {
                             isSuccess: false,
@@ -366,7 +425,6 @@ export default {
                         throw new EmptyResultSetError("Empty result set");
                     }
 
-                    console.log(`mgr.collection loaded (${state.routes.current.module})`);
                     commit('collections', { name: "main", collection: res.data.collection });
                     commit("ready", { entity: "collection", isReady: true });
 
@@ -388,11 +446,11 @@ export default {
         },
 
         loadItem({ state, getters, commit, dispatch }, payload) {
-            console.log('mgr.loadItem. endpoint: ' + `${getters["status"].moduleApiBaseUrl}/${payload}`);
+            console.log('mgr.loadItem. endpoint: ' + `${state.routes.to.apiModuleUrl}/${payload}`);
             commit("ready", { entity: "item", isReady: false });
 
             let xhrRequest = {
-                endpoint: `${getters["status"].moduleApiBaseUrl}/${payload}`,
+                endpoint: `${state.routes.to.apiModuleUrl}/${payload}`,
                 action: "get",
                 data: null,
                 spinner: true,
@@ -403,13 +461,11 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-
-                    let arr = ["media", "related"];
-                    commit("collectionResetView", "related");
+                    commit("collectionResetPageNo", "related");
                     //save related collections
-                    switch (state.routes.current.module) {
+                    switch (state.routes.to.module) {
                         case "About":
-                            //nothing to 
+                            //nothing to do.
                             break;
 
                         case "Area":
@@ -435,25 +491,21 @@ export default {
                         case "Tbd":
                             commit('fnd/item', res.data.find, { root: true });
                             dispatch('aux/itemTags', res.data.tags, { root: true });
-
                     }
 
                     commit('item', res.data.item);
-                    if (state.routes.current.module !== "About") {
+                    if (state.routes.to.module !== "About") {
                         //console.log(`mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
                         commit('collections', { name: "media", collection: res.data.itemMedia.collection });
                     }
 
                     commit("ready", { entity: "item", isReady: true });
                     if (getters["ready"].collection) {
-                        //set page according to item's index
+                        //set item's index
                         let index = state.collections.main.collection.findIndex(x => x.id == res.data.item.id);
-                        let page = Math.floor((index + 1) / state.collections.main.itemsPerPage) + 1;
-                        //console.log(`index: ${index} ipp: ${state.collections.main.itemsPerPage} page: ${page}`);//mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
-
-                        dispatch("page", { name: "main", page: page, forceLoad: false });
+                        //console.log(`index: ${index} length: ${state.collections.main.collection.length} ipp: ${state.collections.main.itemsPerPage} page: ${page}`);
+                        return dispatch("indexOfItemInMainCollection", index);
                     }
-                    // get index of current item in collection
                     return res;
                 })
                 .catch(err => {
@@ -469,7 +521,7 @@ export default {
             //console.log(`mgr/delete id: ${id}\ncollection: ${JSON.stringify(state.collection, null, 2)}`);
             //prepare delete request
             let xhrRequest = {
-                endpoint: `${getters["status"].moduleApiBaseUrl}/${getters["item"].id}`,
+                endpoint: `${state.routes.current.apiModuleUrl}/${getters["item"].id}`,
                 action: "delete",
                 data: null,
                 spinner: true,
@@ -530,7 +582,7 @@ export default {
             //return;
 
             let xhrRequest = {
-                endpoint: `${getters.status.moduleApiBaseUrl}/store`,
+                endpoint: `${state.routes.current.apiModuleUrl}/store`,
                 action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
                 data: newItem,
                 spinner: true,
@@ -587,7 +639,7 @@ export default {
         },
 
         initializeModule({ state, getters, commit, dispatch }, payload) {
-            //console.log('mgr.initializeModule. apiBaseUrl: ' + getters["status"].moduleApiBaseUrl);
+            //console.log('mgr.initializeModule. apiBaseUrl: ' + state.routes.to.module);
             dispatch("clearModule");
             //only dig modules and 'About' are initialized
             if (["Home", "Auth"].includes(state.routes.to.module)) { return }
@@ -604,8 +656,9 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    //console.log('mgr loadSummary after xhr res: ' + JSON.stringify(res, null, 2));
+                    //console.log('initModule returned: ');// + JSON.stringify(res, null, 2));
                     commit('welcomeData', res.data.welcomeData);
+                    console.log(`initializedModule '${state.routes.to.module}' OK`);                    
                     //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
 
                     if (state.routes.to.module === "About") {
@@ -613,13 +666,12 @@ export default {
                         return res;
                     } else {
                         //Save dig modules` parameters in the category/group/param structure. 
-                        dispatch("aux/groups", res.data.groups, { root: true });
-                        return res;
+                        return dispatch("aux/groups", res.data.groups, { root: true });
                     }
                 })
         },
 
-        toggleCollectionView({ state, getters, commit, dispatch }, payload) {
+        toggleCollectionView({ state, getters, rootGetters, commit, dispatch }, payload) {
             console.log(`******mgr/toggle(${payload})`);
             let c = state.collections[payload];
             let newViewIndex = (c.view + 1) % c.views.length;
@@ -628,15 +680,15 @@ export default {
                 case "main":
                     switch (newView) {
                         case "Media":
-                            commit("itemsPerPage", { name: "main", ipp: 18 });
+                            commit("itemsPerPage", { name: "main", ipp: rootGetters["globalSettings"].perPageMedia });
                             break;
 
                         case "Chips":
-                            commit("itemsPerPage", { name: "main", ipp: 100 });
+                            commit("itemsPerPage", { name: "main", ipp: rootGetters["globalSettings"].perPageChips });
 
                             break;
                         case "Table":
-                            commit("itemsPerPage", { name: "main", ipp: 50 });
+                            commit("itemsPerPage", { name: "main", ipp: rootGetters["globalSettings"].perPageTableRecords });
                             break;
                     }
                     commit("collectionViewIndex", { name: "main", viewIndex: newViewIndex });
@@ -663,9 +715,23 @@ export default {
             }
         },
 
+
+        indexOfItemInMainCollection({ state, getters, commit, dispatch }, payload) {
+            //commit index and if needed load chunk and set new pageNo,
+            let newPage = Math.floor(payload / state.collections.main.itemsPerPage);
+            //console.log(`mgr/indexOfItemInMainCollection(${payload}) currentPage: ${state.collections.main.pageNo} nwPage: ${newPage}`);
+            commit("index", payload);
+            if(newPage !== state.collections.main.pageNo) {
+                return dispatch("page", { name: "main", page: newPage + 1, forceLoad: false });
+            }
+        },
+
         page({ state, getters, commit, dispatch }, payload) {
-            function loadChunck() {
-                switch (state.routes.current.module) {
+            function loadChunk() {
+                let source = state.routes.to;
+
+                //let source = state.routes.loading ? state.routes.to : state.routes.current;
+                switch (source.module) {
                     case "Locus":
                     case "Pottery":
                     case "Stone":
@@ -688,7 +754,8 @@ export default {
                         endpoint = "chunk-table";
                         break;
                 }
-                //console.log(`mgr/loadPage(${payload.page})`);//meta: ${JSON.stringify(meta, null, 2)}
+
+                //console.log(`mgr/loadChunk(${payload.page})`);//meta: ${JSON.stringify(meta, null, 2)}
                 let start = (payload.page - 1) * state.collections[payload.name].itemsPerPage;
                 let length = state.collections[payload.name].itemsPerPage;
                 //console.log(`mgr/page(${payload.page})`);
@@ -697,7 +764,7 @@ export default {
 
                 commit("ready", { entity: "chunk", isReady: false });
                 let xhrRequest = {
-                    endpoint: `${getters["status"].moduleApiBaseUrl}/${endpoint}`,
+                    endpoint: `${source.apiModuleUrl}/${endpoint}`,
                     action: "post",
                     data: { "ids": ids },
                     spinner: getters["status"].isList,
@@ -723,19 +790,22 @@ export default {
 
             }
 
-            //console.log(`mgr/page(${payload.name}, ${payload.page})`);
+            //start here
+            console.log(`mgr/page(${payload.name}, ${payload.page})`);
             let res;
 
             switch (payload.name) {
                 case "main":
-                    //console.log(`page: ${payload.page} forceLoad: ${payload.forceLoad} currentPage: ${state.collections.main.pageNo + 1}`);
+                    //console.log(`collectionReady: ${state.ready["collection"]} forceLoad: ${payload.forceLoad} currentPage: ${state.collections.main.pageNo + 1}`);
+                    //console.log(`view: ${state.collections[payload.name].views[state.collections[payload.name].view]}`);
                     switch (state.collections[payload.name].views[state.collections[payload.name].view]) {
                         case "Media":
                         case "Table":
                             if (state.ready["collection"] &&
                                 (payload.forceLoad ||
                                     state.collections.main.pageNo + 1 !== payload.page)) {
-                                res = loadChunck();
+                                //console.log(`Calling loadChunk()`);
+                                res = loadChunk();
                             }
                     }
 
@@ -761,8 +831,8 @@ export default {
             commit("collections", { name: "media", collection: [] });
             commit("ready", { entity: "collection", isReady: false });
             commit("ready", { entity: "item", isReady: false });
+            commit("ready", { entity: "chunk", isReady: false });
             dispatch('aux/clearFilters', null, { root: true })
-            commit("med/clear", null, { root: true });
             commit('regs/clear', null, { root: true });
             commit("itemDisplayOptionIndex", 0);
             commit("collectionViewIndex", { name: "main", viewIndex: 0 });
@@ -773,22 +843,18 @@ export default {
 
         goToRoute({ state, getters, rootGetters, commit, dispatch }, payload) {
             function getAdjancentId() {
-                let index, newIndex;
-                let m = rootGetters["mgr/collections"]("main");
-                let c = m.collection;
+                let newIndex, m = state.collections["main"];
                 switch (payload) {
                     case "next":
-                        index = c.findIndex(x => x.id === state.item.id);
-                        newIndex = (index == c.length - 1) ? 0 : index + 1;
+                        newIndex = (m.index === m.collection.length - 1) ? 0 : m.index + 1;
                         break;
 
                     case "prev":
-                        index = c.findIndex(x => x.id === state.item.id);
-                        newIndex = (index === 0) ? c.length - 1 : index - 1;
+                        newIndex = (m.index === 0) ? m.collection.length - 1 : m.index - 1;
                         break;
                 }
-                //console.log(`ADJANCT length: ${c.length} index: ${index} newIndex: ${newIndex}`);
-                return c[newIndex].id;
+                //console.log(`ADJANCT length: ${m.collection.length} index: ${m.index} newIndex: ${newIndex}`);
+                return m.collection[newIndex].id;
             }
 
             switch (payload) {

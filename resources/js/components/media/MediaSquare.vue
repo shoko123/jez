@@ -63,8 +63,6 @@ export default {
     //);
   },
   computed: {
-    //////
-
     tagText() {
       switch (this.source) {
         case "main":
@@ -88,12 +86,12 @@ export default {
         case "related":
           return OverlayRelated;
         case "media":
-            return this.$store.getters["mgr/status"].isMediaEdit ? OverlayMediaEdit : OverlayItemMedia;       
+          return this.$store.getters["mgr/status"].isMediaEdit
+            ? OverlayMediaEdit
+            : OverlayItemMedia;
       }
     },
   },
 };
 </script>
-<style scoped>
-</style>
 

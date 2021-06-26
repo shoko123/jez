@@ -36,7 +36,6 @@ export default new Vuex.Store({
         regs: regs,
         aux: aux,
         snackbar: snackbar,
-
         area: area,
         season: season,
         arsn: areaSeason,
@@ -49,34 +48,4 @@ export default new Vuex.Store({
         mtl: metal,
         about: about,
     },
-    state: {
-        baseUrl: null
-    },
-    getters: {
-
-    },
-    mutations: {
-
-    },
-    actions: {
-        init({ state, getters, rootGetters, commit, dispatch }, payload) {
-            //set router to store for generic goTo() used by components, and navigation after delete, store, etc...)
-            commit("mgr/routes/setRouter", payload, { root: true });
-
-            //set server base addresses
-            let baseUrl = `${window.location.protocol}//${window.location.host}`;
-            commit("mgr/baseUrl", baseUrl, { root: true });
-            console.log("setting axios.baseURL to " + baseUrl);
-            axios.defaults.baseURL = baseUrl;
-
-            //enables axios debug
-            axios.interceptors.response.use(null, error => {
-                //console.log("axios interceptor error: " + JSON.stringify(error, null, 2));
-                return Promise.reject(error);
-            });
-
-            //load images used by app
-            dispatch("med/loadAppMedia")
-        },
-    }
 });

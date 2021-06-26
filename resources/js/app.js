@@ -2,19 +2,20 @@ require('./bootstrap');
 import Vue from 'vue';
 import vuetify from './vuetify';
 import Vuelidate from 'vuelidate';
-import router from './router';
+import router from './routing/router';
 import store from './store/store.js';
 import MainApp from './components/MainApp.vue';
 import 'vuetify/dist/vuetify.min.css'
 
 Vue.use(Vuelidate);
-
-const app = new Vue({
-    el: '#app',
-    store,
-    router,
-    vuetify,
-    components: {
-        MainApp
-    }
+store.dispatch("mgr/initApp", router, { root: true }).then(() => {
+    const app = new Vue({
+        store,
+        router,
+        vuetify,
+        components: {
+            MainApp
+        }
+    }).$mount('#app');
 });
+

@@ -79,12 +79,20 @@ export default {
         return "[...]";
       }
       let m = this.$store.getters["mgr/collections"]("main");
+      //let t = m.collection.length;
+      //let c = m.index + 1;
+      
+      return `[${m.index + 1}/${m.collection.length}]`;
+      /*
+      /////////////////////
+      let m = this.$store.getters["mgr/collections"]("main");
       let index = m.chunk.findIndex(
         (x) => x.id === this.$store.getters["mgr/item"].id
       );
       let cnt = m.chunkStartIndex + index + 1;
       let t = this.$store.getters["mgr/status"].count;
       return `[${cnt}/${t}]`;
+      */
     },
   },
   methods: {

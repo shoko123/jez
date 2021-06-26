@@ -48,9 +48,9 @@ trait FilterTrait
                         break;
 
                     case "scopes":
-                        $b = in_array("b", $ids);
-                        $a = in_array("a", $ids);
-                        $p = in_array("p", $ids);
+                        $b = in_array("basket", $ids);
+                        $a = in_array("artifact", $ids);
+                        $p = in_array("piece", $ids);
                         switch (count($ids)) {
                             case 1:
                                 if ($b) {

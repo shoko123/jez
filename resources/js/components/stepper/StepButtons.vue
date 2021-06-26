@@ -34,11 +34,11 @@ export default {
 
   methods: {
     nextClicked() {
-      console.log("stepButtons.next()");
+      //console.log("stepButtons.next()");
       this.$emit("nextClicked", null);
     },
     prevClicked() {
-      console.log("stepButtons.prev()");
+      //console.log("stepButtons.prev()");
       this.$store.commit("stp/moveToStep", "prev");
     },
     cancel() {

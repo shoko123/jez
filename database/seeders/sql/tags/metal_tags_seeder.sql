@@ -10,7 +10,7 @@ INSERT INTO `metal_base_types` (`id`, `name`) VALUES
 INSERT INTO `metal_materials` (`id`, `name`) VALUES
 (1,'Unassigned'),
 (2, 'Iron'),
-(3, 'Steele'),
+(3, 'Steel'),
 (4, 'Copper'),
 (5, 'Brass'),
 (6, 'Bronze'),

@@ -10,12 +10,12 @@ class LithicPolicy
 {
     use HandlesAuthorization;
 
-    public function viewAny(User $user)
+    public function viewAny(?User $user)
     {
         return true;
     }
 
-    public function view(User $user, Lithic $lithic)
+    public function view(?User $user, Lithic $lithic)
     {
         return true;
     }
