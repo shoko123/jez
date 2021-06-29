@@ -398,7 +398,6 @@ export default {
                     break;
                 default:
                     break;//endpoint = endpoint;
-
             }
             //payload.params.lookups = JSON.parse(payload.params.lookups);
             //payload.params.tagParams = JSON.parse(payload.params.tagParams);
@@ -418,24 +417,24 @@ export default {
                 .then((res) => {
                     console.log(`mgr.query() OK. ${res.data.collection.length} records returned`);
                     if (res.data.collection.length < 1) {
-                        commit('snackbar/displaySnackbar', {
-                            isSuccess: false,
+                        commit('snackbar/snackbar', {
+                            color: "orange",
                             message: "Query resulted with no matches, Please edit query and re-submit"
                         }, { root: true });
                         throw new EmptyResultSetError("Empty result set");
                     }
 
-                    commit('collections', { name: "main", collection: res.data.collection });
+                    commit('collections', { name: "main", collection: res.data.collection });   
                     commit("ready", { entity: "collection", isReady: true });
 
                     if (getters["ready"]["item"]) {
-                        //set page according to item's index
-                        let c = state.collections["main"].collection;
-                        let index = c.findIndex(x => x.id == getters["item"].id);
-                        let page = Math.floor((index + 1) / state.collections.main.itemsPerPage) + 1;
-                        dispatch("page", { name: "main", page: page, forceLoad: true });
+                        //set item's index
+                        let index = state.collections.main.collection.findIndex(x => x.id == state.item.id);
+                        //console.log(`item(ready) setting index: ${index}`);
+                        return dispatch("indexOfItemInMainCollection", index);
                     } else {
-                        dispatch("page", { name: "main", page: 1, forceLoad: true });
+                        //console.log(`item(not ready) setting page to 1`);
+                        dispatch("page", { name: "main", page: 1, forceLoad: true });         
                     }
                     return res;
                 })
@@ -494,16 +493,16 @@ export default {
                     }
 
                     commit('item', res.data.item);
+                    commit("ready", { entity: "item", isReady: true });
                     if (state.routes.to.module !== "About") {
                         //console.log(`mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
                         commit('collections', { name: "media", collection: res.data.itemMedia.collection });
                     }
-
-                    commit("ready", { entity: "item", isReady: true });
+                    
                     if (getters["ready"].collection) {
                         //set item's index
                         let index = state.collections.main.collection.findIndex(x => x.id == res.data.item.id);
-                        //console.log(`index: ${index} length: ${state.collections.main.collection.length} ipp: ${state.collections.main.itemsPerPage} page: ${page}`);
+                        //console.log(`collection(ready) setting index: ${index}`);
                         return dispatch("indexOfItemInMainCollection", index);
                     }
                     return res;
@@ -511,8 +510,6 @@ export default {
                 .catch(err => {
                     console.log('mgr Failed to load item. err: ' + err);
                     return err;
-                })
-                .finally(() => {
                 })
         },
 
@@ -658,7 +655,7 @@ export default {
                 .then((res) => {
                     //console.log('initModule returned: ');// + JSON.stringify(res, null, 2));
                     commit('welcomeData', res.data.welcomeData);
-                    console.log(`initializedModule '${state.routes.to.module}' OK`);                    
+                    console.log(`initializedModule '${state.routes.to.module}' OK`);
                     //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
 
                     if (state.routes.to.module === "About") {
@@ -680,15 +677,15 @@ export default {
                 case "main":
                     switch (newView) {
                         case "Media":
-                            commit("itemsPerPage", { name: "main", ipp: rootGetters["globalSettings"].perPageMedia });
+                            commit("itemsPerPage", { name: "main", ipp: state.globalSettings.perPageMedia });
                             break;
 
                         case "Chips":
-                            commit("itemsPerPage", { name: "main", ipp: rootGetters["globalSettings"].perPageChips });
+                            commit("itemsPerPage", { name: "main", ipp: state.globalSettings.perPageChips });
 
                             break;
                         case "Table":
-                            commit("itemsPerPage", { name: "main", ipp: rootGetters["globalSettings"].perPageTableRecords });
+                            commit("itemsPerPage", { name: "main", ipp: state.globalSettings.perPageTableRecords });
                             break;
                     }
                     commit("collectionViewIndex", { name: "main", viewIndex: newViewIndex });
@@ -721,7 +718,7 @@ export default {
             let newPage = Math.floor(payload / state.collections.main.itemsPerPage);
             //console.log(`mgr/indexOfItemInMainCollection(${payload}) currentPage: ${state.collections.main.pageNo} nwPage: ${newPage}`);
             commit("index", payload);
-            if(newPage !== state.collections.main.pageNo) {
+            if (newPage !== state.collections.main.pageNo) {
                 return dispatch("page", { name: "main", page: newPage + 1, forceLoad: false });
             }
         },

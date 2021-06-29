@@ -14,8 +14,8 @@ export default function authorize(router) {
             if (to.path === "/auth/login" || to.path === "/") {
                 next();
             } else if (appSettings.loggedUsersOnly && !isLoggedIn) {
-                store.commit('snackbar/displaySnackbar', {
-                    isSuccess: false,
+                store.commit('snackbar/snackbar', {
+                    color: "orange",
                     message: "You need to be logged-in to view this page. Redirected to the login page."
                 }, { root: true });
                 console.log(`Router.authorize() Log in Required - redirected to login page`);
