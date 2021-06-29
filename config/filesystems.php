@@ -55,11 +55,6 @@ return [
             'visibility' => 'public',
         ],
         
-        'dropbox' => [
-            'driver' => 'dropbox',
-            'authorization_token' => env('DROPBOX_TOKEN'),
-        ],
-        
         'media' => [
             'driver' => 'local',
             'root'   => public_path('media'),

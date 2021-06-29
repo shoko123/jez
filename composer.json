@@ -13,7 +13,6 @@
         "laravel/framework": "^8.40",
         "laravel/installer": "^4.0",
         "laravel/tinker": "^2.5",
-        "spatie/flysystem-dropbox": "^1.2",
         "spatie/laravel-backup": "^6.14",
         "spatie/laravel-medialibrary": "^9.0",
         "spatie/laravel-permission": "^4.0",
