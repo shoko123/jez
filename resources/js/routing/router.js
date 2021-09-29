@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '../components/Home.vue';
-import Admin from '../components/admin/Admin.vue';
+import AdminDash from '../components/admin/Admin.vue';
 import Login from '../components/auth/Login.vue';
 
 import PageItem from '../components/layouts/PageItem.vue';
@@ -18,8 +18,8 @@ import Tagger from '../components/tags/Tagger.vue';
 
 import UndefinedRoute from '../components/elements/UndefinedRoute.vue';
 import RouterElement from '../components/elements/RouterElement.vue';
-import middleware from './middleware.js';
-import interceptor from './interceptor.js';
+import middlewareInit from './middleware.js';
+import interceptorInit from './interceptor.js';
 
 Vue.use(Router)
 
@@ -32,8 +32,14 @@ const router = new Router({
         },
         {
             path: '/:module(admin)',
-            component: Admin,
-            meta: { authorize: "Admin" } 
+            component: RouterElement,
+            props: true,
+            children: [
+                {
+                    path: 'dashboard',
+                    component: AdminDash
+                },
+            ],
         },
         {
             path: '/:module(auth)',
@@ -139,6 +145,6 @@ const router = new Router({
     ]
 })
 
-interceptor(router);
-middleware(router);
+interceptorInit(router);
+middlewareInit(router);
 export default router

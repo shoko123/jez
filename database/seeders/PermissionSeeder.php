@@ -16,7 +16,7 @@ class PermissionSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
-        Permission::create(['guard_name' => 'api', 'name' => 'Admin']);
+        Permission::create(['guard_name' => 'api', 'name' => 'ChangeAccessOptions']);
 
         Permission::create(['guard_name' => 'api', 'name' => 'Area-read']);
         Permission::create(['guard_name' => 'api', 'name' => 'Area-update']);
@@ -138,7 +138,7 @@ class PermissionSeeder extends Seeder
         $roleMetalManager->givePermissionTo('Metal-tag');
 
         $roleAdmin = Role::create(['guard_name' => 'api', 'name' => 'Admin']);
-        $roleAdmin->givePermissionTo('Admin');
+        $roleAdmin->givePermissionTo('ChangeAccessOptions');
 
         $roleReader = Role::create(['guard_name' => 'api', 'name' => 'reader']);
         $roleReader->givePermissionTo(['Area-read', 'Season-read', 'AreaSeason-read', 'Locus-read', 'Stone-read', 'Pottery-read', 'Lithic-read', 'Glass-read', 'Metal-read']);

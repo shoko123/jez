@@ -5,19 +5,19 @@ namespace App\Settings;
 class GlobalSettings
 {
     private $readOnly;
-    private $loggedUsersOnly;
+    private $authorizedUsersOnly;
 
     public function __construct()
     {
         $this->readOnly = false;
-        $this->loggedUsersOnly = true;
+        $this->authorizedUsersOnly = true;
     }
 
     public function get()
     {
         return (object) [
             "readOnly" => $this->readOnly,
-            "loggedUsersOnly" => $this->loggedUsersOnly,
+            "authorizedUsersOnly" => $this->authorizedUsersOnly,
         ];
     }
 
@@ -26,13 +26,13 @@ class GlobalSettings
         if (property_exists($payload, 'readOnly')) {
             $this->readOnly = $payload->readOnly;
         }
-        if (property_exists($payload, 'loggedUsersOnly')) {
-            $this->loggedUsersOnly = $payload->loggedUsersOnly;
+        if (property_exists($payload, 'authorizedUsersOnly')) {
+            $this->authorizedUsersOnly = $payload->authorizedUsersOnly;
         }
 
         return (object)[
             "readOnly" => $this->readOnly,
-            "loggedUsersOnly" => $this->loggedUsersOnly,
+            "authorizedUsersOnly" => $this->authorizedUsersOnly,
         ];
     }
 
@@ -41,8 +41,8 @@ class GlobalSettings
         return $this->readOnly;
     }
 
-    public function loggedUsersOnly()
+    public function authorizedUsersOnly()
     {
-        return $this->loggedUsersOnly;
+        return $this->authorizedUsersOnly;
     }
 }

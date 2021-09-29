@@ -4,10 +4,7 @@ export default {
     namespaced: true,
     state: {
         router: null,
-        appSettings: {
-            readOnly: false,
-            loggedUsersOnly: true,
-        },
+ 
         current: {
             module: "Home",
             apiModuleUrl: "/api",
@@ -31,9 +28,6 @@ export default {
         getRouter(state) {
             return state.router;
         },
-        appSettings(state) {
-            return state.appSettings;
-        },
 
         to(state) {
             return state.to;
@@ -49,10 +43,6 @@ export default {
         setRouter(state, payload) {
             //console.log(`mgr/setRouter() payload: `);//${JSON.stringify(payload, null, 2)}
             state.router = payload;
-        },
-        appSettings(state, payload) {
-            state.appSettings.loggedUsersOnly = payload.settings.loggedUsersOnly;
-            state.appSettings.readOnly = payload.settings.readOnly;
         },
 
         to(state, payload) {
@@ -123,14 +113,19 @@ export default {
             } else {
                 to.module = "Home";
             }
-
-            to.apiModuleUrl = jezConfig.myModules[to.module].apiBaseUrl;
-
+            
+            if (!["Home", "Admin"].includes(to.module)) {
+                to.apiModuleUrl = jezConfig.myModules[to.module].apiBaseUrl;
+            }
             if (payload.params.hasOwnProperty("id")) {
                 to.id = parseInt(payload.params.id, 10);
+            } else {
+                to["id"] = null;
             }
             if (payload.params.hasOwnProperty("action")) {
                 to.action = payload.params.action;
+            } else {
+                to["action"] = null;
             }
 
             //query params will only be copied on 'list' action. (We don't want to reload list if we observed items).
@@ -138,9 +133,9 @@ export default {
                 console.log(`setting to.queryParams to: ${JSON.stringify(payload.query, null, 2)}`);
                 to.queryParams = payload.query;
             }
-
-            commit("to", to);
             //console.log(`parseTo.done to: ${JSON.stringify(state.to, null, 2)}`);
+            commit("to", to);
+
             return to;
         },
 
@@ -165,7 +160,8 @@ export default {
 
             function loadPrepare() {
                 //console.log(`loadPrepare current: ${JSON.stringify(state.current, null, 2)} to: ${JSON.stringify(state.to, null, 2)}`);
-                if (state.to.module === "Home") { return; }
+
+                if (["Home", "Admin"].includes(state.to.module)) { return; }
                 //let empty = rootState.mgr.collections["main"].collection.length === 0;
                 if (state.to.module === "About") {
                     console.log('dispatcher About...');
@@ -316,6 +312,8 @@ export default {
                         return { path: "/" };
                     case "login":
                         return { path: "/auth/login" };
+                    case "dashboard":
+                        return { path: "/admin/dashboard" };
                     case "welcome":
                         return { path: `${moduleBaseUrl}/welcome` };
                     case "update":

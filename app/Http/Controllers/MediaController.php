@@ -95,7 +95,7 @@ class MediaController extends Controller
         ], 200);
     }
 
-    public function init(Request $request)
+    public function getAppMedia(Request $request)
     {
         $backgroundUrls = [];
 

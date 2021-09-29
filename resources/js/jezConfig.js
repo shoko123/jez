@@ -12,9 +12,15 @@ export default {
             appBaseUrl: "/auth",
             apiBaseUrl: null,
             isDigModule: false,
-
             isFind: false
-        },     
+        }, 
+        Admin: {
+            storeName: "aut",
+            appBaseUrl: "/admin",
+            apiBaseUrl: null,
+            isDigModule: false,
+            isFind: false
+        },             
         About: {          
             storeName: "about",
             collectionName: "About",

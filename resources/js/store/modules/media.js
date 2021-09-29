@@ -234,15 +234,15 @@ export default {
 
         //load general media used by the app (backgrounds, fillers, etc.).
         //This media is unrelated to media stored in the DB.
-        initAppMedia({ state, commit, dispatch }, payload) {
+        getAppMedia({ state, commit, dispatch }, payload) {
             let xhrRequest = {
-                endpoint: `/api/media/init`,
+                endpoint: `/api/media/app-media`,
                 action: "get",
                 data: null,
                 spinner: false,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `loading app images`, onSuccess: '', onFailure: 'Failed to load app media', },
+                messages: { loading: `loading app's media`, onSuccess: '', onFailure: 'Failed to load app media', },
             };
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
@@ -252,7 +252,7 @@ export default {
                     return res;
 
                 }).catch(err => {
-                    console.log('initAppMedia failure. err: ' + JSON.stringify(err, null, 2));
+                    console.log('getAppMedia failure. err: ' + JSON.stringify(err, null, 2));
                     return err;
                 })
         },

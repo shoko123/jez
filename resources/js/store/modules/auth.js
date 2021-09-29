@@ -3,6 +3,7 @@ export default {
     state: {
         user: null,
         permissions: [],
+        roles: [],
     },
     getters: {
         isLoggedIn(state) {
@@ -15,21 +16,27 @@ export default {
         can: (state) => (permissionName) => {
             return state.permissions.includes(permissionName);
         },
+
+        role: (state) => (roleName) => {
+            return state.roles.includes(roleName);
+        },
+
     },
     mutations: {
         loginSuccess(state, payload) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${payload.access_token}`
             state.user = Object.assign({}, payload.user, { token: payload.access_token });
 
-            state.permissions = [];
             state.permissions = payload.permissions;
+            state.roles = payload.roles;
             //console.log("login successful for user: " + state.user.name);
             //console.log("permissions : " + JSON.stringify(state.permissions, null, 2));
         },
 
         clear(state) {
             state.user = null;
-            state.permissions = [];
+            state.permissions = []; 
+            state.roles = [];
         },
     },
 

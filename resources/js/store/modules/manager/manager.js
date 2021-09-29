@@ -67,6 +67,10 @@ export default {
             return state.globalSettings;
         },
 
+        appSettings(state) {
+            return state.appSettings;
+        },
+
         baseUrl(state) {
             return state.globalSettings.baseUrl;
         },
@@ -265,6 +269,10 @@ export default {
             state.globalSettings.baseUrl = payload;
         },
 
+        appSettings(state, payload) {
+            state.appSettings = payload;
+        },
+
         collections(state, payload) {
             state.collections[payload.name].collection = payload.collection;
         },
@@ -351,9 +359,9 @@ export default {
 
             //dispatch("mgr/initApp", null, { root: true });
             //load global settings and load media used by app
-            dispatch("med/initAppMedia", null, { root: true });
+            dispatch("med/getAppMedia", null, { root: true });
 
-            //get current app setting (loggedUsersOnly, readOnly)
+            //get current app setting (authorizedUsersOnly, readOnly)
             let xhrRequest = {
                 endpoint: `${baseUrl}/api/settings`,
                 action: "get",
@@ -367,11 +375,11 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     console.log(`app.init() OK. appSettings: ${JSON.stringify(res.data.settings, null, 2)}`);
-                    commit('mgr/routes/appSettings', res.data, { root: true });
+                    commit('appSettings', res.data.settings);
                     /*
                     commit('snackbar/displaySnackbar', {
                         isSuccess: true,
-                        message: `App status: loggedUsersOnly = ${res.data.settings.loggedUsersOnly}`
+                        message: `App status: authorizedUsersOnly = ${res.data.settings.authorizedUsersOnly}`
                     }, { root: true });
                     */
                     return res;
@@ -430,10 +438,10 @@ export default {
                     if (getters["ready"]["item"]) {
                         //set item's index
                         let index = state.collections.main.collection.findIndex(x => x.id == state.item.id);
-                        //console.log(`item(ready) setting index: ${index}`);
+                        console.log(`item(ready) setting index: ${index}`);
                         return dispatch("indexOfItemInMainCollection", index);
                     } else {
-                        //console.log(`item(not ready) setting page to 1`);
+                        console.log(`item(not ready) setting page to 1`);
                         dispatch("page", { name: "main", page: 1, forceLoad: true });         
                     }
                     return res;
@@ -639,7 +647,7 @@ export default {
             //console.log('mgr.initializeModule. apiBaseUrl: ' + state.routes.to.module);
             dispatch("clearModule");
             //only dig modules and 'About' are initialized
-            if (["Home", "Auth"].includes(state.routes.to.module)) { return }
+            if (["Home", "Auth", "Admin"].includes(state.routes.to.module)) { return }
 
             let xhrRequest = {
                 endpoint: `/api/module-initializer`,
@@ -718,9 +726,12 @@ export default {
             let newPage = Math.floor(payload / state.collections.main.itemsPerPage);
             //console.log(`mgr/indexOfItemInMainCollection(${payload}) currentPage: ${state.collections.main.pageNo} nwPage: ${newPage}`);
             commit("index", payload);
-            if (newPage !== state.collections.main.pageNo) {
-                return dispatch("page", { name: "main", page: newPage + 1, forceLoad: false });
-            }
+
+            //the second
+            
+            if (newPage !== state.collections.main.pageNo || state.routes.current.module === "Home") {
+                return dispatch("page", { name: "main", page: newPage + 1, forceLoad: (state.routes.current.module === "Home") });
+            } 
         },
 
         page({ state, getters, commit, dispatch }, payload) {

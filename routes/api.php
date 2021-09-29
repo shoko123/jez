@@ -29,7 +29,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\TestController;
 
 //get app-media location (used by carousel images, fillers, etc...).
-Route::get('media/init', [MediaController::class, 'init']);
+Route::get('media/app-media', [MediaController::class, 'getAppMedia']);
 
 Route::get('settings', [GlobalSettingsController::class, 'get']);
 
@@ -40,7 +40,7 @@ Route::post('get-id', [TestController::class, 'getId']);
 //open routes
 Route::post('module-initializer', [ModuleInitializerController::class, 'index']);
 
-Route::group(['middleware' => 'loggedOnly'], function ($router) {
+Route::group(['middleware' => 'authorizedUsersOnly'], function ($router) {
     Route::get('about', [AboutController::class, 'index']); //No params, always get all records.
     Route::get('about/{id}', [AboutController::class, 'show']);
 

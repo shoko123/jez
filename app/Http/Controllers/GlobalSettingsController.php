@@ -9,8 +9,9 @@ class GlobalSettingsController extends Controller
 {
     public function set(Request $request, GlobalSettings $gs)
     {
+        $gs->set($request);
         return response()->json([
-            "globalSettings" => $gs,
+            "globalSettings" => $gs->get(),
         ], 200);
     }
 
