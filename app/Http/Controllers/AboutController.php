@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\JezStatic\AboutPages;
-use App\Settings\GlobalSettings;
+
 
 class AboutController extends Controller
 {
-    public function index(GlobalSettings $gs)
+    public function index()
     {
         return response()->json([
             "collection" => AboutPages::index(),

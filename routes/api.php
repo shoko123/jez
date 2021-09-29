@@ -31,14 +31,13 @@ use App\Http\Controllers\TestController;
 //get app-media location (used by carousel images, fillers, etc...).
 Route::get('media/app-media', [MediaController::class, 'getAppMedia']);
 
-Route::get('settings', [GlobalSettingsController::class, 'get']);
-
 //test (dev only)
 Route::post('test', [TestController::class, 'test']);
 Route::post('get-id', [TestController::class, 'getId']);
 
 //open routes
 Route::post('module-initializer', [ModuleInitializerController::class, 'index']);
+Route::get('accessibility', [GlobalSettingsController::class, 'accessibility']);
 
 Route::group(['middleware' => 'authorizedUsersOnly'], function ($router) {
     Route::get('about', [AboutController::class, 'index']); //No params, always get all records.
@@ -100,8 +99,6 @@ Route::group(['prefix' => 'auth'], function ($router) {
 
 //protected
 Route::group(['middleware' => 'jwt.auth'], function ($router) {
-    //global settings
-    Route::post('settings', [AppGlobalSettingsController::class, 'set']);
     //media
     Route::post('media/store', [MediaController::class, 'store']);
     Route::delete('media', [MediaController::class, 'destroy']);

@@ -9,6 +9,10 @@ export default {
         routes: routes,
     },
     state: {
+        appSettings: {
+            readOnly: false,
+            authorizedUsersOnly: true,
+        },
         globalSettings: {
             perPageMedia: 18,
             perPageChips: 100,
@@ -268,11 +272,9 @@ export default {
         baseUrl(state, payload) {
             state.globalSettings.baseUrl = payload;
         },
-
         appSettings(state, payload) {
             state.appSettings = payload;
-        },
-
+        }, 
         collections(state, payload) {
             state.collections[payload.name].collection = payload.collection;
         },
@@ -363,7 +365,7 @@ export default {
 
             //get current app setting (authorizedUsersOnly, readOnly)
             let xhrRequest = {
-                endpoint: `${baseUrl}/api/settings`,
+                endpoint: `/api/accessibility`,
                 action: "get",
                 data: null,
                 spinner: true,
@@ -375,13 +377,7 @@ export default {
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
                     console.log(`app.init() OK. appSettings: ${JSON.stringify(res.data.settings, null, 2)}`);
-                    commit('appSettings', res.data.settings);
-                    /*
-                    commit('snackbar/displaySnackbar', {
-                        isSuccess: true,
-                        message: `App status: authorizedUsersOnly = ${res.data.settings.authorizedUsersOnly}`
-                    }, { root: true });
-                    */
+                    commit('appSettings', res.data.accessibility);
                     return res;
                 })
                 .catch(err => {
@@ -432,7 +428,7 @@ export default {
                         throw new EmptyResultSetError("Empty result set");
                     }
 
-                    commit('collections', { name: "main", collection: res.data.collection });   
+                    commit('collections', { name: "main", collection: res.data.collection });
                     commit("ready", { entity: "collection", isReady: true });
 
                     if (getters["ready"]["item"]) {
@@ -442,7 +438,7 @@ export default {
                         return dispatch("indexOfItemInMainCollection", index);
                     } else {
                         console.log(`item(not ready) setting page to 1`);
-                        dispatch("page", { name: "main", page: 1, forceLoad: true });         
+                        dispatch("page", { name: "main", page: 1, forceLoad: true });
                     }
                     return res;
                 })
@@ -506,7 +502,7 @@ export default {
                         //console.log(`mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
                         commit('collections', { name: "media", collection: res.data.itemMedia.collection });
                     }
-                    
+
                     if (getters["ready"].collection) {
                         //set item's index
                         let index = state.collections.main.collection.findIndex(x => x.id == res.data.item.id);
@@ -728,10 +724,10 @@ export default {
             commit("index", payload);
 
             //the second
-            
+
             if (newPage !== state.collections.main.pageNo || state.routes.current.module === "Home") {
                 return dispatch("page", { name: "main", page: newPage + 1, forceLoad: (state.routes.current.module === "Home") });
-            } 
+            }
         },
 
         page({ state, getters, commit, dispatch }, payload) {

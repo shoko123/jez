@@ -3,14 +3,14 @@
     <v-toolbar v-if="isRead" dark class="primary" fixed dense>
       <v-btn text @click="home"> {{ moduleName }} </v-btn>
       <v-spacer></v-spacer>
-      <template v-if="showModules">
+      
         <v-toolbar-items class="hidden-xs-only">
-          <v-btn text @click="moduleClick({ module: 'About' })">
+          <v-btn text :disabled="disableLinks" @click="moduleClick({ module: 'About' })">
             <v-icon left dark>mdi-help-circle-outline</v-icon>About
           </v-btn>
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn v-bind="attrs" v-on="on" text>
+              <v-btn  :disabled="disableLinks" v-bind="attrs" v-on="on" text>
                 <v-icon left dark>view_comfy</v-icon>
                 Areas/Seasons
               </v-btn>
@@ -30,6 +30,7 @@
             v-for="item in btns"
             :key="item.title"
             @click="moduleClick(item)"
+            :disabled="disableLinks"
           >
             <v-icon left dark>{{ item.icon }}</v-icon>
             {{ item.title }}
@@ -61,7 +62,6 @@
             {{ loginBtn.title }}
           </v-btn>
         </v-toolbar-items>
-      </template>
     </v-toolbar>
 
     <v-toolbar v-if="isEdit" dark class="orange" fixed dense
@@ -132,17 +132,16 @@ export default {
     isLoggedIn() {
       return this.$store.getters["aut/isLoggedIn"];
     },
-    showModules() {
-      return (
-        this.status.action !== "login" &&
-        (!this.$store.getters["mgr/appSettings/authorizedUsersOnly"] ||
-          this.isLoggedIn)
-      );
-      //return this.$store.getters["aut/isLoggedIn"];
+    disableLinks() {
+      let needAuth = this.$store.getters["mgr/appSettings"].authorizedUsersOnly;
+      console.log(`menuMain isLoggedIn: ${this.isLoggedIn}`)
+       console.log(`menuMain needAuth: ${needAuth}`)
+        console.log(`menuMain disableLinks: ${(needAuth && !this.isLoggedIn)}`)
+      return  needAuth && !this.isLoggedIn;
     },
     showLoginBtn() {
       return (
-        !this.$store.getters["aut/isLoggedIn"] && this.status.action !== "login"
+        !this.isLoggedIn && this.status.action !== "login"
       );
       //return this.$store.getters["aut/isLoggedIn"];
     },

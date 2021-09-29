@@ -2,23 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Settings\GlobalSettings;
 use Illuminate\Http\Request;
 
 class GlobalSettingsController extends Controller
 {
-    public function set(Request $request, GlobalSettings $gs)
+    public function accessibility()
     {
-        $gs->set($request);
+        $d = config('accessibility.accessibility');
         return response()->json([
-            "globalSettings" => $gs->get(),
-        ], 200);
-    }
-
-    public function get(GlobalSettings $gs)
-    {
-        return response()->json([
-            "settings" => $gs->get(),
+            "accessibility" => $d,
         ], 200);
 
     }

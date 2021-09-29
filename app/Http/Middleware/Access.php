@@ -18,7 +18,7 @@ class Access
     {
 //        if (!$this->globalSettings->authorizedUsersOnly() || !is_null(auth('api')->user())) {
         $gs = app(GlobalSettings::class);
-        $authorizedUsersOnly = $gs->get()->authorizedUsersOnly;
+        $authorizedUsersOnly = $gs->getAccessStatus()->authorizedUsersOnly;
         if (!$authorizedUsersOnly || !is_null(auth('api')->user())) {
             return $next($request);
         } else {
