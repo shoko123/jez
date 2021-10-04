@@ -2,38 +2,31 @@
 
 namespace App\Http\Controllers\Dig;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseDigModuleController;
 use App\Models\Dig\Season;
 use Illuminate\Http\Request;
 
-class SeasonController extends Controller
+class SeasonController extends BaseDigModuleController
 {
-    public function __construct(Season $model)
+    public function __construct(Season $season)
     {
-        $this->model = $model;
+        $this->model = $season;
     }
-    public function index(Request $request)
-    {
-        $collection = Season::with('media')->orderBy('id', 'asc')->get();
 
-        foreach ($collection as $index => $item) {
-            $media = $this->model->primaryMedia('Season', $item);
-            $item["fullUrl"] = $media->fullUrl;
-            $item["hasMedia"] = $media->hasMedia;
-            $item["tnUrl"] = $media->tnUrl;
-            $item["tag"] = $item->season + 2000;
-            unset($item->media);
-        }
+    public function index(Request $request)
+    {        
+        $collection = $this->model->with('media')->orderBy('id', 'asc')->get();
+        $collection = $this->model->formatCollection($collection);
 
         return response()->json([
             "collection" => $collection,
         ], 200);
 
     }
-
+   
     public function show($id)
     {
-        $item = Season::with(['media', 'areas_seasons'])->findOrFail($id);
+        $item = $this->model->with(['media', 'areas_seasons'])->findOrFail($id);
 
         //get related media.
         $itemMedia = $this->model->itemMediaCollection('Season', $item);
@@ -62,7 +55,7 @@ class SeasonController extends Controller
         return response()->json([
             "item" => $item,
             "itemMedia" => $itemMedia,
-            "areasSeasons" => $areasSeasons
+            "areasSeasons" => $areasSeasons,
         ], 200);
     }
 
@@ -82,8 +75,8 @@ class SeasonController extends Controller
             'staff' => 'max:2000|nullable',
         ]);
 
-        $item = Season::findOrFail($validatedRequest["id"]);
-        
+        $item = $this->model->findOrFail($validatedRequest["id"]);
+
         foreach ($validatedRequest as $key => $value) {
             $item[$key] = $value;
         }
@@ -93,7 +86,7 @@ class SeasonController extends Controller
 
         $item->save();
         $item->tag = $item->season + 2000;
-        
+
         return response()->json([
             "msg" => "Area updated succefully",
             "item" => $item,

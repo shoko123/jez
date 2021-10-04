@@ -53,7 +53,7 @@ Route::group(['middleware' => 'authorizedUsersOnly'], function ($router) {
     Route::get('areas-seasons/{id}', [AreaSeasonController::class, 'show']);
 
     Route::post('loci', [LocusController::class, 'index']);
-    Route::post('loci/all', [LocusController::class, 'all']);
+    //Route::post('loci/all', [LocusController::class, 'all']);
     Route::post('loci/chunk-media', [LocusController::class, 'chunkMedia']);
     Route::post('loci/chunk-table', [LocusController::class, 'chunkTable']);
     Route::get('loci/{id}', [LocusController::class, 'show']);

@@ -1,30 +1,18 @@
 <?php
-
 namespace App\Models\Dig;
+use App\Models\Dig\AreaSeason;
+use App\Models\Dig\BaseDigModel;
 
-use App\Models\Scene;
-use App\Traits\MediaTrait;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-
-class Season extends Model implements HasMedia
+class Season extends BaseDigModel
 {
-    use InteractsWithMedia, MediaTrait;
-    protected $table = 'seasons';
-    public $timestamps = false;    
+    public $timestamps = false;
     protected $guarded = [];
 
-    public function registerMediaConversions(Media $media = null): void
+    public function __construct()
     {
-        $this->addMediaConversion('tn')
-            ->width(250)
-            ->height(250)
-            ->sharpen(10)
-            ->nonQueued();
+        parent::__construct("Season");
     }
-
+  
     public function areas_seasons()
     {
         return $this->hasMany(AreaSeason::class, 'season_id');

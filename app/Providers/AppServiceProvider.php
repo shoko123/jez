@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Settings\GlobalSettings;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
@@ -38,8 +37,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(GlobalSettings::class, function ($app) {
-            return new GlobalSettings();
-        });
+        //Changed to config file "accessibility"
+        //$this->app->singleton(GlobalSettings::class, function ($app) {
+        //   return new GlobalSettings();
+        //});
     }
 }

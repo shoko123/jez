@@ -8,7 +8,7 @@ export default function parseAndPermit(router) {
         let isLoggedIn = store.getters["aut/isLoggedIn"];
         let permissions = store.state["aut/permissions"];
 
-        console.log(`middleware.authorize() to.path: ${to.path} appSettings: ${JSON.stringify(appSettings, null, 2)}\nisLoggedIn: ${isLoggedIn}`);
+        //console.log(`middleware.authorize() to.path: ${to.path} appSettings: ${JSON.stringify(appSettings, null, 2)}\nisLoggedIn: ${isLoggedIn}`);
 
         store.dispatch("mgr/routes/parseTo", to).then(() => {
             if (to.path === "/auth/login" || to.path === "/") {

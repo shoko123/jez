@@ -9,7 +9,6 @@ use App\Models\Dig\Find;
 use App\Models\Dig\Locus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class LocusController extends Controller
 {
@@ -24,7 +23,7 @@ class LocusController extends Controller
     {
         $this->authorize('viewAny', $this->model);
 
-        $builder = Locus::leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
+        $builder = $this->model->leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
             ->with('media');
 
         //filter by tags
@@ -73,66 +72,10 @@ class LocusController extends Controller
         //get results
         $loci = $builder->get(['loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag']);
 
-        foreach ($loci as $index => $item) {
-            $item->tag = $item->tag . '/' . $item->locus_no;
-
-            $media = $this->model->primaryMedia('Locus', $item);
-            $item["fullUrl"] = $media->fullUrl;
-            $item["hasMedia"] = $media->hasMedia;
-            $item["tnUrl"] = $media->tnUrl;
-            unset($item->media);
-        }
+        $collection = $this->model->formatCollection($loci);
 
         return response()->json([
-            "collection" => $loci,
-        ], 200);
-    }
-
-    public function all(Request $request)
-    {
-        $this->authorize('viewAny', $this->model);
-
-        $builder = Locus::leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-            ->with('media');
-
-        if (!empty($request["registration"])) {
-            foreach ($request["registration"] as $key => $ids) {
-                switch ($key) {
-                    case "areas":
-                        $builder->whereIn("area", $ids);
-                        break;
-
-                    case "seasons":
-                        $builder->whereIn("season", $ids);
-                        break;
-
-                    case "media":
-                        $builder->whereHas('media', function (Builder $mediaQuery) use ($ids) {
-                            $mediaQuery->whereIn('collection_name', $ids);});
-                        break;
-
-                    default:
-                        //throw Error
-                }
-            }
-        }
-
-        //order
-        $builder->orderBy('areas_seasons.id', 'asc')
-            ->orderBy('loci.locus_no', 'asc');
-
-        //get results
-        $loci = $builder->get(['loci.id', 'locus_no', 'loci.area_season_id', 'areas_seasons.tag']);
-
-        foreach ($loci as $index => $item) {
-            $item->tag = $item->tag . '/' . $item->locus_no;
-            unset($item->locus_no);
-            unset($item->area_season_id);
-            unset($item->media);
-        }
-
-        return response()->json([
-            "collection" => $loci,
+            "collection" => $collection,
         ], 200);
     }
 
@@ -141,11 +84,13 @@ class LocusController extends Controller
         $itemIds = $request["ids"];
         $ids = implode(',', $itemIds);
 
-        $items = Locus::whereIn('id', $itemIds)
+        $collection = $this->model->whereIn('id', $itemIds)
             ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
             ->get();
 
-        foreach ($items as $index => $item) {
+        $collection = $this->model->formatCollection($collection);
+
+        foreach ($collection as $index => $item) {
             $media = $this->model->primaryMedia('Locus', $item);
             $item["fullUrl"] = $media->fullUrl;
             $item["hasMedia"] = $media->hasMedia;
@@ -154,7 +99,7 @@ class LocusController extends Controller
         }
 
         return response()->json([
-            "collection" => $items,
+            "collection" => $collection,
         ], 200);
     }
 
@@ -163,7 +108,7 @@ class LocusController extends Controller
         $itemIds = $request["ids"];
         $ids = implode(',', $itemIds);
 
-        $items = Locus::whereIn('id', $itemIds)
+        $items = $this->model->whereIn('id', $itemIds)
             ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
             ->get();
 
@@ -190,7 +135,7 @@ class LocusController extends Controller
     {
         $this->authorize('view', $this->model);
 
-        $locus = Locus::with(
+        $locus = $this->model->with(
             ['areaSeason' => function ($q) {
                 $q->select('id', 'tag');},
                 'finds' => function ($q) {
@@ -211,14 +156,36 @@ class LocusController extends Controller
         $itemMedia = $this->model->itemMediaCollection('Locus', $locus);
 
         //LocusFinds
+        $locusFinds = $this->locusFinds($locus->finds);
 
+        //get tags
+        $tags = [];
+        foreach ($locus->tags as $tag) {
+            array_push($tags, (object) [
+                'type' => $tag->type,
+                'id' => $tag->pivot->tag_id,
+            ]);
+        }
+
+        unset($locus->finds);
+        unset($locus->tags);
+        return response()->json([
+            "item" => $locus,
+            "locusFinds" => $locusFinds,
+            "itemMedia" => $itemMedia,
+            "tags" => $tags,
+        ], 200);
+    }
+
+    protected function locusFinds($finds)
+    {
         $order = array("Pottery" => 1, "Stone" => 2, "Lithic" => 3, "Metal" => 4, "Glass" => 5, "Flora" => 6, "Fauna" => 7, "Tbd" => 8);
         $locusFinds = [];
 
-        foreach ($locus->finds as $index => $find) {
+        foreach ($finds as $index => $find) {
             //format tag
             $tag = "(" . $find->findable_type . ") ";
-            $tag .= $this->model->tag($find);
+            $tag .= $this->model->getFindTag($find); //implemented in BaseDigModel
             $type = $find->findable_type;
             //load find instance with media and pick primary media item
             $findModelName = 'App\Models\Dig\\' . $find->findable_type;
@@ -237,32 +204,13 @@ class LocusController extends Controller
             if ($a->type_order === $b->type_order) {
                 return strcmp($a->tag, $b->tag);
             }
-
             return $a->type_order < $b->type_order ? -1 : 1;
         });
 
         foreach ($locusFinds as $index => $find) {
             unset($find->type_order);
         }
-
-        //get tags
-        $tags = [];
-        foreach ($locus->tags as $tag) {
-            array_push($tags, (object) [
-                'type' => $tag->type,
-                'id' => $tag->pivot->tag_id,
-            ]);
-        }
-
-        unset($locus->finds);
-        unset($locus->tags);
-        return response()->json([
-            "item" => $locus,
-            "locusFinds" => $locusFinds,
-            "itemMedia" => $itemMedia,
-            "tags" => $tags,
-            "tags" => $tags,
-        ], 200);
+        return $locusFinds;
     }
 
     public function store(LocusStoreRequest $request)
@@ -271,7 +219,7 @@ class LocusController extends Controller
 
         if ($request->isMethod('put')) {
             $this->authorize('update', $this->model);
-            $locus = Locus::findOrFail($request->input('id'));
+            $locus = $this->model->findOrFail($request->input('id'));
         } else {
             $this->authorize('create', $this->model);
             $locus = new Locus;
@@ -321,7 +269,7 @@ class LocusController extends Controller
     {
         $this->authorize('delete', $this->model);
 
-        $locus = Locus::findOrFail($id);
+        $locus = $this->model->findOrFail($id);
         if ($locus->delete()) {
 
             return response()->json([

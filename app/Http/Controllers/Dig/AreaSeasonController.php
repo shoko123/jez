@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Dig;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseDigModuleController;
 use App\Models\Dig\AreaSeason;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class AreaSeasonController extends Controller
+class AreaSeasonController extends BaseDigModuleController
 {
     public function __construct(AreaSeason $model)
     {
@@ -20,17 +19,17 @@ class AreaSeasonController extends Controller
         //'get' is used to get list of {id, tag}, used for creation/update of new elements.
         //-----------------------------------------
         if ($request->isMethod('get')) {
-            $areas = AreaSeason::orderBy('id')->get(['id', 'tag']);
+            $as = $this->model->orderBy('id')->get(['id', 'tag']);
             return response()->json([
-                "collection" => $areas,
+                "collection" => $as,
             ], 200);
         }
 
         //'post' is similar to other dig item controllers.
         //-----------------------------------------------
-        //$this->authorize('viewAny', $this->model);
+        //$this->authorize('viewAny', $this->dig_module);
 
-        $builder = AreaSeason::with('media');
+        $builder = $this->model->with('media');
 
         if (!empty($request["registration"])) {
             foreach ($request["registration"] as $key => $ids) {
@@ -57,22 +56,16 @@ class AreaSeasonController extends Controller
         //order
         $collection = $builder->orderBy('id', 'asc')->get();
 
-        foreach ($collection as $index => $item) {
-            $media = $this->model->primaryMedia('AreaSeason', $item);
-            $item["fullUrl"] = $media->fullUrl;
-            $item["hasMedia"] = $media->hasMedia;
-            $item["tnUrl"] = $media->tnUrl;
-            unset($item->media);
-        }
+        $collection = $this->model->formatCollection($collection);
 
         return response()->json([
             "collection" => $collection,
         ], 200);
-
     }
+
     public function show($id)
     {
-        $item = AreaSeason::with([
+        $item = $this->model->with([
             'media',
             'loci',
         ])
@@ -109,23 +102,9 @@ class AreaSeasonController extends Controller
         ], 200);
     }
 
-    public function loci($area_season_id)
-    {
-        $areaSason = AreaSeason::whereId($area_season_id)->first();
-        $loci = $areaSason->loci()->get(['id', 'locus_no']);
-
-        foreach ($loci as $locus) {
-            $locus["tag"] = $areaSason->tag . '/' . $locus->locus_no;
-        }
-
-        return response()->json([
-            "lociForArea" => $loci,
-        ], 200);
-    }
-
     public function store(Request $request)
     {
-        if (!$request->isMethod('put') /*||  !$this->authorize('update', $this->model)*/) {
+        if (!$request->isMethod('put') /*||  !$this->authorize('update', $this->dig_module)*/) {
             return response()->json([
                 "msg" => "Unauthorized request on AreaSeason",
             ], 403);
@@ -138,7 +117,7 @@ class AreaSeasonController extends Controller
             'description' => 'max:2000|nullable',
         ]);
 
-        $item = AreaSeason::findOrFail($validatedRequest["id"]);
+        $item = $this->model->findOrFail($validatedRequest["id"]);
 
         foreach ($validatedRequest as $key => $value) {
             $item[$key] = $value;
@@ -149,6 +128,21 @@ class AreaSeasonController extends Controller
         return response()->json([
             "msg" => "AreaSeason updated succefully",
             "item" => $item,
+        ], 200);
+    }
+
+    //used by create(loci/finds) to exclude existing loci/finds [not a part of CRUD]
+    public function loci($area_season_id)
+    {
+        $areaSason = $this->model->whereId($area_season_id)->first();
+        $loci = $areaSason->loci()->get(['id', 'locus_no']);
+
+        foreach ($loci as $locus) {
+            $locus["tag"] = $areaSason->tag . '/' . $locus->locus_no;
+        }
+
+        return response()->json([
+            "lociForArea" => $loci,
         ], 200);
     }
 }

@@ -700,11 +700,11 @@ export default {
                 case "related":
                     switch (newView) {
                         case "Media":
-                            commit("itemsPerPage", { name: "related", ipp: 18 });
+                            commit("itemsPerPage", { name: "related", ipp: state.globalSettings.perPageMedia });
                             break;
 
                         case "Chips":
-                            commit("itemsPerPage", { name: "related", ipp: 100 });
+                            commit("itemsPerPage", { name: "related", ipp: state.globalSettings.perPageChips });
                             break;
 
                     }
@@ -725,8 +725,8 @@ export default {
 
             //the second
 
-            if (newPage !== state.collections.main.pageNo || state.routes.current.module === "Home") {
-                return dispatch("page", { name: "main", page: newPage + 1, forceLoad: (state.routes.current.module === "Home") });
+            if (newPage !== state.collections.main.pageNo || state.routes.current.module !== state.routes.to.module) {
+                return dispatch("page", { name: "main", page: newPage + 1, forceLoad: (state.routes.current.module !== state.routes.to.module) });
             }
         },
 
@@ -835,14 +835,15 @@ export default {
             commit("collections", { name: "media", collection: [] });
             commit("ready", { entity: "collection", isReady: false });
             commit("ready", { entity: "item", isReady: false });
-            commit("ready", { entity: "chunk", isReady: false });
+
+            commit("ready", { entity: "chunk", isReady: ["Area", "Season", "AreaSeason"].includes(state.routes.to.module) });
             dispatch('aux/clearFilters', null, { root: true })
             commit('regs/clear', null, { root: true });
             commit("itemDisplayOptionIndex", 0);
             commit("collectionViewIndex", { name: "main", viewIndex: 0 });
-            commit("itemsPerPage", { name: "main", ipp: 18 });
+            commit("itemsPerPage", { name: "main", ipp: state.globalSettings.perPageMedia });
             commit("collectionViewIndex", { name: "related", viewIndex: 0 });
-            commit("itemsPerPage", { name: "related", ipp: 18 });
+            commit("itemsPerPage", { name: "related", ipp: state.globalSettings.perPageMedia });
         },
 
         goToRoute({ state, getters, rootGetters, commit, dispatch }, payload) {

@@ -2,64 +2,55 @@
 
 namespace App\Http\Controllers\Dig;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseDigModuleController;
 use App\Models\Dig\Area;
 use Illuminate\Http\Request;
 
-class AreaController extends Controller
+class AreaController extends BaseDigModuleController
 {
-    public function __construct(Area $model)
+    public function __construct(Area $area)
     {
-        $this->model = $model;
+        $this->model = $area;
     }
+
     public function index(Request $request)
     {
-        $collection = Area::with('media')->orderBy('id', 'asc')->get();
-
-        foreach ($collection as $index => $item) {
-            $media = $this->model->primaryMedia('Area', $item);
-            $item["fullUrl"] = $media->fullUrl;
-            $item["hasMedia"] = $media->hasMedia;
-            $item["tnUrl"] = $media->tnUrl;
-            $item["tag"] = $item->name;            
-            unset($item->media);
-        }
+        $collection = $this->model->with('media')->orderBy('id', 'asc')->get();
+        $collection = $this->model->formatCollection($collection);
 
         return response()->json([
             "collection" => $collection,
         ], 200);
-
     }
 
     public function show($id)
     {
-        $item = Area::with(['media', 'areas_seasons'])->findOrFail($id);
+        $item = $this->model->with(['media', 'areas_seasons'])->findOrFail($id);
 
         //get related media.
         $itemMedia = $this->model->itemMediaCollection('Area', $item);
-        
-         //format related areasSeasons
-         $areasSeasons = [];
 
-         foreach ($item->areas_seasons as $index => $as) {
- 
-             $media = $this->model->primaryMedia("AreaSeason", $as);
- 
-             array_push($areasSeasons, [
-                 "id" => $as->id,
-                 "description" => $as->description,
-                 "tag" => $as->tag,
-                 "fullUrl" => $media->fullUrl,
-                 "hasMedia" => $media->hasMedia,
-                 "tnUrl" => $media->tnUrl,
-             ]);
-         }
+        //format related areasSeasons
+        $areasSeasons = [];
 
+        foreach ($item->areas_seasons as $index => $as) {
+
+            $media = $this->model->primaryMedia("AreaSeason", $as);
+
+            array_push($areasSeasons, [
+                "id" => $as->id,
+                "description" => $as->description,
+                "tag" => $as->tag,
+                "fullUrl" => $media->fullUrl,
+                "hasMedia" => $media->hasMedia,
+                "tnUrl" => $media->tnUrl,
+            ]);
+        }
 
         unset($item->media);
         unset($item->areas_seasons);
         $item->tag = $item->name;
-        
+
         return response()->json([
             "item" => $item,
             "itemMedia" => $itemMedia,
@@ -83,8 +74,8 @@ class AreaController extends Controller
             'notes' => 'max:2000|nullable',
         ]);
 
-        $item = Area::findOrFail($validatedRequest["id"]);
-        
+        $item = $this->model->findOrFail($validatedRequest["id"]);
+
         foreach ($validatedRequest as $key => $value) {
             $item[$key] = $value;
         }
@@ -94,7 +85,7 @@ class AreaController extends Controller
 
         $item->save();
         $item->tag = $item->name;
-        
+
         return response()->json([
             "msg" => "Area updated succefully",
             "item" => $item,
