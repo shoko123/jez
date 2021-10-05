@@ -59,31 +59,31 @@ Route::group(['middleware' => 'authorizedUsersOnly'], function ($router) {
     Route::get('loci/{id}', [LocusController::class, 'show']);
 
     Route::post('pottery', [PotteryController::class, 'index']);
-    Route::post('pottery/all', [PotteryController::class, 'all']);
+//
     Route::post('pottery/chunk-media', [PotteryController::class, 'chunkMedia']);
     Route::post('pottery/chunk-table', [PotteryController::class, 'chunkTable']);
     Route::get('pottery/{id}', [PotteryController::class, 'show']);
 
     Route::post('lithics', [LithicController::class, 'index']);
-    Route::post('lithics/all', [LithicController::class, 'all']);
+    //Route::post('lithics/all', [LithicController::class, 'all']);
     Route::post('lithics/chunk-media', [LithicController::class, 'chunkMedia']);
     Route::post('lithics/chunk-table', [LithicController::class, 'chunkTable']);
     Route::get('lithics/{id}', [LithicController::class, 'show']);
 
     Route::post('stones', [StoneController::class, 'index']);
-    Route::post('stones/all', [StoneController::class, 'all']);
+    //Route::post('stones/all', [StoneController::class, 'all']);
     Route::post('stones/chunk-media', [StoneController::class, 'chunkMedia']);
     Route::post('stones/chunk-table', [StoneController::class, 'chunkTable']);
     Route::get('stones/{id}', [StoneController::class, 'show']);
 
     Route::post('glass', [GlassController::class, 'index']);
-    Route::post('glass/all', [GlassController::class, 'all']);
+    //Route::post('glass/all', [GlassController::class, 'all']);
     Route::post('glass/chunk-media', [GlassController::class, 'chunkMedia']);
     Route::post('glass/chunk-table', [GlassController::class, 'chunkTable']);
     Route::get('glass/{id}', [GlassController::class, 'show']);
 
     Route::post('metals', [MetalController::class, 'index']);
-    Route::post('metals/all', [MetalController::class, 'all']);
+    //Route::post('metals/all', [MetalController::class, 'all']);
     Route::post('metals/chunk-media', [MetalController::class, 'chunkMedia']);
     Route::post('metals/chunk-table', [MetalController::class, 'chunkTable']);
     Route::get('metals/{id}', [MetalController::class, 'show']);

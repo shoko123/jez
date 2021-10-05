@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Dig;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseDigModuleController;
 use App\Http\Requests\FindStoreRequest;
 use App\Http\Requests\PotteryStoreRequest;
 use App\Models\Dig\Find;
@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use \Spatie\Tags\Tag;
 
-class PotteryController extends Controller
+class PotteryController extends BaseDigModuleController
 {
     protected $model;
 
@@ -25,22 +25,7 @@ class PotteryController extends Controller
     {
         $collection = $this->model->filter($request->all())
             ->get(['pottery.id', 'pottery.periods', 'pottery.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
-
-        foreach ($collection as $index => $item) {
-            $item->tag = $this->model->tag($item);
-
-            $media = $this->model->primaryMedia('Pottery', $item);
-            $item["fullUrl"] = $media->fullUrl;
-            $item["hasMedia"] = $media->hasMedia;
-            $item["tnUrl"] = $media->tnUrl;
-
-            unset($item->notes);
-            unset($item->locus_no);
-            unset($item->registration_category);
-            unset($item->basket_no);
-            unset($item->artifact_no);
-            unset($item->media);
-        }
+        $collection = $this->model->formatCollection($collection);
 
         return response()->json([
             "collection" => $collection,
@@ -52,7 +37,7 @@ class PotteryController extends Controller
             ->get(['pottery.id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
 
         foreach ($collection as $index => $item) {
-            $item->tag = $this->model->tag($item);
+            $item->tag = $this->model->getItemTag($item);
             unset($item->locus_no);
             unset($item->registration_category);
             unset($item->basket_no);
@@ -87,7 +72,7 @@ class PotteryController extends Controller
             "collection" => $items,
         ], 200);
     }
-    
+
     public function chunkTable(Request $request)
     {
         $itemIds = $request["ids"];
@@ -117,7 +102,7 @@ class PotteryController extends Controller
 
         //format tag
         $find = $item->find;
-        $item->tag = $this->model->tag($find);
+        $item->tag = $this->model->getItemTag(get_class($this), $find);
 
         //add fields
         $item->locus_id = $find->locus->id;

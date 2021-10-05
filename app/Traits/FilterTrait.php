@@ -17,8 +17,8 @@ trait FilterTrait
     public function scopeFilter($builder, $queryParams)
     {
         $tableName = $this->getTable();
-        $modelName = (new \ReflectionClass($this))->getShortName();
-
+        //$modelName = (new \ReflectionClass($this))->getShortName();
+        $modelName = $this->eloquent_model_name;
         $builder->join('finds', function ($join) use ($tableName, $modelName) {
             $join->on($tableName . '.id', '=', 'finds.findable_id')
                 ->where('finds.findable_type', '=', $modelName);

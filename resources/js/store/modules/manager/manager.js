@@ -390,25 +390,13 @@ export default {
             commit("ready", { entity: "collection", isReady: false });
 
             let action = (state.routes.to.module === "About") ? "get" : "post";
-            let endpoint = state.routes.to.apiModuleUrl;
-            switch (payload.module) {
-                case "Locus":
-                case "Pottery":
-                case "Stone":
-                case "Lithic":
-                case "Glass":
-                case "Metal":
-                    endpoint += `/all`;
-                    break;
-                default:
-                    break;//endpoint = endpoint;
-            }
+           
             //payload.params.lookups = JSON.parse(payload.params.lookups);
             //payload.params.tagParams = JSON.parse(payload.params.tagParams);
 
             console.log(`mgr.query() endpoint: ${state.routes.to.apiModuleUrl}. params: ${JSON.stringify(payload.params, null, 2)}`);
             let xhrRequest = {
-                endpoint: endpoint,
+                endpoint: state.routes.to.apiModuleUrl,
                 action: action,
                 data: payload.params,
                 spinner: payload.spinner,
@@ -437,7 +425,7 @@ export default {
                         console.log(`item(ready) setting index: ${index}`);
                         return dispatch("indexOfItemInMainCollection", index);
                     } else {
-                        console.log(`item(not ready) setting page to 1`);
+                        console.log(`Item is not ready; setting page(1)`);
                         dispatch("page", { name: "main", page: 1, forceLoad: true });
                     }
                     return res;

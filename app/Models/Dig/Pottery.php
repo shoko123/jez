@@ -2,37 +2,27 @@
 
 namespace App\Models\Dig;
 
+use App\Models\Dig\BaseDigModel;
 use App\Models\Dig\Find;
 use App\Models\ItemTag;
 use App\Models\Lookups\PotteryBaseType;
-use App\Models\Scene;
 use App\Traits\FilterTrait;
-use App\Traits\MediaTrait;
-use App\Traits\RegistrationTagTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\HasTags;
 
-class Pottery extends Model implements HasMedia
+class Pottery extends BaseDigModel
 {
-    use HasTags, InteractsWithMedia, MediaTrait, RegistrationTagTrait, FilterTrait;
+    use HasTags, FilterTrait;
 
     public $timestamps = false;
     protected $table = 'pottery';
     protected $guarded = [];
 
-    public function registerMediaConversions(Media $media = null): void
+    public function __construct()
     {
-        $this->addMediaConversion('tn')
-            ->width(250)
-            ->height(250)
-            ->sharpen(10)
-            ->nonQueued();
+        parent::__construct("Pottery");
     }
-
     //The following 2 functions are needed because I use my owm ItemTag model instead of Spatie/tag.
     public static function getTagClassName(): string
     {
@@ -49,11 +39,6 @@ class Pottery extends Model implements HasMedia
     public function find()
     {
         return $this->morphOne(Find::class, 'findable');
-    }
-
-    public function scenes()
-    {
-        return $this->morphToMany(Scene::class, 'sceneable');
     }
 
     public function baseType()

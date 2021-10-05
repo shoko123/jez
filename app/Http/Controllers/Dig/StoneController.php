@@ -25,9 +25,12 @@ class StoneController extends Controller
     {
         $this->authorize('viewAny', $this->model);
 
-        $stones = $this->model->filter($request->all())
+        $collection = $this->model->filter($request->all())
             ->get(['stones.id', 'stones.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
 
+            $collection = $this->model->formatCollection($collection);
+
+            /*
         //format tags
         foreach ($stones as $index => $item) {
             $item->tag = $this->model->tag($item);
@@ -41,9 +44,10 @@ class StoneController extends Controller
             unset($item->registration_category);
             unset($item->media);
         }
+        */
 
         return response()->json([
-            "collection" => $stones,
+            "collection" => $collection,
         ], 200);
     }
 
@@ -88,7 +92,7 @@ class StoneController extends Controller
             "collection" => $items,
         ], 200);
     }
-    
+
     public function chunkTable(Request $request)
     {
         $itemIds = $request["ids"];
@@ -101,7 +105,7 @@ class StoneController extends Controller
         return response()->json([
             "collection" => $items,
         ], 200);
-    }    
+    }
 /**
  * Display the specified resource.
  *
@@ -125,7 +129,7 @@ class StoneController extends Controller
             ->findOrFail($id);
 
         //format tag
-        $find = $item->find;        
+        $find = $item->find;
         $item->tag = $this->model->tag($find);
 
         //add fields

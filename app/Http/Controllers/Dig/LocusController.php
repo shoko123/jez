@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Dig;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseDigModuleController;
 use App\Http\Requests\LocusStoreRequest;
 use App\Models\Dig\AreaSeason;
 use App\Models\Dig\Find;
@@ -10,7 +10,7 @@ use App\Models\Dig\Locus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class LocusController extends Controller
+class LocusController extends BaseDigModuleController
 {
     protected $model;
 
@@ -23,10 +23,16 @@ class LocusController extends Controller
     {
         $this->authorize('viewAny', $this->model);
 
-        $builder = $this->model->leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-            ->with('media');
+        $builder = $this->model->leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
 
+        if (!empty($request["registration"] && !empty($request["registration.media"]))) {
+            $builder->with('media');
+        }
+
+        //$this->model->leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
+        //->select('areas_seasons.tag as area_season_tag')->with('media');
         //filter by tags
+
         if (!empty($request["tags"])) {
             $tag_types = (object) [];
             foreach ($request["tags"]["tags"] as $index => $tag_id) {
@@ -69,10 +75,18 @@ class LocusController extends Controller
         $builder->orderBy('areas_seasons.id', 'asc')
             ->orderBy('loci.locus_no', 'asc');
 
-        //get results
-        $loci = $builder->get(['loci.id', 'locus_no', 'loci.area_season_id', 'loci.description', 'areas_seasons.tag']);
+        //format tag
+        $builder->select("loci.id AS id", \DB::raw("CONCAT(areas_seasons.tag,'/',locus_no) as tag"));
 
-        $collection = $this->model->formatCollection($loci);
+        //get results
+        $collection = $builder->get();
+
+        if (!empty($request["registration"] && !empty($request["registration.media"]))) {
+            foreach ($collection as $index => $item) {
+                unset($item->media);
+            }
+        }
+        //$collection = $this->model->formatCollection($loci);
 
         return response()->json([
             "collection" => $collection,
@@ -156,7 +170,7 @@ class LocusController extends Controller
         $itemMedia = $this->model->itemMediaCollection('Locus', $locus);
 
         //LocusFinds
-        $locusFinds = $this->locusFinds($locus->finds);
+        $locusFinds = $this->locusFinds($locus->tag, $locus->finds);
 
         //get tags
         $tags = [];
@@ -177,15 +191,15 @@ class LocusController extends Controller
         ], 200);
     }
 
-    protected function locusFinds($finds)
+    protected function locusFinds($locus_tag, $finds)
     {
         $order = array("Pottery" => 1, "Stone" => 2, "Lithic" => 3, "Metal" => 4, "Glass" => 5, "Flora" => 6, "Fauna" => 7, "Tbd" => 8);
         $locusFinds = [];
 
         foreach ($finds as $index => $find) {
             //format tag
-            $tag = "(" . $find->findable_type . ") ";
-            $tag .= $this->model->getFindTag($find); //implemented in BaseDigModel
+            $tag = "(" . $find->findable_type . ") " . $locus_tag . ".";
+            $tag .= $this->model->getFindPortionOfTag($locus_tag, $find); //implemented in BaseDigModel
             $type = $find->findable_type;
             //load find instance with media and pick primary media item
             $findModelName = 'App\Models\Dig\\' . $find->findable_type;
