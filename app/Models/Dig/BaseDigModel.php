@@ -2,6 +2,7 @@
 
 namespace App\Models\Dig;
 
+use App\Models\ItemTag;
 use App\Traits\MediaTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -96,11 +97,11 @@ class BaseDigModel extends Model implements HasMedia
         $tag = $locus_tag;
         /*
         if (isset($find->locus)) {
-            $tag = $find->locus->areaSeason->tag . '/' . $find->locus->locus_no . '.' . $find->registration_category;
+        $tag = $find->locus->areaSeason->tag . '/' . $find->locus->locus_no . '.' . $find->registration_category;
         } else {
-            $tag = $find->tag . '/' . $find->locus_no . '.' . $find->registration_category;
+        $tag = $find->tag . '/' . $find->locus_no . '.' . $find->registration_category;
         }
-        */
+         */
         if ($find->registration_category == 'AR') {
             $tag .= $find->basket_no . "." . $find->artifact_no;
             if ($find->piece_no !== 0) {
@@ -128,7 +129,7 @@ class BaseDigModel extends Model implements HasMedia
         return $tag;
     }
 
-    public function filterCollection($queryParams)
+    public function filterFindsCollections($queryParams)
     {
         $tableName = $this->getTable();
         $modelName = $this->eloquent_model_name; //new \ReflectionClass($this->getShortName());
@@ -225,7 +226,11 @@ class BaseDigModel extends Model implements HasMedia
             ->orderBy('finds.basket_no')
             ->orderBy('finds.artifact_no')
             ->orderBy('finds.piece_no');
-        return $builder;
+
+        //format tag
+        $builder->select("$tableName.id AS id", \DB::raw("CONCAT(areas_seasons.tag,'/',locus_no ,'.', finds.registration_category ,'.', finds.basket_no  ,'.', finds.artifact_no) as tag"));
+
+        return $builder->get();
     }
 
 }

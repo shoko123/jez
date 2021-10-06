@@ -21,11 +21,23 @@ class PotteryController extends BaseDigModuleController
         $this->model = $model;
     }
 
-    public function index(Request $request)
+    /*
+ public function index(Request $request)
     {
         $collection = $this->model->filter($request->all())
             ->get(['pottery.id', 'pottery.periods', 'pottery.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
         $collection = $this->model->formatCollection($collection);
+
+        return response()->json([
+            "collection" => $collection,
+        ], 200);
+    }
+    */
+    public function index(Request $request)
+    {
+        $collection = $this->model->filterFindsCollections($request->all());
+            //['pottery.id', 'pottery.periods', 'pottery.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
+        //$collection = $this->model->formatCollection($collection);
 
         return response()->json([
             "collection" => $collection,
