@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\JezStatic\AboutPages;
 
-
 class AboutController extends Controller
 {
     public function index()

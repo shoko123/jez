@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Dig;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseDigModuleController;
 use App\Http\Requests\FindStoreRequest;
 use App\Http\Requests\MetalStoreRequest;
 use App\Models\Dig\Find;
@@ -12,10 +12,8 @@ use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use \Spatie\Tags\Tag;
 
-class MetalController extends Controller
+class MetalController extends BaseDigModuleController
 {
-    protected $model;
-
     public function __construct(Metal $model)
     {
         $this->model = $model;

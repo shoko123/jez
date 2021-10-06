@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Dig;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseDigModuleController;
 use App\Http\Requests\FindStoreRequest;
 use App\Http\Requests\LithicStoreRequest;
 use App\Models\Dig\Find;
@@ -12,10 +12,8 @@ use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use \Spatie\Tags\Tag;
 
-class LithicController extends Controller
+class LithicController extends BaseDigModuleController
 {
-    protected $model;
-
     public function __construct(Lithic $model)
     {
         $this->model = $model;
@@ -23,26 +21,7 @@ class LithicController extends Controller
 
     public function index(Request $request)
     {
-        $collection = $this->model->filter($request->all())
-            ->get(['lithics.id', 'lithics.description',
-                'loci.id AS locus_id', 'loci.locus_no',
-                'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
-
-        foreach ($collection as $index => $item) {
-            
-            $item->tag = $this->model->tag($item);
-            $media = $this->model->primaryMedia('Lithic', $item);
-            $item["fullUrl"] = $media->fullUrl;
-            $item["hasMedia"] = $media->hasMedia;
-            $item["tnUrl"] = $media->tnUrl;
-
-            unset($item->notes);
-            unset($item->locus_no);
-            unset($item->registration_category);
-            unset($item->basket_no);
-            unset($item->artifact_no);
-            unset($item->media);
-        }
+        $collection = $this->model->filterFindsCollections($request->all());
 
         return response()->json([
             "collection" => $collection,
@@ -90,7 +69,7 @@ class LithicController extends Controller
             "collection" => $items,
         ], 200);
     }
-    
+
     public function chunkTable(Request $request)
     {
         $itemIds = $request["ids"];
@@ -103,56 +82,12 @@ class LithicController extends Controller
         return response()->json([
             "collection" => $items,
         ], 200);
-    }    
+    }
 
     public function show($id)
     {
-        $item = Lithic::with(
-            ['find',
-                'find.locus' => function ($query) {
-                    $query->select('id', 'locus_no', 'area_season_id');},
-                'find.locus.areaSeason',
-                'tags' => function ($query) {
-                    $query->select('id', 'name', 'type');},
-                'media'
-            ])
-            ->findOrFail($id);
-
-       //format tag
-       $find = $item->find;
-       $item->tag = $this->model->tag($find);
-
-       //add fields      
-       $item->locus_id = $find->locus->id;
-       $item->area_season_id = $find->locus->areaSeason->id;
-       $item->locus_id = $find->locus->id;
-
-       $find->locus_id = $find->locus->id;
-       $find->area_season_id = $find->locus->areaSeason->id;
-
-        //get related media.
-        $itemMedia = $this->model->itemMediaCollection('Lithic', $item);
-
-        //get tags
-        $tags = [];
-        foreach ($item->tags as $tag) {
-            array_push($tags, (object) [
-                'type' => $tag->type,
-                'id' => $tag->pivot->tag_id,
-            ]);
-        }
-
-        unset($item->find);
-        unset($item->media);
-        unset($item->tags);
-        unset($find->locus);
-
-        return response()->json([
-            "item" => $item,
-            "find" => $find,
-            "itemMedia" => $itemMedia,
-            "tags" => $tags,
-        ], 200);
+        $item = $this->model->baseShow($id);
+        return response($item, 200);
     }
 
     public function store(LithicStoreRequest $lithicRequest, FindStoreRequest $findRequest)
@@ -229,7 +164,7 @@ class LithicController extends Controller
 
         return response()->json([
             "msg" => "lithic and related find deleted successfully",
-            "id" => $id,            
+            "id" => $id,
         ], 200);
     }
 }

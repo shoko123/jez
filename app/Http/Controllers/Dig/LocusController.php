@@ -12,8 +12,6 @@ use Illuminate\Http\Request;
 
 class LocusController extends BaseDigModuleController
 {
-    protected $model;
-
     public function __construct(Locus $model)
     {
         $this->model = $model;

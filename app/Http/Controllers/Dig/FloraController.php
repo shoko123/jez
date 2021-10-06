@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Dig;
 
+use App\Http\Controllers\BaseDigModuleController;
 use App\Models\Dig\Flora;
-use Illuminate\Http\Request;
 
-class FloraController extends Controller
+class FloraController extends BaseDigModuleController
 {
-    public function index()
+    public function __construct(Flora $model)
     {
-        //
+        $this->model = $model;
     }
 }

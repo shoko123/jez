@@ -140,7 +140,10 @@ class BaseDigModel extends Model implements HasMedia
         })
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
             ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
-        $builder->with('media');
+
+        if (!empty($queryParams["registration.media"])) {
+            $builder->with('media');
+        }
 
         if (!empty($queryParams["registration"])) {
             foreach ($queryParams["registration"] as $key => $ids) {
@@ -230,7 +233,109 @@ class BaseDigModel extends Model implements HasMedia
         //format tag
         $builder->select("$tableName.id AS id", \DB::raw("CONCAT(areas_seasons.tag,'/',locus_no ,'.', finds.registration_category ,'.', finds.basket_no  ,'.', finds.artifact_no) as tag"));
 
-        return $builder->get();
+        $result =$builder->get();
+        
+        //if query included media, delete it.
+        if (!empty($queryParams["registration.media"])) {
+            forEach($result as $res) {
+                unset($res->media);
+            }
+            $builder->with('media');
+        }
+        return $result;
+    }
+
+    public function baseShow($id)
+    {
+        $tableName = $this->getTable();
+        $modelName = $this->eloquent_model_name;
+
+        $builder = $this->join('finds', function ($join) use ($tableName, $modelName) {
+            $join->on($tableName . '.id', '=', 'finds.findable_id')
+                ->where('finds.findable_type', '=', $modelName);
+        })
+            ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
+            ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
+
+        $builder = $this->with(
+            ['find',
+                'find.locus' => function ($query) {
+                    $query->select('id', 'locus_no', 'area_season_id');},
+                'find.locus.areaSeason' => function ($query) {
+                    $query->select('id', 'tag');},
+                'tags' => function ($query) {
+                    $query->select('id', 'name', 'type');},
+                'media',
+            ]);
+
+        //$builder->select("$tableName.id AS id", \DB::raw("CONCAT(finds.loci.areas_seasons.tag,'/',finds.loci.locus_no ,'.', finds.registration_category ,'.', finds.basket_no  ,'.', finds.artifact_no) as tag"));
+
+        $item = $builder->findOrFail($id);
+
+        //format tag
+        $find = $item->find;
+        $item->tag = $find->locus->areaSeason->tag . "/" . $find->locus->locus_no . "." . $find->registration_category . "." . $find->basket_no . "." . $find->artifact_no;
+
+        //add fields
+        $item->locus_id = $find->locus->id;
+        $item->area_season_id = $find->locus->areaSeason->id;
+        $item->locus_id = $find->locus->id;
+
+        $find->locus_id = $find->locus->id;
+        $find->area_season_id = $find->locus->areaSeason->id;
+
+        //format tags
+        $tags = [];
+        foreach ($item->tags as $tag) {
+            array_push($tags, (object) [
+                'type' => $tag->type,
+                'id' => $tag->pivot->tag_id,
+            ]);
+        }
+
+        //format media.
+
+        //$itemMedia = $item->media;
+        //$itemMedia = $this->model->itemMediaCollection('Pottery', $item);
+        $media = (object) ["collection" => [], "filler" => null];
+
+        $drawings = $item->getMedia('drawing');
+
+        foreach ($drawings as $med) {
+            array_push($media->collection, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => true, 'media_id' => $med->id]);
+        }
+
+        $photos = $item->getMedia('photo');
+
+        foreach ($photos as $med) {
+            array_push($media->collection, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => true, 'media_id' => $med->id]);
+        }
+
+        if (empty($media->collection)) {
+            //construct filler images urls (from 'app-media' folder on server)
+            $fullMediaName = 'fillers/' . $modelName . '0.jpg';
+            $tnMediaName = 'fillers/' . $modelName . '0-tn.jpg';
+            $fullUrl = \Storage::disk('app-media')->url($fullMediaName);
+            $tnUrl = \Storage::disk('app-media')->url($tnMediaName);
+            $media->filler = (object) [
+                'hasMedia' => false,
+                'fullUrl' => $fullUrl,
+                'tnUrl' => $tnUrl,
+            ];
+            $media->collection = [];
+        }
+
+        unset($item->find);
+        unset($item->media);
+        unset($item->tags);
+        unset($find->locus);
+
+        return [
+            "item" => $item,
+            "find" => $find,
+            "itemMedia" => $media,
+            "tags" => $tags,
+        ];
     }
 
 }

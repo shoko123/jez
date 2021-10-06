@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dig\Find;
-use App\Models\Dig\Pottery;
-use App\Models\Dig\Stone;
-use Illuminate\Http\Request;
 
 class FindController extends Controller
 {

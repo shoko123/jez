@@ -6,14 +6,12 @@ use App\Models\Dig\BaseDigModel;
 use App\Models\Dig\Find;
 use App\Models\ItemTag;
 use App\Models\Lookups\PotteryBaseType;
-use App\Traits\FilterTrait;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Tags\HasTags;
 
 class Pottery extends BaseDigModel
 {
-    use HasTags, FilterTrait;
+    use HasTags;
 
     public $timestamps = false;
     protected $table = 'pottery';
@@ -23,6 +21,7 @@ class Pottery extends BaseDigModel
     {
         parent::__construct("Pottery");
     }
+    
     //The following 2 functions are needed because I use my owm ItemTag model instead of Spatie/tag.
     public static function getTagClassName(): string
     {

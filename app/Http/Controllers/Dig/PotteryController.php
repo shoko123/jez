@@ -14,49 +14,14 @@ use \Spatie\Tags\Tag;
 
 class PotteryController extends BaseDigModuleController
 {
-    protected $model;
-
     public function __construct(Pottery $model)
     {
         $this->model = $model;
     }
 
-    /*
- public function index(Request $request)
-    {
-        $collection = $this->model->filter($request->all())
-            ->get(['pottery.id', 'pottery.periods', 'pottery.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
-        $collection = $this->model->formatCollection($collection);
-
-        return response()->json([
-            "collection" => $collection,
-        ], 200);
-    }
-    */
     public function index(Request $request)
     {
         $collection = $this->model->filterFindsCollections($request->all());
-            //['pottery.id', 'pottery.periods', 'pottery.description', 'loci.id AS locus_id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
-        //$collection = $this->model->formatCollection($collection);
-
-        return response()->json([
-            "collection" => $collection,
-        ], 200);
-    }
-    public function all(Request $request)
-    {
-        $collection = $this->model->filter($request->all())
-            ->get(['pottery.id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
-
-        foreach ($collection as $index => $item) {
-            $item->tag = $this->model->getItemTag($item);
-            unset($item->locus_no);
-            unset($item->registration_category);
-            unset($item->basket_no);
-            unset($item->artifact_no);
-            unset($item->piece_no);
-            unset($item->media);
-        }
 
         return response()->json([
             "collection" => $collection,
@@ -101,52 +66,8 @@ class PotteryController extends BaseDigModuleController
 
     public function show($id)
     {
-        $item = Pottery::with(
-            ['find',
-                'find.locus' => function ($query) {
-                    $query->select('id', 'locus_no', 'area_season_id');},
-                'find.locus.areaSeason',
-                'tags' => function ($query) {
-                    $query->select('id', 'name', 'type');},
-                'media',
-            ])
-            ->findOrFail($id);
-
-        //format tag
-        $find = $item->find;
-        $item->tag = $this->model->getItemTag(get_class($this), $find);
-
-        //add fields
-        $item->locus_id = $find->locus->id;
-        $item->area_season_id = $find->locus->areaSeason->id;
-        $item->locus_id = $find->locus->id;
-
-        $find->locus_id = $find->locus->id;
-        $find->area_season_id = $find->locus->areaSeason->id;
-
-        //get related media.
-        $itemMedia = $this->model->itemMediaCollection('Pottery', $item);
-
-        //get tags
-        $tags = [];
-        foreach ($item->tags as $tag) {
-            array_push($tags, (object) [
-                'type' => $tag->type,
-                'id' => $tag->pivot->tag_id,
-            ]);
-        }
-
-        unset($item->find);
-        unset($item->media);
-        unset($item->tags);
-        unset($find->locus);
-
-        return response()->json([
-            "item" => $item,
-            "find" => $find,
-            "itemMedia" => $itemMedia,
-            "tags" => $tags,
-        ], 200);
+        $item = $this->model->baseShow($id);
+        return response($item, 200);
     }
 
     public function lightbox($id)
