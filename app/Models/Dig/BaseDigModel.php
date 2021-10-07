@@ -2,6 +2,8 @@
 
 namespace App\Models\Dig;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Models\ItemTag;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -74,19 +76,6 @@ class BaseDigModel extends Model implements HasMedia
             case "Tbd":
                 return $this->getFindPortionOfTag("***", $item);
                 return "****";
-
-        }
-    }
-
-    public function formatItem(array $item)
-    {
-        foreach ($collection as $index => $item) {
-            $media = $this->primaryMedia($item);
-            $item["fullUrl"] = $media->fullUrl;
-            $item["hasMedia"] = $media->hasMedia;
-            $item["tnUrl"] = $media->tnUrl;
-            $item["tag"] = $item->name;
-            unset($item->media);
         }
     }
 
@@ -128,15 +117,10 @@ class BaseDigModel extends Model implements HasMedia
         return $tag;
     }
 
-    public function filterCollections($queryParams)
-    {
-
-    }
-
     public function filterFindsCollections($queryParams)
     {
         $tableName = $this->getTable();
-        $modelName = $this->eloquent_model_name; //new \ReflectionClass($this->getShortName());
+        $modelName = $this->eloquent_model_name;
 
         $builder = $this->join('finds', function ($join) use ($tableName, $modelName) {
             $join->on($tableName . '.id', '=', 'finds.findable_id')
@@ -166,7 +150,8 @@ class BaseDigModel extends Model implements HasMedia
 
                     case "media":
                         $builder->whereHas('media', function (Builder $mediaQuery) use ($ids) {
-                            $mediaQuery->whereIn('collection_name', $ids);});
+                            $mediaQuery->whereIn('collection_name', $ids);
+                        });
                         break;
 
                     case "scopes":
@@ -235,7 +220,7 @@ class BaseDigModel extends Model implements HasMedia
             ->orderBy('finds.piece_no');
 
         //format tag
-        $builder->select("$tableName.id AS id", \DB::raw("CONCAT(areas_seasons.tag,'/',locus_no ,'.', finds.registration_category ,'.', finds.basket_no  ,'.', finds.artifact_no) as tag"));
+        $builder->select("$tableName.id AS id", DB::raw("CONCAT(areas_seasons.tag,'/',locus_no ,'.', finds.registration_category ,'.', finds.basket_no  ,'.', finds.artifact_no) as tag"));
 
         $result = $builder->get();
 
@@ -254,26 +239,24 @@ class BaseDigModel extends Model implements HasMedia
         $tableName = $this->getTable();
         $modelName = $this->eloquent_model_name;
 
-        /*
-        $builder = $this->join('finds', function ($join) use ($tableName, $modelName) {
-        $join->on($tableName . '.id', '=', 'finds.findable_id')
-        ->where('finds.findable_type', '=', $modelName);
-        })
-        ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-        ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
-         */
-        $builder = $this->with(
-            ['find',
-                'find.locus' => function ($query) {
-                    $query->select('id', 'locus_no', 'area_season_id');},
-                'find.locus.areaSeason' => function ($query) {
-                    $query->select('id', 'tag');},
-                'tags' => function ($query) {
-                    $query->select('id', 'name', 'type');},
-                'media',
-            ]);
 
-        //$builder->select("$tableName.id AS id", \DB::raw("CONCAT(finds.loci.areas_seasons.tag,'/',finds.loci.locus_no ,'.', finds.registration_category ,'.', finds.basket_no  ,'.', finds.artifact_no) as tag"));
+        $builder = $this->with(
+            [
+                'find',
+                'find.locus' => function ($query) {
+                    $query->select('id', 'locus_no', 'area_season_id');
+                },
+                'find.locus.areaSeason' => function ($query) {
+                    $query->select('id', 'tag');
+                },
+                'tags' => function ($query) {
+                    $query->select('id', 'name', 'type');
+                },
+                'media',
+            ]
+        );
+
+        //$builder->select("$tableName.id AS id", DB::raw("CONCAT(finds.loci.areas_seasons.tag,'/',finds.loci.locus_no ,'.', finds.registration_category ,'.', finds.basket_no  ,'.', finds.artifact_no) as tag"));
 
         $item = $builder->findOrFail($id);
 
@@ -300,34 +283,9 @@ class BaseDigModel extends Model implements HasMedia
 
         //format media.
 
-        //$itemMedia = $item->media;
-        $media = (object) ["collection" => [], "filler" => null];
-
-        $drawings = $item->getMedia('drawing');
-
-        foreach ($drawings as $med) {
-            array_push($media->collection, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => true, 'media_id' => $med->id]);
-        }
-
-        $photos = $item->getMedia('photo');
-
-        foreach ($photos as $med) {
-            array_push($media->collection, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => true, 'media_id' => $med->id]);
-        }
-
-        if (empty($media->collection)) {
-            //construct filler images urls (from 'app-media' folder on server)
-            $fullMediaName = 'fillers/' . $modelName . '0.jpg';
-            $tnMediaName = 'fillers/' . $modelName . '0-tn.jpg';
-            $fullUrl = \Storage::disk('app-media')->url($fullMediaName);
-            $tnUrl = \Storage::disk('app-media')->url($tnMediaName);
-            $media->filler = (object) [
-                'hasMedia' => false,
-                'fullUrl' => $fullUrl,
-                'tnUrl' => $tnUrl,
-            ];
-            $media->collection = [];
-        }
+   
+            $media = $this->allMedia($item);
+       
 
         unset($item->find);
         unset($item->media);
@@ -350,7 +308,7 @@ class BaseDigModel extends Model implements HasMedia
 
         $items = $this->whereIn('id', $idArray)
             ->select('id', 'description')
-            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
+            ->orderByRaw(DB::raw("FIELD(id, $ids)"))
             ->get();
 
         foreach ($items as $index => $item) {
@@ -389,8 +347,8 @@ class BaseDigModel extends Model implements HasMedia
                 //construct filler images
                 $fullMediaName = 'fillers/' . $eloquent_model_name . '0.jpg';
                 $tnMediaName = 'fillers/' . $eloquent_model_name . '0-tn.jpg';
-                $fullUrl = \Storage::disk('app-media')->url($fullMediaName);
-                $tnUrl = \Storage::disk('app-media')->url($tnMediaName);
+                $fullUrl = Storage::disk('app-media')->url($fullMediaName);
+                $tnUrl = Storage::disk('app-media')->url($tnMediaName);
                 return (object) [
                     'hasMedia' => false,
                     'fullUrl' => $fullUrl,
@@ -402,24 +360,6 @@ class BaseDigModel extends Model implements HasMedia
 
     public function allMedia($item)
     {
-        /*
-        $media = [];
-
-        $drawings = $item->getMedia('drawing');
-
-        foreach ($drawings as $med) {
-        array_push($media, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => true, 'media_id' => $med->id]);
-        }
-
-        $photos = $item->getMedia('photo');
-
-        foreach ($photos as $med) {
-        array_push($media, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => true, 'media_id' => $med->id]);
-        }
-        return $media;
-         */
-
-        /////////////
         $media = (object) ["collection" => [], "filler" => null];
 
         $drawings = $item->getMedia('drawing');
@@ -438,8 +378,8 @@ class BaseDigModel extends Model implements HasMedia
             //construct filler images urls (from 'app-media' folder on server)
             $fullMediaName = 'fillers/Locus0.jpg';
             $tnMediaName = 'fillers/Locus0-tn.jpg';
-            $fullUrl = \Storage::disk('app-media')->url($fullMediaName);
-            $tnUrl = \Storage::disk('app-media')->url($tnMediaName);
+            $fullUrl = Storage::disk('app-media')->url($fullMediaName);
+            $tnUrl = Storage::disk('app-media')->url($tnMediaName);
             $media->filler = (object) [
                 'hasMedia' => false,
                 'fullUrl' => $fullUrl,
@@ -454,8 +394,8 @@ class BaseDigModel extends Model implements HasMedia
     {
         $ids = implode(',', $idArray);
 
-        $items = $this->whereIn('id', $itemIds)
-            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
+        $items = $this->whereIn('id', $idArray)
+            ->orderByRaw(DB::raw("FIELD(id, $ids)"))
             ->get();
 
         return response()->json([

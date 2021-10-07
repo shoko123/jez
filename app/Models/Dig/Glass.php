@@ -6,9 +6,7 @@ use App\Models\Dig\Find;
 use App\Models\ItemTag;
 use App\Models\Lookups\GlassBaseType;
 use App\Models\Scene;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Spatie\MediaLibrary\HasMedia;
 use Spatie\Tags\HasTags;
 
 class Glass  extends BaseDigModel

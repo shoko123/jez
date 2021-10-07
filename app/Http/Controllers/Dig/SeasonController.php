@@ -28,40 +28,6 @@ class SeasonController extends BaseDigModuleController
     {
         $data = $this->model->show($id);
         return response($data, 200);
-
-        /*
-        $item = $this->model->with(['media', 'areas_seasons'])->findOrFail($id);
-
-        //get related media.
-        $itemMedia = $this->model->itemMediaCollection('Season', $item);
-
-        unset($item->media);
-        $item->tag = $item->season + 2000;
-
-        //format related areas
-        $areasSeasons = [];
-
-        foreach ($item->areas_seasons as $index => $as) {
-
-            $media = $this->model->primaryMedia("AreaSeason", $as);
-
-            array_push($areasSeasons, [
-                "id" => $as->id,
-                "description" => $as->description,
-                "tag" => $as->tag,
-                "fullUrl" => $media->fullUrl,
-                "hasMedia" => $media->hasMedia,
-                "tnUrl" => $media->tnUrl,
-            ]);
-        }
-        unset($item->areas_seasons);
-
-        return response()->json([
-            "item" => $item,
-            "itemMedia" => $itemMedia,
-            "areasSeasons" => $areasSeasons,
-        ], 200);
-        */
     }
 
     public function store(Request $request)

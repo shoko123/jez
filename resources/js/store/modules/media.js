@@ -13,22 +13,6 @@ export default {
     },
 
     getters: {
-        mediaPrimary(state, rootState, getters, rootGetters) {
-            let m = rootGetters["mgr/collections"]("media").collection;
-
-            if (m.length > 0) {
-                return m[0]
-            } else {
-                let module = rootGetters["mgr/module"];
-                let fullName = `${module}0.jpg`;
-                let tnName = `${module}0-tn.jpg`;
-                let fullUrl = `${rootGetters["mgr/baseUrl"]}/app-media/fillers/${fullName}`;
-                let tnUrl = `${rootGetters["mgr/baseUrl"]}/app-media/fillers/${tnName}`;
-
-                let filler = { "fullUrl": fullUrl, "tnUrl": tnUrl, "hasMedia": false }
-                return filler;
-            }
-        },
         dialogAddMedia(state, getters) {
             return state.dialogAddMedia;
         },
@@ -130,7 +114,7 @@ export default {
         },
         carousel(state, payload) {
             state.carousel = payload;
-        },
+        }, 
     },
     actions: {
         lightBoxNext({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {

@@ -36,8 +36,9 @@ export default {
       return this.$store.getters["mgr/collections"]("media");
     },
 
+    //Assured to be called only if item has media associated with it (["mgr/collections"]("media").collection.lenght > 0)
     mediaItem() {
-      return this.$store.getters["med/mediaPrimary"];
+      return this.$store.getters["mgr/collections"]("media").collection[0];
     },
     mediaHeader() {
       let cnt = this.mediaArray.length;

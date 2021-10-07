@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Support\Facades\Storage;
 
 class MediaController extends Controller
 {
@@ -107,8 +108,8 @@ class MediaController extends Controller
             //$backgroundUrls[$modelName] = \Storage::disk('app-media')->url($fullMediaName);
 
             $backgroundUrls[$modelName] = (object) [
-                'fullUrl' => \Storage::disk('app-media')->url($fullMediaName),
-                'tnUrl' => \Storage::disk('app-media')->url($thumbMediaName),
+                'fullUrl' => Storage::disk('app-media')->url($fullMediaName),
+                'tnUrl' => Storage::disk('app-media')->url($thumbMediaName),
             ];
         }
 
@@ -117,8 +118,8 @@ class MediaController extends Controller
             $fullMediaName = 'carousel/item' . $index . '.jpg';
             $thumbMediaName = 'carousel/item' . $index . '-tn.jpg';
             array_push($carouselItems, (object) [
-                'fullUrl' => \Storage::disk('app-media')->url($fullMediaName),
-                'tnUrl' => \Storage::disk('app-media')->url($fullMediaName)]);
+                'fullUrl' => Storage::disk('app-media')->url($fullMediaName),
+                'tnUrl' => Storage::disk('app-media')->url($fullMediaName)]);
         }
 
         return response()->json([
@@ -126,38 +127,5 @@ class MediaController extends Controller
             "appMediaUrl" => env('APP_URL') . '/app-media',
             "carousel" => $carouselItems,
         ], 200);
-    }
-
-    public function primary(Request $request)
-    {
-        //TODO move from trait here
-        $media = Media::where('model_type', $request["model"])->where('model_id', $request["id"])->get();
-        $drawing = $item->getFirstMedia('drawing');
-
-        if (empty($media)) {
-            $fullMediaName = 'fillers/' . $modelName . '0.jpg';
-            $tnMediaName = 'fillers/' . $modelName . '0-tn.jpg';
-            $fullUrl = \Storage::disk('app-media')->url($fullMediaName);
-            $tnUrl = \Storage::disk('app-media')->url($tnMediaName);
-            $primary = (object) [
-                'hasMedia' => false,
-                'fullUrl' => $fullUrl,
-                'tnUrl' => $tnUrl,
-            ];
-            return response()->json([
-                "primary" => $primary,
-            ], 200);
-        }
-
-        //choose first for now
-        $primary = (object) [
-            'hasMedia' => true,
-            'fullUrl' => $media[0]->getFullUrl(),
-            'tnUrl' => $media[0]->getFullUrl('tn'),
-        ];
-        return response()->json([
-            "primary" => $primary,
-        ], 200);
-
     }
 }

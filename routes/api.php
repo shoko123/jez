@@ -11,6 +11,7 @@
 |
  */
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dig\AreaController;
@@ -59,7 +60,7 @@ Route::group(['middleware' => 'authorizedUsersOnly'], function ($router) {
     Route::get('loci/{id}', [LocusController::class, 'show']);
 
     Route::post('pottery', [PotteryController::class, 'index']);
-//
+    //
     Route::post('pottery/chunk-media', [PotteryController::class, 'chunkMedia']);
     Route::post('pottery/chunk-table', [PotteryController::class, 'chunkTable']);
     Route::get('pottery/{id}', [PotteryController::class, 'show']);
@@ -149,5 +150,4 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::post('metals/store', [MetalController::class, 'store']);
     Route::put('metals/store', [MetalController::class, 'store']);
     Route::delete('metals/{id}', [MetalController::class, 'destroy']);
-
 });

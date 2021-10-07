@@ -58,7 +58,9 @@ export default {
       return this.$store.getters["mgr/module"] + "Form";
     },
     hasMedia() {
-      return this.$store.getters["med/mediaPrimary"].hasMedia; //
+      return (
+        this.$store.getters["mgr/collections"]("media").collection.length > 0
+      );
     },
     showTags() {
       return this.$store.getters["mgr/status"].itemDisplayOptionIndex === 0;
