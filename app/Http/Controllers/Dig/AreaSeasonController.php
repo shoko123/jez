@@ -67,44 +67,6 @@ class AreaSeasonController extends BaseDigModuleController
     {
         $as = $this->model->show($id);
         return response($as, 200);
-
-        /////
-
-        $item = $this->model->with([
-            'media',
-            'loci',
-        ])
-            ->findOrFail($id);
-
-        //get related media.
-        $itemMedia = $this->model->itemMediaCollection('AreaSeason', $item);
-
-        //format related loci
-        $lociWithMedia = [];
-        foreach ($item->loci as $index => $locus) {
-            $tag = $item->tag . "/" . $locus->locus_no;
-
-            $media = $this->model->primaryMedia("Locus", $locus);
-
-            array_push($lociWithMedia, [
-                "id" => $locus->id,
-                "description" => $locus->description,
-                "tag" => $tag,
-                "fullUrl" => $media->fullUrl,
-                "hasMedia" => $media->hasMedia,
-                "tnUrl" => $media->tnUrl,
-            ]);
-        }
-
-        $loci = $item->loci;
-        unset($item->media);
-        unset($item->loci);
-
-        return response()->json([
-            "item" => $item,
-            "itemMedia" => $itemMedia,
-            "loci" => $lociWithMedia,
-        ], 200);
     }
 
     public function store(Request $request)

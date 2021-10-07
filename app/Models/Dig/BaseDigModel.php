@@ -3,7 +3,6 @@
 namespace App\Models\Dig;
 
 use App\Models\ItemTag;
-//use App\Traits\MediaTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +13,7 @@ use Spatie\Tags\HasTags;
 
 class BaseDigModel extends Model implements HasMedia
 {
-    use HasTags, InteractsWithMedia;//, MediaTrait;
+    use HasTags, InteractsWithMedia;
     public $timestamps = false;
     protected $guarded = [];
     protected $eloquent_model_name;
@@ -257,12 +256,12 @@ class BaseDigModel extends Model implements HasMedia
 
         /*
         $builder = $this->join('finds', function ($join) use ($tableName, $modelName) {
-            $join->on($tableName . '.id', '=', 'finds.findable_id')
-                ->where('finds.findable_type', '=', $modelName);
+        $join->on($tableName . '.id', '=', 'finds.findable_id')
+        ->where('finds.findable_type', '=', $modelName);
         })
-            ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
-            ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
-        */
+        ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
+        ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
+         */
         $builder = $this->with(
             ['find',
                 'find.locus' => function ($query) {
@@ -367,6 +366,9 @@ class BaseDigModel extends Model implements HasMedia
 
     public function primaryMedia($item)
     {
+        $reflect = new \ReflectionClass($item);
+        $eloquent_model_name = $reflect->getShortName();
+
         $drawing = $item->getFirstMedia('drawing');
 
         if (!empty($drawing)) {
@@ -385,8 +387,8 @@ class BaseDigModel extends Model implements HasMedia
                 ];
             } else {
                 //construct filler images
-                $fullMediaName = 'fillers/' . $this->eloquent_model_name . '0.jpg';
-                $tnMediaName = 'fillers/' . $this->eloquent_model_name . '0-tn.jpg';
+                $fullMediaName = 'fillers/' . $eloquent_model_name . '0.jpg';
+                $tnMediaName = 'fillers/' . $eloquent_model_name . '0-tn.jpg';
                 $fullUrl = \Storage::disk('app-media')->url($fullMediaName);
                 $tnUrl = \Storage::disk('app-media')->url($tnMediaName);
                 return (object) [
@@ -406,18 +408,16 @@ class BaseDigModel extends Model implements HasMedia
         $drawings = $item->getMedia('drawing');
 
         foreach ($drawings as $med) {
-            array_push($media, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => true, 'media_id' => $med->id]);
+        array_push($media, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => true, 'media_id' => $med->id]);
         }
 
         $photos = $item->getMedia('photo');
 
         foreach ($photos as $med) {
-            array_push($media, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => true, 'media_id' => $med->id]);
+        array_push($media, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => true, 'media_id' => $med->id]);
         }
         return $media;
-        */
-
-
+         */
 
         /////////////
         $media = (object) ["collection" => [], "filler" => null];
@@ -449,7 +449,6 @@ class BaseDigModel extends Model implements HasMedia
         }
         return $media;
     }
-
 
     public function baseChunkTable($idArray)
     {

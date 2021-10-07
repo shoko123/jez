@@ -56,8 +56,8 @@ class MediaController extends Controller
 
             //reload updated media collection for item
             $item = $itemModelName::with('media')->findOrFail($id);
-            $itemMedia = $this->model->itemMediaCollection($item_type, $item);
-            $primaryMedia = $this->model->primaryMedia($item_type, $item);
+            $itemMedia = $this->model->allMedia($item);
+            $primaryMedia = $this->model->primaryMedia($item);
 
             return response()->json([
                 "message" => "succesfully stored media",
@@ -84,8 +84,8 @@ class MediaController extends Controller
 
         //reload updated media collection for item
         $item = $itemModelName::with('media')->findOrFail($id);
-        $itemMedia = $this->model->itemMediaCollection($item_type, $item);
-        $primaryMedia = $this->model->primaryMedia($item_type, $item);
+        $itemMedia = $this->model->allMedia($item);
+        $primaryMedia = $this->model->primaryMedia($item);
 
         return response()->json([
             "message" => "succesfully deleted media",
