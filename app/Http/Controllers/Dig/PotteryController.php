@@ -30,23 +30,10 @@ class PotteryController extends BaseDigModuleController
 
     public function chunkMedia(Request $request)
     {
-        $itemIds = $request["ids"];
-        $ids = implode(',', $itemIds);
-
-        $items = Pottery::whereIn('id', $itemIds)
-            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
-            ->get();
-
-        foreach ($items as $index => $item) {
-            $media = $this->model->primaryMedia('Pottery', $item);
-            $item["fullUrl"] = $media->fullUrl;
-            $item["hasMedia"] = $media->hasMedia;
-            $item["tnUrl"] = $media->tnUrl;
-            unset($item->media);
-        }
+        //TODO validate!
 
         return response()->json([
-            "collection" => $items,
+            "collection" => $this->model->baseChunkMedia($request["ids"]),
         ], 200);
     }
 

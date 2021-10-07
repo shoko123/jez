@@ -19,4 +19,39 @@ class Area extends BaseDigModel
     {
         return $this->hasMany(AreaSeason::class, 'area_id');
     }
+
+    public function show($id)
+    {
+        $item = $this->with(['media', 'areas_seasons'])->findOrFail($id);
+
+        //get related media.
+        $itemMedia = $this->allMedia($item);
+
+        //format related areasSeasons
+        $areasSeasons = [];
+
+        foreach ($item->areas_seasons as $index => $as) {
+
+            $media = $this->primaryMedia($as);
+
+            array_push($areasSeasons, [
+                "id" => $as->id,
+                "description" => $as->description,
+                "tag" => $as->tag,
+                "fullUrl" => $media->fullUrl,
+                "hasMedia" => $media->hasMedia,
+                "tnUrl" => $media->tnUrl,
+            ]);
+        }
+
+        unset($item->media);
+        unset($item->areas_seasons);
+        $item->tag = $item->name;
+
+        return [
+            "item" => $item,
+            "itemMedia" => $itemMedia,
+            "areasSeasons" => $areasSeasons,
+        ];
+    }
 }

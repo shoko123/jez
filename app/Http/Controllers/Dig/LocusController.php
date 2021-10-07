@@ -93,25 +93,10 @@ class LocusController extends BaseDigModuleController
 
     public function chunkMedia(Request $request)
     {
-        $itemIds = $request["ids"];
-        $ids = implode(',', $itemIds);
-
-        $collection = $this->model->whereIn('id', $itemIds)
-            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
-            ->get();
-
-        $collection = $this->model->formatCollection($collection);
-
-        foreach ($collection as $index => $item) {
-            $media = $this->model->primaryMedia('Locus', $item);
-            $item["fullUrl"] = $media->fullUrl;
-            $item["hasMedia"] = $media->hasMedia;
-            $item["tnUrl"] = $media->tnUrl;
-            unset($item->media);
-        }
+        //TODO validate!
 
         return response()->json([
-            "collection" => $collection,
+            "collection" => $this->model->baseChunkMedia($request["ids"]),
         ], 200);
     }
 
@@ -147,6 +132,9 @@ class LocusController extends BaseDigModuleController
     {
         $this->authorize('view', $this->model);
 
+        $locus = $this->model->show($id);
+
+        /*
         $locus = $this->model->with(
             ['areaSeason' => function ($q) {
                 $q->select('id', 'tag');},
@@ -165,7 +153,7 @@ class LocusController extends BaseDigModuleController
         $locus->tag = $locus->areaSeason->tag . '/' . $locus->locus_no;
 
         //get related media.
-        $itemMedia = $this->model->itemMediaCollection('Locus', $locus);
+        $itemMedia = $this->model->itemMediaCollection($locus);
 
         //LocusFinds
         $locusFinds = $this->locusFinds($locus->tag, $locus->finds);
@@ -181,14 +169,19 @@ class LocusController extends BaseDigModuleController
 
         unset($locus->finds);
         unset($locus->tags);
+        */
+        return response($locus, 200);
+        /*
         return response()->json([
             "item" => $locus,
             "locusFinds" => $locusFinds,
             "itemMedia" => $itemMedia,
             "tags" => $tags,
         ], 200);
+        */
     }
 
+    /*
     protected function locusFinds($locus_tag, $finds)
     {
         $order = array("Pottery" => 1, "Stone" => 2, "Lithic" => 3, "Metal" => 4, "Glass" => 5, "Flora" => 6, "Fauna" => 7, "Tbd" => 8);
@@ -202,7 +195,7 @@ class LocusController extends BaseDigModuleController
             //load find instance with media and pick primary media item
             $findModelName = 'App\Models\Dig\\' . $find->findable_type;
             $instance = $findModelName::with('media')->findOrFail($find->findable_id);
-            $findMediaItem = $this->model->primaryMedia($find->findable_type, $instance);
+            $findMediaItem = $this->primaryMedia($instance);
             $findMediaItem->tag = $tag; //'(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->artifact_no) ? "." : "") . ($find->artifact_no ? $find->artifact_no : "");
             $findMediaItem->findable_type = $find->findable_type;
             $findMediaItem->findable_id = $find->findable_id;
@@ -224,6 +217,7 @@ class LocusController extends BaseDigModuleController
         }
         return $locusFinds;
     }
+    */
 
     public function store(LocusStoreRequest $request)
     {

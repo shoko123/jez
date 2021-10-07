@@ -26,6 +26,10 @@ class SeasonController extends BaseDigModuleController
    
     public function show($id)
     {
+        $data = $this->model->show($id);
+        return response($data, 200);
+
+        /*
         $item = $this->model->with(['media', 'areas_seasons'])->findOrFail($id);
 
         //get related media.
@@ -57,6 +61,7 @@ class SeasonController extends BaseDigModuleController
             "itemMedia" => $itemMedia,
             "areasSeasons" => $areasSeasons,
         ], 200);
+        */
     }
 
     public function store(Request $request)

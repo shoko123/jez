@@ -65,6 +65,11 @@ class AreaSeasonController extends BaseDigModuleController
 
     public function show($id)
     {
+        $as = $this->model->show($id);
+        return response($as, 200);
+
+        /////
+
         $item = $this->model->with([
             'media',
             'loci',

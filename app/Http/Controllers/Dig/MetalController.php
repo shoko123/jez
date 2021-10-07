@@ -9,7 +9,6 @@ use App\Models\Dig\Find;
 use App\Models\Dig\Locus;
 use App\Models\Dig\Metal;
 use Illuminate\Http\Request;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use \Spatie\Tags\Tag;
 
 class MetalController extends BaseDigModuleController
@@ -21,45 +20,7 @@ class MetalController extends BaseDigModuleController
 
     public function index(Request $request)
     {
-        $collection = $this->model->filter($request->all())
-            ->get(['metals.id', 'metals.description',
-                'loci.id AS locus_id', 'loci.locus_no',
-                'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
-
-        foreach ($collection as $index => $item) {
-            $item->tag = $this->model->tag($item);
-            $media = $this->model->primaryMedia('Metal', $item);
-            $item["fullUrl"] = $media->fullUrl;
-            $item["hasMedia"] = $media->hasMedia;
-            $item["tnUrl"] = $media->tnUrl;
-
-            unset($item->notes);
-            unset($item->locus_no);
-            unset($item->registration_category);
-            unset($item->basket_no);
-            unset($item->artifact_no);
-            unset($item->media);
-        }
-
-        return response()->json([
-            "collection" => $collection,
-        ], 200);
-    }
-
-    public function all(Request $request)
-    {
-        $collection = $this->model->filter($request->all())
-            ->get(['metals.id', 'loci.locus_no', 'finds.registration_category', 'finds.basket_no', 'finds.artifact_no', 'finds.piece_no', 'areas_seasons.tag']);
-
-        foreach ($collection as $index => $item) {
-            $item->tag = $this->model->tag($item);
-            unset($item->locus_no);
-            unset($item->registration_category);
-            unset($item->basket_no);
-            unset($item->artifact_no);
-            unset($item->piece_no);
-            unset($item->media);
-        }
+        $collection = $this->model->filterFindsCollections($request->all());
 
         return response()->json([
             "collection" => $collection,
@@ -68,25 +29,13 @@ class MetalController extends BaseDigModuleController
 
     public function chunkMedia(Request $request)
     {
-        $itemIds = $request["ids"];
-        $ids = implode(',', $itemIds);
-
-        $items = Metal::whereIn('id', $itemIds)
-            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
-            ->get();
-
-        foreach ($items as $index => $item) {
-            $media = $this->model->primaryMedia('Metal', $item);
-            $item["fullUrl"] = $media->fullUrl;
-            $item["hasMedia"] = $media->hasMedia;
-            $item["tnUrl"] = $media->tnUrl;
-            unset($item->media);
-        }
+        //TODO validate!
 
         return response()->json([
-            "collection" => $items,
+            "collection" => $this->model->baseChunkMedia($request["ids"]),
         ], 200);
     }
+
     public function chunkTable(Request $request)
     {
         $itemIds = $request["ids"];
@@ -103,55 +52,8 @@ class MetalController extends BaseDigModuleController
 
     public function show($id)
     {
-        $item = Metal::with(
-            [
-                'baseType',
-                'find',
-                'find.preservation',
-                'find.locus' => function ($query) {
-                    $query->select('id', 'locus_no', 'area_season_id');},
-                'find.locus.areaSeason',
-                'tags' => function ($query) {
-                    $query->select('id', 'name', 'type');},
-                'media',
-            ])
-            ->findOrFail($id);
-
-        //format tag
-        $find = $item->find;
-        $item->tag = $this->model->tag($find);
-
-        //add fields
-        $item->locus_id = $find->locus->id;
-        $item->area_season_id = $find->locus->areaSeason->id;
-        $item->locus_id = $find->locus->id;
-
-        $find->locus_id = $find->locus->id;
-        $find->area_season_id = $find->locus->areaSeason->id;
-
-        //get related media.
-        $itemMedia = $this->model->itemMediaCollection('Metal', $item);
-
-        //get tags
-        $tags = [];
-        foreach ($item->tags as $tag) {
-            array_push($tags, (object) [
-                'type' => $tag->type,
-                'id' => $tag->pivot->tag_id,
-            ]);
-        }
-
-        unset($item->find);
-        unset($item->media);
-        unset($item->tags);
-        unset($find->locus);
-
-        return response()->json([
-            "item" => $item,
-            "find" => $find,
-            "itemMedia" => $itemMedia,
-            "tags" => $tags,
-        ], 200);
+        $item = $this->model->baseShow($id);
+        return response($item, 200);
     }
 
     public function lightbox($id)

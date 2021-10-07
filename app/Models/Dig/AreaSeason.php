@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Models\Dig;
-use App\Models\Dig\BaseDigModel;
+
 use App\Models\Dig\Area;
+use App\Models\Dig\BaseDigModel;
 use App\Models\Dig\Locus;
 use App\Models\Dig\Season;
 
@@ -29,5 +30,44 @@ class AreaSeason extends BaseDigModel
     public function loci()
     {
         return $this->hasMany(Locus::class, 'area_season_id');
+    }
+
+    public function show($id)
+    {
+        $item = $this->with([
+            'media',
+            'loci',
+        ])
+            ->findOrFail($id);
+
+        //get related media.
+        $itemMedia = $this->allMedia($item);
+
+        //format related loci
+        $lociWithMedia = [];
+        foreach ($item->loci as $index => $locus) {
+            $tag = $item->tag . "/" . $locus->locus_no;
+
+            $media = $this->primaryMedia($locus);
+
+            array_push($lociWithMedia, [
+                "id" => $locus->id,
+                "description" => $locus->description,
+                "tag" => $tag,
+                "fullUrl" => $media->fullUrl,
+                "hasMedia" => $media->hasMedia,
+                "tnUrl" => $media->tnUrl,
+            ]);
+        }
+
+        $loci = $item->loci;
+        unset($item->media);
+        unset($item->loci);
+
+        return [
+            "item" => $item,
+            "itemMedia" => $itemMedia,
+            "loci" => $lociWithMedia,
+        ];
     }
 }

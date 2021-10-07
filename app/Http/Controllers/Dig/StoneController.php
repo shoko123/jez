@@ -32,23 +32,10 @@ class StoneController extends BaseDigModuleController
 
     public function chunkMedia(Request $request)
     {
-        $itemIds = $request["ids"];
-        $ids = implode(',', $itemIds);
+           //TODO validate!
 
-        $items = Stone::whereIn('id', $itemIds)
-            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
-            ->get();
-
-        foreach ($items as $index => $item) {
-            $media = $this->model->primaryMedia('Stone', $item);
-            $item["fullUrl"] = $media->fullUrl;
-            $item["hasMedia"] = $media->hasMedia;
-            $item["tnUrl"] = $media->tnUrl;
-            unset($item->media);
-        }
-
-        return response()->json([
-            "collection" => $items,
+           return response()->json([
+            "collection" => $this->model->baseChunkMedia($request["ids"]),
         ], 200);
     }
 

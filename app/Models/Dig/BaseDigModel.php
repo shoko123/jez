@@ -3,7 +3,7 @@
 namespace App\Models\Dig;
 
 use App\Models\ItemTag;
-use App\Traits\MediaTrait;
+//use App\Traits\MediaTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +14,7 @@ use Spatie\Tags\HasTags;
 
 class BaseDigModel extends Model implements HasMedia
 {
-    use HasTags, InteractsWithMedia, MediaTrait;
+    use HasTags, InteractsWithMedia;//, MediaTrait;
     public $timestamps = false;
     protected $guarded = [];
     protected $eloquent_model_name;
@@ -44,7 +44,7 @@ class BaseDigModel extends Model implements HasMedia
 
     public function formatCollectionItem(Object $item)
     {
-        $media = $this->primaryMedia($this->eloquent_model_name, $item);
+        $media = $this->primaryMedia($item);
         $item["fullUrl"] = $media->fullUrl;
         $item["hasMedia"] = $media->hasMedia;
         $item["tnUrl"] = $media->tnUrl;
@@ -82,7 +82,7 @@ class BaseDigModel extends Model implements HasMedia
     public function formatItem(array $item)
     {
         foreach ($collection as $index => $item) {
-            $media = $this->primaryMedia('Season', $item);
+            $media = $this->primaryMedia($item);
             $item["fullUrl"] = $media->fullUrl;
             $item["hasMedia"] = $media->hasMedia;
             $item["tnUrl"] = $media->tnUrl;
@@ -127,6 +127,11 @@ class BaseDigModel extends Model implements HasMedia
             }
         }
         return $tag;
+    }
+
+    public function filterCollections($queryParams)
+    {
+
     }
 
     public function filterFindsCollections($queryParams)
@@ -233,11 +238,11 @@ class BaseDigModel extends Model implements HasMedia
         //format tag
         $builder->select("$tableName.id AS id", \DB::raw("CONCAT(areas_seasons.tag,'/',locus_no ,'.', finds.registration_category ,'.', finds.basket_no  ,'.', finds.artifact_no) as tag"));
 
-        $result =$builder->get();
-        
+        $result = $builder->get();
+
         //if query included media, delete it.
         if (!empty($queryParams["registration.media"])) {
-            forEach($result as $res) {
+            foreach ($result as $res) {
                 unset($res->media);
             }
             $builder->with('media');
@@ -250,13 +255,14 @@ class BaseDigModel extends Model implements HasMedia
         $tableName = $this->getTable();
         $modelName = $this->eloquent_model_name;
 
+        /*
         $builder = $this->join('finds', function ($join) use ($tableName, $modelName) {
             $join->on($tableName . '.id', '=', 'finds.findable_id')
                 ->where('finds.findable_type', '=', $modelName);
         })
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
             ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
-
+        */
         $builder = $this->with(
             ['find',
                 'find.locus' => function ($query) {
@@ -296,7 +302,6 @@ class BaseDigModel extends Model implements HasMedia
         //format media.
 
         //$itemMedia = $item->media;
-        //$itemMedia = $this->model->itemMediaCollection('Pottery', $item);
         $media = (object) ["collection" => [], "filler" => null];
 
         $drawings = $item->getMedia('drawing');
@@ -338,4 +343,124 @@ class BaseDigModel extends Model implements HasMedia
         ];
     }
 
+    public function baseChunkMedia($idArray)
+    {
+        //TODO elaborate chosen text to display
+        //e.g. item description and if empty find description? if Pottery chose periods.
+        $ids = implode(',', $idArray);
+
+        $items = $this->whereIn('id', $idArray)
+            ->select('id', 'description')
+            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
+            ->get();
+
+        foreach ($items as $index => $item) {
+            $media = $this->primaryMedia($item);
+            $item["fullUrl"] = $media->fullUrl;
+            $item["hasMedia"] = $media->hasMedia;
+            $item["tnUrl"] = $media->tnUrl;
+            unset($item->media);
+        }
+
+        return $items;
+    }
+
+    public function primaryMedia($item)
+    {
+        $drawing = $item->getFirstMedia('drawing');
+
+        if (!empty($drawing)) {
+            return (object) [
+                'hasMedia' => true,
+                'fullUrl' => $drawing->getFullUrl(),
+                'tnUrl' => $drawing->getFullUrl(),
+            ];
+        } else {
+            $photo = $item->getFirstMedia('photo');
+            if (!empty($photo)) {
+                return (object) [
+                    'hasMedia' => true,
+                    'fullUrl' => $photo->getFullUrl(),
+                    'tnUrl' => $photo->getFullUrl('tn'),
+                ];
+            } else {
+                //construct filler images
+                $fullMediaName = 'fillers/' . $this->eloquent_model_name . '0.jpg';
+                $tnMediaName = 'fillers/' . $this->eloquent_model_name . '0-tn.jpg';
+                $fullUrl = \Storage::disk('app-media')->url($fullMediaName);
+                $tnUrl = \Storage::disk('app-media')->url($tnMediaName);
+                return (object) [
+                    'hasMedia' => false,
+                    'fullUrl' => $fullUrl,
+                    'tnUrl' => $tnUrl,
+                ];
+            }
+        }
+    }
+
+    public function allMedia($item)
+    {
+        /*
+        $media = [];
+
+        $drawings = $item->getMedia('drawing');
+
+        foreach ($drawings as $med) {
+            array_push($media, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => true, 'media_id' => $med->id]);
+        }
+
+        $photos = $item->getMedia('photo');
+
+        foreach ($photos as $med) {
+            array_push($media, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => true, 'media_id' => $med->id]);
+        }
+        return $media;
+        */
+
+
+
+        /////////////
+        $media = (object) ["collection" => [], "filler" => null];
+
+        $drawings = $item->getMedia('drawing');
+
+        foreach ($drawings as $med) {
+            array_push($media->collection, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => true, 'media_id' => $med->id]);
+        }
+
+        $photos = $item->getMedia('photo');
+
+        foreach ($photos as $med) {
+            array_push($media->collection, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => true, 'media_id' => $med->id]);
+        }
+
+        if (empty($media->collection)) {
+            //construct filler images urls (from 'app-media' folder on server)
+            $fullMediaName = 'fillers/Locus0.jpg';
+            $tnMediaName = 'fillers/Locus0-tn.jpg';
+            $fullUrl = \Storage::disk('app-media')->url($fullMediaName);
+            $tnUrl = \Storage::disk('app-media')->url($tnMediaName);
+            $media->filler = (object) [
+                'hasMedia' => false,
+                'fullUrl' => $fullUrl,
+                'tnUrl' => $tnUrl,
+            ];
+            $media->collection = [];
+        }
+        return $media;
+    }
+
+
+    public function baseChunkTable($idArray)
+    {
+        $ids = implode(',', $idArray);
+
+        $items = $this->whereIn('id', $itemIds)
+            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
+            ->get();
+
+        return response()->json([
+            "collection" => $items,
+        ], 200);
+    }
 }

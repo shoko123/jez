@@ -25,6 +25,10 @@ class AreaController extends BaseDigModuleController
 
     public function show($id)
     {
+        $area = $this->model->show($id);
+        return response($area, 200);
+
+        /*
         $item = $this->model->with(['media', 'areas_seasons'])->findOrFail($id);
 
         //get related media.
@@ -56,6 +60,7 @@ class AreaController extends BaseDigModuleController
             "itemMedia" => $itemMedia,
             "areasSeasons" => $areasSeasons,
         ], 200);
+        */
     }
 
     public function store(Request $request)
