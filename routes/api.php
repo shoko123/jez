@@ -46,12 +46,18 @@ Route::group(['middleware' => 'authorizedUsersOnly'], function ($router) {
 
     Route::post('areas', [AreaController::class, 'index']); //No params, always get all records.
     Route::get('areas/{id}', [AreaController::class, 'show']);
+    Route::post('areas/chunk-media', [AreaController::class, 'chunkMedia']);
+    Route::post('areas/chunk-table', [AreaController::class, 'chunkTable']);
 
     Route::post('seasons', [SeasonController::class, 'index']); //No params, always get all records.
     Route::get('seasons/{id}', [SeasonController::class, 'show']);
+    Route::post('seasons/chunk-media', [SeasonController::class, 'chunkMedia']);
+    Route::post('seasons/chunk-table', [SeasonController::class, 'chunkTable']);
 
     Route::post('areas-seasons', [AreaSeasonController::class, 'index']); //Pass query params in body.
     Route::get('areas-seasons/{id}', [AreaSeasonController::class, 'show']);
+    Route::post('areas-seasons/chunk-media', [AreaSeasonController::class, 'chunkMedia']);
+    Route::post('areas-seasons/chunk-table', [AreaSeasonController::class, 'chunkTable']);
 
     Route::post('loci', [LocusController::class, 'index']);
     //Route::post('loci/all', [LocusController::class, 'all']);

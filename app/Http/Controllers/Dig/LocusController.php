@@ -61,7 +61,8 @@ class LocusController extends BaseDigModuleController
 
                     case "media":
                         $builder->whereHas('media', function (Builder $mediaQuery) use ($ids) {
-                            $mediaQuery->whereIn('collection_name', $ids);});
+                            $mediaQuery->whereIn('collection_name', $ids);
+                        });
                         break;
                     default:
                         //TODO throw Error
@@ -102,15 +103,8 @@ class LocusController extends BaseDigModuleController
 
     public function chunkTable(Request $request)
     {
-        $itemIds = $request["ids"];
-        $ids = implode(',', $itemIds);
-
-        $items = $this->model->whereIn('id', $itemIds)
-            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
-            ->get();
-
         return response()->json([
-            "collection" => $items,
+            "collection" => $this->model->baseChunkTable($request["ids"]),
         ], 200);
     }
 
@@ -125,13 +119,12 @@ class LocusController extends BaseDigModuleController
         return response()->json([
             "finds" => $finds,
         ], 200);
-
     }
 
     public function show($id)
     {
         $this->authorize('view', $this->model);
-        $locus = $this->model->show($id);  
+        $locus = $this->model->show($id);
         return response($locus, 200);
     }
 

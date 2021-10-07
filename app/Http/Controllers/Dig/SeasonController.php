@@ -23,6 +23,21 @@ class SeasonController extends BaseDigModuleController
         ], 200);
 
     }
+    public function chunkMedia(Request $request)
+    {
+        //TODO validate!
+
+        return response()->json([
+            "collection" => $this->model->baseChunkMedia($request["ids"]),
+        ], 200);
+    }
+
+    public function chunkTable(Request $request)
+    {
+        return response()->json([
+            "collection" => $this->model->baseChunkTable($request["ids"]),
+        ], 200);
+    }
    
     public function show($id)
     {

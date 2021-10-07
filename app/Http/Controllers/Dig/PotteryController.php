@@ -39,15 +39,8 @@ class PotteryController extends BaseDigModuleController
 
     public function chunkTable(Request $request)
     {
-        $itemIds = $request["ids"];
-        $ids = implode(',', $itemIds);
-
-        $items = Pottery::whereIn('id', $itemIds)
-            ->orderByRaw(\DB::raw("FIELD(id, $ids)"))
-            ->get();
-
         return response()->json([
-            "collection" => $items,
+            "collection" => $this->model->baseChunkTable($request["ids"]),
         ], 200);
     }
 

@@ -77,13 +77,16 @@ class Locus extends BaseDigModel
 
         foreach ($finds as $index => $find) {
             //format tag
-            $tag = "(" . $find->findable_type . ") " . $locus_tag . ".";
-            $tag .= $this->getFindPortionOfTag($locus_tag, $find); //implemented in BaseDigModel
+            $tag = "(" . $find->findable_type . ") ";
+            //$tag .= $this->getFindPortionOfTag($locus_tag, $find); //implemented in BaseDigModel
             $type = $find->findable_type;
             //load find instance with media and pick primary media item
             $findModelName = 'App\Models\Dig\\' . $find->findable_type;
+            
             $instance = $findModelName::with('media')->findOrFail($find->findable_id);
+            $tag .= $this->getFindPortionOfTag($locus_tag, $instance->find);
             $findMediaItem = $this->primaryMedia($instance);
+            
             $findMediaItem->tag = $tag; //'(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->artifact_no) ? "." : "") . ($find->artifact_no ? $find->artifact_no : "");
             $findMediaItem->findable_type = $find->findable_type;
             $findMediaItem->findable_id = $find->findable_id;

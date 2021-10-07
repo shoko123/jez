@@ -274,7 +274,7 @@ export default {
         },
         appSettings(state, payload) {
             state.appSettings = payload;
-        }, 
+        },
         collections(state, payload) {
             state.collections[payload.name].collection = payload.collection;
         },
@@ -376,7 +376,7 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    console.log(`app.init() OK. appSettings: ${JSON.stringify(res.data.settings, null, 2)}`);
+                    console.log(`app.init() OK. appSettings: ${JSON.stringify(res.data.accessibility, null, 2)}`);
                     commit('appSettings', res.data.accessibility);
                     return res;
                 })
@@ -390,7 +390,7 @@ export default {
             commit("ready", { entity: "collection", isReady: false });
 
             let action = (state.routes.to.module === "About") ? "get" : "post";
-           
+
             //payload.params.lookups = JSON.parse(payload.params.lookups);
             //payload.params.tagParams = JSON.parse(payload.params.tagParams);
 
@@ -722,19 +722,12 @@ export default {
             function loadChunk() {
                 let source = state.routes.to;
 
-                //let source = state.routes.loading ? state.routes.to : state.routes.current;
-                switch (source.module) {
-                    case "Locus":
-                    case "Pottery":
-                    case "Stone":
-                    case "Lithic":
-                    case "Glass":
-                    case "Metal":
-                        break;
-                    default:
-                        //Area, Season, and AreaSeason don't need to load page (All data is in collection).
-                        commit("ready", { entity: "chunk", isReady: true });
-                        return;
+                //No chunking for the "About" module.
+                if (state.routes.to.module === "About") {
+                    //console.log(`page module: ${state.routes.to.module} ---skipping chunking...`)
+                    commit("ready", { entity: "chunk", isReady: true });
+                    return;
+
                 }
 
                 let endpoint;

@@ -75,22 +75,15 @@ class BaseDigModel extends Model implements HasMedia
             case "Fauna":
             case "Tbd":
                 return $this->getFindPortionOfTag("***", $item);
-                return "****";
         }
     }
 
     //format find's tag. relies only on the $find builder result parameter
     public function getFindPortionOfTag($locus_tag, $find)
     {
-        $tag = $locus_tag;
-        /*
-        if (isset($find->locus)) {
-        $tag = $find->locus->areaSeason->tag . '/' . $find->locus->locus_no . '.' . $find->registration_category;
-        } else {
-        $tag = $find->tag . '/' . $find->locus_no . '.' . $find->registration_category;
-        }
-         */
-        if ($find->registration_category == 'AR') {
+        $tag = $locus_tag . '.' . $find->registration_category . '.';
+
+        if ($find->registration_category === 'AR') {
             $tag .= $find->basket_no . "." . $find->artifact_no;
             if ($find->piece_no !== 0) {
 
@@ -115,6 +108,10 @@ class BaseDigModel extends Model implements HasMedia
             }
         }
         return $tag;
+    }
+
+    public function indexAreasSeasons($queryParams)
+    {
     }
 
     public function filterFindsCollections($queryParams)
@@ -282,10 +279,7 @@ class BaseDigModel extends Model implements HasMedia
         }
 
         //format media.
-
-   
-            $media = $this->allMedia($item);
-       
+        $media = $this->allMedia($item);
 
         unset($item->find);
         unset($item->media);
@@ -300,10 +294,22 @@ class BaseDigModel extends Model implements HasMedia
         ];
     }
 
+    public function baseChunkTable($idArray)
+    {
+        $ids = implode(',', $idArray);
+
+        $items = $this->whereIn('id', $idArray)
+            ->select('id', 'description')
+            ->orderByRaw(DB::raw("FIELD(id, $ids)"))
+            ->get();
+
+        return $items;
+    }
+
     public function baseChunkMedia($idArray)
     {
         //TODO elaborate chosen text to display
-        //e.g. item description and if empty find description? if Pottery chose periods.
+        //e.g. item description and if empty find description? if Pottery choose periods.
         $ids = implode(',', $idArray);
 
         $items = $this->whereIn('id', $idArray)
@@ -344,6 +350,7 @@ class BaseDigModel extends Model implements HasMedia
                     'tnUrl' => $photo->getFullUrl('tn'),
                 ];
             } else {
+                return $this->filler($eloquent_model_name);
                 //construct filler images
                 $fullMediaName = 'fillers/' . $eloquent_model_name . '0.jpg';
                 $tnMediaName = 'fillers/' . $eloquent_model_name . '0-tn.jpg';
@@ -360,6 +367,9 @@ class BaseDigModel extends Model implements HasMedia
 
     public function allMedia($item)
     {
+        $reflect = new \ReflectionClass($item);
+        $eloquent_model_name = $reflect->getShortName();
+
         $media = (object) ["collection" => [], "filler" => null];
 
         $drawings = $item->getMedia('drawing');
@@ -375,31 +385,22 @@ class BaseDigModel extends Model implements HasMedia
         }
 
         if (empty($media->collection)) {
-            //construct filler images urls (from 'app-media' folder on server)
-            $fullMediaName = 'fillers/Locus0.jpg';
-            $tnMediaName = 'fillers/Locus0-tn.jpg';
-            $fullUrl = Storage::disk('app-media')->url($fullMediaName);
-            $tnUrl = Storage::disk('app-media')->url($tnMediaName);
-            $media->filler = (object) [
-                'hasMedia' => false,
-                'fullUrl' => $fullUrl,
-                'tnUrl' => $tnUrl,
-            ];
+            $media->filler = $this->filler($eloquent_model_name);
             $media->collection = [];
         }
         return $media;
     }
 
-    public function baseChunkTable($idArray)
+    public function filler(String $eloquent_model_name)
     {
-        $ids = implode(',', $idArray);
-
-        $items = $this->whereIn('id', $idArray)
-            ->orderByRaw(DB::raw("FIELD(id, $ids)"))
-            ->get();
-
-        return response()->json([
-            "collection" => $items,
-        ], 200);
+        $fullMediaName = 'fillers/' . $eloquent_model_name . '0.jpg';
+        $tnMediaName = 'fillers/' . $eloquent_model_name . '0-tn.jpg';
+        $fullUrl = Storage::disk('app-media')->url($fullMediaName);
+        $tnUrl = Storage::disk('app-media')->url($tnMediaName);
+        return (object) [
+            'hasMedia' => false,
+            'fullUrl' => $fullUrl,
+            'tnUrl' => $tnUrl,
+        ];
     }
 }
