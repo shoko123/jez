@@ -79,7 +79,7 @@ class BaseDigModel extends Model implements HasMedia
     }
 
     //format find's tag. relies only on the $find builder result parameter
-    public function getFindPortionOfTag($locus_tag, $find)
+    public function findTag($locus_tag, $find)
     {
         $tag = $locus_tag . '.' . $find->registration_category . '.';
 

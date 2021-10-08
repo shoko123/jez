@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models\Dig;
+
 use App\Models\Dig\AreaSeason;
 use App\Models\Dig\BaseDigModel;
 use App\Models\Dig\Find;
@@ -24,32 +25,26 @@ class Locus extends BaseDigModel
     {
         return $this->hasMany(Find::class);
     }
-
+    
     public function show($id)
     {
         $locus = $this->with(
-            ['areaSeason' => function ($q) {
-                $q->select('id', 'tag');},
-                'finds' => function ($q) {
-                    $q->select('locus_id', 'findable_type', 'findable_id', 'registration_category', 'basket_no', 'artifact_no', 'piece_no', 'description')
-                        ->orderBy('findable_type', 'ASC')
-                        ->orderBy('registration_category', 'ASC')
-                        ->orderBy('basket_no', 'ASC')
-                        ->orderBy('artifact_no', 'ASC')
-                        ->orderBy('piece_no', 'ASC');},
+            [
+                'areaSeason' => function ($q) {
+                    $q->select('id', 'tag');
+                },
+                'finds',
+                'finds.findable.media',
                 'tags' => function ($query) {
-                    $query->select('id', 'name', 'type');},
+                    $query->select('id', 'name', 'type');
+                },
                 'media',
-            ])->findOrFail($id);
+            ]
+        )->findOrFail($id);
 
+        //format tag
         $locus->tag = $locus->areaSeason->tag . '/' . $locus->locus_no;
-
-        //get related media.
-        $itemMedia = $this->allMedia($locus);
-
-        //LocusFinds
-        $locusFinds = $this->locusFinds($locus->tag, $locus->finds);
-
+        
         //get tags
         $tags = [];
         foreach ($locus->tags as $tag) {
@@ -59,6 +54,14 @@ class Locus extends BaseDigModel
             ]);
         }
 
+        //get related media.
+        $itemMedia = $this->allMedia($locus);
+
+
+        //get LocusFinds
+        $locusFinds = $this->locusFinds($locus->tag, $locus->finds);
+
+        //cleanup
         unset($locus->finds);
         unset($locus->tags);
 
@@ -67,32 +70,34 @@ class Locus extends BaseDigModel
             "locusFinds" => $locusFinds,
             "itemMedia" => $itemMedia,
             "tags" => $tags,
-        ];        
+        ];
     }
-
+ 
     protected function locusFinds($locus_tag, $finds)
     {
         $order = array("Pottery" => 1, "Stone" => 2, "Lithic" => 3, "Metal" => 4, "Glass" => 5, "Flora" => 6, "Fauna" => 7, "Tbd" => 8);
         $locusFinds = [];
 
         foreach ($finds as $index => $find) {
+            //set type to order by.
+            $type = $find->findable_type;
+
             //format tag
             $tag = "(" . $find->findable_type . ") ";
-            //$tag .= $this->getFindPortionOfTag($locus_tag, $find); //implemented in BaseDigModel
-            $type = $find->findable_type;
-            //load find instance with media and pick primary media item
-            $findModelName = 'App\Models\Dig\\' . $find->findable_type;
-            
-            $instance = $findModelName::with('media')->findOrFail($find->findable_id);
-            $tag .= $this->getFindPortionOfTag($locus_tag, $instance->find);
-            $findMediaItem = $this->primaryMedia($instance);
-            
-            $findMediaItem->tag = $tag; //'(' . $find->findable_type . ') ' . $find->registration_category . '.' . ($find->basket_no ? $find->basket_no : "") . (($find->basket_no && $find->artifact_no) ? "." : "") . ($find->artifact_no ? $find->artifact_no : "");
-            $findMediaItem->findable_type = $find->findable_type;
-            $findMediaItem->findable_id = $find->findable_id;
-            $findMediaItem->description = $instance->description;
-            $findMediaItem->type_order = $order[$type];
-            array_push($locusFinds, $findMediaItem);
+            $tag .= $this->findTag($locus_tag, $find);
+
+            //create formatted find with media info. (media was preloaded in query)
+            $formatted = $this->primaryMedia($find->findable);
+
+            //add fields
+            $formatted->tag = "(" . $find->findable_type . ") " . $this->findTag($locus_tag, $find);
+            $formatted->findable_type = $find->findable_type;
+            $formatted->findable_id = $find->findable_id;
+            $formatted->description = $find->findable->description;
+
+            //deal with order
+            $formatted->type_order = $order[$type];
+            array_push($locusFinds, $formatted);
         }
 
         //sort finds by type, registration (Pottery, Stone, Lithic, Metal...)
