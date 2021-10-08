@@ -11,6 +11,7 @@ use App\Models\Dig\Locus;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use \Spatie\Tags\Tag;
+use Illuminate\Support\Facades\DB;
 
 class LithicController extends BaseDigModuleController
 {
@@ -21,7 +22,7 @@ class LithicController extends BaseDigModuleController
 
     public function index(Request $request)
     {
-        $collection = $this->model->filterFindsCollections($request->all());
+        $collection = $this->model->indexForFinds($request->all());
 
         return response()->json([
             "collection" => $collection,
@@ -77,15 +78,15 @@ class LithicController extends BaseDigModuleController
             $find[$key] = $value;
         }
 
-        \DB::transaction(function () use ($lithicRequest, $item, $find) {
+        DB::transaction(function () use ($lithicRequest, $item, $find) {
             $item->save();
 
             //since 'find' has a composite primary key, we need to manually find record and insert/update.
             if ($lithicRequest->isMethod('post')) {
                 $find->findable_id = $item->id;
-                \DB::table('finds')->where(['findable_type' => 'Lithic', 'findable_id' => $item->id])->insert($find->toArray());
+                DB::table('finds')->where(['findable_type' => 'Lithic', 'findable_id' => $item->id])->insert($find->toArray());
             } else {
-                \DB::table('finds')->where(['findable_type' => 'Lithic', 'findable_id' => $item->id])->update($find->toArray());
+                DB::table('finds')->where(['findable_type' => 'Lithic', 'findable_id' => $item->id])->update($find->toArray());
             }
         });
 
@@ -115,7 +116,7 @@ class LithicController extends BaseDigModuleController
     {
         $this->authorize('delete', $this->model);
 
-        \DB::transaction(function () use ($id) {
+        DB::transaction(function () use ($id) {
             $lithic = Lithic::findOrFail($id);
             $find = Find::where(['findable_type' => 'Lithic', 'findable_id' => $lithic->id]);
             $lithic->delete();

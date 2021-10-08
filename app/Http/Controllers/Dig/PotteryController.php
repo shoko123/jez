@@ -9,8 +9,7 @@ use App\Models\Dig\Find;
 use App\Models\Dig\Locus;
 use App\Models\Dig\Pottery;
 use Illuminate\Http\Request;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use \Spatie\Tags\Tag;
+use Illuminate\Support\Facades\DB;
 
 class PotteryController extends BaseDigModuleController
 {
@@ -21,7 +20,7 @@ class PotteryController extends BaseDigModuleController
 
     public function index(Request $request)
     {
-        $collection = $this->model->filterFindsCollections($request->all());
+        $collection = $this->model->indexForFinds($request->all());
 
         return response()->json([
             "collection" => $collection,
@@ -90,15 +89,15 @@ class PotteryController extends BaseDigModuleController
             $find[$key] = $value;
         }
 
-        \DB::transaction(function () use ($potteryRequest, $item, $find) {
+        DB::transaction(function () use ($potteryRequest, $item, $find) {
             $item->save();
 
             //since 'find' has a composite primary key, we need to manually find record and insert/update.
             if ($potteryRequest->isMethod('post')) {
                 $find->findable_id = $item->id;
-                \DB::table('finds')->where(['findable_type' => 'Pottery', 'findable_id' => $item->id])->insert($find->toArray());
+                DB::table('finds')->where(['findable_type' => 'Pottery', 'findable_id' => $item->id])->insert($find->toArray());
             } else {
-                \DB::table('finds')->where(['findable_type' => 'Pottery', 'findable_id' => $item->id])->update($find->toArray());
+                DB::table('finds')->where(['findable_type' => 'Pottery', 'findable_id' => $item->id])->update($find->toArray());
             }
         });
 
@@ -123,7 +122,7 @@ class PotteryController extends BaseDigModuleController
     {
         $this->authorize('delete', $this->model);
 
-        \DB::transaction(function () use ($id) {
+        DB::transaction(function () use ($id) {
             $pottery = Pottery::findOrFail($id);
             $find = Find::where(['findable_type' => 'Pottery', 'findable_id' => $pottery->id]);
             $pottery->delete();

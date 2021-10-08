@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\JezStatic\WelcomePages;
 use App\Models\TagType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ModuleInitializerController extends Controller
 {
@@ -67,16 +68,16 @@ class ModuleInitializerController extends Controller
 
         if (self::$moduleName !== 'About') {
             $counts['items'] = self::$fullModuleName::count();
-            $counts['media'] = \DB::table('media')->where('model_type', self::$moduleName)->count();
+            $counts['media'] = DB::table('media')->where('model_type', self::$moduleName)->count();
             $firstRecord = self::$fullModuleName::first();
             $firstId = $firstRecord->id;
         }
 
         /*
         if (self::isFind) {
-        $counts['baskets'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('basket_no')->whereNull('artifact_no')->count();
-        $counts['artifacts'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('artifact_no')->whereNull('piece_no')->count();
-        //$counts['pieces'] = \DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('piece_no')->count();
+        $counts['baskets'] = DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('basket_no')->whereNull('artifact_no')->count();
+        $counts['artifacts'] = DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('artifact_no')->whereNull('piece_no')->count();
+        //$counts['pieces'] = DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('piece_no')->count();
         }
          */
 
@@ -283,7 +284,7 @@ class ModuleInitializerController extends Controller
 
         //access DB and format
         foreach ($lookups as $index => $lookup) {
-            $params = \DB::table($lookup["table_name"])->get();
+            $params = DB::table($lookup["table_name"])->get();
 
             array_push(self::$groups, [
                 "group_type" => "Lookup",

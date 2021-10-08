@@ -15,9 +15,7 @@ class AreaController extends BaseDigModuleController
 
     public function index(Request $request)
     {
-        $collection = $this->model->with('media')->orderBy('id', 'asc')->get();
-        $collection = $this->model->formatCollection($collection);
-
+        $collection = $this->model->indexForAreasSeasons(null);
         return response()->json([
             "collection" => $collection,
         ], 200);

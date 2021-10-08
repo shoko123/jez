@@ -9,8 +9,7 @@ use App\Models\Dig\Find;
 use App\Models\Dig\Locus;
 use App\Models\Dig\Stone;
 use Illuminate\Http\Request;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use \Spatie\Tags\Tag;
+use Illuminate\Support\Facades\DB;
 
 class StoneController extends BaseDigModuleController
 {
@@ -23,7 +22,7 @@ class StoneController extends BaseDigModuleController
     {
         $this->authorize('viewAny', $this->model);
 
-        $collection = $this->model->filterFindsCollections($request->all());
+        $collection = $this->model->indexForFinds($request->all());
 
         return response()->json([
             "collection" => $collection,
@@ -80,15 +79,15 @@ class StoneController extends BaseDigModuleController
             $find[$key] = $value;
         }
 
-        \DB::transaction(function () use ($stoneRequest, $stone, $find) {
+        DB::transaction(function () use ($stoneRequest, $stone, $find) {
             $stone->save();
 
             //since 'find' has a composite primary key, we need to manually find record and insert/update.
             if ($stoneRequest->isMethod('post')) {
                 $find->findable_id = $stone->id;
-                \DB::table('finds')->where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->insert($find->toArray());
+                DB::table('finds')->where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->insert($find->toArray());
             } else {
-                \DB::table('finds')->where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->update($find->toArray());
+                DB::table('finds')->where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->update($find->toArray());
             }
         });
 
@@ -125,7 +124,7 @@ class StoneController extends BaseDigModuleController
     {
         $this->authorize('delete', $this->model);
 
-        \DB::transaction(function () use ($id) {
+        DB::transaction(function () use ($id) {
             $stone = Stone::findOrFail($id);
             $find = Find::where(['findable_type' => 'Stone', 'findable_id' => $stone->id]);
             $stone->delete();

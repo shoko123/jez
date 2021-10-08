@@ -10,6 +10,7 @@ use App\Models\Dig\Glass;
 use App\Models\Dig\Locus;
 use Illuminate\Http\Request;
 use \Spatie\Tags\Tag;
+use Illuminate\Support\Facades\DB;
 
 class GlassController extends BaseDigModuleController
 {
@@ -20,7 +21,7 @@ class GlassController extends BaseDigModuleController
 
     public function index(Request $request)
     {
-        $collection = $this->model->filterFindsCollections($request->all());
+        $collection = $this->model->indexForFinds($request->all());
 
         return response()->json([
             "collection" => $collection,
@@ -76,15 +77,15 @@ class GlassController extends BaseDigModuleController
             $find[$key] = $value;
         }
 
-        \DB::transaction(function () use ($glassRequest, $item, $find) {
+        DB::transaction(function () use ($glassRequest, $item, $find) {
             $item->save();
 
             //since 'find' has a composite primary key, we need to manually find record and insert/update.
             if ($glassRequest->isMethod('post')) {
                 $find->findable_id = $item->id;
-                \DB::table('finds')->where(['findable_type' => 'Glass', 'findable_id' => $item->id])->insert($find->toArray());
+                DB::table('finds')->where(['findable_type' => 'Glass', 'findable_id' => $item->id])->insert($find->toArray());
             } else {
-                \DB::table('finds')->where(['findable_type' => 'Glass', 'findable_id' => $item->id])->update($find->toArray());
+                DB::table('finds')->where(['findable_type' => 'Glass', 'findable_id' => $item->id])->update($find->toArray());
             }
         });
 
@@ -109,7 +110,7 @@ class GlassController extends BaseDigModuleController
     {
         $this->authorize('delete', $this->model);
 
-        \DB::transaction(function () use ($id) {
+        DB::transaction(function () use ($id) {
             $glass = Glass::findOrFail($id);
             $find = Find::where(['findable_type' => 'Glass', 'findable_id' => $glass->id]);
             $glass->delete();

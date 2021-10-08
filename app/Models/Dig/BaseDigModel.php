@@ -34,14 +34,48 @@ class BaseDigModel extends Model implements HasMedia
             ->nonQueued();
     }
 
-    public function formatCollection(Collection $collection)
+    public function indexForAreasSeasons($queryParams)
     {
-        $c = $collection;
-        foreach ($c as $index => $item) {
-            $item = $this->formatCollectionItem($item);
+        $builder = (Object)[];
+        switch ($this->eloquent_model_name) {
+            case "Area":
+                $builder = $this->select('id', 'name AS tag');
+                break;
+            case "Season":
+                $builder = $this->select('id', DB::raw('season + 2000 AS tag'));
+                break;
+            case "AreaSeason":
+                $builder = $this->select('id', 'tag');
+                break;
         }
-        return $c;
+
+        if (!empty($queryParams)) {
+            foreach ($queryParams["registration"] as $key => $ids) {
+                switch ($key) {
+                    case "areas":
+                        $builder->whereIn("area", $ids);
+                        break;
+
+                    case "seasons":
+                        $builder->whereIn("season", $ids);
+                        break;
+
+                    case "media":
+                        $builder->whereHas('media', function (Builder $mediaQuery) use ($ids) {
+                            $mediaQuery->whereIn('collection_name', $ids);});
+                        break;
+
+                    default:
+                        //throw Error
+                }
+            }
+        }
+
+        $builder->orderBy('id', 'asc');
+        return $builder->get();
     }
+
+   //indexForLocus() is at the Locus model
 
     public function formatCollectionItem(Object $item)
     {
@@ -61,23 +95,11 @@ class BaseDigModel extends Model implements HasMedia
                 return $item->name;
             case "Season":
                 return $item->season + 2000;
-
             case "AreaSeason":
                 return $item->tag;
-            case "Locus":
-                return $item->tag . '/' . $item->locus_no;
-            case "Pottery":
-            case "Stone":
-            case "Lithic":
-            case "Metal":
-            case "Glass":
-            case "Flora":
-            case "Fauna":
-            case "Tbd":
-                return $this->getFindPortionOfTag("***", $item);
         }
     }
-
+    */
     //format find's tag. relies only on the $find builder result parameter
     public function findTag($locus_tag, $find)
     {
@@ -110,11 +132,7 @@ class BaseDigModel extends Model implements HasMedia
         return $tag;
     }
 
-    public function indexAreasSeasons($queryParams)
-    {
-    }
-
-    public function filterFindsCollections($queryParams)
+    public function indexForFinds($queryParams)
     {
         $tableName = $this->getTable();
         $modelName = $this->eloquent_model_name;

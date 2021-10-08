@@ -25,38 +25,11 @@ class AreaSeasonController extends BaseDigModuleController
             ], 200);
         }
 
-        //'post' is similar to other dig item controllers.
+        //'post' is similar to other dig model controllers.
         //-----------------------------------------------
         //$this->authorize('viewAny', $this->dig_module);
 
-        $builder = $this->model->with('media');
-
-        if (!empty($request["registration"])) {
-            foreach ($request["registration"] as $key => $ids) {
-                switch ($key) {
-                    case "areas":
-                        $builder->whereIn("area", $ids);
-                        break;
-
-                    case "seasons":
-                        $builder->whereIn("season", $ids);
-                        break;
-
-                    case "media":
-                        $builder->whereHas('media', function (Builder $mediaQuery) use ($ids) {
-                            $mediaQuery->whereIn('collection_name', $ids);});
-                        break;
-
-                    default:
-                        //throw Error
-                }
-            }
-        }
-
-        //order
-        $collection = $builder->orderBy('id', 'asc')->get();
-
-        $collection = $this->model->formatCollection($collection);
+        $collection = $this->model->indexForAreasSeasons($request->all());
 
         return response()->json([
             "collection" => $collection,

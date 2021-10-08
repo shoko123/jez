@@ -9,7 +9,7 @@ use App\Models\Dig\Find;
 use App\Models\Dig\Locus;
 use App\Models\Dig\Metal;
 use Illuminate\Http\Request;
-use \Spatie\Tags\Tag;
+use Illuminate\Support\Facades\DB;
 
 class MetalController extends BaseDigModuleController
 {
@@ -20,7 +20,7 @@ class MetalController extends BaseDigModuleController
 
     public function index(Request $request)
     {
-        $collection = $this->model->filterFindsCollections($request->all());
+        $collection = $this->model->indexForFinds($request->all());
 
         return response()->json([
             "collection" => $collection,
@@ -89,15 +89,15 @@ class MetalController extends BaseDigModuleController
             $find[$key] = $value;
         }
 
-        \DB::transaction(function () use ($metalRequest, $item, $find) {
+        DB::transaction(function () use ($metalRequest, $item, $find) {
             $item->save();
 
             //since 'find' has a composite primary key, we need to manually find record and insert/update.
             if ($metalRequest->isMethod('post')) {
                 $find->findable_id = $item->id;
-                \DB::table('finds')->where(['findable_type' => 'Metal', 'findable_id' => $item->id])->insert($find->toArray());
+                DB::table('finds')->where(['findable_type' => 'Metal', 'findable_id' => $item->id])->insert($find->toArray());
             } else {
-                \DB::table('finds')->where(['findable_type' => 'Metal', 'findable_id' => $item->id])->update($find->toArray());
+                DB::table('finds')->where(['findable_type' => 'Metal', 'findable_id' => $item->id])->update($find->toArray());
             }
         });
 
@@ -122,7 +122,7 @@ class MetalController extends BaseDigModuleController
     {
         $this->authorize('delete', $this->model);
 
-        \DB::transaction(function () use ($id) {
+        DB::transaction(function () use ($id) {
             $metal = Metal::findOrFail($id);
             $find = Find::where(['findable_type' => 'Metal', 'findable_id' => $metal->id]);
             $metal->delete();

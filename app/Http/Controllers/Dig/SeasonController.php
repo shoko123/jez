@@ -14,15 +14,14 @@ class SeasonController extends BaseDigModuleController
     }
 
     public function index(Request $request)
-    {        
-        $collection = $this->model->with('media')->orderBy('id', 'asc')->get();
-        $collection = $this->model->formatCollection($collection);
+    {
+        $collection = $this->model->indexForAreasSeasons(null);
 
         return response()->json([
             "collection" => $collection,
         ], 200);
-
     }
+    
     public function chunkMedia(Request $request)
     {
         //TODO validate!
@@ -38,7 +37,7 @@ class SeasonController extends BaseDigModuleController
             "collection" => $this->model->baseChunkTable($request["ids"]),
         ], 200);
     }
-   
+
     public function show($id)
     {
         $data = $this->model->show($id);

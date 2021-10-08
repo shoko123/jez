@@ -89,19 +89,17 @@ export default {
             }
             let c = { ...state.collections[name] };
 
-            if (name === "main" &&
-                ["Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(state.routes.current.module) &&
-                ["Media", "Table"].includes(state.collections.main.views[state.collections.main.view])
-            ) {
-                //do nothing - chunk loaded by 'page()'
-            } else {
-                //paging is done by slicing the 'main' collection according to pageNo.
+            //About module doesn't use chunks for main
+            if (state.collections.main.views[state.collections.main.view] === "Chips" ||
+                (name === "main" && state.routes.current.module === "About")) {
                 c.chunk = c.collection.slice(
                     c.pageNo * c.itemsPerPage,
                     (c.pageNo + 1) * c.itemsPerPage
                 );
-                //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
+            } else {
+                //"slicing" done by loading chunks by page()
             }
+
             let header
             switch (name) {
                 case "main":
@@ -817,7 +815,8 @@ export default {
             commit("ready", { entity: "collection", isReady: false });
             commit("ready", { entity: "item", isReady: false });
 
-            commit("ready", { entity: "chunk", isReady: ["Area", "Season", "AreaSeason"].includes(state.routes.to.module) });
+            //commit("ready", { entity: "chunk", isReady: ["Area", "Season", "AreaSeason"].includes(state.routes.to.module) });
+            commit("ready", { entity: "chunk", isReady: false });
             dispatch('aux/clearFilters', null, { root: true })
             commit('regs/clear', null, { root: true });
             commit("itemDisplayOptionIndex", 0);
