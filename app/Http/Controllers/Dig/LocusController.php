@@ -20,73 +20,7 @@ class LocusController extends BaseDigModuleController
     public function index(Request $request)
     {
         $this->authorize('viewAny', $this->model);
-
-        $builder = $this->model->leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
-
-        if (!empty($request["registration"] && !empty($request["registration.media"]))) {
-            $builder->with('media');
-        }
-
-        //$this->model->leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id')
-        //->select('areas_seasons.tag as area_season_tag')->with('media');
-        //filter by tags
-
-        if (!empty($request["tags"])) {
-            $tag_types = (object) [];
-            foreach ($request["tags"]["tags"] as $index => $tag_id) {
-                $t = ItemTag::select('type', 'name')->findOrFail($tag_id);
-                $type = $t->type;
-                if (property_exists($tag_types, $type)) {
-                    array_push($tag_types->$type, $t->name);
-                } else {
-                    $tag_types->$type = array($t->name);
-                }
-            }
-
-            foreach ($tag_types as $key => $value) {
-                $builder->withAnyTags($value, $key);
-            }
-        }
-
-        if (!empty($request["registration"])) {
-            foreach ($request["registration"] as $key => $ids) {
-                switch ($key) {
-                    case "areas":
-                        $builder->whereIn("area", $ids);
-                        break;
-
-                    case "seasons":
-                        $builder->whereIn("season", $ids);
-                        break;
-
-                    case "media":
-                        $builder->whereHas('media', function (Builder $mediaQuery) use ($ids) {
-                            $mediaQuery->whereIn('collection_name', $ids);
-                        });
-                        break;
-                    default:
-                        //TODO throw Error
-                }
-            }
-        }
-
-        //order
-        $builder->orderBy('areas_seasons.id', 'asc')
-            ->orderBy('loci.locus_no', 'asc');
-
-        //format tag
-        $builder->select("loci.id AS id", \DB::raw("CONCAT(areas_seasons.tag,'/',locus_no) as tag"));
-
-        //get results
-        $collection = $builder->get();
-
-        if (!empty($request["registration"] && !empty($request["registration.media"]))) {
-            foreach ($collection as $index => $item) {
-                unset($item->media);
-            }
-        }
-        //$collection = $this->model->formatCollection($loci);
-
+        $collection = $this->model->indexForLocus($request->all());
         return response()->json([
             "collection" => $collection,
         ], 200);
@@ -108,7 +42,7 @@ class LocusController extends BaseDigModuleController
         ], 200);
     }
 
-    //used by only create new find
+    //called by create new find to avoid duplicate registrations.
     public function finds(Request $request, $id)
     {
         $finds = Find::where('locus_id', $id)

@@ -2,16 +2,16 @@
 
 namespace App\Models\Dig;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use App\Models\ItemTag;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\HasTags;
+
 
 class BaseDigModel extends Model implements HasMedia
 {
@@ -36,7 +36,7 @@ class BaseDigModel extends Model implements HasMedia
 
     public function indexForAreasSeasons($queryParams)
     {
-        $builder = (Object)[];
+        $builder = (object)[];
         switch ($this->eloquent_model_name) {
             case "Area":
                 $builder = $this->select('id', 'name AS tag');
@@ -62,7 +62,8 @@ class BaseDigModel extends Model implements HasMedia
 
                     case "media":
                         $builder->whereHas('media', function (Builder $mediaQuery) use ($ids) {
-                            $mediaQuery->whereIn('collection_name', $ids);});
+                            $mediaQuery->whereIn('collection_name', $ids);
+                        });
                         break;
 
                     default:
@@ -75,62 +76,71 @@ class BaseDigModel extends Model implements HasMedia
         return $builder->get();
     }
 
-   //indexForLocus() is at the Locus model
-
-    public function formatCollectionItem(Object $item)
+    public function indexForLocus($queryParams)
     {
-        $media = $this->primaryMedia($item);
-        $item["fullUrl"] = $media->fullUrl;
-        $item["hasMedia"] = $media->hasMedia;
-        $item["tnUrl"] = $media->tnUrl;
-        $item["tag"] = $this->getItemTag($this->eloquent_model_name, $item);
-        unset($item->media);
-        return $item;
-    }
+        $builder = $this->leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
 
-    public function getItemTag(string $eloquent_model_name, Object $item)
-    {
-        switch ($eloquent_model_name) {
-            case "Area":
-                return $item->name;
-            case "Season":
-                return $item->season + 2000;
-            case "AreaSeason":
-                return $item->tag;
+        if (!empty($queryParams["registration.media"])) {
+            $builder->with('media');
         }
-    }
-    */
-    //format find's tag. relies only on the $find builder result parameter
-    public function findTag($locus_tag, $find)
-    {
-        $tag = $locus_tag . '.' . $find->registration_category . '.';
 
-        if ($find->registration_category === 'AR') {
-            $tag .= $find->basket_no . "." . $find->artifact_no;
-            if ($find->piece_no !== 0) {
+        if (!empty($queryParams["tags"])) {
+            $tag_types = (object) [];
+            foreach ($queryParams["tags"]["tags"] as $index => $tag_id) {
+                $t = ItemTag::select('type', 'name')->findOrFail($tag_id);
+                $type = $t->type;
+                if (property_exists($tag_types, $type)) {
+                    array_push($tag_types->$type, $t->name);
+                } else {
+                    $tag_types->$type = array($t->name);
+                }
+            }
 
-                $tag .= "P" . $find->piece_no;
-            }
-        } else {
-            //format basket.artifact.piece
-            if ($find->basket_no !== 0) {
-                $tag .= $find->basket_no;
-            }
-            if ($find->artifact_no !== 0) {
-                if ($find->basket_no !== 0) {
-                    $tag .= ".";
-                }
-                $tag .= $find->artifact_no;
-            }
-            if ($find->piece_no !== 0) {
-                if ($find->artifact_no !== 0) {
-                    $tag .= ".";
-                }
-                $tag .= "P" . $find->piece_no;
+            foreach ($tag_types as $key => $value) {
+                $builder->withAnyTags($value, $key);
             }
         }
-        return $tag;
+
+        if (!empty($queryParams["registration"])) {
+            foreach ($queryParams["registration"] as $key => $ids) {
+                switch ($key) {
+                    case "areas":
+                        $builder->whereIn("area", $ids);
+                        break;
+
+                    case "seasons":
+                        $builder->whereIn("season", $ids);
+                        break;
+
+                    case "media":
+                        $builder->whereHas('media', function (Builder $mediaQuery) use ($ids) {
+                            $mediaQuery->whereIn('collection_name', $ids);
+                        });
+                        break;
+                    default:
+                        //TODO throw Error
+                }
+            }
+        }
+
+        //order
+        $builder->orderBy('areas_seasons.id', 'asc')
+            ->orderBy('loci.locus_no', 'asc');
+
+        //format tag
+        $builder->select("loci.id AS id", DB::raw("CONCAT(areas_seasons.tag,'/',locus_no) as tag"));
+
+        //get results
+        $collection = $builder->get();
+
+        if (!empty($queryParams["registration.media"])) {
+            foreach ($collection as $index => $item) {
+                unset($item->media);
+            }
+        }
+        return $collection;
     }
+
 
     public function indexForFinds($queryParams)
     {
@@ -247,6 +257,38 @@ class BaseDigModel extends Model implements HasMedia
             $builder->with('media');
         }
         return $result;
+    }
+
+    //format find's tag. relies only on the $find builder result parameter
+    public function findTag($locus_tag, $find)
+    {
+        $tag = $locus_tag . '.' . $find->registration_category . '.';
+
+        if ($find->registration_category === 'AR') {
+            $tag .= $find->basket_no . "." . $find->artifact_no;
+            if ($find->piece_no !== 0) {
+
+                $tag .= "P" . $find->piece_no;
+            }
+        } else {
+            //format basket.artifact.piece
+            if ($find->basket_no !== 0) {
+                $tag .= $find->basket_no;
+            }
+            if ($find->artifact_no !== 0) {
+                if ($find->basket_no !== 0) {
+                    $tag .= ".";
+                }
+                $tag .= $find->artifact_no;
+            }
+            if ($find->piece_no !== 0) {
+                if ($find->artifact_no !== 0) {
+                    $tag .= ".";
+                }
+                $tag .= "P" . $find->piece_no;
+            }
+        }
+        return $tag;
     }
 
     public function baseShow($id)

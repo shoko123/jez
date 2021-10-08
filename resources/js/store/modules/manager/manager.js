@@ -89,15 +89,18 @@ export default {
             }
             let c = { ...state.collections[name] };
 
-            //About module doesn't use chunks for main
-            if (state.collections.main.views[state.collections.main.view] === "Chips" ||
-                (name === "main" && state.routes.current.module === "About")) {
+            if (name === "main" &&
+                ["Area", "Season", "AreaSeason","Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(state.routes.current.module) &&
+                ["Media", "Table"].includes(state.collections.main.views[state.collections.main.view])
+            ) {
+                //do nothing - chunk loaded by 'page()'
+            } else {
+                //paging is done by slicing the 'main' collection according to pageNo.
                 c.chunk = c.collection.slice(
                     c.pageNo * c.itemsPerPage,
                     (c.pageNo + 1) * c.itemsPerPage
                 );
-            } else {
-                //"slicing" done by loading chunks by page()
+                //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
             }
 
             let header
