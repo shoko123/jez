@@ -114,7 +114,7 @@ export default {
         },
         carousel(state, payload) {
             state.carousel = payload;
-        }, 
+        },
     },
     actions: {
         lightBoxNext({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
@@ -180,6 +180,8 @@ export default {
                         //commit to local item
                         commit('mgr/collections', { name: "media", collection: res.data.collection }, { root: true });
                         commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
+                        commit("mgr/ready", { entity: "chunk", isReady: false }, { root: true });
+                        dispatch("mgr/page", { name: "main", page: rootGetters["mgr/collections"]("main").pageNo + 1 }, { root: true });
                         return res;
                     })
                     .catch(err => {
@@ -190,7 +192,7 @@ export default {
         },
 
         //delete a single media item.
-        delete({ state, commit, dispatch }, payload) {
+        delete({ state,  getters, rootGetters, commit, dispatch }, payload) {
             let xhrRequest = {
                 endpoint: `/api/media`,
                 action: "delete",
@@ -206,6 +208,9 @@ export default {
                     commit('mgr/collections', { name: "media", collection: res.data.collection }, { root: true });
                     //alert manager that item is dirty
                     commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
+                    commit("mgr/ready", { entity: "chunk", isReady: false }, { root: true });
+                    dispatch("mgr/page", { name: "main", page: rootGetters["mgr/collections"]("main").pageNo + 1 }, { root: true });
+
                     return res;
                 })
                 .catch(err => {

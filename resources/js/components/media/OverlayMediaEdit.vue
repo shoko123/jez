@@ -16,7 +16,7 @@ export default {
         return;
       }
 
-      console.log("deleteMedia: " + JSON.stringify(this.media, null, 2));
+      console.log("deleteMedia: " + JSON.stringify(this.item, null, 2));
       this.$store.dispatch("med/delete", {
         item_type: this.$store.getters["mgr/module"],
         id: this.$store.getters["mgr/item"].id,

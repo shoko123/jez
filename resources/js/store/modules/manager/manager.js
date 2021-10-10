@@ -89,13 +89,13 @@ export default {
             }
             let c = { ...state.collections[name] };
 
-            if (name === "main" &&
-                ["Area", "Season", "AreaSeason","Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(state.routes.current.module) &&
-                ["Media", "Table"].includes(state.collections.main.views[state.collections.main.view])
-            ) {
-                //do nothing - chunk loaded by 'page()'
-            } else {
-                //paging is done by slicing the 'main' collection according to pageNo.
+            //"If all required data is in the collection, chunking (paging)" is done by 
+            //slicing the collection according to pageNo.
+            //in other cases, chunking will be done in page() by loading a chunk from DB in page().
+            if (name !== "main" ||
+                state.collections.main.views[state.collections.main.view] == "Chips" ||
+                state.routes.current.module == "About") {
+
                 c.chunk = c.collection.slice(
                     c.pageNo * c.itemsPerPage,
                     (c.pageNo + 1) * c.itemsPerPage
@@ -135,10 +135,9 @@ export default {
         //The following 3 are for debug only:
         collectionMain(state, rootState, getters, rootGetters) {
             let c = { ...state.collections.main };
-            if (["Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(state.routes.current.module) &&
-                ["Media", "Table"].includes(state.collections.main.views[state.collections.main.view])) {
-                //chunk was loaded in 'page()'
-            } else {
+            if (state.collections.main.views[state.collections.main.view] == "Chunk" ||
+                state.routes.current.module == "About") {
+
                 c.chunk = c.collection.slice(
                     c.pageNo * c.itemsPerPage,
                     (c.pageNo + 1) * c.itemsPerPage
@@ -427,7 +426,8 @@ export default {
                         return dispatch("indexOfItemInMainCollection", index);
                     } else {
                         console.log(`Item is not ready; setting page(1)`);
-                        dispatch("page", { name: "main", page: 1, forceLoad: true });
+                        commit("ready", { entity: "chunk", isReady: false });
+                        dispatch("page", { name: "main", page: 1 });
                     }
                     return res;
                 })
@@ -671,6 +671,7 @@ export default {
                     switch (newView) {
                         case "Media":
                             commit("itemsPerPage", { name: "main", ipp: state.globalSettings.perPageMedia });
+                            commit("ready", { entity: "chunk", isReady: false });
                             break;
 
                         case "Chips":
@@ -679,10 +680,11 @@ export default {
                             break;
                         case "Table":
                             commit("itemsPerPage", { name: "main", ipp: state.globalSettings.perPageTableRecords });
+                            commit("ready", { entity: "chunk", isReady: false });
                             break;
                     }
                     commit("collectionViewIndex", { name: "main", viewIndex: newViewIndex });
-                    dispatch("page", { name: "main", page: 1, forceLoad: true })
+                    dispatch("page", { name: "main", page: 1 })
                     break;
 
 
@@ -695,7 +697,6 @@ export default {
                         case "Chips":
                             commit("itemsPerPage", { name: "related", ipp: state.globalSettings.perPageChips });
                             break;
-
                     }
                     commit("collectionViewIndex", { name: "related", viewIndex: newViewIndex });
                     dispatch("page", { name: "related", page: 1 })
@@ -715,21 +716,13 @@ export default {
             //the second
 
             if (newPage !== state.collections.main.pageNo || state.routes.current.module !== state.routes.to.module) {
-                return dispatch("page", { name: "main", page: newPage + 1, forceLoad: (state.routes.current.module !== state.routes.to.module) });
+                return dispatch("page", { name: "main", page: newPage + 1 });
             }
         },
 
         page({ state, getters, commit, dispatch }, payload) {
             function loadChunk() {
                 let source = state.routes.to;
-
-                //No chunking for the "About" module.
-                if (state.routes.to.module === "About") {
-                    //console.log(`page module: ${state.routes.to.module} ---skipping chunking...`)
-                    commit("ready", { entity: "chunk", isReady: true });
-                    return;
-
-                }
 
                 let endpoint;
                 switch (state.collections[payload.name].views[state.collections[payload.name].view]) {
@@ -762,7 +755,7 @@ export default {
                 return dispatch('xhr/xhr', xhrRequest, { root: true })
                     .then((res) => {
                         //console.log('mgr/page loaded chunk: ' + JSON.stringify(res.data.collection, null, 2));
-                        //add tags that are already in the 'all' collection.
+                        //add tags that are already in the collection.
                         res.data.collection.forEach(function (x, index) {
                             x["tag"] = tags[index];
                         });
@@ -778,30 +771,50 @@ export default {
 
             //start here
             console.log(`mgr/page(${payload.name}, ${payload.page})`);
-            let res;
 
+            //No chunking for the "About" module. TODO check if context is routing middleware 
+            //or paging with no url change to decide on source module (current or to).
+            if (state.routes.to.module === "About") {
+                commit("ready", { entity: "chunk", isReady: true });
+                return;
+            }
+            let res;
             switch (payload.name) {
                 case "main":
-                    //console.log(`collectionReady: ${state.ready["collection"]} forceLoad: ${payload.forceLoad} currentPage: ${state.collections.main.pageNo + 1}`);
+                    //console.log(`collectionReady: ${state.ready["collection"]} currentPage: ${state.collections.main.pageNo + 1}`);
                     //console.log(`view: ${state.collections[payload.name].views[state.collections[payload.name].view]}`);
                     switch (state.collections[payload.name].views[state.collections[payload.name].view]) {
                         case "Media":
                         case "Table":
                             if (state.ready["collection"] &&
-                                (payload.forceLoad ||
+                                (!state.ready["chunk"] ||
                                     state.collections.main.pageNo + 1 !== payload.page)) {
                                 //console.log(`Calling loadChunk()`);
-                                res = loadChunk();
+                                loadChunk()
+                                    .then((res) => {
+                                        commit("page", { name: payload.name, page: payload.page });
+                                        commit("ready", { entity: "chunk", isReady: true });
+                                    });
+                            } else {
+                                commit("page", { name: payload.name, page: payload.page });
+                                commit("ready", { entity: "chunk", isReady: true });
                             }
+                            break;
+                        case "Chips":
+                            commit("page", { name: payload.name, page: payload.page });
+                            commit("ready", { entity: "chunk", isReady: true });
+                            break;
                     }
 
-                    commit("page", { name: payload.name, page: payload.page });
+                    //commit("page", { name: payload.name, page: payload.page });
+                    //commit("ready", { entity: "chunk", isReady: true });
                     return res;
                     break;
 
                 case "related":
                 case "media":
                     commit("page", { name: payload.name, page: payload.page });
+                    commit("ready", { entity: "chunk", isReady: true });
                     break;
 
                 default:
