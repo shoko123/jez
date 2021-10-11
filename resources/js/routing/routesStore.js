@@ -128,9 +128,9 @@ export default {
                 to["action"] = null;
             }
 
-            //query params will only be copied on 'list' action. (We don't want to reload list if we observed items).
+            //query params will only be copied on 'list' action. (We don't want unnecessary reload of chunks).
             if (payload.params.hasOwnProperty("action") && payload.params.action === "list") {
-                console.log(`setting to.queryParams to: ${JSON.stringify(payload.query, null, 2)}`);
+                //console.log(`setting to.queryParams to: ${JSON.stringify(payload.query, null, 2)}`);
                 to.queryParams = payload.query;
             }
             //console.log(`parseTo.done to: ${JSON.stringify(state.to, null, 2)}`);

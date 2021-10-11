@@ -1,9 +1,13 @@
 <template>
-  <div>
-    <h5>{{ item.description }}</h5>
-    <v-btn :disabled="!isImplemented" @click="goTo(item)">Visit</v-btn>
-    <v-btn v-if="showLightBoxOption" @click="openLightBox()">Lightbox</v-btn>
-  </div>
+  <v-card class="mx-auto" color="transparent" flat>
+    <v-card-text v-if="hasMedia" class="text-body-1 white--text">
+      {{ text }}</v-card-text
+    >
+    <v-card-actions>
+      <v-btn :disabled="!isImplemented" @click="goTo(item)">Visit</v-btn>
+      <v-btn v-if="hasMedia" @click="openLightBox()">Lightbox</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
     
 
@@ -27,7 +31,7 @@ export default {
   },
 
   computed: {
-    showLightBoxOption() {
+    hasMedia() {
       return this.item.hasMedia;
     },
     module() {
@@ -37,6 +41,14 @@ export default {
       return this.module === "Locus"
         ? this.$store.getters["mgr/isImplemented"](this.item.findable_type)
         : true;
+    },
+    text() {
+      let text = this.item.description;
+      if (text === null) {
+        return "";
+      } else {
+        return text.length < 101 ? text : text.substr(0, 100) + "...";
+      }
     },
   },
   methods: {

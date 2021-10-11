@@ -16,6 +16,11 @@
               color="grey"
               >{{ tagText }}</v-btn
             >
+            <v-card class="mx-auto"  color="transparent" flat>
+              <v-card-text class="text-body-1 white--text">
+                {{ overlayText }}</v-card-text
+              >
+            </v-card>
           </v-img>
           <v-fade-transition>
             <v-overlay v-if="hover" absolute color="#036358">
@@ -76,6 +81,23 @@ export default {
           } else {
             return "";
           }
+      }
+    },
+    overlayText() {
+      switch (this.source) {
+        case "main":
+        case "related":
+          if (!this.item.hasMedia) {
+            let text = this.item.description;
+            if (text === null) {
+              return "";
+            } else {
+              return text.length < 101 ? text : text.substr(0, 100) + "...";
+            }
+          }
+
+        case "media":
+          return "";
       }
     },
 

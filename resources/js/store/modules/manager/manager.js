@@ -425,7 +425,7 @@ export default {
                         console.log(`item(ready) setting index: ${index}`);
                         return dispatch("indexOfItemInMainCollection", index);
                     } else {
-                        console.log(`Item is not ready; setting page(1)`);
+                        //console.log(`Item is not ready; setting page(1)`);
                         commit("ready", { entity: "chunk", isReady: false });
                         dispatch("page", { name: "main", page: 1 });
                     }
@@ -770,7 +770,7 @@ export default {
             }
 
             //start here
-            console.log(`mgr/page(${payload.name}, ${payload.page})`);
+            //console.log(`mgr/page(${payload.name}, ${payload.page})`);
 
             //No chunking for the "About" module. TODO check if context is routing middleware 
             //or paging with no url change to decide on source module (current or to).

@@ -1,6 +1,6 @@
 /*!
- * Vue.js v2.6.12
- * (c) 2014-2020 Evan You
+ * Vue.js v2.6.14
+ * (c) 2014-2021 Evan You
  * Released under the MIT License.
  */
 
@@ -142,6 +142,8 @@
 
 /*! ../../presets/default */
 
+/*! ../../services/goto */
+
 /*! ../../services/goto/easing-patterns */
 
 /*! ../../styles/components/_selection-controls.sass */
@@ -277,6 +279,8 @@
 /*! ../comparable */
 
 /*! ../delayable */
+
+/*! ../detachable */
 
 /*! ../framework */
 
@@ -1252,7 +1256,7 @@
 
 /*! exports provided: parse, genStyles, genVariations, lighten, darken */
 
-/*! exports provided: parseEvent, isEventOn, isEventStart, isEventOverlapping */
+/*! exports provided: parseEvent, isEventOn, isEventHiddenOn, isEventStart, isEventOverlapping */
 
 /*! exports provided: parsedCategoryText, getParsedCategories */
 

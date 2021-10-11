@@ -3,65 +3,69 @@
     <v-toolbar v-if="isRead" dark class="primary" fixed dense>
       <v-btn text @click="home"> {{ moduleName }} </v-btn>
       <v-spacer></v-spacer>
-      
-        <v-toolbar-items class="hidden-xs-only">
-          <v-btn text :disabled="disableLinks" @click="moduleClick({ module: 'About' })">
-            <v-icon left dark>mdi-help-circle-outline</v-icon>About
-          </v-btn>
-          <v-menu offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn  :disabled="disableLinks" v-bind="attrs" v-on="on" text>
-                <v-icon left dark>view_comfy</v-icon>
-                Areas/Seasons
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item
-                v-for="(item, index) in areaSeasonDropList"
-                :key="index"
-                @click="moduleClick(item)"
-              >
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-          <v-btn
-            text
-            v-for="item in btns"
-            :key="item.title"
-            @click="moduleClick(item)"
-            :disabled="disableLinks"
-          >
-            <v-icon left dark>{{ item.icon }}</v-icon>
-            {{ item.title }}
-          </v-btn>
 
-          <v-menu offset-y v-if="isLoggedIn">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn color="purple" dark v-bind="attrs" v-on="on">{{
-                userName
-              }}</v-btn>
-            </template>
-            <v-list>
-              <v-list-item
-                v-for="(item, index) in userDropBoxItems"
-                :key="index"
-                @click="userMenu(item)"
-              >
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-          <v-btn
-            v-if="showLoginBtn"
-            color="purple"
-            dark
-            @click="moduleClick(loginBtn)"
-          >
-            <v-icon left dark>{{ loginBtn.icon }}</v-icon>
-            {{ loginBtn.title }}
-          </v-btn>
-        </v-toolbar-items>
+      <v-toolbar-items class="hidden-xs-only">
+        <v-btn
+          text
+          :disabled="disableLinks"
+          @click="moduleClick({ module: 'About' })"
+        >
+          <v-icon left dark>mdi-help-circle-outline</v-icon>About
+        </v-btn>
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn :disabled="disableLinks" v-bind="attrs" v-on="on" text>
+              <v-icon left dark>view_comfy</v-icon>
+              Areas/Seasons
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(item, index) in areaSeasonDropList"
+              :key="index"
+              @click="moduleClick(item)"
+            >
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+        <v-btn
+          text
+          v-for="item in btns"
+          :key="item.title"
+          @click="moduleClick(item)"
+          :disabled="disableLinks"
+        >
+          <v-icon left dark>{{ item.icon }}</v-icon>
+          {{ item.title }}
+        </v-btn>
+
+        <v-menu offset-y v-if="isLoggedIn">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn color="purple" dark v-bind="attrs" v-on="on">{{
+              userName
+            }}</v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="(item, index) in userDropBoxItems"
+              :key="index"
+              @click="userMenu(item)"
+            >
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+        <v-btn
+          v-if="showLoginBtn"
+          color="purple"
+          dark
+          @click="moduleClick(loginBtn)"
+        >
+          <v-icon left dark>{{ loginBtn.icon }}</v-icon>
+          {{ loginBtn.title }}
+        </v-btn>
+      </v-toolbar-items>
     </v-toolbar>
 
     <v-toolbar v-if="isEdit" dark class="orange" fixed dense
@@ -134,15 +138,13 @@ export default {
     },
     disableLinks() {
       let needAuth = this.$store.getters["mgr/appSettings"].authorizedUsersOnly;
-      console.log(`menuMain isLoggedIn: ${this.isLoggedIn}`)
-       console.log(`menuMain needAuth: ${needAuth}`)
-        console.log(`menuMain disableLinks: ${(needAuth && !this.isLoggedIn)}`)
-      return  needAuth && !this.isLoggedIn;
+      //console.log(`menuMain isLoggedIn: ${this.isLoggedIn}`);
+      //console.log(`menuMain needAuth: ${needAuth}`);
+      //console.log(`menuMain disableLinks: ${needAuth && !this.isLoggedIn}`);
+      return needAuth && !this.isLoggedIn;
     },
     showLoginBtn() {
-      return (
-        !this.isLoggedIn && this.status.action !== "login"
-      );
+      return !this.isLoggedIn && this.status.action !== "login";
       //return this.$store.getters["aut/isLoggedIn"];
     },
     userName() {
