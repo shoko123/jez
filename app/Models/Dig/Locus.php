@@ -82,15 +82,12 @@ class Locus extends BaseDigModel
             //set type to order by.
             $type = $find->findable_type;
 
-            //format tag
-            $tag = "(" . $find->findable_type . ") ";
-            $tag .= $this->findTag($locus_tag, $find);
-
+           
             //create formatted find with media info. (media was preloaded in query)
             $formatted = $this->primaryMedia($find->findable);
 
             //add fields
-            $formatted->tag = "(" . $find->findable_type . ") " . $this->findTag($locus_tag, $find);
+            $formatted->tag = $find->findable_type . " " . $this->findTag($locus_tag, $find);
             $formatted->findable_type = $find->findable_type;
             $formatted->findable_id = $find->findable_id;
             $formatted->description = $find->findable->description;

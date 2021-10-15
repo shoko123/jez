@@ -25,22 +25,40 @@ export default {
             //let storageName = rootGetters["mgr/storageName"](state.lightBox.source);
             if (state.lightBox.isOpen === false) return null;
 
+            function hasDescription(val){
+                return (val === undefined || val == null || val.length <= 0) ? true : false;
+            }
+            function getItemText(item){
+                let text = "";
+                if(state.lightBox.source === "media") {
+                    return "";
+                } 
+                if(!item.hasMedia){
+                    text += `[No media]` + '\n';
+                }
+                text += item.description ? item.description : " [No description]"
+                return text;
+            }
+
             let lb = { ...state.lightBox };
             //let c = rootGetters["mgr/collectionMain"];
             let c = rootGetters["mgr/collections"](state.lightBox.source);
+            let item = c.chunk[state.lightBox.indexInChunk];
             lb["pageNo"] = c.pageNo;
             lb["itemsPerPage"] = c.itemsPerPage;
             lb["length"] = c.collection.length;
             lb["chunk"] = c.chunk;
             lb["media"] = (c.chunk)[state.lightBox.indexInChunk];
 
-            let header,
+            let lightBoxHeader, itemHeader,
                 media = lb.media ? lb.media : { tag: "" },
                 mod = rootGetters["mgr/module"],
                 page = lb.pageNo + 1,
                 index = (page - 1) * lb.itemsPerPage + lb.indexInChunk + 1,
                 length = lb.length,
                 itemTag = "";
+
+
             if (rootGetters["mgr/status"].isShow) {
                 itemTag = rootGetters["mgr/item"]
                     ? rootGetters["mgr/item"].tag
@@ -49,33 +67,42 @@ export default {
 
             switch (state.lightBox.source) {
                 case "main":
-                    header = `Showing ${mod} Query Results: ${media.tag}`;
+                    //header = `Showing ${mod} Query Results: ${media.tag}`;
+                    lightBoxHeader = `${mod} query results (${index}/${length})`;
+                    itemHeader = `${mod} ${media.tag}`;
+                   
                     break;
                 case "media":
-                    header = `Showing ${mod} ${itemTag} Related Media`;
+                    //header = `Showing ${mod} ${itemTag} Related Media`;
+                    lightBoxHeader = `${mod} ${itemTag} media (${index}/${length})`;
+                    itemHeader = `Media item ${index}`;
+                 
                     break;
                 case "related":
-                    let related;
+                    
                     switch (rootGetters["mgr/module"]) {
                         case "Area":
                         case "Season":
-                            related = " Areas/Seasons"
+                            lightBoxHeader = `Showing (${length}) areas/seasons related to ${mod} ${itemTag}`;
                             break;
                         case "AreaSeason":
-                            related = "Loci"
+                            lightBoxHeader = `Showing (${length}) loci related to areas/season ${itemTag}`;
                             break;
                         case "Locus":
-                            related = "Small Finds"
+                            lightBoxHeader = `Showing (${length}) small finds retrieved from locus ${itemTag}`;
                             break;
                     }
-                    header = `Showing ${mod} ${itemTag} Related ${related}: ${media.tag}`;
+                    itemHeader = `${item.tag}  (${index}/${length})`;
                     break;
             }
-            let counter = ` [.../...]`;
+            let counter = ` (.../...)`;
             if (rootGetters["mgr/ready"].chunk) {
-                counter = ` [${index}/${length}]`;
+                counter = ` (${index}/${length})`;
             }
-            lb["header"] = header + counter; //[${index}/${length}]`;
+            lb["header"] = "******"; //[${index}/${length}]`;
+            lb["lightBoxHeader"] = lightBoxHeader; 
+            lb["itemHeader"] = itemHeader; 
+            lb["itemText"] = getItemText(item); 
             return lb;
         },
 

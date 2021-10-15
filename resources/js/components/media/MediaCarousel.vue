@@ -11,6 +11,7 @@
         :src="media.fullUrl"
         :lazy-src="media.tnUrl"
         contain
+        class="grey lighten-2"
       ></v-img>
     </v-carousel-item>
   </v-carousel>

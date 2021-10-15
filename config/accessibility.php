@@ -3,6 +3,6 @@
 return [
     'accessibility' => [
         'readOnly' => true,
-        'authorizedUsersOnly' => true,
+        'authorizedUsersOnly' => false,
     ],
 ];

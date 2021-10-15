@@ -1,9 +1,9 @@
 <template>
   <v-container fluid v-if="isReady">
     <v-card>
-      <v-card-title class="grey py-0 mb-4">
-        {{ header }}
-        <v-spacer></v-spacer>
+      <v-card-title class="grey py-0 mb-4"
+        >{{lightBox.lightBoxHeader}}
+        <v-spacer />
         <template v-if="showArrows">
           <v-btn
             fab
@@ -28,10 +28,23 @@
         >
         <v-btn fab text small class="ml-2" @click="closeLightBox">
           <v-icon color="primary">close</v-icon>
-        </v-btn>
-      </v-card-title>
+        </v-btn></v-card-title
+      >
       <v-card-text>
-        <MediaCarousel />
+        <v-row dense>
+          <v-card width="80%">
+            <MediaCarousel />
+          </v-card>
+
+          <v-card width="20%" class="purple lighten-5">
+            <v-card-title class="ma-2 text--body-1 bold"> {{ lightBox.itemHeader }}</v-card-title>
+            <v-card-text>
+              
+               <v-row  class="text-body-1">
+                 {{ lightBox.itemText }}</v-row>
+            </v-card-text>
+          </v-card>
+        </v-row>
       </v-card-text>
     </v-card>
   </v-container>
@@ -78,6 +91,7 @@ export default {
     header() {
       return this.lightBox.header;
     },
+   
   },
   methods: {
     closeLightBox() {
