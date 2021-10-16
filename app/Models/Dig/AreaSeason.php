@@ -42,7 +42,11 @@ class AreaSeason extends BaseDigModel
 
         //get related media.
         $itemMedia = $this->allMedia($item);
-
+        $item["hasMedia"] = $itemMedia->primary->hasMedia;
+        $item["tnUrl"] = $itemMedia->primary->tnUrl;
+        $item["fullUrl"] = $itemMedia->primary->fullUrl;
+        unset($itemMedia->primary);
+        
         //format related loci
         $lociWithMedia = [];
         foreach ($item->loci as $index => $locus) {

@@ -26,6 +26,10 @@ class Season extends BaseDigModel
         //get related media.
         $itemMedia = $this->allMedia($item);
 
+        $item["hasMedia"] = $itemMedia->primary->hasMedia;
+        $item["tnUrl"] = $itemMedia->primary->tnUrl;
+        $item["fullUrl"] = $itemMedia->primary->fullUrl;
+        unset($itemMedia->primary);
         unset($item->media);
         $item->tag = $item->season + 2000;
 

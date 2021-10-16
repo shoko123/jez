@@ -34,7 +34,7 @@ export default {
             storeName: "area",
             appBaseUrl: "/dig-modules/areas",
             apiBaseUrl: "/api/areas",
-            itemDisplayOptions: ["Main", "Gallery"],
+            itemDisplayOptions: ["Main", "Media", "Gallery", "Related Gallery"],
         },
         Season: {
             module: "Season",
@@ -43,7 +43,7 @@ export default {
             storeName: "season",
             appBaseUrl: "/dig-modules/seasons",
             apiBaseUrl: "/api/seasons",
-            itemDisplayOptions: ["Main", "Gallery"],
+            itemDisplayOptions: ["Main", "Media", "Gallery", "Related Gallery"],
         },
         AreaSeason: {
             module: "areaSeason",
@@ -52,7 +52,7 @@ export default {
             storeName: "arsn",
             appBaseUrl: "/dig-modules/areas-seasons",
             apiBaseUrl: "/api/areas-seasons",
-            itemDisplayOptions: ["Main", "Gallery", "Loci Gallery"],
+            itemDisplayOptions: ["Main", "Media", "Gallery", "Loci Gallery"],
         },
 
         Locus: {
@@ -65,7 +65,7 @@ export default {
             isDigModule: true,
 
             isFind: false,
-            itemDisplayOptions: ["Main", "Locus Gallery", "Finds Gallery"],
+            itemDisplayOptions: ["Main", "Media", "Locus Gallery", "Finds Gallery"],
         },
         Pottery: {
             module: "pottery",

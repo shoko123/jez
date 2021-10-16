@@ -36,7 +36,7 @@
             <MediaCarousel />
           </v-card>
 
-          <v-card width="20%" class="purple lighten-5">
+          <v-card width="20%" class="purple lighten-3">
             <v-card-title class="ma-2 text--body-1 bold"> {{ lightBox.itemHeader }}</v-card-title>
             <v-card-text>
               

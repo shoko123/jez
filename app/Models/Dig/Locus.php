@@ -56,7 +56,10 @@ class Locus extends BaseDigModel
 
         //get related media.
         $itemMedia = $this->allMedia($locus);
-
+        $locus["hasMedia"] = $itemMedia->primary->hasMedia;
+        $locus["tnUrl"] = $itemMedia->primary->tnUrl;
+        $locus["fullUrl"] = $itemMedia->primary->fullUrl;
+        unset($itemMedia->primary);
 
         //get LocusFinds
         $locusFinds = $this->locusFinds($locus->tag, $locus->finds);
@@ -64,7 +67,7 @@ class Locus extends BaseDigModel
         //cleanup
         unset($locus->finds);
         unset($locus->tags);
-
+        unset($locus->media);
         return [
             "item" => $locus,
             "locusFinds" => $locusFinds,

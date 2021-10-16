@@ -411,16 +411,6 @@ class BaseDigModel extends Model implements HasMedia
                 ];
             } else {
                 return $this->filler($eloquent_model_name);
-                //construct filler images
-                $fullMediaName = 'fillers/' . $eloquent_model_name . '0.jpg';
-                $tnMediaName = 'fillers/' . $eloquent_model_name . '0-tn.jpg';
-                $fullUrl = Storage::disk('app-media')->url($fullMediaName);
-                $tnUrl = Storage::disk('app-media')->url($tnMediaName);
-                return (object) [
-                    'hasMedia' => false,
-                    'fullUrl' => $fullUrl,
-                    'tnUrl' => $tnUrl,
-                ];
             }
         }
     }
@@ -430,7 +420,7 @@ class BaseDigModel extends Model implements HasMedia
         $reflect = new \ReflectionClass($item);
         $eloquent_model_name = $reflect->getShortName();
 
-        $media = (object) ["collection" => [], "filler" => null];
+        $media = (object) ["collection" => []];
 
         $drawings = $item->getMedia('drawing');
 
@@ -441,12 +431,13 @@ class BaseDigModel extends Model implements HasMedia
         $photos = $item->getMedia('photo');
 
         foreach ($photos as $med) {
-            array_push($media->collection, ['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => true, 'media_id' => $med->id]);
+            array_push($media->collection, (object)['fullUrl' => $med->getFullUrl(), 'tnUrl' => $med->getFullUrl('tn'), 'hasMedia' => true, 'media_id' => $med->id]);
         }
 
         if (empty($media->collection)) {
-            $media->filler = $this->filler($eloquent_model_name);
-            $media->collection = [];
+            $media->primary = $this->filler($eloquent_model_name);
+        } else {
+            $media->primary = $media->collection[0];
         }
         return $media;
     }

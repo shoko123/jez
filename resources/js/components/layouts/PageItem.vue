@@ -10,15 +10,19 @@ import SubMenuItem from "../menus/SubMenuItem";
 import AreaView0 from "../area/AreaView0";
 import AreaView1 from "../area/AreaView1";
 import AreaView2 from "../area/AreaView2";
+import AreaView3 from "../area/AreaView3";
 import SeasonView0 from "../season/SeasonView0";
 import SeasonView1 from "../season/SeasonView1";
 import SeasonView2 from "../season/SeasonView2";
+import SeasonView3 from "../season/SeasonView3";
 import AreaSeasonView0 from "../areaSeason/AreaSeasonView0";
 import AreaSeasonView1 from "../areaSeason/AreaSeasonView1";
 import AreaSeasonView2 from "../areaSeason/AreaSeasonView2";
+import AreaSeasonView3 from "../areaSeason/AreaSeasonView3";
 import LocusView0 from "../loci/LocusView0";
 import LocusView1 from "../loci/LocusView1";
 import LocusView2 from "../loci/LocusView2";
+import LocusView3 from "../loci/LocusView3";
 import StoneView0 from "../stones/StoneView0";
 import StoneView1 from "../stones/StoneView1";
 import StoneView2 from "../stones/StoneView2";
@@ -42,15 +46,19 @@ export default {
     AreaView0,
     AreaView1,
     AreaView2,
+    AreaView3,
     SeasonView0,
     SeasonView1,
     SeasonView2,
+    SeasonView3,
     AreaSeasonView0,
     AreaSeasonView1,
     AreaSeasonView2,
+    AreaSeasonView3,
     LocusView0,
     LocusView1,
     LocusView2,
+    LocusView3,
     StoneView0,
     StoneView1,
     StoneView2,
@@ -75,11 +83,7 @@ export default {
       return this.$store.getters["mgr/status"].itemDisplayOptionIndex;
     },
     view() {
-      return (
-        this.$store.getters["mgr/module"] +
-        "View" +
-        this.displayOption
-      );
+      return this.$store.getters["mgr/module"] + "View" + this.displayOption;
     },
   },
 };
