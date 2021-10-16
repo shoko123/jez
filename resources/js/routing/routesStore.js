@@ -1,4 +1,4 @@
-import jezConfig from '../jezConfig.js';
+import jezConfig from '../config.js';
 import { filtersFromQueryString } from "./queryString.js"
 export default {
     namespaced: true,
@@ -115,7 +115,7 @@ export default {
             }
             
             if (!["Home", "Admin"].includes(to.module)) {
-                to.apiModuleUrl = jezConfig.myModules[to.module].apiBaseUrl;
+                to.apiModuleUrl = jezConfig.modules[to.module].apiBaseUrl;
             }
             if (payload.params.hasOwnProperty("id")) {
                 to.id = parseInt(payload.params.id, 10);
@@ -306,7 +306,7 @@ export default {
         goTo({ state, rootState, getters, rootGetters }, payload) {
             //an abstraction layer above vue router to enable less cumbersome calls from components/vuex.
             function goToString() {
-                let moduleBaseUrl = jezConfig.myModules[state.current.module].appBaseUrl;
+                let moduleBaseUrl = jezConfig.modules[state.current.module].appBaseUrl;
                 switch (payload) {
                     case "home":
                         return { path: "/" };
@@ -335,7 +335,7 @@ export default {
             }
             function goToObject() {
                 //console.log(`mgr.routes.goToObject: ${JSON.stringify(payload, null, 2)}`);
-                let moduleBaseUrl = jezConfig.myModules[payload.module].appBaseUrl;
+                let moduleBaseUrl = jezConfig.modules[payload.module].appBaseUrl;
 
                 //verify that module, action and id (optional) exist
                 switch (payload.action) {

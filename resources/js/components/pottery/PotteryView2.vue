@@ -1,13 +1,13 @@
 <template>
-  <v-container fluid>
-    <CollectionForm v-bind="{ source: 'media' }"></CollectionForm>
-  </v-container>
+    <LayoutPrimaryMedia />
 </template>
 
 <script>
-import CollectionForm from "../elements/CollectionForm";
+import LayoutPrimaryMedia from "../layouts/LayoutPrimaryMedia";
 
 export default {
-  components: { CollectionForm },
+  components: {
+    LayoutPrimaryMedia,
+  },
 };
 </script>

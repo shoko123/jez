@@ -1,5 +1,5 @@
 import routes from '../../../routing/routesStore.js';
-import jezConfig from '../../../jezConfig.js';
+import jezConfig from '../../../config.js';
 import { NavigationError, EmptyResultSetError, } from '../../../routing/errors.js';
 
 
@@ -225,7 +225,7 @@ export default {
             let rs = state.routes.current;//routerStatus
 
             let module = rs.module;
-            let moduleStaticInfo = jezConfig.myModules[module];
+            let moduleStaticInfo = jezConfig.modules[module];
 
             let status = {
                 itemName: moduleStaticInfo.itemName,

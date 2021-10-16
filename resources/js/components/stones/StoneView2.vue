@@ -1,22 +1,13 @@
-
 <template>
-  <v-container fluid>
-    <CollectionForm v-bind="props"></CollectionForm>
-  </v-container>
+    <LayoutPrimaryMedia />
 </template>
 
 <script>
-import CollectionForm from "../elements/CollectionForm";
+import LayoutPrimaryMedia from "../layouts/LayoutPrimaryMedia";
 
 export default {
-  components: { CollectionForm },
-  computed: {
-    props() {
-      return {
-        title: "Stone Media Gallery",
-        source: "media",
-      };
-    },
+  components: {
+    LayoutPrimaryMedia,
   },
 };
 </script>

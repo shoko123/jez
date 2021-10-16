@@ -339,8 +339,12 @@ class BaseDigModel extends Model implements HasMedia
         }
 
         //format media.
-        $media = $this->allMedia($item);
-
+        
+        $itemMedia = $this->allMedia($item);
+        $item["hasMedia"] = $itemMedia->primary->hasMedia;
+        $item["tnUrl"] = $itemMedia->primary->tnUrl;
+        $item["fullUrl"] = $itemMedia->primary->fullUrl;
+        unset($itemMedia->primary);
         unset($item->find);
         unset($item->media);
         unset($item->tags);
@@ -349,7 +353,7 @@ class BaseDigModel extends Model implements HasMedia
         return [
             "item" => $item,
             "find" => $find,
-            "itemMedia" => $media,
+            "itemMedia" => $itemMedia,
             "tags" => $tags,
         ];
     }
@@ -435,9 +439,9 @@ class BaseDigModel extends Model implements HasMedia
         }
 
         if (empty($media->collection)) {
-            $media->primary = $this->filler($eloquent_model_name);
+            $media->primary = (object) $this->filler($eloquent_model_name);
         } else {
-            $media->primary = $media->collection[0];
+            $media->primary = (object) $media->collection[0];
         }
         return $media;
     }
