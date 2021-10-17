@@ -3,23 +3,15 @@
     <v-card class="elevation-12">
       <v-card-title class="grey py-0 mb-2">{{ header }}</v-card-title>
       <v-card-text>
-        <template v-if="hasMedia">
-          <LayoutItemWithImageCard :header="header">
-            <template v-slot:e1>
-              <component v-bind:is="itemForm" v-bind:showTags="showTags">
-              </component>
-            </template>
-          </LayoutItemWithImageCard>
-        </template>
-        <template v-else>
-          <LayoutItemCard :header="header">
-            <template v-slot:e1>
-              <component v-bind:is="itemForm" v-bind:showTags="showTags">
-              </component>
-            </template>
-          </LayoutItemCard>
-        </template> </v-card-text></v-card
-  ></v-container>
+        <component v-bind:is="layout" :showTags="showTags" :header="header">
+          <template v-slot:e1>
+            <component v-bind:is="itemForm" v-bind:showTags="showTags">
+            </component>
+          </template>
+        </component>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -59,8 +51,12 @@ export default {
     },
     hasMedia() {
       return (
-        this.$store.getters["mgr/collections"]("media").collection.length > 0
+        this.$store.getters["mgr/ready"].item &&
+        this.$store.getters["mgr/item"].hasMedia
       );
+    },
+    layout() {
+      return this.hasMedia ? LayoutItemWithImageCard : LayoutItemCard;
     },
     showTags() {
       return this.$store.getters["mgr/status"].itemDisplayOptionIndex === 0;

@@ -59,7 +59,6 @@ export default {
     index: Number,
     item: Object,
     size: Number,
-    header: String,
   },
 
   created() {

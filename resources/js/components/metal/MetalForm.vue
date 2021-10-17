@@ -3,7 +3,7 @@
     <v-row wrap no-gutters>
       <v-textarea
         v-model="item.description"
-        label="description"
+        label="Description"
         rows="1"
         auto-grow
         readonly
