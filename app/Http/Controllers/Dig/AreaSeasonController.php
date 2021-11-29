@@ -20,6 +20,7 @@ class AreaSeasonController extends BaseDigModuleController
         //-----------------------------------------
         if ($request->isMethod('get')) {
             $as = $this->model->orderBy('id')->get(['id', 'tag']);
+           
             return response()->json([
                 "collection" => $as,
             ], 200);

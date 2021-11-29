@@ -96,6 +96,7 @@ class LocusController extends BaseDigModuleController
             //extra formatting by client side.
             $areaSeason = AreaSeason::findOrFail($locus->area_season_id);
             $locus->tag = $areaSeason->tag . '/' . $locus->locus_no;
+            $locus->dot = $areaSeason->dot . '.' . $locus->locus_no;
             unset($locus->square);
             unset($locus->date_opened);
             unset($locus->date_closed);

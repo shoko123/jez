@@ -32,7 +32,7 @@ class Season extends BaseDigModel
         unset($itemMedia->primary);
         unset($item->media);
         $item->tag = $item->season + 2000;
-
+        $item->dot = strval($item->season);
         //format related areas
         $areasSeasons = [];
 
@@ -43,7 +43,7 @@ class Season extends BaseDigModel
             array_push($areasSeasons, [
                 "id" => $as->id,
                 "description" => $as->description,
-                "tag" => $as->tag,
+                "tag" => str_replace(".", "/", $as->dot),
                 "fullUrl" => $media->fullUrl,
                 "hasMedia" => $media->hasMedia,
                 "tnUrl" => $media->tnUrl,

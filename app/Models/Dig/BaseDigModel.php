@@ -39,13 +39,13 @@ class BaseDigModel extends Model implements HasMedia
         $builder = (object)[];
         switch ($this->eloquent_model_name) {
             case "Area":
-                $builder = $this->select('id', 'name AS tag');
+                $builder = $this->select('id', 'name AS dot');
                 break;
             case "Season":
-                $builder = $this->select('id', DB::raw('season + 2000 AS tag'));
+                $builder = $this->select('id', 'season AS dot', DB::raw("CONCAT(season) as dot"));
                 break;
             case "AreaSeason":
-                $builder = $this->select('id', 'tag');
+                $builder = $this->select('id', 'dot');
                 break;
         }
 
@@ -73,7 +73,22 @@ class BaseDigModel extends Model implements HasMedia
         }
 
         $builder->orderBy('id', 'asc');
-        return $builder->get();
+
+        $collection = $builder->get();
+
+        /*
+        if ($this->eloquent_model_name === 'AreaSeason') {
+            foreach ($collection as $item) {
+                $item->dot = str_replace('/', '.', $item->tag);;
+            }
+        }
+        if ($this->eloquent_model_name === 'Season') {
+            foreach ($collection as $item) {
+                $item->dot = strval($item->dot);
+            }
+        }
+        */
+        return $collection;
     }
 
     public function indexForLocus($queryParams)
@@ -128,7 +143,7 @@ class BaseDigModel extends Model implements HasMedia
             ->orderBy('loci.locus_no', 'asc');
 
         //format tag
-        $builder->select("loci.id AS id", DB::raw("CONCAT(areas_seasons.tag,'/',locus_no) as tag"));
+        $builder->select("loci.id AS id", DB::raw("CONCAT(areas_seasons.dot,'.',locus_no) as dot"));
 
         //get results
         $collection = $builder->get();
@@ -138,6 +153,11 @@ class BaseDigModel extends Model implements HasMedia
                 unset($item->media);
             }
         }
+        /*
+        foreach ($collection as $index => $item) {
+            $item->dot = str_replace('/', '.', $item->tag);
+        }
+        */
         return $collection;
     }
 
@@ -245,50 +265,28 @@ class BaseDigModel extends Model implements HasMedia
             ->orderBy('finds.piece_no');
 
         //format tag
-        $builder->select("$tableName.id AS id", DB::raw("CONCAT(areas_seasons.tag,'/',locus_no ,'.', finds.registration_category ,'.', finds.basket_no  ,'.', finds.artifact_no) as tag"));
+        $builder->select("$tableName.id AS id", DB::raw("CONCAT(areas_seasons.dot, '.' ,locus_no ,'.', finds.registration_category ,'.', finds.basket_no  ,'.', finds.artifact_no) as dot"));
 
-        $result = $builder->get();
+        $collection = $builder->get();
 
         //if query included media, delete it.
         if (!empty($queryParams["registration.media"])) {
-            foreach ($result as $res) {
-                unset($res->media);
+            foreach ($collection as $item) {
+                unset($item->media);
             }
-            $builder->with('media');
         }
-        return $result;
+        return $collection;
     }
 
     //format find's tag. relies only on the $find builder result parameter
-    public function findTag($locus_tag, $find)
+    public function findDot($find)
     {
-        $tag = $locus_tag . '.' . $find->registration_category . '.';
+        $dot = $find->registration_category . '.' . $find->basket_no . '.' . $find->artifact_no;
 
-        if ($find->registration_category === 'AR') {
-            $tag .= $find->basket_no . "." . $find->artifact_no;
-            if ($find->piece_no !== 0) {
-
-                $tag .= "P" . $find->piece_no;
-            }
-        } else {
-            //format basket.artifact.piece
-            if ($find->basket_no !== 0) {
-                $tag .= $find->basket_no;
-            }
-            if ($find->artifact_no !== 0) {
-                if ($find->basket_no !== 0) {
-                    $tag .= ".";
-                }
-                $tag .= $find->artifact_no;
-            }
-            if ($find->piece_no !== 0) {
-                if ($find->artifact_no !== 0) {
-                    $tag .= ".";
-                }
-                $tag .= "P" . $find->piece_no;
-            }
+        if ($find->piece_no !== 0) {
+            $dot .= "." . $find->piece_no;
         }
-        return $tag;
+        return $dot;
     }
 
     public function baseShow($id)
@@ -304,7 +302,7 @@ class BaseDigModel extends Model implements HasMedia
                     $query->select('id', 'locus_no', 'area_season_id');
                 },
                 'find.locus.areaSeason' => function ($query) {
-                    $query->select('id', 'tag');
+                    $query->select('id', 'dot');
                 },
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');
@@ -319,7 +317,7 @@ class BaseDigModel extends Model implements HasMedia
 
         //format tag
         $find = $item->find;
-        $item->tag = $find->locus->areaSeason->tag . "/" . $find->locus->locus_no . "." . $find->registration_category . "." . $find->basket_no . "." . $find->artifact_no;
+        $item->dot = $find->locus->areaSeason->dot . "." . $find->locus->locus_no . "." . $find->registration_category . "." . $find->basket_no . "." . $find->artifact_no;
 
         //add fields
         $item->locus_id = $find->locus->id;
@@ -339,7 +337,7 @@ class BaseDigModel extends Model implements HasMedia
         }
 
         //format media.
-        
+
         $itemMedia = $this->allMedia($item);
         $item["hasMedia"] = $itemMedia->primary->hasMedia;
         $item["tnUrl"] = $itemMedia->primary->tnUrl;

@@ -1,5 +1,6 @@
 import routes from '../../../routing/routesStore.js';
 import jezConfig from '../../../config.js';
+import { dotToTag } from './itemTag.js';
 import { NavigationError, EmptyResultSetError, } from '../../../routing/errors.js';
 
 
@@ -89,18 +90,17 @@ export default {
             }
             let c = { ...state.collections[name] };
 
-            //"If all required data is in the collection, chunking (paging)" is done by 
-            //slicing the collection according to pageNo.
-            //in other cases, chunking will be done in page() by loading a chunk from DB in page().
-            if (name !== "main" ||
-                state.collections.main.views[state.collections.main.view] == "Chips" ||
-                state.routes.current.module == "About") {
 
+            //"chunking (paging)" is done only for the "main" collection of the dig modules.
+            //otherwise we simply "slice" the collection according to pageNo.
+            //The actual chunking will be done in page() by either loading a chunk from DB (for "Media" & "Table" views),
+            //or adding a tag (for "Chips" view).
+
+            if (name !== "main" || state.routes.current.module == "About") {
                 c.chunk = c.collection.slice(
                     c.pageNo * c.itemsPerPage,
                     (c.pageNo + 1) * c.itemsPerPage
                 );
-                //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
             }
 
             let header
@@ -134,21 +134,13 @@ export default {
 
         //The following 3 are for debug only:
         collectionMain(state, rootState, getters, rootGetters) {
+
             let c = { ...state.collections.main };
-            if (state.collections.main.views[state.collections.main.view] == "Chunk" ||
-                state.routes.current.module == "About") {
-
-                c.chunk = c.collection.slice(
-                    c.pageNo * c.itemsPerPage,
-                    (c.pageNo + 1) * c.itemsPerPage
-                );
-                //console.log(`mgr/get[collections(${name})] returns:\n${JSON.stringify(c, null, 2)}`);
-            }
-
             c["header"] = state.routes.current.module + "Query Results";
             c["chunkStartIndex"] = c.pageNo * c.itemsPerPage;
             return c;
         },
+
         collectionRelated(state, rootState, getters, rootGetters) {
             let c = state.collections.related;
             c.chunk = c.collection.slice(
@@ -416,6 +408,14 @@ export default {
                         throw new EmptyResultSetError("Empty result set");
                     }
 
+                    /*
+                    //add tag to each item
+                    res.data.collection.forEach(function (x, index) {
+                        //console.log(`dot: ${dots[index]}) tag: ${tag}`);
+                        x["tag"] = dotToTag({ module: state.routes.current.module, dot: x.dot });
+                    });
+                    */
+
                     commit('collections', { name: "main", collection: res.data.collection });
                     commit("ready", { entity: "collection", isReady: true });
 
@@ -484,8 +484,10 @@ export default {
                             commit('fnd/item', res.data.find, { root: true });
                             dispatch('aux/itemTags', res.data.tags, { root: true });
                     }
-
+                    //console.log(`mgr/item loaded before dotTotag() item: ${JSON.stringify(res.data.item, null, 2)}`)
+                    res.data.item["tag"] = dotToTag({ module: state.routes.to.module, dot: res.data.item.dot });
                     commit('item', res.data.item);
+                    //commit('item', res.data.item);
                     commit("ready", { entity: "item", isReady: true });
                     if (state.routes.to.module !== "About") {
                         //console.log(`mgr/item commit media: ${JSON.stringify(res.data.itemMedia.collection, null, 2)}`)
@@ -495,7 +497,7 @@ export default {
                     if (getters["ready"].collection) {
                         //set item's index
                         let index = state.collections.main.collection.findIndex(x => x.id == res.data.item.id);
-                        //console.log(`collection(ready) setting index: ${index}`);
+                        console.log(`collection(ready) setting index: ${index}`);
                         return dispatch("indexOfItemInMainCollection", index);
                     }
                     return res;
@@ -588,9 +590,9 @@ export default {
                     if (rootGetters["mgr/status"].isCreate) {
                         //the server returns an item that is formatted to be inserted into "collection".
                         commit('pushIntoCollection', res.data.item);
-                    } else {
-                        commit("ready", { entity: "item", isReady: false });
+                        commit("ready", { entity: "chunk", isReady: false });
                     }
+                    commit("ready", { entity: "item", isReady: false });
                     if (goToItem) {
                         dispatch('goToRoute', { module: state.routes.current.module, action: "show", id: res.data.item.id });
                     }
@@ -715,7 +717,9 @@ export default {
 
             //the second
 
-            if (newPage !== state.collections.main.pageNo || state.routes.current.module !== state.routes.to.module) {
+            if (newPage !== state.collections.main.pageNo ||
+                state.routes.current.module !== state.routes.to.module
+                || !state.ready.chunk) {
                 return dispatch("page", { name: "main", page: newPage + 1 });
             }
         },
@@ -739,7 +743,8 @@ export default {
                 let length = state.collections[payload.name].itemsPerPage;
                 //console.log(`mgr/page(${payload.page})`);
                 let ids = state.collections[payload.name].collection.slice(start, start + length).map(x => x.id);
-                let tags = state.collections[payload.name].collection.slice(start, start + length).map(x => x.tag);
+                //let tags = state.collections[payload.name].collection.slice(start, start + length).map(x => x.tag);
+                let dots = state.collections[payload.name].collection.slice(start, start + length).map(x => x.dot);
 
                 commit("ready", { entity: "chunk", isReady: false });
                 let xhrRequest = {
@@ -757,9 +762,11 @@ export default {
                         //console.log('mgr/page loaded chunk: ' + JSON.stringify(res.data.collection, null, 2));
                         //add tags that are already in the collection.
                         res.data.collection.forEach(function (x, index) {
-                            x["tag"] = tags[index];
+                            x["dot"] = dots[index];
+                            //console.log(`dot: ${dots[index]}) tag: ${tag}`);
+                            x["tag"] = dotToTag({ module: state.routes.current.module, dot: dots[index] });
                         });
-
+                        //console.log('mgr/page loaded chunk: ' + JSON.stringify(res.data.collection, null, 2));
                         commit('chunk', res.data.collection);
                         commit("ready", { entity: "chunk", isReady: true });
                         //let chunkLength = res.data.collection.length;
@@ -801,13 +808,25 @@ export default {
                             }
                             break;
                         case "Chips":
+
                             commit("page", { name: payload.name, page: payload.page });
+
+                            let c = getters.collections("main");
+                            let chunk = c.collection.slice(
+                                c.pageNo * c.itemsPerPage,
+                                (c.pageNo + 1) * c.itemsPerPage
+                            );
+
+                            chunk.forEach(function (x, index) {
+                                //console.log(`dot: ${dots[index]}) tag: ${tag}`);
+                                x["tag"] = dotToTag({ module: state.routes.current.module, dot: x.dot });
+                            });
+
+                            commit('chunk', chunk);
                             commit("ready", { entity: "chunk", isReady: true });
                             break;
                     }
 
-                    //commit("page", { name: payload.name, page: payload.page });
-                    //commit("ready", { entity: "chunk", isReady: true });
                     return res;
                     break;
 

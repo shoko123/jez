@@ -88,7 +88,7 @@ export default {
         case "related":
           if (!this.item.hasMedia) {
             let text = this.item.description;
-            if (text === null) {
+            if (text === null || text === undefined) {
               return "";
             } else {
               return text.length < 101 ? text : text.substr(0, 100) + "...";

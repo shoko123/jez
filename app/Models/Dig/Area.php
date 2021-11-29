@@ -41,7 +41,7 @@ class Area extends BaseDigModel
             array_push($areasSeasons, [
                 "id" => $as->id,
                 "description" => $as->description,
-                "tag" => $as->tag,
+                "tag" => str_replace(".", "/", $as->dot),
                 "fullUrl" => $media->fullUrl,
                 "hasMedia" => $media->hasMedia,
                 "tnUrl" => $media->tnUrl,
@@ -50,8 +50,8 @@ class Area extends BaseDigModel
 
         unset($item->media);
         unset($item->areas_seasons);
-        $item->tag = $item->name;
-
+        $item->dot = $item->name;
+        //$item->tag = $item->name;
         return [
             "item" => $item,
             "itemMedia" => $itemMedia,

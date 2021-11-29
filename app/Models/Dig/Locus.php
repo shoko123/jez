@@ -31,7 +31,7 @@ class Locus extends BaseDigModel
         $locus = $this->with(
             [
                 'areaSeason' => function ($q) {
-                    $q->select('id', 'tag');
+                    $q->select('id', 'dot');
                 },
                 'finds',
                 'finds.findable.media',
@@ -42,8 +42,8 @@ class Locus extends BaseDigModel
             ]
         )->findOrFail($id);
 
-        //format tag
-        $locus->tag = $locus->areaSeason->tag . '/' . $locus->locus_no;
+        //format dot
+        $locus->dot = $locus->areaSeason->dot . '.' . $locus->locus_no;
         
         //get tags
         $tags = [];
@@ -62,7 +62,7 @@ class Locus extends BaseDigModel
         unset($itemMedia->primary);
 
         //get LocusFinds
-        $locusFinds = $this->locusFinds($locus->tag, $locus->finds);
+        $locusFinds = $this->locusFinds($locus->dot, $locus->finds);
 
         //cleanup
         unset($locus->finds);
@@ -76,7 +76,7 @@ class Locus extends BaseDigModel
         ];
     }
  
-    protected function locusFinds($locus_tag, $finds)
+    protected function locusFinds($locus_dot, $finds)
     {
         $order = array("Pottery" => 1, "Stone" => 2, "Lithic" => 3, "Metal" => 4, "Glass" => 5, "Flora" => 6, "Fauna" => 7, "Tbd" => 8);
         $locusFinds = [];
@@ -90,7 +90,8 @@ class Locus extends BaseDigModel
             $formatted = $this->primaryMedia($find->findable);
 
             //add fields
-            $formatted->tag = $find->findable_type . " " . $this->findTag($locus_tag, $find);
+            $formatted->tag = $find->findable_type . " " . str_replace(".", "/", $locus_dot) . "." . $this->findDot($find);
+            $formatted->dot = $locus_dot . $this->findDot($find);
             $formatted->findable_type = $find->findable_type;
             $formatted->findable_id = $find->findable_id;
             $formatted->description = $find->findable->description;
