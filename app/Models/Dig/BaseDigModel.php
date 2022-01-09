@@ -11,7 +11,8 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\HasTags;
-
+use App\Models\Dig\AreaSeason;
+use App\Models\Dig\Locus;
 
 class BaseDigModel extends Model implements HasMedia
 {
@@ -289,7 +290,59 @@ class BaseDigModel extends Model implements HasMedia
         return $dot;
     }
 
-    public function baseShow($id)
+    public function getIdFromParams($p)
+    {
+        $modelName = "App\Models\Dig\\" . $p->module;
+        $model =  new $modelName;
+
+        switch ($p->module) {
+            case "Area":
+                return $model->where('name', $p->area)->pluck('id')->first();
+
+                break;
+
+            case "Season":
+                return $model->where('season', $p->season)->pluck('id')->first();
+                break;
+
+
+            case "AreaSeason":
+                return $model->where('dot', $p->season . '.' . $p->area)->pluck('id')->first();
+
+            case "Locus":
+                $area_season_id = AreaSeason::where('dot',  $p->season . '.' . $p->area)->pluck('id')->first();
+                if (is_null($area_season_id)) {
+                    return null;
+                }
+                return $model->where('area_season_id', $area_season_id)->where('locus_no', $p->locus_no)->pluck('id')->first();
+
+            case "Pottery":
+            case "Stone":
+            case "Lithic":
+            case "Glass":
+            case "Metal":
+            case "Flora":
+            case "Fauna":
+            case "Tbd":
+                $area_season_id = AreaSeason::where('dot', $p->season . '.' . $p->area)->pluck('id')->first();
+                if (is_null($area_season_id)) {
+                    return null;
+                }
+                $locus_id = Locus::where('area_season_id', $area_season_id)->where('locus_no', $p->locus_no)->pluck('id')->first();
+                if (is_null($locus_id)) {
+                    return null;
+                }
+                return Find::where('findable_type', $p->module)
+                    ->where('locus_id', $locus_id)
+                    ->where('registration_category', $p->registration_category)
+                    ->where('basket_no', $p->basket_no)
+                    ->where('artifact_no', $p->artifact_no)
+                    ->pluck('findable_id')->first();
+        }
+        return null;
+    }
+
+    public function show($id)
     {
         $tableName = $this->getTable();
         $modelName = $this->eloquent_model_name;

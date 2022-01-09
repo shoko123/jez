@@ -48,7 +48,7 @@ class StoneController extends BaseDigModuleController
     public function show($id)
     {
         $this->authorize('view', $this->model);
-        $item = $this->model->baseShow($id);
+        $item = $this->model->show($id);
         return response($item, 200);
     }
 

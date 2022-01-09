@@ -45,7 +45,7 @@ class PotteryController extends BaseDigModuleController
 
     public function show($id)
     {
-        $item = $this->model->baseShow($id);
+        $item = $this->model->show($id);
         return response($item, 200);
     }
 

@@ -14,6 +14,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\BaseDigModuleController;
 use App\Http\Controllers\Dig\AreaController;
 use App\Http\Controllers\Dig\AreaSeasonController;
 use App\Http\Controllers\Dig\GlassController;
@@ -41,6 +42,8 @@ Route::post('module-initializer', [ModuleInitializerController::class, 'index'])
 Route::get('accessibility', [GlobalSettingsController::class, 'accessibility']);
 
 Route::group(['middleware' => 'authorizedUsersOnly'], function ($router) {
+  
+    Route::post('dig/show', [BaseDigModuleController::class, 'show']);
     Route::get('about', [AboutController::class, 'index']); //No params, always get all records.
     Route::get('about/{id}', [AboutController::class, 'show']);
 
