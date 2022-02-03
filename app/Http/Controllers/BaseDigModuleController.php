@@ -78,7 +78,10 @@ class BaseDigModuleController extends Controller
         }
 
         //$item = $model->show(2);
-
+        return response(
+            $model->show($id),
+            200
+        );
         return response()->json([
             //'id' => $this->getId($item_params),
             'id' => $id,

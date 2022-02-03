@@ -95,34 +95,42 @@ export default {
     },
 
     goToArea() {
+       let arr = this.$store.getters["mgr/item"].dot.split('.');
+       let dot =arr[1];
       return this.$store.dispatch("mgr/goToRoute", {
         module: "Area",
         action: "show",
-        id: this.$store.getters["mgr/item"].area_id,
+        dot,
       });
     },
 
     goToSeason() {
+        let arr = this.$store.getters["mgr/item"].dot.split('.');
+       let dot =arr[0];
       return this.$store.dispatch("mgr/goToRoute", {
         module: "Season",
         action: "show",
-        id: this.$store.getters["mgr/item"].season_id,
+        dot,
       });
     },
 
     goToAreaSeason() {
+       let arr = this.$store.getters["mgr/item"].dot.split('.');
+      let areaDot = arr[0] + '.' + arr[1];
       return this.$store.dispatch("mgr/goToRoute", {
         module: "AreaSeason",
         action: "show",
-        id: this.$store.getters["mgr/item"].area_season_id,
+        dot: areaDot,
       });
     },
 
     goToLocus() {
+      let arr = this.$store.getters["mgr/item"].dot.split('.');
+      let locusDot = arr[0] + '.' + arr[1] + '.' + arr[2];
       return this.$store.dispatch("mgr/goToRoute", {
         module: "Locus",
         action: "show",
-        id: this.$store.getters["mgr/item"].locus_id,
+        dot: locusDot,
       });
     },
   },

@@ -1,7 +1,7 @@
 import store from '../store/store.js';
 
-export default function parseAndPermit(router) {
-    console.log("parseAndPermit.init()");
+export default function parseAndAuthorize(router) {
+    console.log("parseAndAuthorize(middleware).init()");
 
     router.beforeEach((to, from, next) => {
         let appSettings = store.getters["mgr/appSettings"];
@@ -10,7 +10,8 @@ export default function parseAndPermit(router) {
 
         //console.log(`middleware.authorize() to.path: ${to.path} appSettings: ${JSON.stringify(appSettings, null, 2)}\nisLoggedIn: ${isLoggedIn}`);
 
-        store.dispatch("mgr/routes/parseTo", to).then(() => {
+        store.dispatch("mgr/routes/parseTo", to)
+        .then(() => {
             if (to.path === "/auth/login" || to.path === "/") {
                 next();
             } else if (appSettings.authorizedUsersOnly && !isLoggedIn) {

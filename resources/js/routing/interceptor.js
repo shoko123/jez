@@ -2,7 +2,7 @@ import Router from 'vue-router'
 
 //catch Navigation Failures (supress logging to console.)
 export default function interceptorInit() {
-    console.log("interceptor.init()");
+    console.log("interceptor(middleware).init()");
     const { isNavigationFailure, NavigationFailureType } = Router;
     const originalPush = Router.prototype.push;
 

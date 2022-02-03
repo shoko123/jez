@@ -2,7 +2,7 @@
   <v-card class="mx-auto" color="transparent" flat>
     <v-card-text v-if="hasMedia" class="text-body-1 white--text"> {{ text }}</v-card-text> 
     <v-card-actions>
-    <v-btn @click="goTo(item.id)">Visit</v-btn>
+    <v-btn @click="goTo(item)">Visit</v-btn>
     <v-btn v-if="hasMedia" @click="openLightBox()">Lightbox</v-btn>
   </v-card-actions>
   </v-card>
@@ -47,11 +47,12 @@ export default {
       });
     },
 
-    goTo(id) {
+    goTo(item) {
       this.$store.dispatch("mgr/goToRoute", {
         module: this.$store.getters["mgr/module"],
         action: "show",
-        id: id,
+        id: item.id,
+        dot: item.dot
       });
     },
   },

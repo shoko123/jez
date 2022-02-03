@@ -1,7 +1,7 @@
-import parseAndPermit from './authorize'
+import parseAndAuthorize from './parseAndAuthorize'
 import prepareForNewRoute from './prepareForNewRoute'
 
 export default function middlewareInit (router) {
-    parseAndPermit(router);
+    parseAndAuthorize(router);
     prepareForNewRoute(router);
 }

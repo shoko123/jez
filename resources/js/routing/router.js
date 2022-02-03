@@ -79,7 +79,7 @@ const router = new Router({
                     meta: { requiresAuth: true },
                 },
                 {
-                    path: ':id(\\d+)',
+                    path: ':dot',
                     component: RouterElement,
                     children: [
                         {

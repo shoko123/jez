@@ -4,13 +4,22 @@ export default {
     namespaced: true,
     state: {
         router: null,
- 
+
         current: {
             module: "Home",
             apiModuleUrl: "/api",
             moduleStoreFolder: "/",
             action: null,
             id: null,
+            dotParams: {
+                season: null,
+                area: null,
+                locus_no: null,
+                registration_category: null,
+                basket_no: 0,
+                artifact_no: 0
+            },
+            dot: null,
             queryParams: null,
         },
         to: {
@@ -19,6 +28,15 @@ export default {
             moduleStoreFolder: "/",
             action: null,
             id: null,
+            dotParams: {
+                season: null,
+                area: null,
+                locus_no: null,
+                registration_category: null,
+                basket_no: 0,
+                artifact_no: 0
+            },
+            dot: null,
             queryParams: null,
         },
         localFilters: null,
@@ -38,6 +56,9 @@ export default {
         localFilters(state) {
             return state.localFilters;
         },
+        toItemParams(state) {
+            return { module: state.to.module, ...state.to.dotParams };
+        }
     },
     mutations: {
         setRouter(state, payload) {
@@ -49,7 +70,21 @@ export default {
             //console.log(`mgr/router SET("to"): ${JSON.stringify(payload, null, 2)}`);//
             state.to = { ...state.to, ...payload };
         },
-
+        dot(state, payload) {
+            state.to.dot = payload;
+        },
+        dotParams(state, payload) {
+            state.to.dotParams = payload;
+        },
+        clearDotAndDotParams(state, payload) {
+            state.to.dot = null;
+            state.to.dotParams.season = null;
+            state.to.dotParams.area = null;
+            state.to.dotParams.locus_no = null;
+            state.to.dotParams.registration_category = null;
+            state.to.dotParams.basket_no = null;
+            state.to.dotParams.artifact_no = null;
+        },
         copyToToCurrent(state, payload) {
             //payload holds the name of property to copy.
             state.current[payload] = state.to[payload];
@@ -66,7 +101,62 @@ export default {
     },
     actions: {
         parseTo({ state, commit }, payload) {
-            //console.log(`mgr/router parseTo payload.params: ${JSON.stringify(payload.params, null, 2)}`);
+            console.log(`mgr/router parseTo payload.params: ${JSON.stringify(payload.params, null, 2)}`);
+
+
+            //parse the dot[seperated id parameters] and save to dotParams
+            function parseDot(module, dot) {
+                console.log(`parseDot() module: ${module}, dot: ${dot}`);
+                let arr = dot.split('.');
+                let dotParams = {
+                    season: null,
+                    area: null,
+                    locus_no: null,
+                    registration_category: null,
+                    basket_no: null,
+                    artifact_no: null
+                }
+                switch (module) {
+                    case "Area":
+                        dotParams.area = arr[0];
+                        break;
+                    case "Season":
+                        dotParams.season = parseInt(arr[0]);
+                        break;
+                    case "AreaSeason":
+                        dotParams.season = parseInt(arr[0]);
+                        dotParams.area = arr[1];
+                        break;
+                    case "Locus":
+                        dotParams.season = parseInt(arr[0]);
+                        dotParams.area = arr[1];
+                        dotParams.locus_no = parseInt(arr[2]);
+                        break;
+                    case "Pottery":
+                    case "Stone":
+                    case "Lithic":
+                    case "Metal":
+                    case "Class":
+                    case "Flora":
+                    case "Fauna":
+                    case "Tbd":
+                        dotParams.season = parseInt(arr[0]);
+                        dotParams.area = arr[1];
+                        dotParams.locus_no = parseInt(arr[2]);
+                        dotParams.registration_category = arr[3],
+                        dotParams.basket_no = parseInt(arr[4]),
+                        dotParams.artifact_no = parseInt(arr[5])
+                        break;
+
+                }
+
+
+
+                commit("dot", dot);
+                commit("dotParams", dotParams);
+                console.log(`parseDot to: ${JSON.stringify(state.to, null, 2)}`);
+            }
+
             let to = {};
 
             if (payload.params.hasOwnProperty("module")) {
@@ -113,7 +203,7 @@ export default {
             } else {
                 to.module = "Home";
             }
-            
+
             if (!["Home", "Admin"].includes(to.module)) {
                 to.apiModuleUrl = jezConfig.modules[to.module].apiBaseUrl;
             }
@@ -122,6 +212,14 @@ export default {
             } else {
                 to["id"] = null;
             }
+
+            ///
+            if (payload.params.hasOwnProperty("dot")) {
+                parseDot(to.module, payload.params.dot);
+            } else {
+                commit("clearDotAndDotParams");
+            }
+            ////
             if (payload.params.hasOwnProperty("action")) {
                 to.action = payload.params.action;
             } else {
@@ -138,6 +236,7 @@ export default {
 
             return to;
         },
+
 
         routeChanged({ state, getters, rootState, rootGetters, commit, dispatch }, payload) {
             function sameModule() {
@@ -156,6 +255,9 @@ export default {
             }
             function sameItemId() {
                 return state.current.id === state.to.id;
+            }
+            function sameDot() {
+                return state.current.dot === state.to.dot;
             }
 
             function loadPrepare() {
@@ -201,25 +303,25 @@ export default {
                                 //if no collection loaded yet, retrieve new module's collection and then item
                                 let readyCollection = rootGetters["mgr/ready"].collection;
                                 let readyItem = rootGetters["mgr/ready"].item;
-                                let sameItem = sameItemId();
-
+                                //let sameItem = sameItemId();
+                                let sameItem = sameDot();
                                 if (!readyCollection) {
                                     //if same module, but collection empty, retrieve collection and then item
                                     return dispatch("mgr/query", { params: {}, spinner: true }, { root: true })
                                         .then((res) => {
-                                            return dispatch("mgr/loadItem", state.to.id, { root: true });
+                                            return dispatch("mgr/loadItem", getters.toItemParams, { root: true });
                                         })
                                 } else {
                                     //console.log(`routes("show") ready: ${JSON.stringify(rootGetters["mgr/ready"], null, 2)} same item id: ${sameItem}`)
                                     //if collection is OK check if a new item needs to be loded or the same item needs to be reloaded
                                     if (!sameItem || !readyItem) {
                                         //collection loaded - load item only
-                                        return dispatch("mgr/loadItem", state.to.id, { root: true });
+                                        return dispatch("mgr/loadItem", getters.toItemParams, { root: true });
                                     }
                                 }
                             } else {
                                 //if not same module, retrieve the new module's item and then collection
-                                return dispatch("mgr/loadItem", state.to.id, { root: true })
+                                return dispatch("mgr/loadItem", getters.toItemParams, { root: true })
                                     .then((res) => {
                                         //console.log('mgr.routeChanged.show after loading item. loading collection...');
                                         return dispatch("mgr/query", { params: {}, spinner: true }, { root: true });
@@ -334,7 +436,7 @@ export default {
                 }
             }
             function goToObject() {
-                //console.log(`mgr.routes.goToObject: ${JSON.stringify(payload, null, 2)}`);
+                console.log(`mgr.routes.goToObject: ${JSON.stringify(payload, null, 2)}`);
                 let moduleBaseUrl = jezConfig.modules[payload.module].appBaseUrl;
 
                 //verify that module, action and id (optional) exist
@@ -348,7 +450,8 @@ export default {
                         return { path: `${moduleBaseUrl}/${payload.action}` };
                     case "show":
                     case "update":
-                        return { path: `${moduleBaseUrl}/${payload.id}/${payload.action}` };
+
+                        return { path: `${moduleBaseUrl}/${payload.dot}/${payload.action}` };
                     default:
                         console.log(`mgr.routes.goTo() illegal param: ${JSON.stringify(payload, null, 2)}`);
                         return null;

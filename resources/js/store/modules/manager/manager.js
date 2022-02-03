@@ -422,7 +422,7 @@ export default {
                     if (getters["ready"]["item"]) {
                         //set item's index
                         let index = state.collections.main.collection.findIndex(x => x.id == state.item.id);
-                        console.log(`item(ready) setting index: ${index}`);
+                        //console.log(`item(ready) setting index: ${index}`);
                         return dispatch("indexOfItemInMainCollection", index);
                     } else {
                         //console.log(`Item is not ready; setting page(1)`);
@@ -438,6 +438,20 @@ export default {
         },
 
         loadItem({ state, getters, commit, dispatch }, payload) {
+
+        console.log('mgr.loadItem. endpoint: ' + `${state.globalSettings.baseUrl}/api/dig/show`);
+            commit("ready", { entity: "item", isReady: false });
+
+            let xhrRequest = {
+                endpoint: `${state.globalSettings.baseUrl}/api/dig/show`,
+                action: "post",
+                data: payload,
+                spinner: true,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: `loading item...`, onSuccess: null, onFailure: "failed loading item", },
+            };
+            /*
             console.log('mgr.loadItem. endpoint: ' + `${state.routes.to.apiModuleUrl}/${payload}`);
             commit("ready", { entity: "item", isReady: false });
 
@@ -448,8 +462,9 @@ export default {
                 spinner: true,
                 verbose: false,
                 snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `loading item...`/* with id: ${payload} */, onSuccess: null, onFailure: "failed loading item", },
+                messages: { loading: `loading item...`, onSuccess: null, onFailure: "failed loading item", },
             };
+            */
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
@@ -497,7 +512,7 @@ export default {
                     if (getters["ready"].collection) {
                         //set item's index
                         let index = state.collections.main.collection.findIndex(x => x.id == res.data.item.id);
-                        console.log(`collection(ready) setting index: ${index}`);
+                        //console.log(`collection(ready) setting index: ${index}`);
                         return dispatch("indexOfItemInMainCollection", index);
                     }
                     return res;
@@ -874,13 +889,13 @@ export default {
                         break;
                 }
                 //console.log(`ADJANCT length: ${m.collection.length} index: ${m.index} newIndex: ${newIndex}`);
-                return m.collection[newIndex].id;
+                return m.collection[newIndex].dot;
             }
 
             switch (payload) {
                 case "next":
                 case "prev":
-                    payload = { module: state.routes.current.module, id: getAdjancentId(), action: "show" };
+                    payload = { module: state.routes.current.module, dot: getAdjancentId(), action: "show" };
                     break;
                 default:
             }

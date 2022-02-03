@@ -30,7 +30,7 @@ class ShowRequest extends FormRequest
             'area' => 'in:K,L,M,N,P,Q,S|nullable',
             'season' => 'numeric|min:12|max:18|nullable',
             'locus_no' => 'numeric|min:0|max:999|nullable',
-            'registration_category' => 'sometimes|in:AR,PT,GS,LB,FL',
+            'registration_category' => 'in:AR,PT,GS,LB,FL|nullable',
             'basket_no' => 'numeric|min:0|max:99|nullable',
             'artifact_no' => 'numeric|min:0|max:99|nullable',
             'piece_no' => 'numeric|min:0|max:99|nullable'
