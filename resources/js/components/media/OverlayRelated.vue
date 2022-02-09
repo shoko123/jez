@@ -62,27 +62,23 @@ export default {
     },
 
     goTo(locus) {
-      let module, id;
+      let module;
       switch (this.$store.getters["mgr/module"]) {
         case "Area":
         case "Season":
           module = "AreaSeason";
-          id = this.item.id;
           break;
         case "AreaSeason":
           module = "Locus";
-          id = this.item.id;
-
           break;
         case "Locus":
           module = this.item.findable_type;
-          id = this.item.findable_id;
           break;
       }
       this.$store.dispatch("mgr/goToRoute", {
         module: module,
         action: "show",
-        id: id,
+        dot: this.item.dot,
       });
     },
   },

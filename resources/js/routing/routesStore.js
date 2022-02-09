@@ -67,10 +67,10 @@ export default {
         },
 
         to(state, payload) {
-            //console.log(`mgr/router SET("to"): ${JSON.stringify(payload, null, 2)}`);//
+           //console.log(`mgr/router SET("to"): ${JSON.stringify(payload, null, 2)}`);//
             state.to = { ...state.to, ...payload };
         },
-        dot(state, payload) {
+        dot(state, payload) {            
             state.to.dot = payload;
         },
         dotParams(state, payload) {
@@ -136,16 +136,16 @@ export default {
                     case "Stone":
                     case "Lithic":
                     case "Metal":
-                    case "Class":
+                    case "Glass":
                     case "Flora":
                     case "Fauna":
                     case "Tbd":
                         dotParams.season = parseInt(arr[0]);
                         dotParams.area = arr[1];
                         dotParams.locus_no = parseInt(arr[2]);
-                        dotParams.registration_category = arr[3],
-                        dotParams.basket_no = parseInt(arr[4]),
-                        dotParams.artifact_no = parseInt(arr[5])
+                        dotParams.registration_category = arr[3];
+                        dotParams.basket_no = parseInt(arr[4]);
+                        dotParams.artifact_no = parseInt(arr[5]);
                         break;
 
                 }
@@ -207,24 +207,18 @@ export default {
             if (!["Home", "Admin"].includes(to.module)) {
                 to.apiModuleUrl = jezConfig.modules[to.module].apiBaseUrl;
             }
-            if (payload.params.hasOwnProperty("id")) {
-                to.id = parseInt(payload.params.id, 10);
+          
+            if (payload.params.hasOwnProperty("action")) {
+                to.action = payload.params.action;
             } else {
-                to["id"] = null;
+                to.action = null;
             }
-
-            ///
             if (payload.params.hasOwnProperty("dot")) {
                 parseDot(to.module, payload.params.dot);
             } else {
                 commit("clearDotAndDotParams");
             }
-            ////
-            if (payload.params.hasOwnProperty("action")) {
-                to.action = payload.params.action;
-            } else {
-                to["action"] = null;
-            }
+
 
             //query params will only be copied on 'list' action. (We don't want unnecessary reload of chunks).
             if (payload.params.hasOwnProperty("action") && payload.params.action === "list") {

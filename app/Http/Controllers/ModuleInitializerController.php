@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\JezStatic\WelcomePages;
+use App\Models\Dig\AreaSeason;
 use App\Models\TagType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -64,13 +65,46 @@ class ModuleInitializerController extends Controller
 
         //get counts
         $counts = [];
-        $firstId = null;
+        $firstDot = null;
+        $firstRecord = null;
 
         if (self::$moduleName !== 'About') {
             $counts['items'] = self::$fullModuleName::count();
             $counts['media'] = DB::table('media')->where('model_type', self::$moduleName)->count();
-            $firstRecord = self::$fullModuleName::first();
-            $firstId = $firstRecord->id;
+
+
+            switch (self::$moduleName) {
+
+                case "Area":
+                    $firstRecord = self::$fullModuleName::first();
+                    $firstDot = $firstRecord->name;
+                    break;
+                case "Season":
+                    $firstRecord = self::$fullModuleName::first();
+                    $firstDot = $firstRecord->season;
+                    break;
+                case "AreaSeason":
+                    $firstRecord = self::$fullModuleName::first();
+                    $firstDot = $firstRecord->dot;
+                    break;
+                case "Locus":
+                    $firstRecord = self::$fullModuleName::with('areaSeason')->first();
+                    $firstDot = $firstRecord->areaSeason->dot . '.' . $firstRecord->locus_no;
+                    break;
+                case "Stone":
+                case "Lithic":
+                case "Glass":
+                case "Metal":
+                case "Pottery":
+                case "Flora":
+                case "Fauna":
+                case "Tbd":
+                    $firstRecord = self::$fullModuleName::with('find.locus.areaSeason')->first();
+
+                    $firstDot = $firstRecord->find->locus->areaSeason->dot . '.' . $firstRecord->find->locus->locus_no . '.' . $firstRecord->find->registration_category . '.' . $firstRecord->find->basket_no . '.' . $firstRecord->find->artifact_no;
+                    self::$isFind = true;
+                    break;
+            }
         }
 
         /*
@@ -88,7 +122,7 @@ class ModuleInitializerController extends Controller
             "welcomeData" => [
                 "counts" => $counts,
                 "welcomePageParams" => WelcomePages::welcome(self::$moduleName),
-                "firstId" => $firstId,
+                "firstDot" => $firstDot,
             ],
 
         ], 200);
@@ -109,7 +143,8 @@ class ModuleInitializerController extends Controller
                 ["id" => 1005, "name" => "2016"],
                 ["id" => 1006, "name" => "2017"],
                 ["id" => 1007, "name" => "2018"],
-            ]]);
+            ]
+        ]);
 
         array_push($groups, [
             "group_order" => 2,
@@ -123,7 +158,8 @@ class ModuleInitializerController extends Controller
                 ["id" => 1105, "name" => "P"],
                 ["id" => 1106, "name" => "Q"],
                 ["id" => 1107, "name" => "S"],
-            ]]);
+            ]
+        ]);
 
         array_push($groups, [
             "group_order" => 3,
@@ -134,7 +170,8 @@ class ModuleInitializerController extends Controller
                 ["id" => 1202, "name" => "Drawing"],
                 ["id" => 1203, "name" => "Plan"],
 
-            ]]);
+            ]
+        ]);
 
         if (self::$moduleName === "Pottery") {
             array_push($groups, [
@@ -145,7 +182,8 @@ class ModuleInitializerController extends Controller
                     ["id" => "basket", "name" => "Basket"],
                     ["id" => "artifact", "name" => "Artifact"],
                     ["id" => "piece", "name" => "Piece"],
-                ]]);
+                ]
+            ]);
         }
         if (self::$isFind) {
             array_push($groups, [
@@ -158,7 +196,8 @@ class ModuleInitializerController extends Controller
                     ["id" => 3, "name" => "FL"],
                     ["id" => 4, "name" => "LB"],
                     ["id" => 5, "name" => "AR"],
-                ]]);
+                ]
+            ]);
         }
 
         foreach ($groups as $index => $group) {
@@ -184,7 +223,8 @@ class ModuleInitializerController extends Controller
 
         $tagTypes = TagType::where('subject', 'Period')
             ->with(['tags' => function ($q) {
-                $q->select('id', 'name', 'type');}])
+                $q->select('id', 'name', 'type');
+            }])
             ->get(['str_id', 'subject', 'category', 'category_order', 'group_order', 'display_name', 'multiple', 'dependency']);
 
         //format tags to fit $typesAndParams structure.
@@ -219,32 +259,38 @@ class ModuleInitializerController extends Controller
                     "column_name" => "material_id",
                     "display_name" => "Material",
                     "category_order" => 3,
-                    "group_order" => 2]);
+                    "group_order" => 2
+                ]);
 
                 array_push($lookups, [
                     "table_name" => "stone_base_types",
                     "column_name" => "base_type_id",
                     "display_name" => "Base Typology",
                     "category_order" => 5,
-                    "group_order" => 1]);
+                    "group_order" => 1
+                ]);
                 break;
 
             case "Lithic":
                 $order = [3, 1];
-                array_push($lookups, ["table_name" => "lithic_base_types",
+                array_push($lookups, [
+                    "table_name" => "lithic_base_types",
                     "column_name" => "base_type_id",
                     "display_name" => "Base Typology",
                     "category_order" => 3,
-                    "group_order" => 2]);
+                    "group_order" => 2
+                ]);
                 break;
 
             case "Glass":
                 $order = [3, 1];
-                array_push($lookups, ["table_name" => "glass_base_types",
+                array_push($lookups, [
+                    "table_name" => "glass_base_types",
                     "column_name" => "base_type_id",
                     "display_name" => "Base Typology",
                     "category_order" => 4,
-                    "group_order" => 1]);
+                    "group_order" => 1
+                ]);
                 break;
 
             case "Metal":
@@ -254,13 +300,16 @@ class ModuleInitializerController extends Controller
                     "column_name" => "material_id",
                     "display_name" => "Material",
                     "category_order" => 3,
-                    "group_order" => 2]);
-                    
-                array_push($lookups, ["table_name" => "metal_base_types",
+                    "group_order" => 2
+                ]);
+
+                array_push($lookups, [
+                    "table_name" => "metal_base_types",
                     "column_name" => "base_type_id",
                     "display_name" => "Base Typology",
                     "category_order" => 3,
-                    "group_order" => 2]);
+                    "group_order" => 2
+                ]);
                 break;
 
             case "Pottery":
@@ -270,7 +319,8 @@ class ModuleInitializerController extends Controller
                     "column_name" => "base_type_id",
                     "display_name" => "Base Partition",
                     "category_order" => 11,
-                    "group_order" => 1]);
+                    "group_order" => 1
+                ]);
                 break;
         }
 
@@ -280,7 +330,8 @@ class ModuleInitializerController extends Controller
             "column_name" => "preservation_id",
             "display_name" => "Preservation",
             "category_order" => $order[0],
-            "group_order" => $order[1]]);
+            "group_order" => $order[1]
+        ]);
 
         //access DB and format
         foreach ($lookups as $index => $lookup) {
@@ -293,16 +344,17 @@ class ModuleInitializerController extends Controller
                 "group_order" => $lookup["group_order"],
                 "column_name" => $lookup["column_name"],
                 "display_name" => $lookup["display_name"],
-                'params' => $params]);
+                'params' => $params
+            ]);
         }
-
     }
     private static function addTags()
     {
         //not About, Area, Season
         $tagTypes = TagType::where('subject', self::$moduleName)
             ->with(['tags' => function ($q) {
-                $q->select('id', 'name', 'type');}])
+                $q->select('id', 'name', 'type');
+            }])
             ->get(['str_id', 'subject', 'category', 'category_order', 'group_order', 'display_name', 'multiple', 'dependency']);
 
         //format tags to fit $typesAndParams structure.

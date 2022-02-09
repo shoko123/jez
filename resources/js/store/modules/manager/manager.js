@@ -60,7 +60,7 @@ export default {
         welcomeData: {
             counts: { items: null, media: null, baskets: null, artifacts: null, pieces: null },
             welcomePageParams: {},
-            firstId: null,
+            firstDot: null,
         },
 
         isPicker: false,
@@ -439,7 +439,7 @@ export default {
 
         loadItem({ state, getters, commit, dispatch }, payload) {
 
-        console.log('mgr.loadItem. endpoint: ' + `${state.globalSettings.baseUrl}/api/dig/show`);
+        console.log(`mgr.loadItem. endpoint: ${state.globalSettings.baseUrl}/api/dig/show. payload: \n${JSON.stringify(payload, null, 2)}`);
             commit("ready", { entity: "item", isReady: false });
 
             let xhrRequest = {

@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-use \Spatie\Tags\Tag;
-use App\Models\TagType;
+
 use App\Models\ItemTag;
 use Illuminate\Database\Eloquent\Model;
 class TagType extends Model

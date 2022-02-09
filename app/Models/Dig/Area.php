@@ -42,6 +42,7 @@ class Area extends BaseDigModel
                 "id" => $as->id,
                 "description" => $as->description,
                 "tag" => str_replace(".", "/", $as->dot),
+                "dot" => $as->dot,
                 "fullUrl" => $media->fullUrl,
                 "hasMedia" => $media->hasMedia,
                 "tnUrl" => $media->tnUrl,

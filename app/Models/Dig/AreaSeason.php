@@ -51,13 +51,14 @@ class AreaSeason extends BaseDigModel
         $lociWithMedia = [];
         foreach ($item->loci as $index => $locus) {
             $tag = str_replace(".", "/", $item->dot) . "/" . $locus->locus_no;
-           
+           $dot = $item->dot . "." . $locus->locus_no;
             $media = $this->primaryMedia($locus);
 
             array_push($lociWithMedia, [
                 "id" => $locus->id,
                 "description" => $locus->description,
                 "tag" => $tag,
+                "dot" => $dot,
                 "fullUrl" => $media->fullUrl,
                 "hasMedia" => $media->hasMedia,
                 "tnUrl" => $media->tnUrl,

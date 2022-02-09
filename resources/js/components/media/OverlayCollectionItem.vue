@@ -51,7 +51,6 @@ export default {
       this.$store.dispatch("mgr/goToRoute", {
         module: this.$store.getters["mgr/module"],
         action: "show",
-        id: item.id,
         dot: item.dot
       });
     },

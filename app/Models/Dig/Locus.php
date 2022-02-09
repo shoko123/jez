@@ -91,7 +91,7 @@ class Locus extends BaseDigModel
 
             //add fields
             $formatted->tag = $find->findable_type . " " . str_replace(".", "/", $locus_dot) . "." . $this->findDot($find);
-            $formatted->dot = $locus_dot . $this->findDot($find);
+            $formatted->dot = $locus_dot . '.' . $this->findDot($find);
             $formatted->findable_type = $find->findable_type;
             $formatted->findable_id = $find->findable_id;
             $formatted->description = $find->findable->description;
