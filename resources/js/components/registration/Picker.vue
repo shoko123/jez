@@ -19,7 +19,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn @click="goTo()" :disabled="disableButton">Go!</v-btn>
+          <v-btn @click="goTo()" :disabled="disableGoTo">Go!</v-btn>
           <v-btn @click="cancel" primary>Cancel</v-btn>
         </v-card-actions>
       </v-card>
@@ -51,6 +51,12 @@ export default {
     isFind() {
       return this.$store.getters["mgr/status"].isFind;
     },
+    isReady() {
+      return this.$store.getters["regs/flags"]
+        ? this.$store.getters["regs/flags"].isReady
+        : false;
+    },
+   
 
     tag() {
       //return `${this.$store.getters["mgr/module"]} ${this.$store.getters["mgr/item"].tag}`;
@@ -63,8 +69,8 @@ export default {
       return !ready.item || !ready.collection;
     },
 
-    disableButton() {
-      return this.status ? !this.status.ready : true;
+    disableGoTo() {
+      return !this.isReady; // ? !this.status.ready : true;
     },
   },
 
@@ -75,23 +81,27 @@ export default {
       }
       this.dialog = true;
       this.$store.commit("mgr/isPicker", true);
-      this.$store.dispatch("regs/preparePicker");
+      this.$store.dispatch("regs/p/preparePicker");
     },
 
     goTo() {
-      if (!this.status.ready) {
+      if (!this.isReady) {
         alert("Not ready");
         return;
       }
-      let id = this.status.itemId;
-      this.$store.commit("regs/clear");
-      this.$store.commit("mgr/isPicker", false);
-      this.dialog = false;
-      return this.$store.dispatch("mgr/goToRoute", {
-        module: this.$store.getters["mgr/module"],
-        action: "show",
-        id: id,
-      });
+
+      this.$store
+        .dispatch("mgr/goToRoute", {
+          module: this.$store.getters["mgr/module"],
+          action: "show",
+          dot: this.$store.getters["regs/selected"].dot
+        })
+        .then((res) => {
+          this.$store.commit("regs/clear");
+          this.$store.commit("mgr/isPicker", false);
+          this.dialog = false;
+          return res;
+        });
     },
 
     cancel() {

@@ -13,7 +13,7 @@
             v-for="(item, index) in collection"
             :key="index"
             class="font-weight-normal ma-2 body-1"
-            @click="select(index)"
+            @click="select(item)"
             >{{ item.text }}</v-chip
           >
         </v-row>
@@ -32,7 +32,7 @@ export default {
   },
 
  created() {
-    //console.log(`FieldPicker.created() collectionName: ${collectionName}. fieldName: ${fieldName}`  );
+    console.log(`FieldPicker.created() collectionName: ${this.collectionName} fieldName: ${this.fieldName}`  );
   },
   data() {
     return {
@@ -40,28 +40,24 @@ export default {
     };
   },
 
-  computed: {
+  computed: { 
     collection() {
-      return this.$store.getters[`regs/${this.collectionName}`];
+      return this.$store.getters[`regs/lists`] !== null ? this.$store.getters[`regs/lists`][this.collectionName] : [];    
     },
-    index() {
-      return this.$store.getters["regs/newItem"][`${this.fieldName}Index`];
+
+    isSelected() {
+      return this.$store.getters[`regs/flags`] !== null ? this.$store.getters[`regs/flags`].isSelected[this.fieldName] : false;
     },
+  
     tag() {
-      return this.index !== null && this.collection && this.collection.length
-        ? this.collection[this.index].text
-        : "Choose";
+      return this.isSelected ? this.$store.getters[`regs/selected`][this.fieldName].text : "Choose";
     },
   },
 
   methods: {
-    openModal(val) {
-      this.dialog = val;
-    },
-
-    select(index) {
-      this.$store.dispatch(`regs/${this.fieldName}Selected`, index);
-      this.openModal(false);
+    select(item) {
+      this.$store.dispatch(`regs/p/${this.fieldName}Selected`, item);
+      this.dialog = false;
     },
   },
 };

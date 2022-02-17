@@ -1,8 +1,11 @@
 import manager from './modules/manager/manager.js';
 import xhr from './modules/xhr.js';
 import auth from './modules/auth.js';
-import regs from './modules/reg/regs.js';
+//import regs from './modules/reg/regs.js';
+import regs from './modules/reg/regs1.js';
 import stepper from './modules/stepper.js';
+
+
 import area from './modules/area.js';
 import season from './modules/season.js';
 import areaSeason from './modules/areaSeason.js';
