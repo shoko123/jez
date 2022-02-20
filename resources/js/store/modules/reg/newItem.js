@@ -1,3 +1,5 @@
+import u from './regsUtil';
+
 export default {
     namespaced: true,
 
@@ -5,150 +7,85 @@ export default {
         selected: {
             areaSeason: null,
             locus: null,
-            find: null,
+            registration_category: null,
+            basket: 0,
+            artifact: 0,
+            piece: 0,
         },
 
-        areasSeasons: [],
-        loci: [],
-        finds: [],
+        usePiece: false,
+
+        existingAreasSeasons: [],
+        existingLoci: [],
+        existingFinds: [],
     },
 
     getters: {
-        c(state, getters, rootState, rootGetters) {
-            return rootGetters["mgr/collections"]("main").collection;
-        },
-
         module(state, getters, rootState, rootGetters) {
             return rootGetters["mgr/status"].module;
         },
 
-        moduleIs: (state, getters, rootState, rootGetters) => (name) => {
-            switch (name) {
-                case "AreaSeason":
-                    return rootGetters["mgr/status"].isAreaSeason;
-
-                case "Locus":
-                    return rootGetters["mgr/status"].isLocus;
-
-                case "Find":
-                    return rootGetters["mgr/status"].isFind;
-            }
+        lists(state, getters) {
+            return {
+                areasSeasons: getters.areasSeasons,
+                loci: getters.loci,
+                registrationCategories: getters.registrationCategories,
+                basketNos: getters.basketNos,
+                artifactNos: getters.artifactNos,
+                pieceNos: getters.pieceNos
+            };
         },
 
-        item(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isPicker) {
-                return { isReady: false };
-            }
+        flags(state, getters, rootState, rootGetters) {
+            return {
+                isSelected: {
+                    areaSeason: state.selected.areaSeason !== null,
+                    locus: state.selected.locus !== null,
+                    find: state.selected.find !== null,
+                    registration_category: state.selected.registration_category !== null,
+                    basket_no: state.selected.basket_no !== null,
+                    artifact_no: state.selected.artifact_no !== null,
+                    piece_no: state.selected.piece_no !== null,
+                },
+                isReady: (
+                    (rootGetters["mgr/status"].isAreaSeason && state.selected.areaSeason !== null) ||
+                    (rootGetters["mgr/status"].isLocus && state.selected.locus !== null) ||
+                    (rootGetters["mgr/status"].isFind && state.selected.find !== null)),
 
-            if (getters.moduleIs("AreaSeason")) {
-                if (state.selected.areaSeason !== null) {
-                    return { isReady: true, dot: state.selected.areaSeason };
-                } else {
-                    return { isReady: false };
-                }
-            }
-            if (getters.moduleIs("Locus")) {
-                if (state.selected.locus !== null) {
-                    return { isReady: true, dot: state.selected.areaSeason + '.' + state.selected.locus };
-                } else {
-                    return { isReady: false };
-                }
-            }
+            };
+        },
 
-            if (getters.moduleIs("Find")) {
-                if (state.selected.find !== null) {
-                    return { isReady: true, dot: state.selected.find };
-                } else {
-                    return { isReady: false };
+        selected(state, getters, rootState, rootGetters) {
+            if (getters.flags.isReady) {
+                let item = null;
+                if (rootGetters["mgr/status"].isAreaSeason) {
+                    item = "***";//state.selected.areaSeason.dot;
+                } else if (rootGetters["mgr/status"].isLocus) {
+                    item = "***";//state.selected.locus.dot;
+                } else if (rootGetters["mgr/status"].isFind) {
+                    item = "***";//state.selected.find.dot;
                 }
+                return { ...state.selected, dot: item };
             }
-            return { isReady: false }
+            return state.selected;
         },
 
 
         areasSeasons(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isPicker) {
+            if (!rootGetters["mgr/status"].isCreate) {
                 return [];
             }
-
-            if (rootGetters["mgr/status"].isAreaSeason) {
-                return getters.c.map(item => { return { dot: item.dot, text: item.dot.replace('.', '/') } });
-            } else if (rootGetters["mgr/status"].isLocus || rootGetters["mgr/status"].isFind) {
-                //return getters.c.map(x => { return { dot: x.dot.slice(0, 4), text: x.dot.slice(0, 4).replace('.', '/') } });
-                const as = [...new Map(getters.c.map(item =>
-                    [item['dot'].slice(0, 4), item])).keys()];
-                //format them
-                return as.map(item => { return { dot: item, text: item.replace('.', '/') } });
-                //.map(x => { return { dot: x.dot.slice(0, 4), text: x.dot.slice(0, 4).replace('.', '/') } });
-            }
-            return [];
+            return state.areasSeasons;
         },
 
         loci(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isPicker || 
-            getters.moduleIs("AreaSeason") || 
-            state.selected.areaSeason === null) { return [] }
-
-            //get all loci for selected area_season_id.
-            if (getters.moduleIs("Locus")) {
-
-                //get all loci for areaSeason
-                return getters.c
-                    .filter(x => x.dot.slice(0, 4) === state.selected.areaSeason)
-                    .map(y => { return { dot: y.dot, text: y.dot.split('.')[2] }; });
-
-                //get distinct loci
-
-            } else if (getters.moduleIs("Find")) {
-                let areaSeasonDot = getters["areasSeasons"][state.newItem.areaSeasonIndex].text;
-                let lociForAreaSeason = c.filter(x => x.dot.slice(0, 4) === areaSeasonDot)
-                    .map(y => {
-                        let pieces = y.dot.split('.');
-                        return { text: pieces[2], id: y.id, dot: pieces[0] + '.' + pieces[1] + '.' + pieces[2] };
-                    });
-                console.log(`loci for areaSeason:\n${JSON.stringify(lociForAreaSeason, null, 2)}`);
-
-                //get distinct loci objects from result above.               
-                const distictLoci = [...new Map(lociForAreaSeason.map(item => [
-                    item.dot, item])).values()];
-
-                console.log("distictLoci:\n" + JSON.stringify(distictLoci, null, 2));
-
-                //format them
-                return distictLoci.map(x => {
-                    return { text: x.text, dot: x.dot, tag: x.dot.replaceAll('.', '/') };
-                });
-            }
-        },
-
-
-        finds(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isPicker ||
-                getters.moduleIs("AreaSeason") ||
-                getters.moduleIs("Locus") ||
+            if (!rootGetters["mgr/status"].isCreate ||
+                rootGetters["mgr/status"].isAreaSeason ||
                 state.selected.areaSeason === null) { return [] }
 
-            if ((!rootGetters["mgr/status"].isFind) || state.newItem.locusIndex === null) { return [] }
-            if (rootGetters["mgr/status"].isPicker) {
-                let c = rootGetters["mgr/collections"]("main").collection;
-                let locusDot = getters["loci"][state.newItem.locusIndex].dot
-                let length = locusDot.length;
-                return c
-                    .filter(x => x.dot.substring(0, length) === locusDot)
-                    .map(y => { return { text: y.dot, id: y.id }; });
-            } else if (rootGetters["mgr/status"].isCreate) {
-                return state.findsKeys.map(x => { return state.findsObject[x]; });
-            }
-            return [];
         },
 
-        showRegistrarFindDetails(state, getters, rootState, rootGetters) {
-            return (rootGetters["mgr/status"].isCreate &&
-                rootGetters["mgr/status"].isFind &&
-                state.newItem.locusIndex !== null &&
-                state.newItem.areaSeasonIndex !== null);
-        },
-
+       
         registrationCategories(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
             return rootGetters["mgr/status"].moduleRegistrationOptions.map(x => { return { text: x } });
@@ -157,6 +94,7 @@ export default {
         //always show all baskets
         basketNos(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
+            return [];
             let arr0 = [...Array(100).keys()];
             let arr1 = arr0.map(x => { return { value: x, text: x } });
             arr1[0] = { value: 0, text: "None Selected" };
@@ -165,6 +103,8 @@ export default {
 
         artifactNos(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
+            return [];
+
             let arr0 = [...Array(100).keys()];
             let arr1 = arr0.map(x => { return { value: x, text: x } });
             arr1[0] = { value: 0, text: "None Selected" };
@@ -196,6 +136,8 @@ export default {
 
         pieceNos(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
+            return [];
+
             if (!state.newItem.usePiece) return [{ value: null }];
             let arr0 = [...Array(100).keys()];
             let arr1 = arr0.map(x => { return { value: x, text: x } });
@@ -217,9 +159,18 @@ export default {
             })
 
             return arr1;
+        }, 
+        
+        showRegistrarFindDetails(state, getters, rootState, rootGetters) {
+            return false;
+            return (rootGetters["mgr/status"].isCreate &&
+                rootGetters["mgr/status"].isFind &&
+                state.newItem.locusIndex !== null &&
+                state.newItem.areaSeasonIndex !== null);
         },
+
         usePiece(state) {
-            return state.newItem.usePiece;
+            return state.usePiece;
         },
 
     },
@@ -232,11 +183,19 @@ export default {
             state.selected.locus = payload;
         },
 
-        find(state, payload) {
-            //console.log("regs/areaSeasonIndex.set:  " + JSON.stringify(payload, null, 2));
-            state.selected.find = payload;
-        },
 
+        basket(state, payload) {
+            state.selected.basket = payload;
+        },
+        artifact(state, payload) {
+            state.selected.artifact = payload;
+        }, 
+        piece(state, payload) {
+            state.selected.piece = payload;
+        },
+        usePiece(state, payload) {
+            state.usePiece = payload;
+        },
 
         clear(state, payload) {
             state.selected[payload] = null;
@@ -264,7 +223,7 @@ export default {
             commit("findIndex", null);
 
             if (rootGetters["mgr/status"].isCreate) {
-                u.loadAreaSeasonLoci(commit, dispatch, getters["areasSeasons"][state.newItem.areaSeasonIndex].id);
+                u.Loci(commit, dispatch, getters["areasSeasons"][state.newItem.areaSeasonIndex].id);
             } else {
                 //console.log(`picker areaSeason selected loci.length: ${getters["loci"].length}`);
                 //if picker and loci contain only one item, select it.
@@ -302,11 +261,7 @@ export default {
             }
         },
 
-        //picker only
-        findSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            //console.log("regs/findSelected");
-            commit("findIndex", payload);
-        },
+       
 
         //create find only
         registration_categorySelected({ state, getters, commit, dispatch, rootGetters }, payload) {
@@ -316,55 +271,51 @@ export default {
             commit("piece_noIndex", 0);
             commit("stp/disableNextButton", !getters["status"].ready, { root: true });
         },
-        basket_noSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
+        basketSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             commit("basket_noIndex", payload);
             commit("artifact_noIndex", 0);
             commit("piece_noIndex", 0);
             commit("stp/disableNextButton", !getters["status"].ready, { root: true });
         },
-        artifact_noSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
+        artifactSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             commit("artifact_noIndex", payload);
             commit("piece_noIndex", 0);
             commit("stp/disableNextButton", !getters["status"].ready, { root: true });
         },
-        piece_noSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
+        pieceSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
             commit("piece_noIndex", payload);
             commit("stp/disableNextButton", !getters["status"].ready, { root: true });
         },
         usePiece({ state, getters, commit, dispatch, rootGetters }, payload) {
+            /*
             commit("usePiece", payload);
             commit("basket_noIndex", 0);
             commit("artifact_noIndex", 0);
             commit("piece_noIndex", 0);
             commit("stp/disableNextButton", !getters["status"].ready, { root: true });
+            */
         },
 
         loadAreasSeasons({ state, getters, commit, dispatch, rootGetters }, payload) {
-            u.loadAreasSeasons(commit, dispatch, payload)
+            //u.loadAreasSeasons(commit, dispatch, payload)
         },
 
         //will be called before the creation of a new item (locus, or find).
         //copy some fields from current item defaults for new item here.
-        prepare({ state, getters, commit, dispatch, rootGetters }, newItem) {
-            console.log(`regs/prepare(): ${rootGetters["mgr/module"]}: ${JSON.stringify(rootGetters["mgr/item"], null, 2)}`);
+        prepareCreate({ state, getters, commit, dispatch, rootGetters }) {
+            console.log(`regs/newItem.prepareCreate()`);
             commit("clear");
-            commit("stp/disableNextButton", true, { root: true });
-
-            if (rootGetters["mgr/status"].isLocus) {
-
-            } else if (rootGetters["mgr/status"].isFind) {
-
+            if (state.areasSeasons.length === 0) {
+                u.loadAreasSeasons(commit, dispatch);
             }
-        },
 
-        //called before picker is displayed; put default behaviour here
-        preparePicker({ state, getters, rootGetters, commit, dispatch }) {
-            //console.log(`preparePicker length: ${getters["areasSeasons"].length} clear()`);
+        },
+        prepareUpdate({ state, getters, commit, dispatch, rootGetters }, registration) {
+            console.log(`regs/newItem.prepareUpdate(): ${rootGetters["mgr/module"]}: ${JSON.stringify(registration, null, 2)}`);
             commit("clear");
-            //if we have only one areaSeason in current collection, choose it.
-            if (getters["areasSeasons"].length === 1) {
-                dispatch("areaSeasonSelected", 0);
-            };
+            if (state.areasSeasons.length === 0) {
+                u.loadAreasSeasons(commit, dispatch);
+            }
 
         },
 

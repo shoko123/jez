@@ -25,7 +25,7 @@ export default {
                 if (rootGetters["mgr/status"].isUpdate) {
                     return  rootGetters["mgr/item"].tag;
                 } else {
-                let tag = rootGetters["regs/status"].ready ? rootGetters["regs/status"].tag : "";
+                let tag = rootGetters["regs/flags"].isReady ? rootGetters["regs/selected"].dot : "";
                 return tag;
                 }
             }

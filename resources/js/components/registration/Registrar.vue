@@ -88,7 +88,7 @@ export default {
   created() {
     console.log("Registrar.created - loading areasSeasons");
     this.usePiece = false;
-    this.$store.dispatch("regs/loadAreasSeasons", null);
+    this.$store.dispatch("regs/n/loadAreasSeasons", null);
   },
 
   destroyed() {
@@ -110,11 +110,11 @@ export default {
 
     usePiece: {
       get() {
-        return this.$store.getters["regs/usePiece"];
+        return this.$store.getters["regs/n/usePiece"];
       },
       set(data) {
         console.log("registrar usePiece.dispatch" + data);
-        this.$store.dispatch("regs/usePiece", data);
+        this.$store.dispatch("regs/n/usePiece", data);
       },
     },
   },

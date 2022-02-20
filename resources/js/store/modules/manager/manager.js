@@ -609,7 +609,7 @@ export default {
                     }
                     commit("ready", { entity: "item", isReady: false });
                     if (goToItem) {
-                        dispatch('goToRoute', { module: state.routes.current.module, action: "show", id: res.data.item.id });
+                        dispatch('goToRoute', { module: state.routes.current.module, action: "show", dot: state.routes.current.dot });
                     }
                     return res;
                 })

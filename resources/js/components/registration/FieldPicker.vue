@@ -1,7 +1,13 @@
 <template>
   <v-dialog v-model="dialog" width="800">
     <template v-slot:activator="{ on, attrs }">
-      <v-text-field v-model="tag" :label="label" filled v-bind="attrs" v-on="on">
+      <v-text-field
+        v-model="tag"
+        :label="label"
+        filled
+        v-bind="attrs"
+        v-on="on"
+      >
       </v-text-field>
     </template>
 
@@ -31,8 +37,10 @@ export default {
     fieldName: String,
   },
 
- created() {
-    console.log(`FieldPicker.created() collectionName: ${this.collectionName} fieldName: ${this.fieldName}`  );
+  created() {
+    console.log(
+      `FieldPicker.created() collectionName: ${this.collectionName} fieldName: ${this.fieldName}`
+    );
   },
   data() {
     return {
@@ -40,23 +48,32 @@ export default {
     };
   },
 
-  computed: { 
+  computed: {
     collection() {
-      return this.$store.getters[`regs/lists`] !== null ? this.$store.getters[`regs/lists`][this.collectionName] : [];    
+      return this.$store.getters[`regs/lists`] !== null
+        ? this.$store.getters[`regs/lists`][this.collectionName]
+        : [];
     },
 
     isSelected() {
-      return this.$store.getters[`regs/flags`] !== null ? this.$store.getters[`regs/flags`].isSelected[this.fieldName] : false;
+      return this.$store.getters[`regs/flags`] !== null
+        ? this.$store.getters[`regs/flags`].isSelected[this.fieldName]
+        : false;
     },
-  
+
     tag() {
-      return this.isSelected ? this.$store.getters[`regs/selected`][this.fieldName].text : "Choose";
+      return this.isSelected
+        ? this.$store.getters[`regs/selected`][this.fieldName].text
+        : "Choose";
     },
   },
 
   methods: {
     select(item) {
-      this.$store.dispatch(`regs/p/${this.fieldName}Selected`, item);
+      this.$store.dispatch(`regs/selected`, {
+        name: this.fieldName,
+        data: item,
+      });
       this.dialog = false;
     },
   },

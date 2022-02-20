@@ -1,6 +1,6 @@
 import { normalize, schema } from 'normalizr';
 export default {
-    loadAreasSeasons(commit, dispatch, payload) {
+    loadAreasSeasons(commit, dispatch) {
         console.log("regs.loadAreasSeasons()");
 
         let xhrRequest = {

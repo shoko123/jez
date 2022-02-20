@@ -373,6 +373,10 @@ export default {
                 commit("copyToToCurrent", "id");
                 //state.current.id = state.to.id;
             }
+            if (state.to.hasOwnProperty("dot")) {
+                commit("copyToToCurrent", "dot");
+                //state.current.id = state.to.id;
+            }
             if (state.to.hasOwnProperty("action")) {
                 commit("copyToToCurrent", "action");
                 //state.current.action = state.to.action;
@@ -395,6 +399,10 @@ export default {
             if (state.to.hasOwnProperty("apiModuleUrl")) {
                 commit("copyToToCurrent", "apiModuleUrl");
             }
+            if (state.to.hasOwnProperty("dotParams")) {
+                commit("copyToToCurrent", "dotParams");
+                //state.current.id = state.to.id;
+            }
 
             commit("copyToToCurrent", "module");
         },
@@ -413,11 +421,11 @@ export default {
                     case "welcome":
                         return { path: `${moduleBaseUrl}/welcome` };
                     case "update":
-                        return { path: `${moduleBaseUrl}/${state.current.id}/update` };
+                        return { path: `${moduleBaseUrl}/${state.current.dot}/update` };
                     case "media":
-                        return { path: `${moduleBaseUrl}/${state.current.id}/media` };
+                        return { path: `${moduleBaseUrl}/${state.current.dot}/media` };
                     case "tags":
-                        return { path: `${moduleBaseUrl}/${state.current.id}/tags` };
+                        return { path: `${moduleBaseUrl}/${state.current.dot}/tags` };
                     //case "list":
                     //   return `${moduleBaseUrl}/list`;
                     case "create":

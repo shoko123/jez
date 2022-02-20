@@ -193,6 +193,11 @@ export default {
             };
 
         },
+
+        selected({ state, getters, commit, dispatch, rootGetters }, payload) {
+            //console.log("regs/findSelected");
+            dispatch(`${payload.name}Selected`, payload.data);
+        },
     }
 }
 
