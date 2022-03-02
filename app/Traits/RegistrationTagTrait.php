@@ -14,12 +14,8 @@ trait RegistrationTagTrait
         }
         if ($find->registration_category == 'AR') {
             $tag .= $find->basket_no . "." . $find->artifact_no;
-            if ($find->piece_no !== 0) {
-
-                $tag .= "P" . $find->piece_no;
-            }
         } else {
-            //format basket.artifact.piece
+            //format basket.artifact
             if ($find->basket_no !== 0) {
                 $tag .= $find->basket_no;
             }
@@ -29,12 +25,8 @@ trait RegistrationTagTrait
                 }
                 $tag .= $find->artifact_no;
             }
-            if ($find->piece_no !== 0) {
-                if ($find->artifact_no !== 0) {
-                    $tag .= ".";
-                }
-                $tag .= "P" . $find->piece_no;
-            }
-        }return $tag;
+           
+        }
+        return $tag;
     }
 }

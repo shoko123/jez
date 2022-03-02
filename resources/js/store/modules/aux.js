@@ -108,8 +108,7 @@ export default {
             let f1 = getters["all"].filter(x => (x.group_types !== "Registration"));
 
             let scopeIsArtifact = (rootGetters["fnd/item"] &&
-                rootGetters["fnd/item"].artifact_no !== 0 &&
-                (rootGetters["fnd/item"].piece_no === 0));
+                rootGetters["fnd/item"].artifact_no !== 0);
 
             //f2 - filter by scope: non artifacts see only periods tags ???
             let f2 = scopeIsArtifact ? f1 :

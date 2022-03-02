@@ -31,7 +31,7 @@
       <v-col :cols="2" class="px-1">
         <FieldPicker
           v-bind="{
-            label: 'Registration',
+            label: 'Registration Code',
             title: 'Pick Registration',
             collectionName: 'registrationCategories',
             fieldName: 'registration_category',
@@ -44,7 +44,7 @@
             label: 'Basket',
             title: 'Pick Basket Number',
             collectionName: 'basketNos',
-            fieldName: 'basket_no',
+            fieldName: 'basket',
           }"
         ></FieldPicker
       ></v-col>
@@ -54,24 +54,7 @@
             label: 'Artifact',
             title: 'Pick Artifact Number',
             collectionName: 'artifactNos',
-            fieldName: 'artifact_no',
-          }"
-        ></FieldPicker
-      ></v-col>
-      <v-col :cols="1" class="px-1">
-        <v-checkbox
-          v-model="usePiece"
-          label="use piece"
-          color="orange"
-        ></v-checkbox>
-      </v-col>
-      <v-col v-if="usePiece" :cols="2" class="px-1">
-        <FieldPicker
-          v-bind="{
-            label: 'Piece',
-            title: 'Pick Piece Number',
-            collectionName: 'pieceNos',
-            fieldName: 'piece_no',
+            fieldName: 'artifact',
           }"
         ></FieldPicker
       ></v-col>
@@ -86,9 +69,8 @@ import StepButtons from "../stepper/StepButtons";
 export default {
   components: { FieldPicker, StepButtons },
   created() {
-    console.log("Registrar.created - loading areasSeasons");
-    this.usePiece = false;
-    this.$store.dispatch("regs/n/loadAreasSeasons", null);
+    console.log("Registrar.created");
+    //this.$store.dispatch("regs/n/loadAreasSeasons", null);
   },
 
   destroyed() {
@@ -100,22 +82,14 @@ export default {
   },
 
   computed: {
-    status() {
-      return this.$store.getters["regs/status"];
+    flags() {
+      return this.$store.getters["regs/flags"];
     },
-
+    item() {
+      return this.flags.isReady ? this.$store.getters["regs/selected"].item : null;
+    },
     showFindDetails() {
-      return this.$store.getters["regs/showRegistrarFindDetails"];
-    },
-
-    usePiece: {
-      get() {
-        return this.$store.getters["regs/n/usePiece"];
-      },
-      set(data) {
-        console.log("registrar usePiece.dispatch" + data);
-        this.$store.dispatch("regs/n/usePiece", data);
-      },
+      return this.$store.getters["regs/flags"].showFindRegistration;
     },
   },
 
@@ -123,15 +97,15 @@ export default {
     nextClicked() {
       console.log(
         "Registrar.nextClicked: " +
-          JSON.stringify(this.$store.getters["regs/newItem"], null, 2)
+          JSON.stringify(this.item, null, 2)
       );
 
-      if (!this.status.ready) {
+      if (!this.flags.isReady) {
         console.log("Registrar - validation error");
         this.$store.commit("stp/disableNextButton", true);
       } else {
         console.log("Registrar - validation passed - before next");
-        this.$store.dispatch("regs/copyRegistration");
+        this.$store.dispatch("regs/n/copyRegistration");
         this.$store.commit("stp/moveToStep", "next");
       }
     },

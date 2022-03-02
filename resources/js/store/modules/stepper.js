@@ -25,7 +25,7 @@ export default {
                 if (rootGetters["mgr/status"].isUpdate) {
                     return  rootGetters["mgr/item"].tag;
                 } else {
-                let tag = rootGetters["regs/flags"].isReady ? rootGetters["regs/selected"].dot : "";
+                let tag = rootGetters["regs/flags"].isReady ? rootGetters["regs/selected"].item.tag : "";
                 return tag;
                 }
             }
@@ -69,11 +69,11 @@ export default {
     },
     actions: {
         populateSteps({ state, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`populateSteps() payload: ${payload}`);
+            console.log(`populateSteps() isCreate: ${payload}`);
             let module = rootGetters["mgr/module"];
             let steps = [];
             let stepsWithStepNumber = [];
-            if (payload === "create") {
+            if (payload) {
                 steps.push({ name: "Registrar", header: `${module} Registration` });
             }
 
@@ -89,6 +89,7 @@ export default {
             });
             commit("populateSteps", stepsWithStepNumber);
             commit("moveToStep", "first");
+            commit("disableNextButton", payload);
         },
 
     }

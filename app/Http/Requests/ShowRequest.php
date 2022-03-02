@@ -33,7 +33,6 @@ class ShowRequest extends FormRequest
             'registration_category' => 'in:AR,PT,GS,LB,FL|nullable',
             'basket_no' => 'numeric|min:0|max:99|nullable',
             'artifact_no' => 'numeric|min:0|max:99|nullable',
-            'piece_no' => 'numeric|min:0|max:99|nullable'
         ];
     }
 }

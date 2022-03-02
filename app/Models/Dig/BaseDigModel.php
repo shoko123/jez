@@ -203,25 +203,16 @@ class BaseDigModel extends Model implements HasMedia
                     case "scopes":
                         $b = in_array("basket", $ids);
                         $a = in_array("artifact", $ids);
-                        $p = in_array("piece", $ids);
                         switch (count($ids)) {
                             case 1:
                                 if ($b) {
-                                    $builder->where('basket_no', '!=', 0)->where('artifact_no', 0)->where('piece_no', 0);
+                                    $builder->where('basket_no', '!=', 0)->where('artifact_no', 0);
                                 } elseif ($a) {
-                                    $builder->where('artifact_no', '!=', 0)->where('piece_no', 0);
-                                } elseif ($p) {
-                                    $builder->where('piece_no', '!=', 0);
-                                }
+                                    $builder->where('artifact_no', '!=', 0);
+                                } 
                                 break;
                             case 2:
-                                if ($b && $a) {
-                                    $builder->where('piece_no', 0);
-                                } elseif ($b && $p) {
-                                    $builder->where('artifact_no', 0)->orWhere('piece_no', '!=', 0);
-                                } elseif ($a && $p) {
-                                    $builder->where('artifact_no', '!=', 0)->orWhere('piece_no', '!=', 0);
-                                }
+                                //all
                                 break;
                         }
                         break;
@@ -262,8 +253,7 @@ class BaseDigModel extends Model implements HasMedia
             ->orderBy('loci.locus_no')
             ->orderBy('finds.registration_category')
             ->orderBy('finds.basket_no')
-            ->orderBy('finds.artifact_no')
-            ->orderBy('finds.piece_no');
+            ->orderBy('finds.artifact_no');
 
         //format tag
         $builder->select("$tableName.id AS id", DB::raw("CONCAT(areas_seasons.dot, '.' ,locus_no ,'.', finds.registration_category ,'.', finds.basket_no  ,'.', finds.artifact_no) as dot"));
@@ -282,12 +272,7 @@ class BaseDigModel extends Model implements HasMedia
     //format find's tag. relies only on the $find builder result parameter
     public function findDot($find)
     {
-        $dot = $find->registration_category . '.' . $find->basket_no . '.' . $find->artifact_no;
-
-        if ($find->piece_no !== 0) {
-            $dot .= "." . $find->piece_no;
-        }
-        return $dot;
+        return $find->registration_category . '.' . $find->basket_no . '.' . $find->artifact_no;
     }
 
     public function getIdFromParams($p)

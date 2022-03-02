@@ -84,9 +84,9 @@ class LithicController extends BaseDigModuleController
             //since 'find' has a composite primary key, we need to manually find record and insert/update.
             if ($lithicRequest->isMethod('post')) {
                 $find->findable_id = $item->id;
-                DB::table('finds')->where(['findable_type' => 'Lithic', 'findable_id' => $item->id])->insert($find->toArray());
+                DB::table('finds')->where('findable_type', 'Lithic')->where('findable_id' , $item->id)->insert($find->toArray());
             } else {
-                DB::table('finds')->where(['findable_type' => 'Lithic', 'findable_id' => $item->id])->update($find->toArray());
+                DB::table('finds')->where('findable_type', 'Lithic')->where('findable_id' , $item->id)->update($find->toArray());
             }
         });
 
@@ -95,10 +95,7 @@ class LithicController extends BaseDigModuleController
             //extra formatting by client side.
             //$locus = Locus::findOrFail($find->locus_id);
             $locus = Locus::with('areaSeason')->findOrFail($find->locus_id);
-            $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
-            $tag .= ($find->registration_category == "FL") ? $find->basket_no . '.' . $find->artifact_no : $find->artifact_no;
-
-            $item->tag = $tag;
+            $item->dot = $locus->areaSeason->dot . '.' . $locus->locus_no . '.' . $find->registration_category . '.' . $find->basket_no . '.' . $find->artifact_no;
             $item->locus_id = $find->locus_id;
 
             unset($item->weight);

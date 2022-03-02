@@ -58,7 +58,7 @@ export default {
         },
 
         welcomeData: {
-            counts: { items: null, media: null, baskets: null, artifacts: null, pieces: null },
+            counts: { items: null, media: null, baskets: null, artifacts: null },
             welcomePageParams: {},
             firstDot: null,
         },
@@ -609,7 +609,7 @@ export default {
                     }
                     commit("ready", { entity: "item", isReady: false });
                     if (goToItem) {
-                        dispatch('goToRoute', { module: state.routes.current.module, action: "show", dot: state.routes.current.dot });
+                        dispatch('goToRoute', { module: state.routes.current.module, action: "show", dot: rootGetters["mgr/status"].isCreate ? res.data.item.dot : state.item.dot});
                     }
                     return res;
                 })
@@ -619,6 +619,7 @@ export default {
                     return err;
                 });
         },
+        /*
         prepareNew({ state, getters, rootGetters, commit, dispatch }, payload) {
             console.log(`mgr/prepare() payload" ${payload}`);
             //if we create a new item (locus or find), we must copy some data from current item
@@ -644,6 +645,7 @@ export default {
             dispatch(`${getters["status"].moduleStoreName}/prepare`, toCopy, { root: true });
             dispatch('stp/populateSteps', payload, { root: true });
         },
+        */
 
         initializeModule({ state, getters, commit, dispatch }, payload) {
             //console.log('mgr.initializeModule. apiBaseUrl: ' + state.routes.to.module);

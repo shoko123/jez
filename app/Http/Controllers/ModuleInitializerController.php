@@ -107,15 +107,6 @@ class ModuleInitializerController extends Controller
             }
         }
 
-        /*
-        if (self::isFind) {
-        $counts['baskets'] = DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('basket_no')->whereNull('artifact_no')->count();
-        $counts['artifacts'] = DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('artifact_no')->whereNull('piece_no')->count();
-        //$counts['pieces'] = DB::table('finds')->where('findable_type', $moduleName)->whereNotNull('piece_no')->count();
-        }
-         */
-
-        $welcomeData = [];
         //$mapsBaseUrl = \Storage::disk('app-media')->url($fullMediaName);
         return response()->json([
             "groups" => self::$groups,
@@ -181,7 +172,6 @@ class ModuleInitializerController extends Controller
                 "params" => [
                     ["id" => "basket", "name" => "Basket"],
                     ["id" => "artifact", "name" => "Artifact"],
-                    ["id" => "piece", "name" => "Piece"],
                 ]
             ]);
         }

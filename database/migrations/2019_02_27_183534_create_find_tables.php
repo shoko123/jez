@@ -58,7 +58,7 @@ class CreateFindTables extends Migration
 
         DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_chk_valid_registration CHECK (basket_no is not null or artifact_no is not null);');
         DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_chk_registration_category CHECK (registration_category in ("AR","FL","GS", "LB", "PT"));');
-        DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_unique_registration UNIQUE(findable_type, locus_id, registration_category, basket_no, artifact_no, piece_no);');
+        DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_unique_registration UNIQUE(findable_type, locus_id, registration_category, basket_no, artifact_no);');
         //DB::statement('ALTER TABLE finds ADD CONSTRAINT finds_quantity_code CHECK (find_quantity_code in ("B","I","P"));');
 
     }

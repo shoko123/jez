@@ -19,7 +19,7 @@ class AreaSeasonController extends BaseDigModuleController
         //'get' is used to get list of {id, tag}, used for creation/update of new elements.
         //-----------------------------------------
         if ($request->isMethod('get')) {
-            $as = $this->model->orderBy('id')->get(['id', 'tag']);
+            $as = $this->model->orderBy('id')->get(['id', 'dot']);
            
             return response()->json([
                 "collection" => $as,
@@ -95,7 +95,7 @@ class AreaSeasonController extends BaseDigModuleController
         $loci = $areaSason->loci()->get(['id', 'locus_no']);
 
         foreach ($loci as $locus) {
-            $locus["tag"] = $areaSason->tag . '/' . $locus->locus_no;
+            $locus["dot"] = $areaSason->dot . '.' . $locus->locus_no;
         }
 
         return response()->json([

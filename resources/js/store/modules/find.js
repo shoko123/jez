@@ -9,7 +9,6 @@ export default {
             locus_id: null,
             basket_no: 0,
             artifact_no: 0,
-            piece_no: 0,
             preservation_id: 1,
             related_pottery_basket: null,
             date: null,
@@ -27,7 +26,7 @@ export default {
             return state.find;
         },
 
-        //null, "basket", "artifact", or "piece"
+        //null, "basket", or "artifact"
         scale(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isFind ||
                 (
@@ -38,13 +37,11 @@ export default {
             ) { return null; }
 
             let source = rootGetters["mgr/status"].isShow ? state.find : state.newItem;
-            if(source === null) { return null}
+            if (source === null) { return null }
             if (source.basket_no !== 0 && source.artifact_no === 0) {
                 return "Basket";
-            } else if (source.artifact_no !== 0 && source.piece_no === 0) {
+            } else if (source.artifact_no !== 0) {
                 return "Artifact";
-            } else {
-                return "Piece";
             }
         },
 
@@ -68,7 +65,6 @@ export default {
             state.newItem.registration_category = registrationData.registration_category;
             state.newItem.basket_no = registrationData.basket_no;
             state.newItem.artifact_no = registrationData.artifact_no;
-            state.newItem.piece_no = registrationData.piece_no;
             console.log("find.setRegistrationData" + JSON.stringify(state.newItem, null, 2));
         },
         preservation_id(state, payload) {
@@ -118,11 +114,9 @@ export default {
                 registration_category: toCopy ? current.registration_category : null,
                 basket_no: toCopy ? current.basket_no : 0,
                 artifact_no: toCopy ? current.artifact_no : 0,
-                piece_no: toCopy ? current.piece_no : 0,
             }
-
-            commit("date", current.date);
             commit("registrationData", registrationData);
+            commit("date", toCopy ? current.date : null);
             commit("preservation_id", toCopy ? current.preservation_id : 1);
             commit("related_pottery_basket", toCopy ? current.related_pottery_basket : null);
             commit("description", toCopy ? current.description : null);

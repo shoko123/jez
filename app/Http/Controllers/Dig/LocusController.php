@@ -47,7 +47,7 @@ class LocusController extends BaseDigModuleController
     {
         $finds = Find::where('locus_id', $id)
             ->where('findable_type', $request->input('find_type'))
-            ->select('findable_type', 'findable_id', 'locus_id', 'registration_category', 'basket_no', 'artifact_no', 'piece_no')
+            ->select('findable_type', 'findable_id', 'locus_id', 'registration_category', 'basket_no', 'artifact_no')
             ->get();
 
         return response()->json([

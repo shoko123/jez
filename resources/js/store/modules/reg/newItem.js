@@ -8,12 +8,9 @@ export default {
             areaSeason: null,
             locus: null,
             registration_category: null,
-            basket: 0,
-            artifact: 0,
-            piece: 0,
+            basket: null,
+            artifact: null,
         },
-
-        usePiece: false,
 
         existingAreasSeasons: [],
         existingLoci: [],
@@ -32,7 +29,6 @@ export default {
                 registrationCategories: getters.registrationCategories,
                 basketNos: getters.basketNos,
                 artifactNos: getters.artifactNos,
-                pieceNos: getters.pieceNos
             };
         },
 
@@ -43,14 +39,14 @@ export default {
                     locus: state.selected.locus !== null,
                     find: state.selected.find !== null,
                     registration_category: state.selected.registration_category !== null,
-                    basket_no: state.selected.basket_no !== null,
-                    artifact_no: state.selected.artifact_no !== null,
-                    piece_no: state.selected.piece_no !== null,
+                    basket: state.selected.basket !== null,
+                    artifact: state.selected.artifact !== null,
                 },
                 isReady: (
                     (rootGetters["mgr/status"].isAreaSeason && state.selected.areaSeason !== null) ||
                     (rootGetters["mgr/status"].isLocus && state.selected.locus !== null) ||
-                    (rootGetters["mgr/status"].isFind && state.selected.find !== null)),
+                    (rootGetters["mgr/status"].isFind && ((state.selected.basket !== null && state.selected.basket.value !== 0) || (state.selected.artifact !== null && state.selected.artifact.value !== 0)))),
+                showFindRegistration: rootGetters["mgr/status"].isFind && state.selected.areaSeason && state.selected.locus
 
             };
         },
@@ -59,13 +55,20 @@ export default {
             if (getters.flags.isReady) {
                 let item = null;
                 if (rootGetters["mgr/status"].isAreaSeason) {
-                    item = "***";//state.selected.areaSeason.dot;
+                    item = { dot: state.selected.areaSeason.dot, tag: state.selected.areaSeason.dot.replaceAll('.', '/'), id: state.selected.areaSeason.id };
                 } else if (rootGetters["mgr/status"].isLocus) {
-                    item = "***";//state.selected.locus.dot;
+                    item = { dot: state.selected.locus.dot, tag: state.selected.locus.dot.replaceAll('.', '/'), id: state.selected.locus.id };
                 } else if (rootGetters["mgr/status"].isFind) {
-                    item = "***";//state.selected.find.dot;
+                    item = {
+                        dot: state.selected.locus.dot + '.' + state.selected.registration_category.value + '.' + state.selected.basket.value + '.' + state.selected.artifact.value,
+                        tag: state.selected.locus.dot.replaceAll('.', '/') + '.' + state.selected.registration_category.value + '.' + state.selected.basket.value + '.' + state.selected.artifact.value,
+                        locus_id: state.selected.locus.id,
+                        registration_category: state.selected.registration_category.value,
+                        basket_no: state.selected.basket.value,
+                        artifact_no: state.selected.artifact.value
+                    };
                 }
-                return { ...state.selected, dot: item };
+                return { ...state.selected, item };
             }
             return state.selected;
         },
@@ -75,26 +78,39 @@ export default {
             if (!rootGetters["mgr/status"].isCreate) {
                 return [];
             }
-            return state.areasSeasons;
+            return state.existingAreasSeasons.map(x => { return { id: x.id, dot: x.dot, text: x.dot.replace('.', '/') } });
         },
 
         loci(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreate ||
                 rootGetters["mgr/status"].isAreaSeason ||
                 state.selected.areaSeason === null) { return [] }
-
+            if (rootGetters["mgr/status"].isLocus) {
+                if (state.selected.areaSeason == null) {
+                    return [];
+                }
+                //possible new locus numbers to choose from
+                let zeroTo999 = [...Array(1000).keys()];
+                //remove existing loci
+                let possibleLocusNos = zeroTo999.filter(x => { return !state.existingLoci.some(y => y.locus_no === x); });
+                return possibleLocusNos.map(x => { return {  value: x,  dot: state.selected.areaSeason.dot + '.' + x, text: x} })
+            } else if (rootGetters["mgr/status"].isFind) {
+                if (state.selected.areaSeason == null) {
+                    return [];
+                }
+                return state.existingLoci.map(x => { return { id: x.id, dot: x.dot, text: x.locus_no } });
+            }
         },
 
-       
+
         registrationCategories(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
-            return rootGetters["mgr/status"].moduleRegistrationOptions.map(x => { return { text: x } });
+            return rootGetters["mgr/status"].moduleRegistrationOptions.map(x => { return { value: x, text: x } });
         },
 
-        //always show all baskets
         basketNos(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
-            return [];
+            if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind || state.selected.locus == null) return [];
+
             let arr0 = [...Array(100).keys()];
             let arr1 = arr0.map(x => { return { value: x, text: x } });
             arr1[0] = { value: 0, text: "None Selected" };
@@ -103,64 +119,24 @@ export default {
 
         artifactNos(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
-            return [];
-
             let arr0 = [...Array(100).keys()];
             let arr1 = arr0.map(x => { return { value: x, text: x } });
             arr1[0] = { value: 0, text: "None Selected" };
-            //if using piece_no, allow all artifacts
-            if (state.newItem.usePiece) {
-                arr1[0] = { value: 0, text: "None Selected" };
-                return arr1;
-            }
+            console.log("selected: " + JSON.stringify(state.selected, null, 2));
+            state.existingFinds.forEach(function (x, index) {
+                console.log("find for locus: " + JSON.stringify(x, null, 2));
 
-            //take away already existing artifacts
-            //if basket selected, allow only artifact that don't already exist in basket.
-            //B - basket_no
-            let B = getters["basketNos"][state.newItem.basket_noIndex].value;
-
-            state.findsKeys.forEach(function (x, index) {
-                let find = state.findsObject[x];
-                console.log("find for locus: " + JSON.stringify(find, null, 2));
-
-                //remove artifact only when it has the same reregistration_category and basket_no
-                if (find.registration_category === getters["registrationCategories"][state.newItem.registration_categoryIndex].text &&
-                    find.basket_no === B) {
-                    let index = arr1.map(x => x.value).indexOf(find.artifact_no);
-                    console.log(`removing basket ${B} artifact ${find.artifact_no}`);
-                    arr1.splice(index, 1);
+                //remove artifact only when it has the same registration_category, basket, and artifact
+                if (x.registration_category === state.selected.registration_category.value &&
+                    x.basket_no === state.selected.basket.value) {
+                    console.log(`removing artifact no ${x.artifact_no}`);
+                    const indexToRemove = arr1.findIndex(y => y.value === x.artifact_no);
+                    arr1.splice(indexToRemove, 1);
                 }
             })
             return arr1;
         },
 
-        pieceNos(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isCreate || !rootGetters["mgr/status"].isFind) return [];
-            return [];
-
-            if (!state.newItem.usePiece) return [{ value: null }];
-            let arr0 = [...Array(100).keys()];
-            let arr1 = arr0.map(x => { return { value: x, text: x } });
-            arr1[0] = { value: 0, text: "None Selected" };
-
-            state.findsKeys.forEach(x => {
-                let find = state.findsObject[x];
-                console.log("finds for locus: " + JSON.stringify(find, null, 2));
-
-                //remove piece when it has the same reregistration_category, basket_no, and artifact_no
-                if (find.registration_category === getters["registrationCategories"][state.newItem.registration_categoryIndex].text &&
-                    find.basket_no === getters["basketNos"][state.newItem.basket_noIndex].value &&
-                    find.artifact_no === getters["artifactNos"][state.newItem.artifact_noIndex].value) {
-                    //
-                    let index = arr1.map(x => x.value).indexOf(find.piece_no);
-                    console.log("removing pieces no. " + find.piece_no);
-                    arr1.splice(index, 1);
-                }
-            })
-
-            return arr1;
-        }, 
-        
         showRegistrarFindDetails(state, getters, rootState, rootGetters) {
             return false;
             return (rootGetters["mgr/status"].isCreate &&
@@ -168,172 +144,180 @@ export default {
                 state.newItem.locusIndex !== null &&
                 state.newItem.areaSeasonIndex !== null);
         },
-
-        usePiece(state) {
-            return state.usePiece;
-        },
-
     },
 
     mutations: {
-        areaSeason(state, payload) {
-            state.selected.areaSeason = payload;
+        existingAreasSeasons(state, payload) {
+            state.existingAreasSeasons = payload;
         },
-        locus(state, payload) {
-            state.selected.locus = payload;
-        },
-
-
-        basket(state, payload) {
-            state.selected.basket = payload;
-        },
-        artifact(state, payload) {
-            state.selected.artifact = payload;
-        }, 
-        piece(state, payload) {
-            state.selected.piece = payload;
-        },
-        usePiece(state, payload) {
-            state.usePiece = payload;
+        existingLoci(state, payload) {
+            state.existingLoci = payload;
         },
 
-        clear(state, payload) {
-            state.selected[payload] = null;
+        existingFinds(state, payload) {
+            state.existingFinds = payload;
         },
+
+        setSelected(state, payload) {
+            state.selected[payload.name] = payload.data;
+        },
+
         clearAll(state, payload) {
             //console.log("regs.clear()");
             state.selected.areaSeason = null;
             state.selected.locus = null;
-            state.selected.find = null;
-            state.loci = [];
-            state.finds = [];
+            state.selected.registration_category = null;
+            state.selected.basket = null;
+            state.selected.artifact = null;
+            state.existingAreasSeasons = [];
+            state.existingLoci = [];
+            state.existingFinds = [];
         },
     },
 
     actions: {
-        areaSeasonSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            //we only need to load loci if we create a new locus or find.
-            //if we are picking from an existing collection, data is already available, and just needs to be filtered.
-            //so all left to be done is reset locus_id.
-            //area_season_id is already set by the two way binding with the element locus
-            //console.log("regs/areaSeasonSelected");
-            commit("areaSeasonIndex", payload);
-            commit("stp/disableNextButton", true, { root: true });//Because we now need to reselect locus/find.
-            commit("locusIndex", null);
-            commit("findIndex", null);
+        //will be called before the creation of a new item (locus, or find).
+        //copy some fields from current item defaults for new item here.
+        prepare({ state, getters, commit, dispatch, rootGetters }, payload) {
+            console.log(`regs/newItem.prepare(). isUpdate: ${payload}`);
+            commit("clearAll");
+            if (!payload && state.existingAreasSeasons.length === 0) {
+                console.log(`regs/newItem(create). existingAreasSeason[] is empty - loading`);
+                return dispatch('loadAreasSeasons');
+            }
 
-            if (rootGetters["mgr/status"].isCreate) {
-                u.Loci(commit, dispatch, getters["areasSeasons"][state.newItem.areaSeasonIndex].id);
-            } else {
-                //console.log(`picker areaSeason selected loci.length: ${getters["loci"].length}`);
-                //if picker and loci contain only one item, select it.
-                if (getters["loci"].length === 1) {
-                    dispatch("locusSelected", 0);
-                }
+        },
+
+        loadAreasSeasons({ state, getters, commit, dispatch, rootGetters }, payload) {
+            console.log("regs.loadAreasSeasons()");
+
+            let xhrRequest = {
+                endpoint: `/api/areas-seasons`,
+                action: "get",
+                data: null,
+                spinner: true,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: "loading areas/seasons", onSuccess: null, onFailure: "failed loading areas/seasons", },
+            };
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then(res => {
+                    commit("existingAreasSeasons", res.data.collection);
+                })
+        },
+
+        loadAreaSeasonLoci({ state, commit, dispatch }) {
+            let xhrRequest = {
+                endpoint: `/api/areas-seasons/${state.selected.areaSeason.id}/loci`,
+                action: "get",
+                data: null,
+                spinner: true,
+                verbose: false,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: `loading loci for areaSeason ${state.selected.areaSeason.id}`, onSuccess: null, onFailure: null, },
+            };
+
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    commit("existingLoci", res.data.lociForArea);
+                })
+        },
+
+        loadLocusFinds({ state, getters, rootGetters, commit, dispatch }) {
+            let xhrRequest = {
+                endpoint: `/api/loci/${state.selected.locus.id}/finds?find_type=${rootGetters["mgr/module"]}`,
+                action: "get",
+                data: null,
+                spinner: true,
+                verbose: true,
+                snackbar: { onSuccess: false, onFailure: true, },
+                messages: { loading: `loading finds for locus ${state.selected.locus.dot}`, onSuccess: null, onFailure: null, },
+            };
+            console.log('loadLocusFinds xhrRequest: ' + JSON.stringify(xhrRequest, null, 2));
+            return dispatch('xhr/xhr', xhrRequest, { root: true })
+                .then((res) => {
+                    commit("existingFinds", res.data.finds);
+                })
+        },
+
+        selected({ state, getters, commit, dispatch, rootGetters }, payload) {
+            dispatch(`${payload.name}Selected`, payload.data);
+        },
+
+        areaSeasonSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
+            console.log(`newItem/areaSeasonSelected payload: ${JSON.stringify(payload, null, 2)}`);
+
+            commit("setSelected", { name: "areaSeason", data: payload });
+            commit("existingLoci", []);
+            commit("existingFinds", []);
+            commit("stp/disableNextButton", true, { root: true });
+            if (rootGetters["mgr/status"].isLocus) {
+                commit("setSelected", { name: "locus", data: null });
+
+            } else if (rootGetters["mgr/status"].isFind) {
+
+                commit("setSelected", { name: "locus", data: null });
+                //commit("setSelected", {name: "registration_category", payload});
+                commit("setSelected", { name: "basket", data: null });
+                commit("setSelected", { name: "artifact", data: null });
+            }
+            if (rootGetters["mgr/status"].isLocus || rootGetters["mgr/status"].isFind) {
+                dispatch("loadAreaSeasonLoci");
             }
         },
 
         locusSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            //console.log("regs/locusSelected");
-            commit("locusIndex", payload);
+            console.log(`newItem/locusSelected payload: ${JSON.stringify(payload, null, 2)}`);
 
-            if (rootGetters["mgr/status"].isCreate) {
-                if (rootGetters["mgr/status"].isLocus) {
-                    commit("stp/disableNextButton", false, { root: true });
-                } else if (rootGetters["mgr/status"].isFind) {
-                    commit("findIndex", null);
-                    commit("registration_categoryIndex", 0);
-                    commit("basket_noIndex", 0);
-                    commit("artifact_noIndex", 0);
-                    commit("piece_noIndex", 0);
-                    u.loadLocusFinds(rootGetters, commit, dispatch, getters["loci"][state.newItem.locusIndex].id)
-                        .then(res => {
-                            console.log("picker.afterlocusFinds returned");
-                        });
-                }
-            } else {
-                commit("findIndex", null);
-                //console.log(`picker locus selected finds.length: ${getters["finds"].length}`);
-                //if picker and finds contain only one item, select it.
-                if (getters["finds"].length === 1) {
-                    dispatch("findSelected", 0);
-                }
+            commit("setSelected", { name: "locus", data: payload });
+
+            commit("existingFinds", []);
+            if (rootGetters["mgr/status"].isLocus) {
+                commit("stp/disableNextButton", false, { root: true });
+            } else if (rootGetters["mgr/status"].isFind) {
+                //commit("setSelected", {name: "registration_category", payload});
+                commit("setSelected", { name: "basket", data: getters.basketNos[0] });
+                commit("setSelected", { name: "artifact", data: getters.artifactNos[0] });
+                commit("stp/disableNextButton", !getters.flags.isReady, { root: true });
+                dispatch("loadLocusFinds");
+                dispatch("registration_categorySelected", getters.registrationCategories[0]);
             }
         },
 
-       
-
-        //create find only
         registration_categorySelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            commit("registration_categoryIndex", payload);
-            commit("basket_noIndex", 0);
-            commit("artifact_noIndex", 0);
-            commit("piece_noIndex", 0);
-            commit("stp/disableNextButton", !getters["status"].ready, { root: true });
+            console.log(`newItem/registration_categorySelected payload: ${JSON.stringify(payload, null, 2)}`);
+            commit("setSelected", { name: "registration_category", data: payload });
+            commit("setSelected", { name: "basket", data: getters.basketNos[0] });
+            commit("setSelected", { name: "artifact", data: getters.artifactNos[0] });
+            commit("stp/disableNextButton", !getters.flags.isReady, { root: true });
         },
         basketSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            commit("basket_noIndex", payload);
-            commit("artifact_noIndex", 0);
-            commit("piece_noIndex", 0);
-            commit("stp/disableNextButton", !getters["status"].ready, { root: true });
+            console.log(`newItem/basketSelected payload: ${JSON.stringify(payload, null, 2)}`);
+            commit("setSelected", { name: "basket", data: payload });
+            commit("setSelected", { name: "artifact", data: getters.artifactNos[0] });
+            commit("stp/disableNextButton", !getters.flags.isReady, { root: true });
         },
         artifactSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            commit("artifact_noIndex", payload);
-            commit("piece_noIndex", 0);
-            commit("stp/disableNextButton", !getters["status"].ready, { root: true });
-        },
-        pieceSelected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            commit("piece_noIndex", payload);
-            commit("stp/disableNextButton", !getters["status"].ready, { root: true });
-        },
-        usePiece({ state, getters, commit, dispatch, rootGetters }, payload) {
-            /*
-            commit("usePiece", payload);
-            commit("basket_noIndex", 0);
-            commit("artifact_noIndex", 0);
-            commit("piece_noIndex", 0);
-            commit("stp/disableNextButton", !getters["status"].ready, { root: true });
-            */
-        },
-
-        loadAreasSeasons({ state, getters, commit, dispatch, rootGetters }, payload) {
-            //u.loadAreasSeasons(commit, dispatch, payload)
-        },
-
-        //will be called before the creation of a new item (locus, or find).
-        //copy some fields from current item defaults for new item here.
-        prepareCreate({ state, getters, commit, dispatch, rootGetters }) {
-            console.log(`regs/newItem.prepareCreate()`);
-            commit("clear");
-            if (state.areasSeasons.length === 0) {
-                u.loadAreasSeasons(commit, dispatch);
-            }
-
-        },
-        prepareUpdate({ state, getters, commit, dispatch, rootGetters }, registration) {
-            console.log(`regs/newItem.prepareUpdate(): ${rootGetters["mgr/module"]}: ${JSON.stringify(registration, null, 2)}`);
-            commit("clear");
-            if (state.areasSeasons.length === 0) {
-                u.loadAreasSeasons(commit, dispatch);
-            }
-
+            console.log(`newItem/artifactSelected payload: ${JSON.stringify(payload, null, 2)}`);
+            commit("setSelected", { name: "artifact", data: payload });
+            commit("stp/disableNextButton", !getters.flags.isReady, { root: true });
         },
 
         //copy data from registration module to new item (locus or find)
         copyRegistration({ state, getters, rootGetters, commit }) {
             if (rootGetters["mgr/status"].isLocus) {
                 commit("loci/registrationData", {
-                    area_season_id: getters["areasSeasons"][state.newItem.areaSeasonIndex].id,
-                    locus_no: getters["loci"][state.newItem.locusIndex].text,
+                    area_season_id: state.selected.areaSeason.id,
+                    locus_no: state.selected.locus.value,
                 }, { root: true });
             } else if (rootGetters["mgr/status"].isFind) {
                 commit("fnd/registrationData", {
                     findable_type: rootGetters["mgr/module"],
-                    locus_id: getters["loci"][state.newItem.locusIndex].id,
-                    registration_category: getters["registrationCategories"][state.newItem.registration_categoryIndex].text,
-                    basket_no: getters["basketNos"][state.newItem.basket_noIndex].value,
-                    artifact_no: getters["artifactNos"][state.newItem.artifact_noIndex].value,
-                    piece_no: state.newItem.usePiece ? getters["pieceNos"][state.newItem.piece_noIndex].value : 0,
+                    locus_id: state.selected.locus.id,
+                    registration_category: state.selected.registration_category.value,
+                    basket_no: state.selected.basket.value,
+                    artifact_no: state.selected.artifact.value,
                 }, { root: true });
             }
         },

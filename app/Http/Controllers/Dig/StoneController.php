@@ -54,7 +54,7 @@ class StoneController extends BaseDigModuleController
 
     public function store(StoneStoreRequest $stoneRequest, FindStoreRequest $findRequest)
     {
-        $validated = $stone = $find = null;
+        $validated = $item = $find = null;
         $validatedFind = $findRequest->validated();
         $validatedStone = $stoneRequest->validated();
 
@@ -63,55 +63,45 @@ class StoneController extends BaseDigModuleController
             $this->authorize('update', $this->model);
 
             //load current stone+find
-            $stone = Stone::findOrFail($stoneRequest["item.id"]);
-            $find = Find::where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->first();
-            unset($stone->find);
+            $item = Stone::findOrFail($stoneRequest["item.id"]);
+            $find = Find::where(['findable_type' => 'Stone', 'findable_id' => $item->id])->first();
+            unset($item->find);
         } else {
             $this->authorize('create', $this->model);
-            $stone = new Stone;
+            $item = new Stone;
             $find = new Find;
         }
         //copy the validated data from the validated array to the 'item' and 'find' objects.
         foreach ($validatedStone["item"] as $key => $value) {
-            $stone[$key] = $value;
+            $item[$key] = $value;
         }
         foreach ($validatedFind["find"] as $key => $value) {
             $find[$key] = $value;
         }
 
-        DB::transaction(function () use ($stoneRequest, $stone, $find) {
-            $stone->save();
+        DB::transaction(function () use ($stoneRequest, $item, $find) {
+            $item->save();
 
             //since 'find' has a composite primary key, we need to manually find record and insert/update.
             if ($stoneRequest->isMethod('post')) {
-                $find->findable_id = $stone->id;
-                DB::table('finds')->where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->insert($find->toArray());
+                $find->findable_id = $item->id;
+                DB::table('finds')->where('findable_type', 'Stone')->where('findable_id' , $item->id)->insert($find->toArray());
             } else {
-                DB::table('finds')->where(['findable_type' => 'Stone', 'findable_id' => $stone->id])->update($find->toArray());
+                DB::table('finds')->where('findable_type', 'Stone')->where('findable_id' , $item->id)->update($find->toArray());
             }
         });
 
         if ($stoneRequest->isMethod('post')) {
-            //if new stone, we format the respond so that it can be immediatly inserted into the "collection" without
-            //extra formatting by client side.
-            //$locus = Locus::findOrFail($find->locus_id);
             $locus = Locus::with('areaSeason')->findOrFail($find->locus_id);
-            $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.';
-            $tag .= ($find->registration_category == "GS") ? $find->basket_no . '.' . $find->artifact_no : $find->artifact_no;
-
-            $stone->tag = $tag;
-            $stone->locus_id = $find->locus_id;
-
-            unset($stone->weight);
-            unset($stone->notes);
+            $item->dot = $locus->areaSeason->dot . '.' . $locus->locus_no . '.' . $find->registration_category . '.' . $find->basket_no . '.' . $find->artifact_no;
+            $item->locus_id = $find->locus_id;
         }
 
         return response()->json([
             "msg" => "stone and find stored succefully",
-            "item" => $stone,
+            "item" => $item,
             "find" => $find,
         ], 200);
-
     }
 
     /**

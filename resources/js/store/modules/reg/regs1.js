@@ -51,12 +51,8 @@ export default {
 
     actions: {
         selected({ state, getters, commit, dispatch, rootGetters }, payload) {
-            console.log("regs/selected");
             let target = rootGetters["mgr/status"].isPicker ? "p" : "n";
             dispatch(`regs/${target}/selected`, payload, { root: true });
-        },
-        prepare({ state, getters, commit, dispatch, rootGetters }, payload) {
-            console.log("regs/prepare - do nothing");
         },
     }
 }

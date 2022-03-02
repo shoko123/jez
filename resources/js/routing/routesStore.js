@@ -327,7 +327,7 @@ export default {
                         case "update":
 
                             //TODO validate that we came from same module, item and that current.action == 'show'.
-                            return dispatch("mgr/prepareNew", state.to.action, { root: true });
+                            return dispatch("beforeNew", state.to.action);
 
                         case "tags":
                             return dispatch(`aux/prepareTagger`, null, { root: true });
@@ -364,6 +364,28 @@ export default {
             } else {
                 return loadPrepare();
             }
+        },
+
+        beforeNew({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {
+            console.log(`routing/beforeNew() payload" ${payload}`);
+            //if we create a new item (locus or find), we must copy some data from current item
+            //to the registration module.
+            let isUpdate = (payload === "update");// getters["status"].isUpdate;
+            if (!isUpdate) {
+                dispatch("regs/n/prepare", isUpdate, { root: true });
+            }
+
+            //if item is a "find", we must copy some data from current item to the "find" module.
+            if (rootGetters["mgr/status"].isFind) {
+                console.log("routing/beforeCreate() calling fnd/prepare");
+                dispatch('fnd/prepare', isUpdate, { root: true });
+            }
+
+            console.log("mgr/prepare calling " + rootGetters["mgr/status"].moduleStoreName + "/prepare");
+            //after these preliminary actions, we finally call the item's prepare method in order to
+            //copy data and load item specific tables (e.g. stone categories).
+            dispatch(`${rootGetters["mgr/status"].moduleStoreName}/prepare`, isUpdate, { root: true });
+            return dispatch('stp/populateSteps', !isUpdate, { root: true });
         },
 
         navigationSuccess({ state, rootState, getters, rootGetters, commit, dispatch }, payload) {

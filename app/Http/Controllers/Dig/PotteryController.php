@@ -95,20 +95,16 @@ class PotteryController extends BaseDigModuleController
             //since 'find' has a composite primary key, we need to manually find record and insert/update.
             if ($potteryRequest->isMethod('post')) {
                 $find->findable_id = $item->id;
-                DB::table('finds')->where(['findable_type' => 'Pottery', 'findable_id' => $item->id])->insert($find->toArray());
+                DB::table('finds')->where('findable_type' , 'Pottery')->where('findable_id' , $item->id)->insert($find->toArray());
             } else {
-                DB::table('finds')->where(['findable_type' => 'Pottery', 'findable_id' => $item->id])->update($find->toArray());
+                DB::table('finds')->where('findable_type' , 'Pottery')->where('findable_id' , $item->id)->update($find->toArray());
             }
         });
 
         if ($potteryRequest->isMethod('post')) {
-            //if new item, we format the respond so that it can be immediatly inserted into the "collection" without
-            //extra formatting by client side.
-            //$locus = Locus::findOrFail($find->locus_id);
             $locus = Locus::with('areaSeason')->findOrFail($find->locus_id);
-            $tag = $locus->areaSeason->tag . '/' . $locus->locus_no . '.' . $find->registration_category . '.' . $find->artifact_no;
-            $item->tag = $tag;
-            $item->locus_id = $find->locus_id;
+            $item->dot = $locus->areaSeason->dot . '.' . $locus->locus_no . '.' . $find->registration_category . '.' . $find->basket_no. '.' . $find->artifact_no;  
+            $item->locus_id = $find->locus_id;  
         }
 
         return response()->json([
