@@ -225,7 +225,7 @@ class ModuleInitializerController extends Controller
             }
             $tagType["group_type"] = 'Tag';
             $tagType["group_category"] = "Period";
-            $tagType["dependency"] = json_decode($tagType->dependency);
+            $tagType["dependency"] = is_null($tagType->dependency) ? null : json_decode($tagType->dependency);
             $tagType["params"] = $params;
             unset($tagType->tags);
             array_push(self::$groups, $tagType->toArray());
@@ -355,7 +355,7 @@ class ModuleInitializerController extends Controller
             }
             $tagType["group_type"] = 'Tag';
             $tagType["group_category"] = $tagType->category;
-            $tagType["dependency"] = json_decode($tagType->dependency);
+            $tagType["dependency"] = is_null($tagType->dependency) ? null : json_decode($tagType->dependency);
             $tagType["params"] = $params;
             unset($tagType->tags);
             array_push(self::$groups, $tagType->toArray());
