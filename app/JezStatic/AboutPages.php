@@ -159,7 +159,7 @@ class AboutPages
     public static function index()
     {
         $mapped = array_map(function ($v, $k) {
-            return (object) ["tab" => $v["tab"], "id" => $k, "title" => strval($v["tab"]) . "." . strval($v["no"]) . " " . $v["title"]];
+            return (object) ["tab" => $v["tab"], "id" => $k, "dot" => strval($v["tab"]) . "." . strval($v["no"]), "title" => strval($v["tab"]) . "." . strval($v["no"]) . " " . $v["title"]];
         }, self::$items, array_keys(self::$items));
         return $mapped;
     }

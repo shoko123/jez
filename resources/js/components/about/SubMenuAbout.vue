@@ -71,7 +71,7 @@ export default {
       this.$store.dispatch("mgr/goToRoute", {
         module: "About",
         action: "show",
-        id: item.id,
+        dot: item.dot,
       });
     },
     toMap() {

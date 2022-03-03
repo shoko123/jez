@@ -262,6 +262,7 @@ export default {
                 if (state.to.module === "About") {
                     console.log('dispatcher About...');
                     if (!sameModule()) {
+                        console.log("About from a different module");
                         return dispatch("mgr/query", { params: {}, spinner: true }, { root: true })
                             .then((res) => {
                                 if (state.to.action === "show") {
@@ -269,6 +270,7 @@ export default {
                                 }
                             })
                     } else if (state.to.action === "show") {
+                        console.log("About show");
                         return dispatch("mgr/loadItem", state.to.id, { root: true });
                     }
                     //return dispatch("mgr/loadItem", state.to.id, { root: true });
