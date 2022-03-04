@@ -8,14 +8,8 @@
         <v-container fluid>
           <v-row dense>
             <v-card width="20%">
-              <v-card-text class="text-h8 font-weight-bold">
-                <v-row
-                  v-for="(line, index) in item.text"
-                  :key="index"
-                  class="title"
-                >
-                  {{ line }}
-                </v-row>
+              <v-card-text class="text-h6 font-weight-bold">
+                {{ item.text }}
               </v-card-text>
             </v-card>
             <v-spacer></v-spacer>

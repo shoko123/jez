@@ -13,7 +13,7 @@ class BaseDigModuleController extends Controller
 
     public function __construct()
     {
-        $this->modules = array("Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Glass", "Metal", "Flora", "Fauna", "Tbd");
+        $this->modules = array("About", "Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Glass", "Metal", "Flora", "Fauna", "Tbd");
     }
 
     public function show(ShowRequest $r)
@@ -23,6 +23,11 @@ class BaseDigModuleController extends Controller
         //validate that all required params are present
         $ok = false;
         switch ($v["module"]) {
+            case 'About':
+                if (array_key_exists('tab', $v) && array_key_exists('no', $v)) {
+                    $ok = true;
+                }
+                break;
             case 'Area':
                 if (array_key_exists('area', $v)) {
                     $ok = true;

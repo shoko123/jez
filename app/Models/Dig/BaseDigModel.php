@@ -281,6 +281,10 @@ class BaseDigModel extends Model implements HasMedia
         $model =  new $modelName;
 
         switch ($p->module) {
+            case "About":
+                return $model->where('tab', $p->tab)->where('no', $p->no)->pluck('id')->first();
+
+                break;
             case "Area":
                 return $model->where('name', $p->area)->pluck('id')->first();
 

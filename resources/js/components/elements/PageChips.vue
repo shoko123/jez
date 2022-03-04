@@ -49,25 +49,25 @@ export default {
       //console.log(`goTo() source: ${this.source} newUrl: ${newUrl}`);
       let current = this.$store.getters["mgr/module"],
         module,
-        id;
+        dot;
       if (this.source === "main") {
         module = current;
-        id = item.id;
+        dot = item.dot;
       } else {
         //related
         switch (current) {
           case "Area":
           case "Season":
             module = "AreaSeason";
-            id = item.id;
+            dot = item.dot;
             break;
           case "AreaSeason":
             module = "Locus";
-            id = item.id;
+            dot = item.dot;
             break;
           case "Locus":
             module = item.findable_type;
-            id = item.findable_id;
+            dot = item.dot;
             break;
         }
       }
@@ -75,7 +75,7 @@ export default {
       this.$store.dispatch("mgr/goToRoute", {
         module: module,
         action: "show",
-        id: id,
+        dot: dot,
       });
     },
   },

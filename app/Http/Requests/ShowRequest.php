@@ -26,13 +26,15 @@ class ShowRequest extends FormRequest
     {
         return [
             //'module' => [Rule::in(['Area', 'Season', 'AreaSeason', 'Locus', 'Pottery', 'Lithic', 'Stone', 'Glass', 'Metal', 'Fauna', 'Flora'])],
-            'module' => 'required|in:"Area","Season",AreaSeason,Locus,Pottery,Lithic,Stone,Glass,Metal,Fauna,Flora,Tbd',
+            'module' => 'required|in:About,Area,Season,AreaSeason,Locus,Pottery,Lithic,Stone,Glass,Metal,Fauna,Flora,Tbd',
             'area' => 'in:K,L,M,N,P,Q,S|nullable',
             'season' => 'numeric|min:12|max:18|nullable',
             'locus_no' => 'numeric|min:0|max:999|nullable',
             'registration_category' => 'in:AR,PT,GS,LB,FL|nullable',
             'basket_no' => 'numeric|min:0|max:99|nullable',
             'artifact_no' => 'numeric|min:0|max:99|nullable',
+            'tab' => 'numeric|min:1|max:20|nullable',
+            'no' => 'numeric|min:1|max:20|nullable',
         ];
     }
 }

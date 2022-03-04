@@ -12,9 +12,10 @@
  */
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AboutController;
+
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BaseDigModuleController;
+use App\Http\Controllers\Dig\AboutController;
 use App\Http\Controllers\Dig\AreaController;
 use App\Http\Controllers\Dig\AreaSeasonController;
 use App\Http\Controllers\Dig\GlassController;

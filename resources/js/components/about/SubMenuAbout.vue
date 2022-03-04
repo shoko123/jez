@@ -80,13 +80,6 @@ export default {
     },
     goToItem(direction) {
       return this.$store.dispatch("mgr/goToRoute", direction);
-      if (this.adjacents) {
-        this.$store.dispatch("mgr/goToRoute", {
-          module: "About",
-          action: "show",
-          id: direction == "next" ? this.adjacents.next : this.adjacents.prev,
-        });
-      }
     },
   },
 };

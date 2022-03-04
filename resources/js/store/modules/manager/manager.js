@@ -547,7 +547,7 @@ export default {
                         let newIndex = index - 1 === -1 ? 0 : index - 1;
                         commit('deleteFromCollectionByIndex', index);
                         //go to the first item in the collection.
-                        dispatch('goToRoute', { module: state.routes.current.module, action: "show", id: c[newIndex].id });
+                        dispatch('goToRoute', { module: state.routes.current.module, action: "show", dot: c[newIndex].dot });
                     } else {
                         //if we deleted the last item, we must load a new collection.
                         dispatch('goToRoute', { module: state.routes.current.module, action: "filter" });
@@ -615,7 +615,7 @@ export default {
                 })
                 .catch(err => {
                     console.log('mgr/store err: ' + err);
-                    dispatch('goToRoute', { module: state.routes.current.module, action: "show", id: state.item.id });
+                    dispatch('goToRoute', { module: state.routes.current.module, action: "show", dot: state.item.dot });
                     return err;
                 });
         },
@@ -879,7 +879,7 @@ export default {
         },
 
         goToRoute({ state, getters, rootGetters, commit, dispatch }, payload) {
-            function getAdjancentId() {
+            function getAdjancentDot() {
                 let newIndex, m = state.collections["main"];
                 switch (payload) {
                     case "next":
@@ -893,11 +893,11 @@ export default {
                 //console.log(`ADJANCT length: ${m.collection.length} index: ${m.index} newIndex: ${newIndex}`);
                 return m.collection[newIndex].dot;
             }
-
+        //console.log(`mgr/goToRoute() payload: ${payload}`);
             switch (payload) {
                 case "next":
                 case "prev":
-                    payload = { module: state.routes.current.module, dot: getAdjancentId(), action: "show" };
+                    payload = { module: state.routes.current.module, dot: getAdjancentDot(), action: "show" };
                     break;
                 default:
             }

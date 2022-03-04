@@ -11,14 +11,7 @@ export default {
             moduleStoreFolder: "/",
             action: null,
             id: null,
-            dotParams: {
-                season: null,
-                area: null,
-                locus_no: null,
-                registration_category: null,
-                basket_no: 0,
-                artifact_no: 0
-            },
+            dotParams: {},
             dot: null,
             queryParams: null,
         },
@@ -28,14 +21,7 @@ export default {
             moduleStoreFolder: "/",
             action: null,
             id: null,
-            dotParams: {
-                season: null,
-                area: null,
-                locus_no: null,
-                registration_category: null,
-                basket_no: 0,
-                artifact_no: 0
-            },
+            dotParams: {},
             dot: null,
             queryParams: null,
         },
@@ -74,16 +60,12 @@ export default {
             state.to.dot = payload;
         },
         dotParams(state, payload) {
-            state.to.dotParams = payload;
+            state.to.dotParams = Object.assign({}, payload)
+            //state.to.dotParams = payload;
         },
         clearDotAndDotParams(state, payload) {
             state.to.dot = null;
-            state.to.dotParams.season = null;
-            state.to.dotParams.area = null;
-            state.to.dotParams.locus_no = null;
-            state.to.dotParams.registration_category = null;
-            state.to.dotParams.basket_no = null;
-            state.to.dotParams.artifact_no = null;
+            state.to.dotParams = {};
         },
         copyToToCurrent(state, payload) {
             //payload holds the name of property to copy.
@@ -103,20 +85,16 @@ export default {
         parseTo({ state, commit }, payload) {
             console.log(`mgr/router parseTo payload.params: ${JSON.stringify(payload.params, null, 2)}`);
 
-
             //parse the dot[seperated id parameters] and save to dotParams
             function parseDot(module, dot) {
                 console.log(`parseDot() module: ${module}, dot: ${dot}`);
                 let arr = dot.split('.');
-                let dotParams = {
-                    season: null,
-                    area: null,
-                    locus_no: null,
-                    registration_category: null,
-                    basket_no: null,
-                    artifact_no: null
-                }
+                let dotParams = {};
                 switch (module) {
+                    case "About":
+                        dotParams.tab = parseInt(arr[0]);
+                        dotParams.no = parseInt(arr[1]);
+                        break;                    
                     case "Area":
                         dotParams.area = arr[0];
                         break;
@@ -271,7 +249,7 @@ export default {
                             })
                     } else if (state.to.action === "show") {
                         console.log("About show");
-                        return dispatch("mgr/loadItem", state.to.id, { root: true });
+                        return dispatch("mgr/loadItem", getters.toItemParams, { root: true });
                     }
                     //return dispatch("mgr/loadItem", state.to.id, { root: true });
 

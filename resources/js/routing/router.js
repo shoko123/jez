@@ -113,17 +113,7 @@ const router = new Router({
             path: '/:module(about)',
             component: RouterElement,
             props: true,
-            children: [
-                {
-                    path: ':id(\\d+)',
-                    component: RouterElement,
-                    children: [
-                        {
-                            path: ':action(show)',
-                            component: PageAbout,
-                        },
-                    ],
-                },
+            children: [             
                 {
                     path: ':action(welcome)',
                     component: PageWelcome
@@ -131,6 +121,16 @@ const router = new Router({
                 {
                     path: ':action(map)',
                     component: PageMap
+                },
+                {
+                    path: ':dot',
+                    component: RouterElement,
+                    children: [
+                        {
+                            path: ':action(show)',
+                            component: PageAbout,
+                        },
+                    ],
                 },
                 {
                     path: '*',
