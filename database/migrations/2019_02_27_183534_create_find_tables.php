@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreateFindTables extends Migration
 {
@@ -30,7 +31,6 @@ class CreateFindTables extends Migration
             $table->string('registration_category', 2);
             $table->unsignedInteger('basket_no')->default(0);
             $table->unsignedInteger('artifact_no')->default(0);
-            $table->unsignedInteger('piece_no')->default(0);
 
             //common fields to all small finds
             $table->unsignedInteger('artifact_count')->default(1); //used only on scope = 'basket'
