@@ -122,7 +122,7 @@ export default {
             let arr0 = [...Array(100).keys()];
             let arr1 = arr0.map(x => { return { value: x, text: x } });
             arr1[0] = { value: 0, text: "None Selected" };
-            console.log("selected: " + JSON.stringify(state.selected, null, 2));
+            //console.log("selected: " + JSON.stringify(state.selected, null, 2));
             state.existingFinds.forEach(function (x, index) {
                 console.log("find for locus: " + JSON.stringify(x, null, 2));
 

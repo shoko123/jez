@@ -368,7 +368,7 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    console.log(`app.init() OK. appSettings: ${JSON.stringify(res.data.accessibility, null, 2)}`);
+                    console.log(`app.init() OK. accessibility: ${JSON.stringify(res.data.accessibility, null, 2)}`);
                     commit('appSettings', res.data.accessibility);
                     return res;
                 })
@@ -439,8 +439,9 @@ export default {
 
         loadItem({ state, getters, commit, dispatch }, payload) {
 
-        console.log(`mgr.loadItem. endpoint: ${state.globalSettings.baseUrl}/api/dig/show. payload: \n${JSON.stringify(payload, null, 2)}`);
-            commit("ready", { entity: "item", isReady: false });
+        //console.log(`mgr.loadItem. endpoint: ${state.globalSettings.baseUrl}/api/dig/show. payload: \n${JSON.stringify(payload, null, 2)}`);
+            
+        commit("ready", { entity: "item", isReady: false });
 
             let xhrRequest = {
                 endpoint: `${state.globalSettings.baseUrl}/api/dig/show`,
@@ -451,20 +452,6 @@ export default {
                 snackbar: { onSuccess: false, onFailure: true, },
                 messages: { loading: `loading item...`, onSuccess: null, onFailure: "failed loading item", },
             };
-            /*
-            console.log('mgr.loadItem. endpoint: ' + `${state.routes.to.apiModuleUrl}/${payload}`);
-            commit("ready", { entity: "item", isReady: false });
-
-            let xhrRequest = {
-                endpoint: `${state.routes.to.apiModuleUrl}/${payload}`,
-                action: "get",
-                data: null,
-                spinner: true,
-                verbose: false,
-                snackbar: { onSuccess: false, onFailure: true, },
-                messages: { loading: `loading item...`, onSuccess: null, onFailure: "failed loading item", },
-            };
-            */
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
@@ -499,8 +486,9 @@ export default {
                             commit('fnd/item', res.data.find, { root: true });
                             dispatch('aux/itemTags', res.data.tags, { root: true });
                     }
-                    //console.log(`mgr/item loaded before dotTotag() item: ${JSON.stringify(res.data.item, null, 2)}`)
+                    
                     res.data.item["tag"] = dotToTag({ module: state.routes.to.module, dot: res.data.item.dot });
+                    console.log(`mgr.loadItem() "${res.data.item.dot}" loaded successfully`)
                     commit('item', res.data.item);
                     //commit('item', res.data.item);
                     commit("ready", { entity: "item", isReady: true });

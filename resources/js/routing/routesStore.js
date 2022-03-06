@@ -83,11 +83,11 @@ export default {
     },
     actions: {
         parseTo({ state, commit }, payload) {
-            console.log(`mgr/router parseTo payload.params: ${JSON.stringify(payload.params, null, 2)}`);
+            //console.log(`mgr/router parseTo payload.params: ${JSON.stringify(payload.params, null, 2)}`);
 
             //parse the dot[seperated id parameters] and save to dotParams
             function parseDot(module, dot) {
-                console.log(`parseDot() module: ${module}, dot: ${dot}`);
+                //console.log(`parseDot() module: ${module}, dot: ${dot}`);
                 let arr = dot.split('.');
                 let dotParams = {};
                 switch (module) {
@@ -132,7 +132,7 @@ export default {
 
                 commit("dot", dot);
                 commit("dotParams", dotParams);
-                console.log(`parseDot to: ${JSON.stringify(state.to, null, 2)}`);
+                //console.log(`parseDot to: ${JSON.stringify(state.to, null, 2)}`);
             }
 
             let to = {};
@@ -440,7 +440,7 @@ export default {
                 }
             }
             function goToObject() {
-                console.log(`mgr.routes.goToObject: ${JSON.stringify(payload, null, 2)}`);
+                //console.log(`mgr.routes.goToObject: ${JSON.stringify(payload, null, 2)}`);
                 let moduleBaseUrl = jezConfig.modules[payload.module].appBaseUrl;
 
                 //verify that module, action and id (optional) exist
