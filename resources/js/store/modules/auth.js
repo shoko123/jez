@@ -56,12 +56,11 @@ export default {
                 .then(res => {
                     if (res.data.user !== null) {
                         commit('loginSuccess', res.data);
-                        /*
                         commit('snackbar/displaySnackbar', {
                             isSuccess: true,
                             message: `Login successful as "${res.data.user.name}"`,
                         }, { root: true });
-                        */
+                        
                         return res.data.user;
                     } else {
                         console.log("aut.login failed - wrong credentials");
@@ -95,7 +94,7 @@ export default {
                 .catch(err => { console.log("logout failure"); })
                 .finally(() => {
                     commit("clear");
-                    dispatch('mgr/goToRoute', "home", { root: true });
+                    //dispatch('mgr/goToRoute', "home", { root: true });
                 });
         },
     }

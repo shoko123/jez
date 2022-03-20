@@ -58,7 +58,7 @@ export default {
       this.$store.dispatch("aut/login", this.form)
       .then((user) => {
         if (user) {
-          this.$store.dispatch("mgr/goToRoute", "home");
+          this.$store.dispatch("mgr/goToRoute", "back");
         }
       });
     },

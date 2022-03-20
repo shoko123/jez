@@ -125,10 +125,7 @@ export default {
                         dotParams.basket_no = parseInt(arr[4]);
                         dotParams.artifact_no = parseInt(arr[5]);
                         break;
-
                 }
-
-
 
                 commit("dot", dot);
                 commit("dotParams", dotParams);
@@ -213,6 +210,10 @@ export default {
         routeChanged({ state, getters, rootState, rootGetters, commit, dispatch }, payload) {
             function sameModule() {
                 return (state.current.module === state.to.module)
+            }
+
+            function toActionIsLogin() {
+                return (state.to.action === 'login');
             }
 
             function deepEqual(x, y) {
@@ -336,6 +337,10 @@ export default {
             //module's metadata (tags, lookups) are retrieved from DB.
             /////////////////////////////////////////////////////////////////////////
             //console.log(`routeChanged() current: ${JSON.stringify(state.current, null, 2)}\nto: ${JSON.stringify(state.to, null, 2)}`);
+            if(toActionIsLogin()){
+                return;
+            }
+
             if (!sameModule()) {
                 return dispatch('mgr/initializeModule', null, { root: true })
                     .then(() => {
