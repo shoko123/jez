@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Dig;
 
 use Illuminate\Support\Facades\DB;
-use App\JezStatic\AboutPages;
 use App\Http\Controllers\BaseDigModuleController;
 
 class AboutController extends BaseDigModuleController

@@ -43,6 +43,10 @@ import MetalView0 from "../metal/MetalView0";
 import MetalView1 from "../metal/MetalView1";
 import MetalView2 from "../metal/MetalView2";
 import MetalView3 from "../metal/MetalView3";
+import FaunaView0 from "../fauna/FaunaView0";
+import FaunaView1 from "../fauna/FaunaView1";
+import FaunaView2 from "../fauna/FaunaView2";
+import FaunaView3 from "../fauna/FaunaView3";
 
 export default {
   name: "show-item",
@@ -84,6 +88,10 @@ export default {
     MetalView1,
     MetalView2,
     MetalView3,
+    FaunaView0,
+    FaunaView1,
+    FaunaView2,
+    FaunaView3
   },
   data() {
     return {};

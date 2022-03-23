@@ -1,8 +1,7 @@
 import manager from './modules/manager/manager.js';
 import xhr from './modules/xhr.js';
 import auth from './modules/auth.js';
-//import regs from './modules/reg/regs.js';
-import regs from './modules/reg/regs1.js';
+import regs from './modules/reg/regs.js';
 import stepper from './modules/stepper.js';
 
 
@@ -16,6 +15,8 @@ import stones from './modules/stones.js';
 import lithic from './modules/lithic';
 import glass from './modules/glass';
 import metal from './modules/metal';
+import fauna from './modules/fauna';
+
 import about from './modules/about';
 
 
@@ -49,6 +50,7 @@ export default new Vuex.Store({
         lith: lithic,
         glass: glass,
         mtl: metal,
+        fauna,
         about: about,
     },
 });

@@ -162,7 +162,7 @@ export default {
             //(this will change with other modules [think Flora])
             // (2) allow only selected
             return getters["all"].filter(x => {
-                return scopeIsBasket ? x.category === "Period" : true;
+                return scopeIsBasket ? x.group_category === "Period" : true;
             }).filter(x => {
                 return x.params.some(x => x.selectedIn["itemParams"]);
             }).map(x => {

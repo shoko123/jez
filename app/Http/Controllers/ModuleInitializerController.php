@@ -14,13 +14,14 @@ class ModuleInitializerController extends Controller
     private static $moduleName;
     private static $fullModuleName;
     private static $moduleHasTaggingSystem;
-
+    private static $moduleUsesPeriods;
     private static $isFind;
 
     public function index(Request $request)
     {
         self::$isFind = false;
         self::$moduleHasTaggingSystem = true;
+        self::$moduleUsesPeriods = false;
 
         switch ($request->input('moduleName')) {
             case "About":
@@ -34,6 +35,7 @@ class ModuleInitializerController extends Controller
             case "Glass":
             case "Metal":
             case "Pottery":
+                self::$moduleUsesPeriods = true;
             case "Flora":
             case "Fauna":
             case "Tbd":
@@ -46,7 +48,9 @@ class ModuleInitializerController extends Controller
         if (self::$moduleHasTaggingSystem) {
             self::addRegistration();
             self::addLookups();
-            self::addPeriods();
+            if(self::$moduleUsesPeriods){
+                self::addPeriods();
+            }
             self::addTags();
 
             foreach (self::$groups as $key => $row) {
@@ -123,6 +127,9 @@ class ModuleInitializerController extends Controller
     {
         $groups = [];
         array_push($groups, [
+            "group_category" => "Registration",
+            "category_order" => 1,
+            "group_type" => "Registration",
             "group_order" => 1,
             "name" => "Seasons",
             "display_name" => "Seasons",
@@ -138,6 +145,9 @@ class ModuleInitializerController extends Controller
         ]);
 
         array_push($groups, [
+            "group_category" => "Registration",
+            "category_order" => 1,
+            "group_type" => "Registration",            
             "group_order" => 2,
             "name" => "Areas",
             "display_name" => "Areas",
@@ -153,6 +163,9 @@ class ModuleInitializerController extends Controller
         ]);
 
         array_push($groups, [
+            "group_category" => "Registration",
+            "category_order" => 1,
+            "group_type" => "Registration",            
             "group_order" => 3,
             "name" => "Media",
             "display_name" => "Media",
@@ -164,20 +177,13 @@ class ModuleInitializerController extends Controller
             ]
         ]);
 
-        if (self::$moduleName === "Pottery") {
-            array_push($groups, [
-                "group_order" => 4,
-                "name" => "scopes",
-                "display_name" => "Scopes",
-                "params" => [
-                    ["id" => "basket", "name" => "Basket"],
-                    ["id" => "artifact", "name" => "Artifact"],
-                ]
-            ]);
-        }
+       
         if (self::$isFind) {
             array_push($groups, [
-                "group_order" => 5,
+                "group_category" => "Registration",
+                "category_order" => 1,
+                "group_type" => "Registration",                
+                "group_order" => 4,
                 "name" => "registration_categories",
                 "display_name" => "Registration Categories",
                 "params" => [
@@ -189,11 +195,21 @@ class ModuleInitializerController extends Controller
                 ]
             ]);
         }
-
-        foreach ($groups as $index => $group) {
-            $group["group_category"] = "Registration";
-            $group["category_order"] = 1;
-            $group["group_type"] = "Registration";
+        if (self::$moduleName === "Pottery") {
+            array_push($groups, [
+                "group_category" => "Registration",
+                "category_order" => 1,
+                "group_type" => "Registration",                
+                "group_order" => 5,
+                "name" => "scopes",
+                "display_name" => "Scopes",
+                "params" => [
+                    ["id" => "basket", "name" => "Basket"],
+                    ["id" => "artifact", "name" => "Artifact"],
+                ]
+            ]);
+        }
+        foreach ($groups as $group) {
             array_push(self::$groups, $group);
         }
     }
@@ -211,24 +227,31 @@ class ModuleInitializerController extends Controller
                 return;
         }
 
-        $tagTypes = TagType::where('subject', 'Period')
+        $tagTypes = TagType::where('category', 'Period')
             ->with(['tags' => function ($q) {
                 $q->select('id', 'name', 'type');
             }])
-            ->get(['str_id', 'subject', 'category', 'category_order', 'group_order', 'display_name', 'multiple', 'dependency']);
+            ->get(['str_id', 'subject', 'category AS group_category', 'category_order', 'group_order', 'display_name', 'multiple', 'dependency']);
 
         //format tags to fit $typesAndParams structure.
+
+        $periodGroup = ["group_type" => "Tag"];
         foreach ($tagTypes as $index => $tagType) {
             $params = [];
             foreach ($tagType->tags as $index => $tag) {
                 array_push($params, ['id' => $tag->id, 'name' => $tag->name]);
             }
-            $tagType["group_type"] = 'Tag';
-            $tagType["group_category"] = "Period";
-            $tagType["dependency"] = is_null($tagType->dependency) ? null : json_decode($tagType->dependency);
-            $tagType["params"] = $params;
-            unset($tagType->tags);
-            array_push(self::$groups, $tagType->toArray());
+
+            $periodGroup["group_category"] = $tagType->group_category;
+            //$periodGroup["group_type"] = "Tag";
+            $periodGroup["str_id"] = $tagType->str_id;
+            $periodGroup["category_order"] = $tagType->category_order;
+            $periodGroup["group_order"] = $tagType->group_order;           
+            $periodGroup["display_name"] = $tagType->display_name;
+            $periodGroup["multiple"] = $tagType->multiple;
+            $periodGroup["dependency"] = is_null($tagType->dependency) ? null : json_decode($tagType->dependency);
+            $periodGroup["params"] = $params;
+            array_push(self::$groups, $periodGroup);
         }
     }
 
@@ -245,6 +268,7 @@ class ModuleInitializerController extends Controller
             case "Stone":
                 $order = [3, 1];
                 array_push($lookups, [
+                    "group_category" => "Basic Characteristics",
                     "table_name" => "stone_materials",
                     "column_name" => "material_id",
                     "display_name" => "Material",
@@ -253,6 +277,7 @@ class ModuleInitializerController extends Controller
                 ]);
 
                 array_push($lookups, [
+                    "group_category" => "Basic Characteristics",
                     "table_name" => "stone_base_types",
                     "column_name" => "base_type_id",
                     "display_name" => "Base Typology",
@@ -264,6 +289,7 @@ class ModuleInitializerController extends Controller
             case "Lithic":
                 $order = [3, 1];
                 array_push($lookups, [
+                    "group_category" => "Basic Characteristics",                    
                     "table_name" => "lithic_base_types",
                     "column_name" => "base_type_id",
                     "display_name" => "Base Typology",
@@ -275,6 +301,7 @@ class ModuleInitializerController extends Controller
             case "Glass":
                 $order = [3, 1];
                 array_push($lookups, [
+                    "group_category" => "Basic Characteristics",
                     "table_name" => "glass_base_types",
                     "column_name" => "base_type_id",
                     "display_name" => "Base Typology",
@@ -286,6 +313,7 @@ class ModuleInitializerController extends Controller
             case "Metal":
                 $order = [3, 1];
                 array_push($lookups, [
+                    "group_category" => "Basic Characteristics",
                     "table_name" => "metal_materials",
                     "column_name" => "material_id",
                     "display_name" => "Material",
@@ -294,6 +322,7 @@ class ModuleInitializerController extends Controller
                 ]);
 
                 array_push($lookups, [
+                    "group_category" => "Basic Characteristics",
                     "table_name" => "metal_base_types",
                     "column_name" => "base_type_id",
                     "display_name" => "Base Typology",
@@ -305,6 +334,7 @@ class ModuleInitializerController extends Controller
             case "Pottery":
                 $order = [5, 1];
                 array_push($lookups, [
+                    "group_category" => "Typology",
                     "table_name" => "pottery_base_types",
                     "column_name" => "base_type_id",
                     "display_name" => "Base Partition",
@@ -312,10 +342,33 @@ class ModuleInitializerController extends Controller
                     "group_order" => 1
                 ]);
                 break;
+
+                case "Fauna":
+                    $order = [4, 1];
+                    
+                    array_push($lookups, [
+                        "group_category" => "Taxa",                        
+                        "table_name" => "fauna_taxa_L1",
+                        "column_name" => "taxa_L1_id",
+                        "display_name" => "Base Taxa",
+                        "category_order" => 2,
+                        "group_order" => 1
+                    ]);
+                    array_push($lookups, [
+                        "group_category" => "Element",
+                        "table_name" => "fauna_elements_L1",
+                        "column_name" => "element_L1_id",
+                        "display_name" => "Element",
+                        "category_order" => 3,
+                        "group_order" => 1
+                    ]);
+    
+                    break;
         }
 
         //add preservation (common to all finds)
         array_push($lookups, [
+            "group_category" => "Basic Characteristics",
             "table_name" => "preservations",
             "column_name" => "preservation_id",
             "display_name" => "Preservation",
@@ -328,8 +381,8 @@ class ModuleInitializerController extends Controller
             $params = DB::table($lookup["table_name"])->get();
 
             array_push(self::$groups, [
+                "group_category" => $lookup["group_category"],
                 "group_type" => "Lookup",
-                "group_category" => $lookup["column_name"] === "base_type_id" ? "Typology" : "Basic Characteristics",
                 "category_order" => $lookup["category_order"],
                 "group_order" => $lookup["group_order"],
                 "column_name" => $lookup["column_name"],
@@ -345,20 +398,35 @@ class ModuleInitializerController extends Controller
             ->with(['tags' => function ($q) {
                 $q->select('id', 'name', 'type');
             }])
-            ->get(['str_id', 'subject', 'category', 'category_order', 'group_order', 'display_name', 'multiple', 'dependency']);
+            ->get(['category AS group_category', 'str_id', 'category_order', 'group_order', 'display_name', 'multiple', 'dependency']);
 
         //format tags to fit $typesAndParams structure.
+        $tagGroup = [];
         foreach ($tagTypes as $index => $tagType) {
             $params = [];
             foreach ($tagType->tags as $index => $tag) {
                 array_push($params, ['id' => $tag->id, 'name' => $tag->name]);
             }
+            $tagGroup["group_category"] = $tagType->group_category;
+            $tagGroup["group_type"] = "Tag";
+            $tagGroup["str_id"] = $tagType->str_id;
+            $tagGroup["category_order"] = $tagType->category_order;
+            $tagGroup["group_order"] = $tagType->group_order;           
+            $tagGroup["display_name"] = $tagType->display_name;
+            $tagGroup["multiple"] = $tagType->multiple;
+            $tagGroup["dependency"] = is_null($tagType->dependency) ? null : json_decode($tagType->dependency);
+            $tagGroup["params"] = $params;
+
+            /*
             $tagType["group_type"] = 'Tag';
-            $tagType["group_category"] = $tagType->category;
+
+
             $tagType["dependency"] = is_null($tagType->dependency) ? null : json_decode($tagType->dependency);
             $tagType["params"] = $params;
             unset($tagType->tags);
             array_push(self::$groups, $tagType->toArray());
+            */
+            array_push(self::$groups, $tagGroup);
         }
     }
 }
