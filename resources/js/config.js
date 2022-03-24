@@ -131,5 +131,18 @@ export default {
             registrationOptions:
                 ["AR",],
         },
+        Fauna: {
+            module: "Fauna",
+            itemName: "Fauna",
+            collectionName: "Fauna",
+            storeName: "fauna",
+            appBaseUrl: "/dig-modules/fauna",
+            apiBaseUrl: "/api/fauna",
+            isDigModule: true,
+            isFind: true,
+            itemDisplayOptions: ["2-panel", "3-panel", "Media", "Gallery"],
+            registrationOptions:
+                ["AR", "LB"],
+        },
     }
 }

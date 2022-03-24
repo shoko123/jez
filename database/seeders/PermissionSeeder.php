@@ -72,6 +72,12 @@ class PermissionSeeder extends Seeder
         Permission::create(['guard_name' => 'api', 'name' => 'Metal-media']);
         Permission::create(['guard_name' => 'api', 'name' => 'Metal-tag']);
 
+        Permission::create(['guard_name' => 'api', 'name' => 'Fauna-read']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Fauna-create']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Fauna-update']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Fauna-delete']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Fauna-media']);
+        Permission::create(['guard_name' => 'api', 'name' => 'Fauna-tag']);
         // create roles and assign existing permissions
 
         $roleAreaManager = Role::create(['guard_name' => 'api', 'name' => 'Area manager']);
@@ -137,6 +143,15 @@ class PermissionSeeder extends Seeder
         $roleMetalManager->givePermissionTo('Metal-media');
         $roleMetalManager->givePermissionTo('Metal-tag');
 
+        $roleFaunaManager = Role::create(['guard_name' => 'api', 'name' => 'Fauna manager']);
+        $roleFaunaManager->givePermissionTo('Fauna-read');
+        $roleFaunaManager->givePermissionTo('Fauna-create');
+        $roleFaunaManager->givePermissionTo('Fauna-update');
+        $roleFaunaManager->givePermissionTo('Fauna-delete');
+        $roleFaunaManager->givePermissionTo('Fauna-media');
+        $roleFaunaManager->givePermissionTo('Fauna-tag');
+
+
         $roleAdmin = Role::create(['guard_name' => 'api', 'name' => 'Admin']);
         $roleAdmin->givePermissionTo('ChangeAccessOptions');
 
@@ -150,7 +165,7 @@ class PermissionSeeder extends Seeder
         $reader->assignRole($roleReader);
 
         $editor = User::where('email', 'editor@opendigreports.com')->firstOrFail();
-        $editor->assignRole($roleAreaManager, $roleSeasonManager, $roleAreaSeasonManager, $roleLocusManager, $roleStoneManager, $rolePotteryManager, $roleLithicManager, $roleGlassManager, $roleMetalManager);
+        $editor->assignRole($roleAreaManager, $roleSeasonManager, $roleAreaSeasonManager, $roleLocusManager, $roleStoneManager, $rolePotteryManager, $roleLithicManager, $roleGlassManager, $roleMetalManager, $roleFaunaManager);
 
         $pottery = User::where('email', 'pottery@opendigreports.com')->firstOrFail();
         $pottery->assignRole($roleReader, $rolePotteryManager);

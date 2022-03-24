@@ -3,9 +3,13 @@
 namespace App\Models\Dig;
 
 use App\Models\Dig\Find;
+use App\Models\ItemTag;
+use App\Models\Lookups\FaunaTaxa;
+use App\Models\Lookups\FaunaElements;
+
 use App\Models\Scene;
-use Spatie\Tags\HasTags;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Spatie\Tags\HasTags;
 
 class Fauna extends BaseDigModel
 {
@@ -36,8 +40,13 @@ class Fauna extends BaseDigModel
         return $this->morphOne(Find::class, 'findable');
     }
 
-    public function scenes()
+    public function elements()
     {
-        return $this->morphToMany(Scene::class, 'sceneable');
+        return $this->belongsTo(MetalBaseType::class, 'element_L1_id');
+    }
+
+    public function taxa()
+    {
+        return $this->belongsTo(FaunaTaxa::class, 'taxa_L1_id');
     }
 }

@@ -52,6 +52,7 @@ export default {
         item: null,
 
         ready: {
+            module: false,
             item: false,
             collection: false,
             chunk: false,
@@ -175,7 +176,7 @@ export default {
         },
 
         isImplemented: (state) => (module) => {
-            return ["Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass"].includes(module);
+            return ["Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass", "Fauna"].includes(module);
         },
 
         item(state) {
@@ -655,7 +656,7 @@ export default {
                 .then((res) => {
                     //console.log('initModule returned: ');// + JSON.stringify(res, null, 2));
                     commit('welcomeData', res.data.welcomeData);
-                    console.log(`initializedModule '${state.routes.to.module}' OK`);
+                    console.log(`initializeModule '${state.routes.to.module}' OK`);
                     //dispatch("aux/typesAndParams", res.data.typesAndParams, { root: true });
 
                     if (state.routes.to.module === "About") {

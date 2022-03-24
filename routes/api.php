@@ -25,6 +25,7 @@ use App\Http\Controllers\Dig\MetalController;
 use App\Http\Controllers\Dig\PotteryController;
 use App\Http\Controllers\Dig\SeasonController;
 use App\Http\Controllers\Dig\StoneController;
+use App\Http\Controllers\Dig\FaunaController;
 use App\Http\Controllers\GlobalSettingsController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ModuleInitializerController;
@@ -68,7 +69,6 @@ Route::group(['middleware' => 'authorizedUsersOnly'], function ($router) {
     Route::post('loci/chunk-media', [LocusController::class, 'chunkMedia']);
     Route::post('loci/chunk-table', [LocusController::class, 'chunkTable']);
     Route::get('loci/{id}', [LocusController::class, 'show']);
-
     Route::post('pottery', [PotteryController::class, 'index']);
     //
     Route::post('pottery/chunk-media', [PotteryController::class, 'chunkMedia']);
@@ -98,6 +98,11 @@ Route::group(['middleware' => 'authorizedUsersOnly'], function ($router) {
     Route::post('metals/chunk-media', [MetalController::class, 'chunkMedia']);
     Route::post('metals/chunk-table', [MetalController::class, 'chunkTable']);
     Route::get('metals/{id}', [MetalController::class, 'show']);
+
+    Route::post('fauna', [FaunaController::class, 'index']);
+    Route::post('fauna/chunk-media', [FaunaController::class, 'chunkMedia']);
+    Route::post('fauna/chunk-table', [FaunaController::class, 'chunkTable']);
+    Route::get('fauna/{id}', [FaunaController::class, 'show']);    
 });
 
 Route::group(['prefix' => 'auth'], function ($router) {

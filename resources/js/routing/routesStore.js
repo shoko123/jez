@@ -53,10 +53,10 @@ export default {
         },
 
         to(state, payload) {
-           //console.log(`mgr/router SET("to"): ${JSON.stringify(payload, null, 2)}`);//
+            //console.log(`mgr/router SET("to"): ${JSON.stringify(payload, null, 2)}`);//
             state.to = { ...state.to, ...payload };
         },
-        dot(state, payload) {            
+        dot(state, payload) {
             state.to.dot = payload;
         },
         dotParams(state, payload) {
@@ -94,7 +94,7 @@ export default {
                     case "About":
                         dotParams.tab = parseInt(arr[0]);
                         dotParams.no = parseInt(arr[1]);
-                        break;                    
+                        break;
                     case "Area":
                         dotParams.area = arr[0];
                         break;
@@ -172,6 +172,9 @@ export default {
                     case 'metals':
                         to.module = "Metal";
                         break;
+                    case 'fauna':
+                        to.module = "Fauna";
+                        break;
                     default:
                         console.log(`******* Parser can\'t find module name path ${payload.params.module} *********`);
                 }
@@ -182,7 +185,7 @@ export default {
             if (!["Home", "Admin"].includes(to.module)) {
                 to.apiModuleUrl = jezConfig.modules[to.module].apiBaseUrl;
             }
-          
+
             if (payload.params.hasOwnProperty("action")) {
                 to.action = payload.params.action;
             } else {
@@ -337,7 +340,7 @@ export default {
             //module's metadata (tags, lookups) are retrieved from DB.
             /////////////////////////////////////////////////////////////////////////
             //console.log(`routeChanged() current: ${JSON.stringify(state.current, null, 2)}\nto: ${JSON.stringify(state.to, null, 2)}`);
-            if(toActionIsLogin()){
+            if (toActionIsLogin()) {
                 return;
             }
 

@@ -59,9 +59,11 @@ export default {
         isVisibleTagGroup: (state) => (group, isFilter) => {
             function isSelected(d, isFilter) {
                 if (d.charAt(0) === "T") {
+                    console.log(`isVisibleTagGroup: ${JSON.stringify(d, null, 2)}, isFilter: ${isFilter})`);
                     return state.params[d].selectedIn[isFilter ? "filters" : "newParams"];
                 } else {
                     if (isFilter) {
+                        
                         return state.params[d].selectedIn["filters"];
                     } else {
                         let chopped = d.split(">");
@@ -112,7 +114,7 @@ export default {
 
             //f2 - filter by scope: non artifacts see only periods tags ???
             let f2 = scopeIsArtifact ? f1 :
-                f1.filter(x => (x.group_category === "Period"));
+                f1.filter(x => (x.category === "Period"));
 
             //f3 - all remaining lookups, and visible newParams tags.
             return f2.filter(x => {
@@ -162,7 +164,7 @@ export default {
             //(this will change with other modules [think Flora])
             // (2) allow only selected
             return getters["all"].filter(x => {
-                return scopeIsBasket ? x.group_category === "Period" : true;
+                return scopeIsBasket ? x.category === "Period" : true;
             }).filter(x => {
                 return x.params.some(x => x.selectedIn["itemParams"]);
             }).map(x => {
@@ -196,11 +198,11 @@ export default {
 
         categories: (state, getters) => (isFilter) => {
             let name = isFilter ? "Filters" : "NewParams"
-            return [...new Set(getters[`visible${name}`].map(x => x.group_category))]
+            return [...new Set(getters[`visible${name}`].map(x => x.category))]
                 .map(y => {
                     return {
                         name: y,
-                        selectedCount: getters[`selected${name}`].filter(x => x.group_category === y).reduce(
+                        selectedCount: getters[`selected${name}`].filter(x => x.category === y).reduce(
                             (accumulator, type) => accumulator + type.count,
                             0
                         )
@@ -209,11 +211,11 @@ export default {
         },
 
         categoriesFilter(state, getters) {
-            return [...new Set(getters[`visibleFilters`].map(x => x.group_category))]
+            return [...new Set(getters[`visibleFilters`].map(x => x.category))]
                 .map(y => {
                     return {
                         name: y,
-                        selectedCount: getters[`selectedFilters`].filter(x => x.group_category === y).reduce(
+                        selectedCount: getters[`selectedFilters`].filter(x => x.category === y).reduce(
                             (accumulator, type) => accumulator + type.count,
                             0
                         )
@@ -221,11 +223,11 @@ export default {
                 });
         },
         categoriesNewParams(state, getters) {
-            return [...new Set(getters[`visibleNewParams`].map(x => x.group_category))]
+            return [...new Set(getters[`visibleNewParams`].map(x => x.category))]
                 .map(y => {
                     return {
                         name: y,
-                        selectedCount: getters[`selectedNewParams`].filter(x => x.group_category === y).reduce(
+                        selectedCount: getters[`selectedNewParams`].filter(x => x.category === y).reduce(
                             (accumulator, type) => accumulator + type.count,
                             0
                         )
@@ -235,7 +237,7 @@ export default {
 
         groupsForCategory: (state, getters) => (category, isFilter) => {
             let name = isFilter ? "visibleFilters" : "visibleNewParams";
-            return getters[name].filter(x => x.group_category === category);
+            return getters[name].filter(x => x.category === category);
         },
 
         lookupNames(state, getters) {
@@ -261,7 +263,7 @@ export default {
             state.params = Object.assign({}, {});
         },
         paramAffectsAddTagGroups(state, payload) {
-            //console.log(`paramAffectsAddTagGroups()\nkey: ${payload.paramKey}\naffects: ${JSON.stringify(payload.affects, null, 2)}`);
+            console.log(`paramAffectsAddTagGroups()\nkey: ${payload.paramKey}\naffects: ${JSON.stringify(payload.affects, null, 2)}`);
             state.params[payload.paramKey].affectsTagGroups.push(payload.affects);
         },
 

@@ -22,6 +22,7 @@ import StoneForm from "../stones/StoneForm";
 import LithicForm from "../lithics/LithicForm";
 import MetalForm from "../metal/MetalForm";
 import GlassForm from "../glass/GlassForm";
+import FaunaForm from "../fauna/FaunaForm";
 
 export default {
   components: {
@@ -34,6 +35,7 @@ export default {
     LithicForm,
     MetalForm,
     GlassForm,
+    FaunaForm,
     LayoutItemCardOptionalImage,
   },
   props: {

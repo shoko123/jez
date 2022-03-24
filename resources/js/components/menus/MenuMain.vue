@@ -120,6 +120,11 @@ export default {
           title: "metal",
           module: "Metal",
         },
+        {
+          icon: "mdi-bone",
+          title: "fauna",
+          module: "Fauna",
+        },
       ],
       loginBtn: {
         icon: "lock_open",

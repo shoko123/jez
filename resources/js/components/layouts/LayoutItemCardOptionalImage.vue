@@ -26,7 +26,7 @@ import PotteryForm from "../pottery/PotteryForm";
 import LithicForm from "../lithics/LithicForm";
 import GlassForm from "../glass/GlassForm";
 import MetalForm from "../metal/MetalForm";
-
+import FaunaForm from "../fauna/FaunaForm";
 export default {
   components: {
     LayoutItemCard,
@@ -40,6 +40,7 @@ export default {
     LithicForm,
     GlassForm,
     MetalForm,
+    FaunaForm
   },
 
   props: {
