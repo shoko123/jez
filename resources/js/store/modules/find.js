@@ -125,7 +125,7 @@ export default {
             commit("keep", toCopy ? current.keep : null);
             commit("level_top", toCopy ? current.level_top : null);
             commit("level_bottom", toCopy ? current.level_bottom : null);
-            commit("artifact_count", toCopy ? current.artifact_count : 1);
+            commit("artifact_count", toCopy ? current.artifact_count : '1');
             console.log("fnd/prepare newFind: " + JSON.stringify(getters["newItem"], null, 2));
         },
     }

@@ -40,7 +40,7 @@ class FindStoreRequest extends FormRequest
             'find.keep' => 'boolean|nullable',
             'find.description' => 'max:500|nullable',
             'find.notes' => 'max:500|nullable',
-            'find.artifact_count' => 'numeric|min:1|max:100|nullable',
+            'find.artifact_count' => 'max:10|nullable',
         ];
     }
 }

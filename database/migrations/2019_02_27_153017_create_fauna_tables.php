@@ -27,7 +27,7 @@ class CreateFaunaTables extends Migration
         
         Schema::create('fauna', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('quantity', 60)->nullable();                        
+            $table->string('description', 400)->nullable();               
             $table->string('taxon', 100)->nullable();
             $table->string('element', 100)->nullable();       
             $table->string('symmetry', 50)->nullable();
@@ -44,7 +44,7 @@ class CreateFaunaTables extends Migration
             $table->unsignedTinyInteger('taxa_L1_id')->dafault(1);
             $table->unsignedTinyInteger('element_L1_id')->dafault(1);            
             $table->boolean('measured')->nullable();
-            //$table->string('GL', 5)->nullable();
+
             $table->unsignedDecimal('GL',4,1)->nullable();
             $table->unsignedDecimal('Glpe', 4, 1)->nullable();
             $table->unsignedDecimal('GLl', 4, 1)->nullable();
@@ -76,7 +76,7 @@ class CreateFaunaTables extends Migration
             $table->unsignedDecimal('LF', 4, 1)->nullable();
             $table->unsignedDecimal('GLm', 4, 1)->nullable();
             $table->unsignedDecimal('GH', 4, 1)->nullable();
-
+      
             $table->foreign('taxa_L1_id')
             ->references('id')->on('fauna_taxa_L1')
             ->onUpdate('cascade');

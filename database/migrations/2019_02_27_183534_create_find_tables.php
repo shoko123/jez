@@ -33,7 +33,7 @@ class CreateFindTables extends Migration
             $table->unsignedInteger('artifact_no')->default(0);
 
             //common fields to all small finds
-            $table->unsignedInteger('artifact_count')->default(1); //used only on scope = 'basket'
+            $table->string('artifact_count', 10)->default('1'); //used only on scope = 'basket'
             $table->unsignedInteger('preservation_id')->default(1);
             $table->unsignedInteger('related_pottery_basket')->nullable();
             $table->date('date')->nullable();

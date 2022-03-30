@@ -168,7 +168,7 @@ export default {
       maxLength: maxLength(400),
     },
     artifact_count: {
-      between: between(1, 99),
+      maxLength: maxLength(10),
     },
   },
 
@@ -345,7 +345,7 @@ export default {
         return errors;
       }
       !this.$v.artifact_count.maxLength &&
-        errors.push("artifact_count must be less than 100");
+        errors.push("artifact_count length must be less than 10 characters");
       return errors;
     },
   },
