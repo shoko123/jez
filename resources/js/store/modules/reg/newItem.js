@@ -37,7 +37,7 @@ export default {
                 isSelected: {
                     areaSeason: state.selected.areaSeason !== null,
                     locus: state.selected.locus !== null,
-                    find: state.selected.find !== null,
+                    //find: state.selected.find !== null,
                     registration_category: state.selected.registration_category !== null,
                     basket: state.selected.basket !== null,
                     artifact: state.selected.artifact !== null,
@@ -46,10 +46,25 @@ export default {
                     (rootGetters["mgr/status"].isAreaSeason && state.selected.areaSeason !== null) ||
                     (rootGetters["mgr/status"].isLocus && state.selected.locus !== null) ||
                     (rootGetters["mgr/status"].isFind && ((state.selected.basket !== null && state.selected.basket.value !== 0) || (state.selected.artifact !== null && state.selected.artifact.value !== 0)))),
-                showFindRegistration: rootGetters["mgr/status"].isFind && state.selected.areaSeason && state.selected.locus
+                showFindRegistration: rootGetters["mgr/status"].isFind && state.selected.areaSeason && state.selected.locus,
+
 
             };
         },
+        scopeIsArtifact(state, getters, rootState, rootGetters) {
+            if(!rootGetters["mgr/status"].isFind || !getters["flags"].isReady) {
+                return false;
+            }
+            return state.selected.artifact.value !== 0;
+        },
+
+        scopeIsBasket(state, getters, rootState, rootGetters) {
+            if(!rootGetters["mgr/status"].isFind || !getters["flags"].isReady) {
+                return false;
+            }
+            return state.selected.basket.value !== 0 && state.selected.artifact.value === 0;
+        },        
+
 
         selected(state, getters, rootState, rootGetters) {
             if (getters.flags.isReady) {

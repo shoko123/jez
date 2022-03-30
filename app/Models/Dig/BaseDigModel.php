@@ -209,7 +209,7 @@ class BaseDigModel extends Model implements HasMedia
                                     $builder->where('basket_no', '!=', 0)->where('artifact_no', 0);
                                 } elseif ($a) {
                                     $builder->where('artifact_no', '!=', 0);
-                                } 
+                                }
                                 break;
                             case 2:
                                 //all
@@ -379,11 +379,16 @@ class BaseDigModel extends Model implements HasMedia
         }
 
         //format media.
-
+        $flags = [
+            "scopeIsBasket" => $find->artifact_no === 0,
+            "scopeIsArtifact" => $find->artifact_no !== 0,
+        ];
+        
         $itemMedia = $this->allMedia($item);
         $item["hasMedia"] = $itemMedia->primary->hasMedia;
         $item["tnUrl"] = $itemMedia->primary->tnUrl;
         $item["fullUrl"] = $itemMedia->primary->fullUrl;
+        $item["flags"] = $flags;
         unset($itemMedia->primary);
         unset($item->find);
         unset($item->media);
