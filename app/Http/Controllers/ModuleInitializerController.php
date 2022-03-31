@@ -195,7 +195,7 @@ class ModuleInitializerController extends Controller
                 ]
             ]);
         }
-        if (self::$moduleName === "Pottery") {
+        if (self::$moduleName === "Pottery" || self::$moduleName === "Fauna") {
             array_push($groups, [
                 "category" => "Registration",
                 "category_order" => 1,

@@ -7,9 +7,10 @@ INSERT INTO `fauna_taxa_L1` (`id`, `name`) VALUES
 (6, 'Fish'),
 (7, 'Insect'),
 (8, 'Reptile'),
-(9, 'Mollusca'),
+(9, 'Mollusca');
+/*
 (10, 'Microfauna');
-
+*/
 INSERT INTO `fauna_elements_L1` (`id`, `name`) VALUES
 (1, 'Unassigned'),
 (2, 'Tbd'),
@@ -36,7 +37,8 @@ INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `gro
 ('Fauna:Element-bone-short','Fauna','Element',3,9,'Short Bone',0,'[["L>element_L1_id>4"]]'),
 ('Fauna:Element-bone-flat','Fauna','Element',3,11,'Flat Bone',0,'[["L>element_L1_id>5"]]'),
 ('Fauna:Element-bone-irregular','Fauna','Element',3,12,'Irregular Bone',0,'[["L>element_L1_id>6"]]'),
-('Fauna:Element-tooth','Fauna','Element',3,13,'Tooth',0,'[["L>element_L1_id>8"]]');
+/*('Fauna:Element-tooth','Fauna','Element',3,13,'Tooth',0,'[["L>element_L1_id>8"]]'),*/
+('Fauna:Life-Stage','Fauna','Basic Characteristics',4,2,'Life Stage',1,NULL);
 
 INSERT INTO `tags` (`id`, `type`, `order_column`, `name`, `created_at`, `updated_at`, `slug`) VALUES
 (7011,'Fauna:Taxa-Mammal',1,'{\"en\": \"Ovis\"}',NULL,NULL,'{\"en\": \"\"}'),
@@ -96,5 +98,11 @@ INSERT INTO `tags` (`id`, `type`, `order_column`, `name`, `created_at`, `updated
 (7270,'Fauna:Element-bone-irregular',11,'{\"en\": \"Palatine\"}',NULL,NULL,'{\"en\": \"\"}'),
 (7271,'Fauna:Element-bone-irregular',12,'{\"en\": \"Inferior nasal concha\"}',NULL,NULL,'{\"en\": \"\"}'),
 (7272,'Fauna:Element-bone-irregular',13,'{\"en\": \"Hyoid\"}',NULL,NULL,'{\"en\": \"\"}'),
+/*
 (7300,'Fauna:Element-tooth',1,'{\"en\": \"big\"}',NULL,NULL,'{\"en\": \"\"}'),
-(7301,'Fauna:Element-tooth',1,'{\"en\": \"small\"}',NULL,NULL,'{\"en\": \"\"}');
+(7301,'Fauna:Element-tooth',1,'{\"en\": \"small\"}',NULL,NULL,'{\"en\": \"\"}'),
+*/
+(7400,'Fauna:Life-Stage',1,'{\"en\": \"Secondary Use\"}',NULL,NULL,'{\"en\": \"\"}'),
+(7401,'Fauna:Life-Stage',1,'{\"en\": \"Butchery\"}',NULL,NULL,'{\"en\": \"\"}'),
+(7402,'Fauna:Life-Stage',1,'{\"en\": \"Burning\"}',NULL,NULL,'{\"en\": \"\"}'),
+(7403,'Fauna:Life-Stage',1,'{\"en\": \"Other BSM\"}',NULL,NULL,'{\"en\": \"\"}');

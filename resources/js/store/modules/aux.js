@@ -59,7 +59,7 @@ export default {
         isVisibleTagGroup: (state) => (group, isFilter) => {
             function isSelected(d, isFilter) {
                 if (d.charAt(0) === "T") {
-                    console.log(`isVisibleTagGroup: ${JSON.stringify(d, null, 2)}, isFilter: ${isFilter})`);
+                    //console.log(`isVisibleTagGroup: ${JSON.stringify(d, null, 2)}, isFilter: ${isFilter})`);
                     return state.params[d].selectedIn[isFilter ? "filters" : "newParams"];
                 } else {
                     if (isFilter) {
@@ -263,7 +263,7 @@ export default {
             state.params = Object.assign({}, {});
         },
         paramAffectsAddTagGroups(state, payload) {
-            console.log(`paramAffectsAddTagGroups()\nkey: ${payload.paramKey}\naffects: ${JSON.stringify(payload.affects, null, 2)}`);
+            //console.log(`paramAffectsAddTagGroups()\nkey: ${payload.paramKey}\naffects: ${JSON.stringify(payload.affects, null, 2)}`);
             state.params[payload.paramKey].affectsTagGroups.push(payload.affects);
         },
 
@@ -342,12 +342,12 @@ export default {
             //console.log(`aux/toggleOneParam(): payload: ${JSON.stringify(payload, null, 2)}`);
 
             function unselectDependencies(payload) {
-                console.log(`unselectDependencies: payload: ${JSON.stringify(payload, null, 2)}`);
+                //console.log(`unselectDependencies: payload: ${JSON.stringify(payload, null, 2)}`);
 
                 state.params[payload.paramKey].affectsTagGroups.forEach(g => {
                     state.groups[g].params.forEach(gp => {
                         if (state.params[gp].selectedIn[payload.isFilter ? "filters" : "newParams"]) {
-                            console.log(`unselect param ${state.params[gp].key}`);
+                            //console.log(`unselect param ${state.params[gp].key}`);
                             commit("selectParam", { key: state.params[gp].key, source: payload.isFilter ? "filters" : "newParams", value: false });
 
                             //recursively unselect dependants

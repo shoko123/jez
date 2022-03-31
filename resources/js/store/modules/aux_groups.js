@@ -8,7 +8,7 @@ export default {
     namespaced: false,
     actions: {
         normalizeGroups({ state, getters, rootGetters, commit, dispatch }, payload) {
-            console.log(`aux/normalizeGroups() payload: ${JSON.stringify(payload, null, 2)}`);
+            //console.log(`aux/normalizeGroups() payload: ${JSON.stringify(payload, null, 2)}`);
 
             if (!rootGetters["mgr/status"].isFilterable) { return }
 
@@ -124,7 +124,7 @@ export default {
                     })
                 }
             })
-            console.log(`aux/normalizeGroups() done`);
+            //console.log(`aux/normalizeGroups() done`);
         },
     }
 }
