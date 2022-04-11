@@ -344,14 +344,14 @@ class ModuleInitializerController extends Controller
                 break;
 
                 case "Fauna":
-                    $order = [4, 1];
+                    $order = [2, 1];
                     
                     array_push($lookups, [
-                        "category" => "Taxa",                        
-                        "table_name" => "fauna_taxa_L1",
-                        "column_name" => "taxa_L1_id",
-                        "display_name" => "Base Taxa",
-                        "category_order" => 2,
+                        "category" => "Taxon",                        
+                        "table_name" => "fauna_taxon_L1",
+                        "column_name" => "taxon_L1_id",
+                        "display_name" => "Base Taxon",
+                        "category_order" => 3,
                         "group_order" => 1
                     ]);
                     array_push($lookups, [
@@ -359,7 +359,7 @@ class ModuleInitializerController extends Controller
                         "table_name" => "fauna_elements_L1",
                         "column_name" => "element_L1_id",
                         "display_name" => "Element",
-                        "category_order" => 3,
+                        "category_order" => 4,
                         "group_order" => 1
                     ]);
     

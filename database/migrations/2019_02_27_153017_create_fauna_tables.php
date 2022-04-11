@@ -13,9 +13,7 @@ class CreateFaunaTables extends Migration
      */
     public function up()
     {
-
-
-        Schema::create('fauna_taxa_L1', function (Blueprint $table) {
+        Schema::create('fauna_taxon_L1', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->string('name', 50);
         });
@@ -24,28 +22,24 @@ class CreateFaunaTables extends Migration
             $table->tinyincrements('id');
             $table->string('name', 50);
         });
-        
+
         Schema::create('fauna', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('description', 400)->nullable();               
-            $table->string('taxon', 100)->nullable();
-            $table->string('element', 100)->nullable();       
-            $table->string('symmetry', 50)->nullable();
+            $table->string('description', 400)->nullable();
+            $table->string('notes', 200)->nullable();
+            $table->unsignedTinyInteger('taxon_L1_id')->dafault(1);
+            $table->unsignedTinyInteger('element_L1_id')->dafault(1);
+            $table->boolean('has_butchery_evidence')->default(false);
+            $table->boolean('has_burning_evidence')->default(false);
+            $table->boolean('has_other_bsm_evidence')->default(false);
+            $table->boolean('is_fused')->nullable();
+            $table->boolean('is_left')->nullable();
             $table->string('d_and_r', 50)->nullable();
+            $table->unsignedTinyInteger('weathering')->nullable();
             $table->string('age', 50)->nullable();
             $table->string('breakage', 50)->nullable();
-            $table->boolean('butchery')->default(false);  
-            $table->string('butchery_desc', 60)->nullable();
-            $table->boolean('burning')->default(false);  
-            $table->string('burning_desc', 60)->nullable();
-            $table->unsignedTinyInteger('weathering')->nullable();            
-            $table->string('other_bsm', 200)->nullable();
-            $table->string('notes', 200)->nullable();   
-            $table->unsignedTinyInteger('taxa_L1_id')->dafault(1);
-            $table->unsignedTinyInteger('element_L1_id')->dafault(1);            
-            $table->boolean('measured')->nullable();
 
-            $table->unsignedDecimal('GL',4,1)->nullable();
+            $table->unsignedDecimal('GL', 4, 1)->nullable();
             $table->unsignedDecimal('Glpe', 4, 1)->nullable();
             $table->unsignedDecimal('GLl', 4, 1)->nullable();
             $table->unsignedDecimal('GLP', 4, 1)->nullable();
@@ -56,7 +50,7 @@ class CreateFaunaTables extends Migration
             $table->unsignedDecimal('Bp', 4, 1)->nullable();
             $table->unsignedDecimal('Dp', 4, 1)->nullable();
             $table->unsignedDecimal('SD', 4, 1)->nullable();
-            $table->unsignedDecimal('HTC', 4, 1)->nullable();  
+            $table->unsignedDecimal('HTC', 4, 1)->nullable();
             $table->unsignedDecimal('Dl', 4, 1)->nullable();
             $table->unsignedDecimal('DEM', 4, 1)->nullable();
             $table->unsignedDecimal('DVM', 4, 1)->nullable();
@@ -76,14 +70,14 @@ class CreateFaunaTables extends Migration
             $table->unsignedDecimal('LF', 4, 1)->nullable();
             $table->unsignedDecimal('GLm', 4, 1)->nullable();
             $table->unsignedDecimal('GH', 4, 1)->nullable();
-      
-            $table->foreign('taxa_L1_id')
-            ->references('id')->on('fauna_taxa_L1')
-            ->onUpdate('cascade');
 
-        $table->foreign('element_L1_id')
-            ->references('id')->on('fauna_elements_L1')
-            ->onUpdate('cascade');
+            $table->foreign('taxon_L1_id')
+                ->references('id')->on('fauna_taxon_L1')
+                ->onUpdate('cascade');
+
+            $table->foreign('element_L1_id')
+                ->references('id')->on('fauna_elements_L1')
+                ->onUpdate('cascade');
         });
         /*
         Schema::create('fauna', function (Blueprint $table) {
@@ -91,11 +85,11 @@ class CreateFaunaTables extends Migration
             $table->string('quantity', 60)->nullable();
   
             $table->string('notes', 100)->nullable();
-            $table->unsignedTinyInteger('taxa_L1_id')->dafault(1);
+            $table->unsignedTinyInteger('taxon_L1_id')->dafault(1);
             $table->unsignedTinyInteger('element_L1_id')->dafault(1);
 
-            $table->foreign('taxa_L1_id')
-                ->references('id')->on('fauna_taxa_L1')
+            $table->foreign('taxon_L1_id')
+                ->references('id')->on('fauna_taxon_L1')
                 ->onUpdate('cascade');
 
             $table->foreign('element_L1_id')

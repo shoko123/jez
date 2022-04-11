@@ -73,7 +73,7 @@ class EliotSeeder extends Seeder
                 $fauna["LF"] = $item->LF;
                 $fauna["GLm"] = 0;
                 $fauna["GH"] =0;
-                $fauna["taxa_L1_id"] = 1;
+                $fauna["taxon_L1_id"] = 1;
                 $fauna["element_L1_id"] = 1;
 
 

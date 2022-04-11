@@ -4,7 +4,7 @@ namespace App\Models\Dig;
 
 use App\Models\Dig\Find;
 use App\Models\ItemTag;
-use App\Models\Lookups\FaunaTaxa;
+use App\Models\Lookups\FaunaTaxon;
 use App\Models\Lookups\FaunaElements;
 
 use App\Models\Scene;
@@ -45,8 +45,8 @@ class Fauna extends BaseDigModel
         return $this->belongsTo(MetalBaseType::class, 'element_L1_id');
     }
 
-    public function taxa()
+    public function taxon()
     {
-        return $this->belongsTo(FaunaTaxa::class, 'taxa_L1_id');
+        return $this->belongsTo(FaunaTaxon::class, 'taxon_L1_id');
     }
 }

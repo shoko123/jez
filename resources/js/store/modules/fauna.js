@@ -18,10 +18,9 @@ export default {
             weathering: null,
             other_bsm: null,
             notes: null,
-            taxa_L1_id: 1,
+            taxon_L1_id: 1,
             element_L1_id: 1,
             measured: false,
-
             GL: null,
             Glpe: null,
             GLl: null,
@@ -108,8 +107,8 @@ export default {
         notes(state, payload) {
             state.newItem.notes = payload;
         },
-        taxa_L1_id(state, payload) {
-            state.newItem.taxa_L1_id = payload;
+        taxon_L1_id(state, payload) {
+            state.newItem.taxon_L1_id = payload;
         },
         element_L1_id(state, payload) {
             state.newItem.element_L1_id = payload;
@@ -215,12 +214,56 @@ export default {
     actions: {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
             let toCopy = payload;
-            let current = rootGetters["mgr/item"];
-            commit("id", toCopy ? current.id : null);
-            commit("material_id", toCopy ? current.material_id : 1);
-            commit("base_type_id", toCopy ? current.base_type_id : 1);
-            commit("description", toCopy ? current.description : null);
-            commit("measurements", toCopy ? current.measurements : null);
+            let item = rootGetters["mgr/item"];
+            commit("id", toCopy ? item.id : null);
+            commit("description", toCopy ? item.description : null);
+            commit("taxon", toCopy ? item.taxon : null);
+            commit("element", toCopy ? item.element : null);
+            commit("symmetry", toCopy ? item.symmetry : null);
+            commit("d_and_r", toCopy ? item.d_and_r : null);
+            commit("age", toCopy ? item.age : null);
+            commit("breakage", toCopy ? item.breakage : null);
+            commit("butchery", toCopy ? item.butchery : false);
+            commit("butchery_desc", toCopy ? item.burning_desc : null);
+            commit("burning", toCopy ? item.burning : false);
+            commit("burning_desc", toCopy ? item.burning_desc : null);
+            commit("weathering", toCopy ? item.weathering : null);
+            commit("other_bsm", toCopy ? item.other_bsm : null);
+            commit("notes", toCopy ? item.notes : null);
+            commit("taxon_L1_id", toCopy ? item.taxon_L1_id : 1);
+            commit("element_L1_id", toCopy ? item.element_L1_id : 1);
+            commit("measured", toCopy ? item.measured : false);
+            commit("GL", toCopy ? item.GL : null);
+            commit("GLpe", toCopy ? item.GLpe : null);
+            commit("GLl", toCopy ? item.GLl : null);
+            commit("GLP", toCopy ? item.GLP : null);
+            commit("Bd", toCopy ? item.Bd : null);
+            commit("BT", toCopy ? item.BT : null);
+            commit("Dd", toCopy ? item.Dd : null);
+            commit("BFd", toCopy ? item.BFd : null);
+            commit("Bp", toCopy ? item.Bp : null);
+            commit("Dp", toCopy ? item.Dp : null);
+            commit("SD", toCopy ? item.SD : null);
+            commit("HTC", toCopy ? item.HTC : null);
+            commit("Dl", toCopy ? item.Dl : null);
+            commit("DEM", toCopy ? item.DEM : null);
+            commit("DVM", toCopy ? item.DVM : null);
+            commit("WCM", toCopy ? item.WCM : null);
+            commit("DEL", toCopy ? item.DEL : null);
+            commit("DVL", toCopy ? item.DVL : null);
+            commit("WCL", toCopy ? item.WCL : null);
+            commit("LD", toCopy ? item.LD : null);
+            commit("DLS", toCopy ? item.DLS : null);
+            commit("LG", toCopy ? item.LG : null);
+            commit("BG", toCopy ? item.BG : null);
+            commit("DID", toCopy ? item.DID : null);
+            commit("BFcr", toCopy ? item.BFcr : null);
+            commit("GD", toCopy ? item.GD : null);
+            commit("GB", toCopy ? item.GB : null);
+            commit("BF", toCopy ? item.BF : null);
+            commit("LF", toCopy ? item.LF : null);
+            commit("GLm", toCopy ? item.GLm : null);
+            commit("GH", toCopy ? item.GH : null);
         },
 
     }

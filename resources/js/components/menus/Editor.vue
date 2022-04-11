@@ -97,7 +97,7 @@ export default {
     isLoggedIn() {
       return this.store.getters["aut/isLoggedIn"];
     },
-    
+
     isAllowed(permissionName) {
       let fullPermissionName =
         this.$store.getters["mgr/module"] + "-" + permissionName;
@@ -112,6 +112,7 @@ export default {
         case "Lithic":
         case "Metal":
         case "Pottery":
+        case "Fauna":
           break;
 
         default:
@@ -127,11 +128,12 @@ export default {
         case "Season":
         case "AreaSeason":
         case "Locus":
+        case "Pottery":
         case "Stone":
-        case "Glass":
         case "Lithic":
         case "Metal":
-        case "Pottery":
+        case "Glass":
+        case "Fauna":
           break;
 
         default:

@@ -38,6 +38,7 @@ import StoneNew from "../stones/StoneNew";
 import LithicNew from "../lithics/LithicNew";
 import MetalNew from "../metal/MetalNew";
 import GlassNew from "../glass/GlassNew";
+import FaunaNew from "../fauna/FaunaNew";
 
 export default {
   name: "stepper",
@@ -53,7 +54,8 @@ export default {
     StoneNew,
     LithicNew,
     MetalNew,
-    GlassNew
+    GlassNew,
+    FaunaNew
   },
 
   computed: {
