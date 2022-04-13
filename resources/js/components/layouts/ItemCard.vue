@@ -3,7 +3,6 @@
     <template v-slot:e1>
       <component
         v-bind:is="form"
-        :showTags="showTags"
         :header="header"
       ></component>
     </template>
@@ -37,9 +36,6 @@ export default {
     GlassForm,
     FaunaForm,
     LayoutItemCardOptionalImage,
-  },
-  props: {
-    showTags: Boolean,
   },
   computed: {
     form() {

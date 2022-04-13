@@ -23,9 +23,7 @@
         filled
       ></v-textarea>
     </v-row>
-    <template v-if="showTags">
       <TagList />
-    </template>
   </v-container>
 </template>
 
@@ -34,9 +32,6 @@ import TagList from "../tags/TagList";
 export default {
   components: {
     TagList,
-  },
-  props: {
-    showTags: Boolean,
   },
   computed: {
     item() {

@@ -150,9 +150,7 @@
           filled
         ></v-text-field>
       </v-row>
-      <template v-if="showTags">
       <TagList />
-    </template>
       <!--v-row wrap no-gutters>
             <v-text-field
               label="Preservation"
@@ -182,9 +180,7 @@ export default {
    components: {
     TagList,
   },
-  props: {
-    showTags: Boolean,
-  },
+
   computed: {
     item() {
       return this.$store.getters["mgr/item"];

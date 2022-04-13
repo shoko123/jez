@@ -1,6 +1,7 @@
 <template>
-  <v-row wrap no-gutters>
+  <v-row  v-if="showTags" wrap no-gutters>
     <div
+    
       v-for="tag in tags"
       :key="tag.id"
       class="font-weight-normal ml-1 text-subtitle-1"
@@ -21,6 +22,9 @@ export default {
   computed: {
     tags() {
       return this.$store.getters[`aux/selectedItemParams`];
+    },
+    showTags() {
+      return this.$store.getters["mgr/status"].itemDisplayOptionIndex === 0;
     },
   },
 };

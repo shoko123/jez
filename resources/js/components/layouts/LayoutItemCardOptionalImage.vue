@@ -3,9 +3,9 @@
     <v-card class="elevation-12">
       <v-card-title class="grey py-0 mb-2">{{ header }}</v-card-title>
       <v-card-text>
-        <component v-bind:is="layout" :showTags="showTags" :header="header">
+        <component v-bind:is="layout" :header="header">
           <template v-slot:e1>
-            <component v-bind:is="itemForm" v-bind:showTags="showTags">
+            <component v-bind:is="itemForm">
             </component>
           </template>
         </component>
@@ -58,9 +58,6 @@ export default {
     },
     layout() {
       return this.hasMedia ? LayoutItemWithImageCard : LayoutItemCard;
-    },
-    showTags() {
-      return this.$store.getters["mgr/status"].itemDisplayOptionIndex === 0;
     },
   },
 };

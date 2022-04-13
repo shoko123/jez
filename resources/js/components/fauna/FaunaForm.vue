@@ -1,7 +1,7 @@
 <template>
   <v-container v-if="item" fluid class="pt-2">
     <v-row no-gutters>
-      <v-col lg="10">
+      <v-col lg="scopeIsBasket ? 12 : 10">
         <v-card class="pa-2">
           <v-card-text>
             <v-row wrap no-gutters>
@@ -24,15 +24,10 @@
               ></v-textarea>
             </v-row>
 
-            <v-row wrap no-gutters class="text-subtitle-1">
-              <template v-if="showTags">
-                TAGS:
-                <TagList />
-              </template>
-            </v-row>
-           
-            <v-divider/>
-            
+            <TagList />
+
+            <v-divider />
+
             <v-row
               v-if="measurements.length"
               wrap
@@ -47,7 +42,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col lg="2">
+      <v-col v-if="!scopeIsBasket" lg="2">
         <v-card class="pa-2">
           <v-card-text>
             <v-row wrap>
@@ -98,21 +93,23 @@ export default {
   components: {
     TagList,
   },
-  props: {
-    showTags: Boolean,
-  },
+
   computed: {
     item() {
-      if (!this.$store.getters["mgr/ready"].item) {
-        return null;
-      }
       return this.$store.getters["mgr/item"];
     },
     tags() {
       return this.$store.getters[`aux/selectedItemParams`];
     },
     symmetry() {
-      return this.item ? (this.item.is_left ? "Left" : "Right") : "";
+      return this.item.is_left === null
+        ? ""
+        : this.item.is_left
+        ? "Left"
+        : "Right";
+    },
+    scopeIsBasket() {
+      return this.item.flags.scopeIsBasket;
     },
     measurements() {
       if (this.item === null) {

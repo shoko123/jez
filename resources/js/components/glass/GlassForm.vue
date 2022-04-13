@@ -42,10 +42,7 @@
         filled
       ></v-text-field>
     </v-row>
-
-    <template v-if="showTags">
       <TagList />
-    </template>
     <v-divider inset></v-divider>
     <v-row wrap no-gutters>
       <div class="font-weight-normal ml-1 text-subtitle-1">Specialist(s): </div>
@@ -65,9 +62,6 @@ import TagList from "../tags/TagList";
 export default {
   components: {
     TagList,
-  },
-  props: {
-    showTags: Boolean,
   },
   computed: {
     item() {

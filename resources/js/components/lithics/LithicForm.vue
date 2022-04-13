@@ -76,8 +76,6 @@
         </v-row>
       </v-col>
     </v-row>
-
-    <template v-if="showTags">
       <TagList />
     </template>
   </v-container>
@@ -87,9 +85,6 @@ import TagList from "../tags/TagList";
 export default {
   components: {
     TagList,
-  },
-  props: {
-    showTags: Boolean,
   },
   computed: {
     item() {
