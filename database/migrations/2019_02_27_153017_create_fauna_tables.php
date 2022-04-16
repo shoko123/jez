@@ -79,24 +79,38 @@ class CreateFaunaTables extends Migration
                 ->references('id')->on('fauna_elements_L1')
                 ->onUpdate('cascade');
         });
-        /*
-        Schema::create('fauna', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('quantity', 60)->nullable();
-  
-            $table->string('notes', 100)->nullable();
-            $table->unsignedTinyInteger('taxon_L1_id')->dafault(1);
-            $table->unsignedTinyInteger('element_L1_id')->dafault(1);
 
-            $table->foreign('taxon_L1_id')
-                ->references('id')->on('fauna_taxon_L1')
-                ->onUpdate('cascade');
-
-            $table->foreign('element_L1_id')
-                ->references('id')->on('fauna_elements_L1')
-                ->onUpdate('cascade');
+        Schema::create('fauna_tag_types', function (Blueprint $table) {
+            $table->tinyIncrements('id');
+            $table->string('name', 40);
+            $table->string('category', 40);
+            $table->unsignedTinyInteger('category_order');
+            $table->unsignedTinyInteger('group_order');
+            $table->string('display_name', 40);
+            $table->boolean('multiple')->default(0);
+            $table->json('dependency')->nullable();
         });
-        */
+
+        Schema::create('fauna_tags', function (Blueprint $table) {
+            $table->smallIncrements('id');
+            $table->unsignedTinyInteger('type_id');
+            $table->foreign('type_id')
+                ->references('id')
+                ->on('fauna_tag_types')
+                ->onUpdate('cascade');
+            $table->unsignedSmallInteger('order_column');
+            $table->string('name', 50);
+        });
+
+        Schema::create('fauna-fauna_tags', function (Blueprint $table) {
+            $table->unsignedInteger('fauna_id');
+            $table->foreign('fauna_id')->references('id')->on('fauna')->onDelete('cascade');
+
+            $table->unsignedSmallInteger('fauna_tag_id')->unsigned();
+            $table->foreign('fauna_tag_id')->references('id')->on('fauna_tags')->onDelete('cascade');
+
+            $table->primary(['fauna_id', 'fauna_tag_id']);
+        });
     }
 
     /**
@@ -106,7 +120,7 @@ class CreateFaunaTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fauna_base_types');
-        Schema::dropIfExists('fauna');
+        //Schema::dropIfExists('fauna_base_types');
+        //Schema::dropIfExists('fauna');
     }
 }

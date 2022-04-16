@@ -3,6 +3,7 @@
 namespace App\Models\Dig;
 
 use App\Models\ItemTag;
+use App\Models\tags\FaunaTag;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
@@ -232,19 +233,26 @@ class BaseDigModel extends Model implements HasMedia
 
         //filter by tags
         if (!empty($queryParams["tags"])) {
-            $tag_types = (object) [];
-            foreach ($queryParams["tags"]["tags"] as $index => $tag_id) {
-                $t = ItemTag::select('type', 'name')->findOrFail($tag_id);
-                $type = $t->type;
-                if (property_exists($tag_types, $type)) {
-                    array_push($tag_types->$type, $t->name);
-                } else {
-                    $tag_types->$type = array($t->name);
-                }
-            }
 
-            foreach ($tag_types as $key => $value) {
-                $builder->withAnyTags($value, $key);
+
+            if ($this->eloquent_model_name === 'Fauna') {
+                $tags = FaunaTag::whereIn($queryParams["tags"])->with("type_id")->get();                   
+            } else {
+
+                $tag_types = (object) [];
+                foreach ($queryParams["tags"]["tags"] as $index => $tag_id) {
+                    $t = ItemTag::select('type', 'name')->findOrFail($tag_id);
+                    $type = $t->type;
+                    if (property_exists($tag_types, $type)) {
+                        array_push($tag_types->$type, $t->name);
+                    } else {
+                        $tag_types->$type = array($t->name);
+                    }
+                }
+
+                foreach ($tag_types as $key => $value) {
+                    $builder->withAnyTags($value, $key);
+                }
             }
         }
 
@@ -383,7 +391,7 @@ class BaseDigModel extends Model implements HasMedia
             "scopeIsBasket" => $find->artifact_no === 0,
             "scopeIsArtifact" => $find->artifact_no !== 0,
         ];
-        
+
         $itemMedia = $this->allMedia($item);
         $item["hasMedia"] = $itemMedia->primary->hasMedia;
         $item["tnUrl"] = $itemMedia->primary->tnUrl;
