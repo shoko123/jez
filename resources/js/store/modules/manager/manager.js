@@ -440,9 +440,9 @@ export default {
 
         loadItem({ state, getters, commit, dispatch }, payload) {
 
-        //console.log(`mgr.loadItem. endpoint: ${state.globalSettings.baseUrl}/api/dig/show. payload: \n${JSON.stringify(payload, null, 2)}`);
-            
-        commit("ready", { entity: "item", isReady: false });
+            //console.log(`mgr.loadItem. endpoint: ${state.globalSettings.baseUrl}/api/dig/show. payload: \n${JSON.stringify(payload, null, 2)}`);
+
+            commit("ready", { entity: "item", isReady: false });
 
             let xhrRequest = {
                 endpoint: `${state.globalSettings.baseUrl}/api/dig/show`,
@@ -487,7 +487,7 @@ export default {
                             commit('fnd/item', res.data.find, { root: true });
                             dispatch('aux/itemTags', res.data.tags, { root: true });
                     }
-                    
+
                     res.data.item["tag"] = dotToTag({ module: state.routes.to.module, dot: res.data.item.dot });
                     console.log(`mgr.loadItem() "${res.data.item.dot}" loaded successfully`)
                     commit('item', res.data.item);
@@ -598,7 +598,7 @@ export default {
                     }
                     commit("ready", { entity: "item", isReady: false });
                     if (goToItem) {
-                        dispatch('goToRoute', { module: state.routes.current.module, action: "show", dot: rootGetters["mgr/status"].isCreate ? res.data.item.dot : state.item.dot});
+                        dispatch('goToRoute', { module: state.routes.current.module, action: "show", dot: rootGetters["mgr/status"].isCreate ? res.data.item.dot : state.item.dot });
                     }
                     return res;
                 })
@@ -754,9 +754,13 @@ export default {
 
                 commit("ready", { entity: "chunk", isReady: false });
                 let xhrRequest = {
-                    endpoint: `${source.apiModuleUrl}/${endpoint}`,
+                    endpoint: `/api/dig/chunk`,
                     action: "post",
-                    data: { "ids": ids },
+                    data: {
+                        "ids": ids,
+                        "chunkType": state.collections[payload.name].views[state.collections[payload.name].view],
+                        "module": state.routes.current.module
+                    },
                     spinner: getters["status"].isList,
                     verbose: false,
                     snackbar: { onSuccess: false, onFailure: true, },
@@ -882,7 +886,7 @@ export default {
                 //console.log(`ADJANCT length: ${m.collection.length} index: ${m.index} newIndex: ${newIndex}`);
                 return m.collection[newIndex].dot;
             }
-        //console.log(`mgr/goToRoute() payload: ${payload}`);
+            //console.log(`mgr/goToRoute() payload: ${payload}`);
             switch (payload) {
                 case "next":
                 case "prev":

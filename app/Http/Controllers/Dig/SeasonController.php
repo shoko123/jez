@@ -40,7 +40,7 @@ class SeasonController extends BaseDigModuleController
 
     public function show($id)
     {
-        $data = $this->model->show($id);
+        $data = $this->model->show($id["id"]);
         return response($data, 200);
     }
 

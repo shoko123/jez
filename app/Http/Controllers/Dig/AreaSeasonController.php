@@ -53,9 +53,9 @@ class AreaSeasonController extends BaseDigModuleController
         ], 200);
     }
 
-    public function show($id)
+    public function show($ids)
     {
-        $as = $this->model->show($id);
+        $as = $this->model->show($ids["id"]);
         return response($as, 200);
     }
 

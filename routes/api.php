@@ -46,63 +46,20 @@ Route::get('accessibility', [GlobalSettingsController::class, 'accessibility']);
 Route::group(['middleware' => 'authorizedUsersOnly'], function ($router) {
   
     Route::post('dig/show', [BaseDigModuleController::class, 'show']);
+    Route::post('dig/chunk', [BaseDigModuleController::class, 'chunk']);
+    
     Route::get('about', [AboutController::class, 'index']); //No params, always get all records.
-    Route::get('about/{id}', [AboutController::class, 'show']);
-
+    Route::get('about/{id}', [AboutController::class, 'show']);  
     Route::post('areas', [AreaController::class, 'index']); //No params, always get all records.
-    Route::get('areas/{id}', [AreaController::class, 'show']);
-    Route::post('areas/chunk-media', [AreaController::class, 'chunkMedia']);
-    Route::post('areas/chunk-table', [AreaController::class, 'chunkTable']);
-
     Route::post('seasons', [SeasonController::class, 'index']); //No params, always get all records.
-    Route::get('seasons/{id}', [SeasonController::class, 'show']);
-    Route::post('seasons/chunk-media', [SeasonController::class, 'chunkMedia']);
-    Route::post('seasons/chunk-table', [SeasonController::class, 'chunkTable']);
-
     Route::post('areas-seasons', [AreaSeasonController::class, 'index']); //Pass query params in body.
-    Route::get('areas-seasons/{id}', [AreaSeasonController::class, 'show']);
-    Route::post('areas-seasons/chunk-media', [AreaSeasonController::class, 'chunkMedia']);
-    Route::post('areas-seasons/chunk-table', [AreaSeasonController::class, 'chunkTable']);
-
     Route::post('loci', [LocusController::class, 'index']);
-    //Route::post('loci/all', [LocusController::class, 'all']);
-    Route::post('loci/chunk-media', [LocusController::class, 'chunkMedia']);
-    Route::post('loci/chunk-table', [LocusController::class, 'chunkTable']);
-    Route::get('loci/{id}', [LocusController::class, 'show']);
     Route::post('pottery', [PotteryController::class, 'index']);
-    //
-    Route::post('pottery/chunk-media', [PotteryController::class, 'chunkMedia']);
-    Route::post('pottery/chunk-table', [PotteryController::class, 'chunkTable']);
-    Route::get('pottery/{id}', [PotteryController::class, 'show']);
-
     Route::post('lithics', [LithicController::class, 'index']);
-    //Route::post('lithics/all', [LithicController::class, 'all']);
-    Route::post('lithics/chunk-media', [LithicController::class, 'chunkMedia']);
-    Route::post('lithics/chunk-table', [LithicController::class, 'chunkTable']);
-    Route::get('lithics/{id}', [LithicController::class, 'show']);
-
     Route::post('stones', [StoneController::class, 'index']);
-    //Route::post('stones/all', [StoneController::class, 'all']);
-    Route::post('stones/chunk-media', [StoneController::class, 'chunkMedia']);
-    Route::post('stones/chunk-table', [StoneController::class, 'chunkTable']);
-    Route::get('stones/{id}', [StoneController::class, 'show']);
-
     Route::post('glass', [GlassController::class, 'index']);
-    //Route::post('glass/all', [GlassController::class, 'all']);
-    Route::post('glass/chunk-media', [GlassController::class, 'chunkMedia']);
-    Route::post('glass/chunk-table', [GlassController::class, 'chunkTable']);
-    Route::get('glass/{id}', [GlassController::class, 'show']);
-
     Route::post('metals', [MetalController::class, 'index']);
-    //Route::post('metals/all', [MetalController::class, 'all']);
-    Route::post('metals/chunk-media', [MetalController::class, 'chunkMedia']);
-    Route::post('metals/chunk-table', [MetalController::class, 'chunkTable']);
-    Route::get('metals/{id}', [MetalController::class, 'show']);
-
     Route::post('fauna', [FaunaController::class, 'index']);
-    Route::post('fauna/chunk-media', [FaunaController::class, 'chunkMedia']);
-    Route::post('fauna/chunk-table', [FaunaController::class, 'chunkTable']);
-    Route::get('fauna/{id}', [FaunaController::class, 'show']);    
 });
 
 Route::group(['prefix' => 'auth'], function ($router) {

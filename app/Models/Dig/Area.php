@@ -20,9 +20,9 @@ class Area extends BaseDigModel
         return $this->hasMany(AreaSeason::class, 'area_id');
     }
 
-    public function show($id)
+    public function show($ids)
     {
-        $item = $this->with(['media', 'areas_seasons'])->findOrFail($id);
+        $item = $this->with(['media', 'areas_seasons'])->findOrFail($ids["id"]);
 
         //get related media.
         $itemMedia = $this->allMedia($item);

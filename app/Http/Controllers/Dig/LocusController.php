@@ -58,7 +58,7 @@ class LocusController extends BaseDigModuleController
     public function show($id)
     {
         $this->authorize('view', $this->model);
-        $locus = $this->model->show($id);
+        $locus = $this->model->show($id["id"]);
         return response($locus, 200);
     }
 

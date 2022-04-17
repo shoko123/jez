@@ -77,7 +77,6 @@
       </v-col>
     </v-row>
       <TagList />
-    </template>
   </v-container>
 </template>
 <script>

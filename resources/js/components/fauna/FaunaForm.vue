@@ -1,7 +1,7 @@
 <template>
   <v-container v-if="item" fluid class="pt-2">
     <v-row no-gutters>
-      <v-col lg="scopeIsBasket ? 12 : 10">
+      <v-col lg="10">
         <v-card class="pa-2">
           <v-card-text>
             <v-row wrap no-gutters>
@@ -38,6 +38,15 @@
               <v-chip v-for="m in measurements" :key="m.name" class="ma-2"
                 >{{ m.name }}: {{ m.value }}</v-chip
               >
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col v-if="scopeIsBasket" lg="2">
+        <v-card class="pa-2">
+          <v-card-text>
+            <v-row wrap>
+              <v-card-text>Contains artifacts</v-card-text>
             </v-row>
           </v-card-text>
         </v-card>

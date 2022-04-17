@@ -236,7 +236,7 @@ class BaseDigModel extends Model implements HasMedia
 
 
             if ($this->eloquent_model_name === 'Fauna') {
-                $tags = FaunaTag::whereIn($queryParams["tags"])->with("type_id")->get();                   
+                $tags = FaunaTag::whereIn($queryParams["tags"])->with("type_id")->get();
             } else {
 
                 $tag_types = (object) [];
@@ -283,35 +283,38 @@ class BaseDigModel extends Model implements HasMedia
         return $find->registration_category . '.' . $find->basket_no . '.' . $find->artifact_no;
     }
 
-    public function getIdFromParams($p)
+    public function getIdsFromParams($p)
     {
-        $modelName = "App\Models\Dig\\" . $p->module;
+        $modelName = "App\Models\Dig\\" . $p["module"];
         $model =  new $modelName;
 
-        switch ($p->module) {
+        switch ($p["module"]) {
             case "About":
-                return $model->where('tab', $p->tab)->where('no', $p->no)->pluck('id')->first();
+                return ["id" => $model->where('tab', $p["tab"])->where('no', $p["no"])->pluck('id')->first()];
 
                 break;
             case "Area":
-                return $model->where('name', $p->area)->pluck('id')->first();
+                return  ["id" => $model->where('name', $p["area"])->pluck('id')->first()];
 
                 break;
 
             case "Season":
-                return $model->where('season', $p->season)->pluck('id')->first();
+                return  ["id" => $model->where('season', $p["season"])->pluck('id')->first()];
                 break;
 
 
             case "AreaSeason":
-                return $model->where('dot', $p->season . '.' . $p->area)->pluck('id')->first();
+                return  ["id" => $model->where('dot', $p["season"] . '.' . $p["area"])->pluck('id')->first()];
 
             case "Locus":
-                $area_season_id = AreaSeason::where('dot',  $p->season . '.' . $p->area)->pluck('id')->first();
+                $area_season_id = AreaSeason::where('dot',  $p["season"] . '.' . $p["area"])->pluck('id')->first();
                 if (is_null($area_season_id)) {
                     return null;
                 }
-                return $model->where('area_season_id', $area_season_id)->where('locus_no', $p->locus_no)->pluck('id')->first();
+                return  [
+                    "id" => $model->where('area_season_id', $area_season_id)->where('locus_no', $p["locus_no"])->pluck('id')->first(),
+                    "area_season_id" => $area_season_id
+                ];
 
             case "Pottery":
             case "Stone":
@@ -321,25 +324,28 @@ class BaseDigModel extends Model implements HasMedia
             case "Flora":
             case "Fauna":
             case "Tbd":
-                $area_season_id = AreaSeason::where('dot', $p->season . '.' . $p->area)->pluck('id')->first();
+                $area_season_id = AreaSeason::where('dot', $p["season"] . '.' . $p["area"])->pluck('id')->first();
                 if (is_null($area_season_id)) {
                     return null;
                 }
-                $locus_id = Locus::where('area_season_id', $area_season_id)->where('locus_no', $p->locus_no)->pluck('id')->first();
+                $locus_id = Locus::where('area_season_id', $area_season_id)->where('locus_no', $p["locus_no"])->pluck('id')->first();
                 if (is_null($locus_id)) {
                     return null;
                 }
-                return Find::where('findable_type', $p->module)
-                    ->where('locus_id', $locus_id)
-                    ->where('registration_category', $p->registration_category)
-                    ->where('basket_no', $p->basket_no)
-                    ->where('artifact_no', $p->artifact_no)
-                    ->pluck('findable_id')->first();
+                return  [
+                    "id" => Find::where('findable_type', $p["module"])
+                        ->where('locus_id', $locus_id)
+                        ->where('registration_category', $p["registration_category"])
+                        ->where('basket_no', $p["basket_no"])
+                        ->where('artifact_no', $p["artifact_no"])
+                        ->pluck('findable_id')->first(),
+                    "locus_id" => $locus_id
+                ];
         }
         return null;
     }
 
-    public function show($id)
+    public function show($params)
     {
         $tableName = $this->getTable();
         $modelName = $this->eloquent_model_name;
@@ -363,7 +369,7 @@ class BaseDigModel extends Model implements HasMedia
 
         //$builder->select("$tableName.id AS id", DB::raw("CONCAT(finds.loci.areas_seasons.tag,'/',finds.loci.locus_no ,'.', finds.registration_category ,'.', finds.basket_no  ,'.', finds.artifact_no) as tag"));
 
-        $item = $builder->findOrFail($id);
+        $item = $builder->findOrFail($params["id"]);
 
         //format tag
         $find = $item->find;
@@ -410,6 +416,30 @@ class BaseDigModel extends Model implements HasMedia
             "tags" => $tags,
         ];
     }
+
+    public function chunk($p)
+    {
+        $modelName = "App\Models\Dig\\" . $p["module"];
+        $model = new $modelName;
+        $ids = implode(',', $p["ids"]);
+        
+        $items = $model->whereIn('id', $p["ids"])
+            ->select('id', 'description')
+            ->orderByRaw(DB::raw("FIELD(id, $ids)"))
+            ->get();
+
+        if ($p["chunkType"]  === "Media") {
+            foreach ($items as $index => $item) {
+                $media = $this->primaryMedia($item);
+                $item["fullUrl"] = $media->fullUrl;
+                $item["hasMedia"] = $media->hasMedia;
+                $item["tnUrl"] = $media->tnUrl;
+                unset($item->media);
+            }
+        }
+        return $items;
+    }
+
 
     public function baseChunkTable($idArray)
     {

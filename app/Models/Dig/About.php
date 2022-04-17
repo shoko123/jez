@@ -16,9 +16,9 @@ class About extends BaseDigModel
         parent::__construct("About");
     }
 
-    public function show($id)
+    public function show($ids)
     {
-        $item = $this->findOrFail($id);
+        $item = $this->findOrFail($ids["id"]);
 
         $item->dot = $item->tab . '.' . $item->no;
         $item->title = strval($item->tab) . "." . strval($item->no) . " " . $item->title;

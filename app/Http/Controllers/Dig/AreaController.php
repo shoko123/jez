@@ -39,7 +39,7 @@ class AreaController extends BaseDigModuleController
 
     public function show($id)
     {
-        $area = $this->model->show($id);
+        $area = $this->model->show($id["id"]);
         return response($area, 200);
     }
 

@@ -32,13 +32,13 @@ class AreaSeason extends BaseDigModel
         return $this->hasMany(Locus::class, 'area_season_id');
     }
 
-    public function show($id)
+    public function show($ids)
     {
         $item = $this->with([
             'media',
             'loci',
         ])
-            ->findOrFail($id);
+            ->findOrFail($ids["id"]);
 
         //get related media.
         $itemMedia = $this->allMedia($item);

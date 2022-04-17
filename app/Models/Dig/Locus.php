@@ -26,7 +26,7 @@ class Locus extends BaseDigModel
         return $this->hasMany(Find::class);
     }
     
-    public function show($id)
+    public function show($ids)
     {
         $locus = $this->with(
             [
@@ -40,7 +40,7 @@ class Locus extends BaseDigModel
                 },
                 'media',
             ]
-        )->findOrFail($id);
+        )->findOrFail($ids["id"]);
 
         //format dot
         $locus->dot = $locus->areaSeason->dot . '.' . $locus->locus_no;
