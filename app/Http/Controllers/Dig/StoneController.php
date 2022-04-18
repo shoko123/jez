@@ -29,29 +29,6 @@ class StoneController extends BaseDigModuleController
         ], 200);
     }
 
-    public function chunkMedia(Request $request)
-    {
-           //TODO validate!
-
-           return response()->json([
-            "collection" => $this->model->baseChunkMedia($request["ids"]),
-        ], 200);
-    }
-
-    public function chunkTable(Request $request)
-    {
-        return response()->json([
-            "collection" => $this->model->baseChunkTable($request["ids"]),
-        ], 200);
-    }
-
-    public function show($id)
-    {
-        $this->authorize('view', $this->model);
-        $item = $this->model->show($id);
-        return response($item, 200);
-    }
-
     public function store(StoneStoreRequest $stoneRequest, FindStoreRequest $findRequest)
     {
         $validated = $item = $find = null;

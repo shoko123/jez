@@ -26,22 +26,6 @@ class LocusController extends BaseDigModuleController
         ], 200);
     }
 
-    public function chunkMedia(Request $request)
-    {
-        //TODO validate!
-
-        return response()->json([
-            "collection" => $this->model->baseChunkMedia($request["ids"]),
-        ], 200);
-    }
-
-    public function chunkTable(Request $request)
-    {
-        return response()->json([
-            "collection" => $this->model->baseChunkTable($request["ids"]),
-        ], 200);
-    }
-
     //called by create new find to avoid duplicate registrations.
     public function finds(Request $request, $id)
     {
@@ -53,13 +37,6 @@ class LocusController extends BaseDigModuleController
         return response()->json([
             "finds" => $finds,
         ], 200);
-    }
-
-    public function show($id)
-    {
-        $this->authorize('view', $this->model);
-        $locus = $this->model->show($id["id"]);
-        return response($locus, 200);
     }
 
     public function store(LocusStoreRequest $request)

@@ -47,9 +47,8 @@ Route::group(['middleware' => 'authorizedUsersOnly'], function ($router) {
   
     Route::post('dig/show', [BaseDigModuleController::class, 'show']);
     Route::post('dig/chunk', [BaseDigModuleController::class, 'chunk']);
-    
+
     Route::get('about', [AboutController::class, 'index']); //No params, always get all records.
-    Route::get('about/{id}', [AboutController::class, 'show']);  
     Route::post('areas', [AreaController::class, 'index']); //No params, always get all records.
     Route::post('seasons', [SeasonController::class, 'index']); //No params, always get all records.
     Route::post('areas-seasons', [AreaSeasonController::class, 'index']); //Pass query params in body.

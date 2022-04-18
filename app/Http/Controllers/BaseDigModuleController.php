@@ -84,13 +84,13 @@ class BaseDigModuleController extends Controller
         if (is_null($ids)) {
             return $this->itemNotFoundError($v["module"] . " item not found!");
         }
-        $params = (array)$r;
-        $params["id"] = $ids["id"];
+        $params = (array)$v;
+        $merged = array_merge($params, $ids);
         
 
         //$item = $model->show(2);
         return response(
-            $model->show($params),
+            $model->show($merged),
             200
         );
     }

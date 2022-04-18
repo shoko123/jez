@@ -732,18 +732,6 @@ export default {
 
         page({ state, getters, commit, dispatch }, payload) {
             function loadChunk() {
-                let source = state.routes.to;
-
-                let endpoint;
-                switch (state.collections[payload.name].views[state.collections[payload.name].view]) {
-                    case "Media":
-                        endpoint = "chunk-media";
-                        break;
-                    case "Table":
-                        endpoint = "chunk-table";
-                        break;
-                }
-
                 //console.log(`mgr/loadChunk(${payload.page})`);//meta: ${JSON.stringify(meta, null, 2)}
                 let start = (payload.page - 1) * state.collections[payload.name].itemsPerPage;
                 let length = state.collections[payload.name].itemsPerPage;
@@ -759,7 +747,7 @@ export default {
                     data: {
                         "ids": ids,
                         "chunkType": state.collections[payload.name].views[state.collections[payload.name].view],
-                        "module": state.routes.current.module
+                        "module": state.routes.to.module
                     },
                     spinner: getters["status"].isList,
                     verbose: false,

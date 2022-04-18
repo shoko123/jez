@@ -27,26 +27,4 @@ class FaunaController extends BaseDigModuleController
             "collection" => $collection,
         ], 200);
     }
-
-    public function chunkMedia(Request $request)
-    {
-        //TODO validate!
-
-        return response()->json([
-            "collection" => $this->model->baseChunkMedia($request["ids"]),
-        ], 200);
-    }
-
-    public function chunkTable(Request $request)
-    {
-        return response()->json([
-            "collection" => $this->model->baseChunkTable($request["ids"]),
-        ], 200);
-    }
-
-    public function show($id)
-    {
-        $item = $this->model->show($id);
-        return response($item, 200);
-    }    
 }

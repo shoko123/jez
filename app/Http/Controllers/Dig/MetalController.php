@@ -27,41 +27,6 @@ class MetalController extends BaseDigModuleController
         ], 200);
     }
 
-    public function chunkMedia(Request $request)
-    {
-        //TODO validate!
-
-        return response()->json([
-            "collection" => $this->model->baseChunkMedia($request["ids"]),
-        ], 200);
-    }
-
-    public function chunkTable(Request $request)
-    {
-        return response()->json([
-            "collection" => $this->model->baseChunkTable($request["ids"]),
-        ], 200);
-    }
-
-    public function show($id)
-    {
-        $item = $this->model->show($id);
-        return response($item, 200);
-    }
-
-    public function lightbox($id)
-    {
-        $item = Metal::with(['media'])
-            ->findOrFail($id);
-
-        $media = $this->model->primaryMedia('Metal', $item);
-        $media->description = $item->description;
-
-        return response()->json([
-            "item" => $media,
-        ], 200);
-    }
-
     public function store(MetalStoreRequest $metalRequest, FindStoreRequest $findRequest)
     {
         $validated = $item = $find = null;

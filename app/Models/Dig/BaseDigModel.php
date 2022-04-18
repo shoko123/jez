@@ -14,6 +14,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\HasTags;
 use App\Models\Dig\AreaSeason;
 use App\Models\Dig\Locus;
+use Illuminate\Database\Eloquent\Collection;
 
 class BaseDigModel extends Model implements HasMedia
 {
@@ -339,18 +340,17 @@ class BaseDigModel extends Model implements HasMedia
                         ->where('basket_no', $p["basket_no"])
                         ->where('artifact_no', $p["artifact_no"])
                         ->pluck('findable_id')->first(),
-                    "locus_id" => $locus_id
+                    "locus_id" => $locus_id,
+                    "registration_category" => $p["registration_category"],
+                    "basket_no" => $p["basket_no"],
+                    "artifact_no" => $p["artifact_no"],
                 ];
         }
         return null;
     }
 
-    public function show($params)
+    public function show($p)
     {
-        $tableName = $this->getTable();
-        $modelName = $this->eloquent_model_name;
-
-
         $builder = $this->with(
             [
                 'find',
@@ -369,11 +369,13 @@ class BaseDigModel extends Model implements HasMedia
 
         //$builder->select("$tableName.id AS id", DB::raw("CONCAT(finds.loci.areas_seasons.tag,'/',finds.loci.locus_no ,'.', finds.registration_category ,'.', finds.basket_no  ,'.', finds.artifact_no) as tag"));
 
-        $item = $builder->findOrFail($params["id"]);
+        $item = $builder->findOrFail($p["id"]);
+
 
         //format tag
         $find = $item->find;
         $item->dot = $find->locus->areaSeason->dot . "." . $find->locus->locus_no . "." . $find->registration_category . "." . $find->basket_no . "." . $find->artifact_no;
+        $dotWithoutArtifactNo = $find->locus->areaSeason->dot . "." . $find->locus->locus_no . "." . $find->registration_category . "." . $find->basket_no . ".";
 
         //add fields
         $item->locus_id = $find->locus->id;
@@ -392,28 +394,53 @@ class BaseDigModel extends Model implements HasMedia
             ]);
         }
 
-        //format media.
         $flags = [
             "scopeIsBasket" => $find->artifact_no === 0,
             "scopeIsArtifact" => $find->artifact_no !== 0,
         ];
 
+        //format media.
         $itemMedia = $this->allMedia($item);
         $item["hasMedia"] = $itemMedia->primary->hasMedia;
         $item["tnUrl"] = $itemMedia->primary->tnUrl;
         $item["fullUrl"] = $itemMedia->primary->fullUrl;
         $item["flags"] = $flags;
+
+
+        //if Basket, add related artifacts
+        $res = [];
+        $related = [];
+        
+        if ($p["artifact_no"] === 0) {
+            $res = Find::where('findable_type', $p["module"])
+                ->where('locus_id', $p["locus_id"])
+                ->where('basket_no', $p["basket_no"])
+                ->where('artifact_no', '<>', 0)
+                ->select('artifact_no AS no')
+                ->orderBy('artifact_no')
+                ->get();
+        }
+       
+        $related = collect($res)->map(function ($item, $key) use ($dotWithoutArtifactNo){
+            return $dotWithoutArtifactNo . $item["no"];
+        });
+
+
+
+
         unset($itemMedia->primary);
         unset($item->find);
         unset($item->media);
         unset($item->tags);
         unset($find->locus);
 
+
         return [
             "item" => $item,
             "find" => $find,
             "itemMedia" => $itemMedia,
             "tags" => $tags,
+            "related" => $related
         ];
     }
 
@@ -422,7 +449,7 @@ class BaseDigModel extends Model implements HasMedia
         $modelName = "App\Models\Dig\\" . $p["module"];
         $model = new $modelName;
         $ids = implode(',', $p["ids"]);
-        
+
         $items = $model->whereIn('id', $p["ids"])
             ->select('id', 'description')
             ->orderByRaw(DB::raw("FIELD(id, $ids)"))

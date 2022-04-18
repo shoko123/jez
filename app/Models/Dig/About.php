@@ -4,6 +4,7 @@ namespace App\Models\Dig;
 
 
 use App\Models\Dig\BaseDigModel;
+use Illuminate\Support\Facades\Storage;
 
 class About extends BaseDigModel
 {
@@ -22,8 +23,8 @@ class About extends BaseDigModel
 
         $item->dot = $item->tab . '.' . $item->no;
         $item->title = strval($item->tab) . "." . strval($item->no) . " " . $item->title;
-        $item->fullUrl = \Storage::disk('app-media')->url('about/' .  $item->image . '.jpg');
-        $item->tnUrl = \Storage::disk('app-media')->url('about/' . $item->image . '-tn.jpg');        
+        $item->fullUrl = Storage::disk('app-media')->url('about/' .  $item->image . '.jpg');
+        $item->tnUrl = Storage::disk('app-media')->url('about/' . $item->image . '-tn.jpg');        
         //$item->tag = $item->name;
         return [
             "item" => $item,
