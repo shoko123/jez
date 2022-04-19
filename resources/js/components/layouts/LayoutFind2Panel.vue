@@ -8,7 +8,7 @@
 
 <script>
 import ItemCard from "./ItemCard";
-import FindForm from "../finds/findForm";
+import FindForm from "../finds/FindForm";
 
 export default {
   components: {

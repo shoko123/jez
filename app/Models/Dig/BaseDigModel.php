@@ -349,6 +349,7 @@ class BaseDigModel extends Model implements HasMedia
         return null;
     }
 
+    //show common to all small finds
     public function show($p)
     {
         $builder = $this->with(
@@ -407,25 +408,20 @@ class BaseDigModel extends Model implements HasMedia
         $item["flags"] = $flags;
 
 
-        //if Basket, add related artifacts
-        $res = [];
+        //if Pottery or Fauna add related artifacts
         $related = [];
-        
-        if ($p["artifact_no"] === 0) {
+
+        if ($p["module"] === "Pottery" || $p["module"] === "Fauna") {
             $res = Find::where('findable_type', $p["module"])
                 ->where('locus_id', $p["locus_id"])
                 ->where('basket_no', $p["basket_no"])
-                ->where('artifact_no', '<>', 0)
-                ->select('artifact_no AS no')
+                ->where('artifact_no', '<>', $p["artifact_no"])
                 ->orderBy('artifact_no')
-                ->get();
+                ->get()->pluck('artifact_no');
+            $related = collect($res)->map(function ($item) use ($dotWithoutArtifactNo) {
+                return $dotWithoutArtifactNo . $item;
+            });
         }
-       
-        $related = collect($res)->map(function ($item, $key) use ($dotWithoutArtifactNo){
-            return $dotWithoutArtifactNo . $item["no"];
-        });
-
-
 
 
         unset($itemMedia->primary);

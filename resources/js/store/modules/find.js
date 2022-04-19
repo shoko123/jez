@@ -22,27 +22,27 @@ export default {
         },
     },
     getters: {
-        item(state) {
+        item(state, getters, rootState, rootGetters) {
             return state.find;
         },
 
         //null, "basket", or "artifact"
-        scale(state, getters, rootState, rootGetters) {
+        scopeIsBasket(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isFind ||
                 (
                     !rootGetters["mgr/status"].isShow &&
                     !rootGetters["mgr/status"].isUpdate &&
                     !rootGetters["mgr/status"].isCreate &&
                     !rootGetters["mgr/status"].isTags)
-            ) { return null; }
+            ) { return false; }
 
-            let source = rootGetters["mgr/status"].isShow ? state.find : state.newItem;
-            if (source === null) { return null }
-            if (source.basket_no !== 0 && source.artifact_no === 0) {
-                return "Basket";
-            } else if (source.artifact_no !== 0) {
-                return "Artifact";
-            }
+            let source = rootGetters["mgr/status"].isCreate ? state.newItem : state.find;
+            return (source.artifact_no === 0)
+        },
+
+        showRelatedEntries(state, getters, rootState, rootGetters) {
+            return (rootGetters["mgr/status"].module === "Pottery" ||
+                rootGetters["mgr/status"].module === "Fauna")
         },
 
         item(state) {
@@ -68,7 +68,7 @@ export default {
             console.log("find.setRegistrationData" + JSON.stringify(state.newItem, null, 2));
         },
         preservation_id(state, payload) {
-            console.log(`store.commit.preservation_id(${payload})`);
+            //console.log(`store.commit.preservation_id(${payload})`);
             state.newItem.preservation_id = payload;
         },
         date(state, payload) {

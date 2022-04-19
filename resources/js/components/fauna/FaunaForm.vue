@@ -1,7 +1,7 @@
 <template>
   <v-container v-if="item" fluid class="pt-2">
     <v-row no-gutters>
-      <v-col lg="10">
+       <v-col lg="scopeIsBasket ? 12 : 10">
         <v-card class="pa-2">
           <v-card-text>
             <v-row wrap no-gutters>
@@ -42,15 +42,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col v-if="scopeIsBasket" lg="2">
-        <v-card class="pa-2">
-          <v-card-text>
-            <v-row wrap>
-              <v-card-text>Contains artifacts</v-card-text>
-            </v-row>
-          </v-card-text>
-        </v-card>
-      </v-col>
+      
       <v-col v-if="!scopeIsBasket" lg="2">
         <v-card class="pa-2">
           <v-card-text>
@@ -118,8 +110,9 @@ export default {
         : "Right";
     },
     scopeIsBasket() {
-      return this.item.flags.scopeIsBasket;
+      return this.item.hasOwnProperty('flags') ? this.item.flags.scopeIsBasket : false;
     },
+  
     measurements() {
       if (this.item === null) {
         return [];

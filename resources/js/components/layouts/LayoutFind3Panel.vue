@@ -14,7 +14,7 @@
 <script>
 import Layout2Columns from "./Layout2Columns";
 import ItemCard from "./ItemCard";
-import FindForm from "../finds/findForm";
+import FindForm from "../finds/FindForm";
 import TagsForm from "../tags/TagsForm";
 export default {
   components: {

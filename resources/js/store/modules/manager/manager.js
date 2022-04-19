@@ -180,7 +180,7 @@ export default {
         },
 
         item(state) {
-            return state.item;
+            return  state.item;
         },
 
         welcomeData(state) {
@@ -485,6 +485,12 @@ export default {
                         case "Fauna":
                         case "Tbd":
                             commit('fnd/item', res.data.find, { root: true });
+
+                            commit('collections', {
+                                name: "related",
+                                collection: res.data.related.map(x => { return { dot: x, tag: dotToTag({ module: state.routes.to.module, dot: x }) } })
+                            });
+
                             dispatch('aux/itemTags', res.data.tags, { root: true });
                     }
 

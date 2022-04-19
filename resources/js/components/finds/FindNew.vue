@@ -84,7 +84,7 @@
           ></v-checkbox>
         </v-col>
 
-        <v-col v-if="isBasket" xs12 sm1>
+        <v-col v-if="scopeIsBasket" xs12 sm1>
           <v-text-field
             v-model="artifact_count"
             name="artifact_count"
@@ -181,8 +181,8 @@ export default {
       return this.$store.getters["fnd/newItem"];
     },
 
-    isBasket() {
-      return this.$store.getters["fnd/scale"] === "Basket";
+    scopeIsBasket() {
+      return this.find.scopeIsBasket;
     },
 
     related_pottery_basket: {
