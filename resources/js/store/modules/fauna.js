@@ -4,23 +4,21 @@ export default {
     state: {
         newItem: {
             id: null,
-            description: null,
-            taxon: null,
-            element: null,
-            symmetry: null,
-            d_and_r: null,
-            age: null,
-            breakage: null,
-            $table: false,
-            butchery_desc: null,
-            burning: false,
-            burning_desc: null,
-            weathering: null,
-            other_bsm: null,
-            notes: null,
             taxon_L1_id: 1,
             element_L1_id: 1,
-            measured: false,
+            description: null,
+            notes: null,
+            d_and_r: null,
+            breakage: null,
+            age: null,
+            weathering: null,
+
+            has_butchery_evidence: null,
+            has_burning_evidence: false,
+            has_other_bsm_evidence: null,
+            is_fused: null,
+            is_left: null,
+
             GL: null,
             Glpe: null,
             GLl: null,
@@ -65,14 +63,17 @@ export default {
         id(state, payload) {
             state.newItem.id = payload;
         },
+        taxon_L1_id(state, payload) {
+            state.newItem.taxon_L1_id = payload;
+        },
+        element_L1_id(state, payload) {
+            state.newItem.element_L1_id = payload;
+        },
         description(state, payload) {
             state.newItem.description = payload;
         },
-        taxon(state, payload) {
-            state.newItem.taxon = payload;
-        },
-        element(state, payload) {
-            state.newItem.element = payload;
+        notes(state, payload) {
+            state.newItem.notes = payload;
         },
         symmetry(state, payload) {
             state.newItem.symmetry = payload;
@@ -80,47 +81,40 @@ export default {
         d_and_r(state, payload) {
             state.newItem.d_and_r = payload;
         },
-        age(state, payload) {
-            state.newItem.age = payload;
-        },
         breakage(state, payload) {
             state.newItem.breakage = payload;
         },
-        butchery(state, payload) {
-            state.newItem.butchery = payload;
-        },
-        butchery_desc(state, payload) {
-            state.newItem.butchery_desc = payload;
-        },
-        burning(state, payload) {
-            state.newItem.burning = payload;
-        },
-        burning_desc(state, payload) {
-            state.newItem.burning_desc = payload;
+        age(state, payload) {
+            state.newItem.age = payload;
         },
         weathering(state, payload) {
             state.newItem.weathering = payload;
         },
-        other_bsm(state, payload) {
-            state.newItem.other_bsm = payload;
+
+        has_butchery_evidence(state, payload) {
+            state.newItem.has_butchery_evidence = payload;
         },
-        notes(state, payload) {
-            state.newItem.notes = payload;
+        has_burning_evidence(state, payload) {
+            state.newItem.has_burning_evidence = payload;
         },
-        taxon_L1_id(state, payload) {
-            state.newItem.taxon_L1_id = payload;
+        has_other_bsm_evidence(state, payload) {
+            state.newItem.has_other_bsm_evidence = payload;
         },
-        element_L1_id(state, payload) {
-            state.newItem.element_L1_id = payload;
+        is_fused(state, payload) {
+            state.newItem.is_fused = payload;
         },
+        is_left(state, payload) {
+            state.newItem.is_left = payload;
+        },
+
         measured(state, payload) {
             state.newItem.measured = payload;
         },
         GL(state, payload) {
             state.newItem.GL = payload;
         },
-        GLpe(state, payload) {
-            state.newItem.GLpe = payload;
+        Glpe(state, payload) {
+            state.newItem.Glpe = payload;
         },
         GLl(state, payload) {
             state.newItem.GLl = payload;
@@ -215,26 +209,23 @@ export default {
         prepare({ state, getters, rootGetters, commit, dispatch }, payload) {
             let toCopy = payload;
             let item = rootGetters["mgr/item"];
-            commit("id", toCopy ? item.id : null);
-            commit("description", toCopy ? item.description : null);
-            commit("taxon", toCopy ? item.taxon : null);
-            commit("element", toCopy ? item.element : null);
-            commit("symmetry", toCopy ? item.symmetry : null);
-            commit("d_and_r", toCopy ? item.d_and_r : null);
-            commit("age", toCopy ? item.age : null);
-            commit("breakage", toCopy ? item.breakage : null);
-            commit("butchery", toCopy ? item.butchery : false);
-            commit("butchery_desc", toCopy ? item.burning_desc : null);
-            commit("burning", toCopy ? item.burning : false);
-            commit("burning_desc", toCopy ? item.burning_desc : null);
-            commit("weathering", toCopy ? item.weathering : null);
-            commit("other_bsm", toCopy ? item.other_bsm : null);
-            commit("notes", toCopy ? item.notes : null);
+            commit("id", toCopy ? item.id : null);        
             commit("taxon_L1_id", toCopy ? item.taxon_L1_id : 1);
             commit("element_L1_id", toCopy ? item.element_L1_id : 1);
-            commit("measured", toCopy ? item.measured : false);
+            commit("description", toCopy ? item.description : null);
+            commit("notes", toCopy ? item.notes : null);        
+            commit("d_and_r", toCopy ? item.d_and_r : null);
+            commit("breakage", toCopy ? item.breakage : null);
+            commit("age", toCopy ? item.age : null);
+            commit("weathering", toCopy ? item.weathering : null);
+            commit("has_butchery_evidence", toCopy ? item.has_butchery_evidence : false);
+            commit("has_burning_evidence", toCopy ? item.has_burning_evidence : null);
+            commit("has_other_bsm_evidence", toCopy ? item.has_other_bsm_evidence : false);
+            commit("is_left", toCopy ? item.is_left : null);     
+            commit("is_fused", toCopy ? item.is_fused : null);
+           
             commit("GL", toCopy ? item.GL : null);
-            commit("GLpe", toCopy ? item.GLpe : null);
+            commit("Glpe", toCopy ? item.Glpe : null);
             commit("GLl", toCopy ? item.GLl : null);
             commit("GLP", toCopy ? item.GLP : null);
             commit("Bd", toCopy ? item.Bd : null);

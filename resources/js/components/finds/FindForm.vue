@@ -129,9 +129,7 @@ export default {
     },
 
     scopeIsBasket() {
-      return this.find.hasOwnProperty("flags")
-        ? this.item.flags.scopeIsBasket
-        : false;
+      return this.$store.getters["fnd/scopeIs"]("Basket");
     },
 
     artifacts() {

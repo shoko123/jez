@@ -29,9 +29,9 @@ class CreateFaunaTables extends Migration
             $table->string('notes', 200)->nullable();
             $table->unsignedTinyInteger('taxon_L1_id')->dafault(1);
             $table->unsignedTinyInteger('element_L1_id')->dafault(1);
-            $table->boolean('has_butchery_evidence')->default(false);
-            $table->boolean('has_burning_evidence')->default(false);
-            $table->boolean('has_other_bsm_evidence')->default(false);
+            $table->boolean('has_butchery_evidence')->nullable();
+            $table->boolean('has_burning_evidence')->nullable();
+            $table->boolean('has_other_bsm_evidence')->nullable();
             $table->boolean('is_fused')->nullable();
             $table->boolean('is_left')->nullable();
             $table->string('d_and_r', 50)->nullable();

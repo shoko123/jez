@@ -4,128 +4,269 @@
       <v-row class="mb-1">
         <StepButtons v-on:nextClicked="nextClicked"></StepButtons>
       </v-row>
-      <v-row wrap no-gutters>
-        <v-col xs12 sm4>
-          <v-textarea
-            label="Taxon"
-            v-model="taxon"
-            :error-messages="taxonErrors"
-            @input="$v.taxon.$touch()"
-            @blur="$v.taxon.$touch()"
-            filled
-            class="mr-1"
-          ></v-textarea>
-        </v-col>
+      <v-row>
+        <v-col lg="scopeIsBasket ? 12 : 10">
+          <v-container fluid>
+            <v-row>
+              <v-col xs12 sm6 lg6>
+                <v-textarea
+                  label="Description"
+                  v-model="description"
+                  :error-messages="descriptionErrors"
+                  @input="$v.description.$touch()"
+                  @blur="$v.description.$touch()"
+                  filled
+                  class="mr-1"
+                ></v-textarea>
+              </v-col>
 
-        <v-col xs12 sm4>
-          <v-textarea
-            label="Element"
-            v-model="element"
-            :error-messages="elementErrors"
-            @input="$v.element.$touch()"
-            @blur="$v.element.$touch()"
-            filled
-            class="mr-1"
-          ></v-textarea>
-        </v-col>
-        <v-col xs12 sm4>
-          <v-textarea
-            label="Notes"
-            v-model="notes"
-            :error-messages="notesErrors"
-            @input="$v.notes.$touch()"
-            @blur="$v.notes.$touch()"
-            filled
-            class="mr-1"
-          ></v-textarea>
-        </v-col>
-      </v-row>
+              <v-col xs12 sm6 lg6>
+                <v-textarea
+                  label="Notes"
+                  v-model="notes"
+                  :error-messages="notesErrors"
+                  @input="$v.notes.$touch()"
+                  @blur="$v.notes.$touch()"
+                  filled
+                  class="mr-1"
+                ></v-textarea>
+              </v-col>
+            </v-row>
+            <v-row v-if="scopeIsArtifact" wrap no-gutters>
+              <v-text-field
+                label="GL"
+                v-model="newItem.GL"
+                :error-messages="GLErrors"
+                @input="$v.GL.$touch()"
+                @blur="$v.GL.$touch()"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="Glpe"
+                v-model="newItem.Glpe"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="GLl"
+                v-model="newItem.GLl"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="GLP"
+                v-model="newItem.GLP"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="Bd"
+                v-model="newItem.Bd"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="BT"
+                v-model="newItem.BT"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="Dd"
+                v-model="newItem.Dd"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="DFd"
+                v-model="newItem.DFd"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="Bp"
+                v-model="newItem.Bp"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="Dp"
+                v-model="newItem.Dp"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="SD"
+                v-model="newItem.SD"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="HTC"
+                v-model="newItem.HTC"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="Dl"
+                v-model="newItem.Dl"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="DEM"
+                v-model="newItem.DEM"
+                class="mr-1"
+                filled
+              ></v-text-field>
 
-      <v-row wrap no-gutters>
-        <v-text-field
-          label="GL"
-          v-model="newItem.GL"
-          class="mr-1"
-          filled
-        ></v-text-field>
-        <v-text-field
-          label="Glpe"
-          v-model="newItem.Glpe"
-          class="mr-1"
-          filled
-        ></v-text-field>
-        <v-text-field
-          label="GLl"
-          v-model="newItem.GLl"
-          class="mr-1"
-          filled
-        ></v-text-field>
-        <v-text-field
-          label="GLP"
-          v-model="newItem.GLP"
-          class="mr-1"
-          filled
-        ></v-text-field>
-        <v-text-field
-          label="Bd"
-          v-model="newItem.Bd"
-          class="mr-1"
-          filled
-        ></v-text-field>
-        <v-text-field
-          label="BT"
-          v-model="newItem.BT"
-          class="mr-1"
-          filled
-        ></v-text-field>
-        <v-text-field
-          label="Dd"
-          v-model="newItem.Dd"
-          class="mr-1"
-          filled
-        ></v-text-field>
-        <v-text-field
-          label="DFd"
-          v-model="newItem.DFd"
-          class="mr-1"
-          filled
-        ></v-text-field>
-        <v-text-field
-          label="Bp"
-          v-model="newItem.Bp"
-          class="mr-1"
-          filled
-        ></v-text-field>
-        <v-text-field
-          label="Dp"
-          v-model="newItem.Dp"
-          class="mr-1"
-          filled
-        ></v-text-field>
-        <v-text-field
-          label="SD"
-          v-model="newItem.SD"
-          class="mr-1"
-          filled
-        ></v-text-field>
-        <v-text-field
-          label="HTC"
-          v-model="newItem.HTC"
-          class="mr-1"
-          filled
-        ></v-text-field>
-        <v-text-field
-          label="Dl"
-          v-model="newItem.Dl"
-          class="mr-1"
-          filled
-        ></v-text-field>
-        <v-text-field
-          label="DEM"
-          v-model="newItem.DEM"
-          class="mr-1"
-          filled
-        ></v-text-field>
+              <v-text-field
+                label="DVM"
+                v-model="newItem.DVM"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="WCM"
+                v-model="newItem.WCM"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="DEL"
+                v-model="newItem.DEL"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="DVL"
+                v-model="newItem.DVL"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="WCL"
+                v-model="newItem.WCL"
+                class="mr-1"
+                filled
+              ></v-text-field>
+
+              <v-text-field
+                label="LD"
+                v-model="newItem.LD"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="DLS"
+                v-model="newItem.DLS"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="LG"
+                v-model="newItem.LG"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="BG"
+                v-model="newItem.BG"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="DID"
+                v-model="newItem.DID"
+                class="mr-1"
+                filled
+              ></v-text-field>
+
+              <v-text-field
+                label="BFcr"
+                v-model="newItem.BFcr"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="GD"
+                v-model="newItem.GD"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="GB"
+                v-model="newItem.GB"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="BF"
+                v-model="newItem.BF"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="LF"
+                v-model="newItem.LF"
+                class="mr-1"
+                filled
+              ></v-text-field>
+
+              <v-text-field
+                label="GLm"
+                v-model="newItem.GLm"
+                class="mr-1"
+                filled
+              ></v-text-field>
+              <v-text-field
+                label="GH"
+                v-model="newItem.GH"
+                class="mr-1"
+                filled
+              ></v-text-field>
+            </v-row>
+          </v-container>
+        </v-col>
+        <v-col v-if="!scopeIsBasket" lg="2">
+          <v-row wrap>
+            <v-select
+              label="Symmetry"
+              :items="symmetryItems"
+              item-text="text"
+              item-value="val"
+              v-model="symmetry"
+            ></v-select>
+
+            <v-text-field
+              label="D and R"
+              v-model="newItem.d_and_r"
+              dense
+              filled
+            ></v-text-field>
+            <v-text-field
+              label="Breakage"
+              v-model="newItem.breakage"
+              dense
+              filled
+            ></v-text-field>
+
+            <v-text-field
+              label="Age"
+              v-model="newItem.age"
+              dense
+              filled
+            ></v-text-field>
+
+            <v-text-field
+              label="Weathering"
+              v-model="newItem.weathering"
+              dense
+              filled
+            ></v-text-field>
+          </v-row>
+        </v-col>
       </v-row>
     </v-container>
   </form>
@@ -140,15 +281,26 @@ export default {
   components: { StepButtons },
 
   validations: {
-    taxon: {
+    description: {
       maxLength: maxLength(400),
-    },
-    element: {
-      maxLength: maxLength(200),
     },
     notes: {
       maxLength: maxLength(200),
     },
+
+    d_and_r: {
+      maxLength: maxLength(100),
+    },
+    breakage: {
+      maxLength: maxLength(100),
+    },
+    age: {
+      maxLength: maxLength(20),
+    },
+    weathering: {
+      maxLength: maxLength(100),
+    },
+
     GL: {
       between: between(0, 99),
     },
@@ -168,50 +320,42 @@ export default {
       between: between(0, 99),
     },
   },
-  data: () => ({}),
+  data: () => ({
+    symmetryItems: [
+      { val: 0, text: "Unassigned" },
+      { val: 1, text: "Left" },
+      { val: 2, text: "Right" },
+    ],
+  }),
 
   computed: {
     newItem() {
       return this.$store.getters["fauna/newItem"];
     },
+    scopeIsBasket() {
+      return this.$store.getters["fnd/scopeIs"]("Basket");
+    },
+    scopeIsArtifact() {
+      return this.$store.getters["fnd/scopeIs"]("Artifact");
+    },
 
-    taxon: {
+    description: {
       get() {
-        return this.newItem.taxon;
+        return this.newItem.description;
       },
       set(data) {
-        this.$store.commit("fauna/taxon", data);
+        this.$store.commit("fauna/description", data);
         this.handleNextButton();
       },
     },
 
-    taxonErrors() {
+    descriptionErrors() {
       const errors = [];
-      if (!this.$v.taxon.$dirty) {
+      if (!this.$v.description.$dirty) {
         return errors;
       }
-      !this.$v.taxon.maxLength &&
-        errors.push("Taxon exceeds length of 400 characters");
-      return errors;
-    },
-
-    element: {
-      get() {
-        return this.newItem.element;
-      },
-      set(data) {
-        this.$store.commit("fauna/element", data);
-        this.handleNextButton();
-      },
-    },
-
-    elementErrors() {
-      const errors = [];
-      if (!this.$v.element.$dirty) {
-        return errors;
-      }
-      !this.$v.element.maxLength &&
-        errors.push("element exceeds max length of 200 characters");
+      !this.$v.description.maxLength &&
+        errors.push("description exceeds length of 400 characters");
       return errors;
     },
 
@@ -232,6 +376,104 @@ export default {
       }
       !this.$v.notes.maxLength &&
         errors.push("Notes exceeds max length of 200 characters");
+      return errors;
+    },
+
+    symmetry: {
+      get() {
+        if (this.newItem.is_left === null) {
+          return 0;
+        } else {
+          return this.newItem.is_left ? 1 : 2;
+        }
+      },
+      set(data) {
+        console.log(`symmetry.set (${data})`);
+        let val = null;
+        if(data > 0) {
+          val = (data === 1) ? 1 : 0;
+        }
+
+        this.$store.commit("fauna/is_left", val);
+        this.handleNextButton();
+      },
+    },
+
+    d_and_r: {
+      get() {
+        return this.newItem.d_and_r;
+      },
+      set(data) {
+        this.$store.commit("fauna/d_and_r", data);
+        this.handleNextButton();
+      },
+    },
+
+    d_and_rErrors() {
+      const errors = [];
+      if (!this.$v.d_and_r.$dirty) {
+        return errors;
+      }
+      !this.$v.d_and_r.maxLength &&
+        errors.push("d_and_r exceeds max length of 200 characters");
+      return errors;
+    },
+    breakage: {
+      get() {
+        return this.newItem.breakage;
+      },
+      set(data) {
+        this.$store.commit("fauna/breakage", data);
+        this.handleNextButton();
+      },
+    },
+
+    breakageErrors() {
+      const errors = [];
+      if (!this.$v.breakage.$dirty) {
+        return errors;
+      }
+      !this.$v.breakage.maxLength &&
+        errors.push("breakage exceeds max length of 200 characters");
+      return errors;
+    },
+
+    age: {
+      get() {
+        return this.newItem.age;
+      },
+      set(data) {
+        this.$store.commit("fauna/age", data);
+        this.handleNextButton();
+      },
+    },
+
+    ageErrors() {
+      const errors = [];
+      if (!this.$v.age.$dirty) {
+        return errors;
+      }
+      !this.$v.age.maxLength &&
+        errors.push("age exceeds max length of 200 characters");
+      return errors;
+    },
+
+    weathering: {
+      get() {
+        return this.newItem.weathering;
+      },
+      set(data) {
+        this.$store.commit("fauna/weathering", data);
+        this.handleNextButton();
+      },
+    },
+    weatheringErrors() {
+      const errors = [];
+      if (!this.$v.weathering.$dirty) {
+        return errors;
+      }
+      !this.$v.weathering.maxLength &&
+        errors.push("weathering exceeds max length of 200 characters");
       return errors;
     },
 

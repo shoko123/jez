@@ -16,7 +16,8 @@ class Fauna extends BaseDigModel
     use HasTags;
     protected $table = 'fauna';
     public $timestamps = false;
-
+    protected $guarded = [];
+    
     public function __construct()
     {
         parent::__construct("Fauna");

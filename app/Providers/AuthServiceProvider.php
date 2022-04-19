@@ -19,6 +19,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Dig\Stone' => 'App\Policies\StonePolicy',
         'App\Models\Dig\Metal' => 'App\Policies\MetalPolicy',
         'App\Models\Dig\Glass' => 'App\Policies\GlassPolicy',
+        'App\Models\Dig\Fauna' => 'App\Policies\FaunaPolicy',
     ];
 
     /**

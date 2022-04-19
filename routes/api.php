@@ -117,8 +117,12 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
     Route::delete('glass/{id}', [GlassController::class, 'destroy']);
 
     //metals
-
     Route::post('metals/store', [MetalController::class, 'store']);
     Route::put('metals/store', [MetalController::class, 'store']);
     Route::delete('metals/{id}', [MetalController::class, 'destroy']);
+
+     //fauna
+     Route::post('fauna/store', [FaunaController::class, 'store']);
+     Route::put('fauna/store', [FaunaController::class, 'store']);
+     Route::delete('fauna/{id}', [FaunaController::class, 'destroy']);
 });

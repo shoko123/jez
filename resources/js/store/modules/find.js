@@ -39,6 +39,21 @@ export default {
             let source = rootGetters["mgr/status"].isCreate ? state.newItem : state.find;
             return (source.artifact_no === 0)
         },
+        scopeIs: (state, rootState, getters, rootGetters) => (scope) => {
+            if (!rootGetters["mgr/status"].isFind ||
+                (
+                    !rootGetters["mgr/status"].isShow &&
+                    !rootGetters["mgr/status"].isUpdate &&
+                    !rootGetters["mgr/status"].isCreate &&
+                    !rootGetters["mgr/status"].isTags) ||
+                !(scope === "Basket" || scope === "Artifact")
+            ) { return false; }
+            let source = (rootGetters["mgr/status"].isCreate || rootGetters["mgr/status"].isUpdate) ? state.newItem : state.find;
+
+
+            return ((scope === "Basket" && source.artifact_no === 0) ||
+                (scope === "Artifact" && source.artifact_no !== 0))
+        },
 
         showRelatedEntries(state, getters, rootState, rootGetters) {
             return (rootGetters["mgr/status"].module === "Pottery" ||
