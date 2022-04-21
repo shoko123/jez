@@ -9,16 +9,16 @@ use App\Models\tags\FaunaTagType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use App\JezStatic\ModuleGroupOrder;
+
 class ModuleInitializerController extends Controller
 {
     private static $groups = [];
-    private static $tagLookupGroups = [];
     private static $moduleName;
     private static $fullModuleName;
     private static $moduleHasTaggingSystem;
     private static $moduleUsesPeriods;
     private static $isFind;
-
 
     public function index(Request $request)
     {
@@ -53,20 +53,8 @@ class ModuleInitializerController extends Controller
             if (self::$moduleUsesPeriods) {
                 self::addPeriods();
             }
-            self::addLookups();
-            self::addTags();
-
-            foreach (self::$groups as $key => $row) {
-                $category_order[$key] = $row['category_order'];
-                $group_order[$key] = $row['group_order'];
-            }
-
-            array_multisort($category_order, SORT_ASC, $group_order, SORT_ASC, self::$groups);
-
-            //get rid of order columns
-            foreach (self::$groups as $index => &$group) {
-                unset($group["category_order"]);
-                unset($group["group_order"]);
+            if (self::$isFind) {
+                self::addModuleGroups(self::$moduleName);
             }
         }
 
@@ -74,6 +62,8 @@ class ModuleInitializerController extends Controller
         $counts = [];
         $firstDot = null;
         $firstRecord = null;
+
+       
 
         if (self::$moduleName !== 'About') {
             $counts['items'] = self::$fullModuleName::count();
@@ -114,7 +104,6 @@ class ModuleInitializerController extends Controller
             }
         }
 
-        //$mapsBaseUrl = \Storage::disk('app-media')->url($fullMediaName);
         return response()->json([
             "groups" => self::$groups,
             "welcomeData" => [
@@ -126,15 +115,102 @@ class ModuleInitializerController extends Controller
         ], 200);
     }
 
+    private static function addModuleGroups()
+    {
+        $order = ModuleGroupOrder::getOrder(self::$moduleName);
+        foreach ($order as $index => $group) {
+            switch ($group[2]) {
+                case "Lookup":
+                    self::addLookupGroup($group);
+                    break;
+                case "Tag-Global":
+                    self::addTagGlobalGroup($group);
+                    break;
+                case "Tag-Module":
+                    self::addTagModuleGroup($group);
+                    break;
+            }
+        }
+    }
+
+    private static function addLookupGroup($group)
+    {
+        $params =  DB::table($group[3])->get();
+
+        array_push(self::$groups, [
+            "category" => $group[0],
+            "display_name" => $group[1],
+            "group_type" => "Lookup",
+            "table_name" => $group[3],
+            "column_name" => $group[4],
+            'params' => $params
+        ]);
+    }
+
+    private static function addTagGlobalGroup($group)
+    {
+        $tagType = TagType::where('str_id', $group[3])
+            ->with(['tags' => function ($q) {
+                $q->select('id', 'name', 'type');
+            }])
+            ->select('str_id', 'category', 'display_name', 'multiple', 'dependency')
+            ->first();
+
+        $params = [];
+        foreach ($tagType->tags as $index => $tag) {
+            array_push($params, ['id' => $tag->id, 'name' => $tag->name]);
+        }
+
+        array_push(self::$groups, [
+            "category" => $group[0],
+            "display_name" => $group[1],
+            "group_type" => "Tag",
+            "str_id" => $group[3],
+            "multiple" => $tagType->multiple,
+            "dependency" => is_null($tagType->dependency) ? null : json_decode($tagType->dependency),
+            'params' => $params
+        ]);
+    }
+
+    private static function addTagModuleGroup($group)
+    {
+        $modelName = "App\\Models\\tags\\" . self::$moduleName . "TagType";
+        $model = new $modelName;
+
+
+
+        $tagType = $model->with(['tags' => function ($q) {
+            $q->select('id', 'name', 'type_id');
+        }])
+            ->select('id', 'name AS str_id', 'category', 'display_name', 'multiple', 'dependency')
+            ->where('name', $group[3])
+            ->first();
+
+        $params = [];
+        foreach ($tagType->tags as $index => $tag) {
+            array_push($params, ['id' => $tag->id, 'name' => $tag->name]);
+        }
+
+        array_push(self::$groups, [
+            "category" => $group[0],
+            "display_name" => $group[1],
+            "group_type" => "Tag",
+            "str_id" => $group[3],
+            "multiple" => $tagType->multiple,
+            "dependency" => is_null($tagType->dependency) ? null : json_decode($tagType->dependency),
+            'params' => $params
+        ]);
+    }
+
     private static function addRegistration()
     {
         array_push(self::$groups, [
             "category" => "Registration",
+            "display_name" => "Seasons",
             "category_order" => 1,
             "group_type" => "Registration",
             "group_order" => 1,
             "name" => "Seasons",
-            "display_name" => "Seasons",
             "params" => [
                 ["id" => 1001, "name" => "2012"],
                 ["id" => 1002, "name" => "2013"],
@@ -148,11 +224,11 @@ class ModuleInitializerController extends Controller
 
         array_push(self::$groups, [
             "category" => "Registration",
+            "display_name" => "Areas",
             "category_order" => 1,
             "group_type" => "Registration",
             "group_order" => 2,
             "name" => "Areas",
-            "display_name" => "Areas",
             "params" => [
                 ["id" => 1101, "name" => "K"],
                 ["id" => 1102, "name" => "L"],
@@ -166,11 +242,11 @@ class ModuleInitializerController extends Controller
 
         array_push(self::$groups, [
             "category" => "Registration",
+            "display_name" => "Media",
             "category_order" => 1,
             "group_type" => "Registration",
             "group_order" => 3,
             "name" => "Media",
-            "display_name" => "Media",
             "params" => [
                 ["id" => 1201, "name" => "Photo"],
                 ["id" => 1202, "name" => "Drawing"],
@@ -179,15 +255,14 @@ class ModuleInitializerController extends Controller
             ]
         ]);
 
-
         if (self::$isFind) {
             array_push(self::$groups, [
                 "category" => "Registration",
+                "display_name" => "Registration Categories",
                 "category_order" => 1,
                 "group_type" => "Registration",
                 "group_order" => 4,
                 "name" => "registration_categories",
-                "display_name" => "Registration Categories",
                 "params" => [
                     ["id" => 1, "name" => "PT"],
                     ["id" => 2, "name" => "GS"],
@@ -196,45 +271,36 @@ class ModuleInitializerController extends Controller
                     ["id" => 5, "name" => "AR"],
                 ]
             ]);
+
+         
         }
         if (self::$moduleName === "Pottery" || self::$moduleName === "Fauna") {
             array_push(self::$groups, [
                 "category" => "Registration",
+                "display_name" => "Scopes",
                 "category_order" => 1,
                 "group_type" => "Registration",
                 "group_order" => 5,
                 "name" => "scopes",
-                "display_name" => "Scopes",
                 "params" => [
                     ["id" => "basket", "name" => "Basket"],
                     ["id" => "artifact", "name" => "Artifact"],
                 ]
-            ]);
+            ]);   
         }
     }
 
     private static function addPeriods()
     {
-        switch (self::$moduleName) {
-            case "Pottery":
-            case "Stone":
-            case "Lithic":
-            case "Glass":
-            case "Metal":
-                break;
-            default:
-                return;
-        }
-
         $tagTypes = TagType::where('category', 'Period')
             ->with(['tags' => function ($q) {
                 $q->select('id', 'name', 'type');
             }])
-            ->get(['str_id', 'subject', 'category', 'category_order', 'group_order', 'display_name', 'multiple', 'dependency']);
+            ->select('str_id', 'subject', 'category', 'category_order', 'group_order', 'display_name', 'multiple', 'dependency')
+            ->orderBy('category_order')
+            ->orderBy('group_order')
+            ->get();
 
-        //format tags to fit $typesAndParams structure.
-
-        $periodGroup = ["group_type" => "Tag"];
         foreach ($tagTypes as $index => $tagType) {
             $params = [];
             foreach ($tagType->tags as $index => $tag) {
@@ -242,210 +308,15 @@ class ModuleInitializerController extends Controller
             }
 
             $periodGroup["category"] = $tagType->category;
-            //$periodGroup["group_type"] = "Tag";
+            $periodGroup["display_name"] = $tagType->display_name;
+            $periodGroup["group_type"] = "Tag";
             $periodGroup["str_id"] = $tagType->str_id;
             $periodGroup["category_order"] = $tagType->category_order;
             $periodGroup["group_order"] = $tagType->group_order;
-            $periodGroup["display_name"] = $tagType->display_name;
             $periodGroup["multiple"] = $tagType->multiple;
             $periodGroup["dependency"] = is_null($tagType->dependency) ? null : json_decode($tagType->dependency);
             $periodGroup["params"] = $params;
             array_push(self::$groups, $periodGroup);
-        }
-    }
-
-    private static function addLookups()
-    {
-        //change here if going to tag the Locus Module.
-        if (!self::$isFind) {
-            return;
-        }
-
-        $lookups = [];
-        $order = [];
-        switch (self::$moduleName) {
-            case "Stone":
-                $order = [3, 1];
-                array_push($lookups, [
-                    "category" => "Basic Characteristics",
-                    "table_name" => "stone_materials",
-                    "column_name" => "material_id",
-                    "display_name" => "Material",
-                    "category_order" => 3,
-                    "group_order" => 2
-                ]);
-
-                array_push($lookups, [
-                    "category" => "Basic Characteristics",
-                    "table_name" => "stone_base_types",
-                    "column_name" => "base_type_id",
-                    "display_name" => "Base Typology",
-                    "category_order" => 5,
-                    "group_order" => 1
-                ]);
-                break;
-
-            case "Lithic":
-                $order = [3, 1];
-                array_push($lookups, [
-                    "category" => "Basic Characteristics",
-                    "table_name" => "lithic_base_types",
-                    "column_name" => "base_type_id",
-                    "display_name" => "Base Typology",
-                    "category_order" => 3,
-                    "group_order" => 2
-                ]);
-                break;
-
-            case "Glass":
-                $order = [3, 1];
-                array_push($lookups, [
-                    "category" => "Basic Characteristics",
-                    "table_name" => "glass_base_types",
-                    "column_name" => "base_type_id",
-                    "display_name" => "Base Typology",
-                    "category_order" => 4,
-                    "group_order" => 1
-                ]);
-                break;
-
-            case "Metal":
-                $order = [3, 1];
-                array_push($lookups, [
-                    "category" => "Basic Characteristics",
-                    "table_name" => "metal_materials",
-                    "column_name" => "material_id",
-                    "display_name" => "Material",
-                    "category_order" => 3,
-                    "group_order" => 2
-                ]);
-
-                array_push($lookups, [
-                    "category" => "Basic Characteristics",
-                    "table_name" => "metal_base_types",
-                    "column_name" => "base_type_id",
-                    "display_name" => "Base Typology",
-                    "category_order" => 3,
-                    "group_order" => 2
-                ]);
-                break;
-
-            case "Pottery":
-                $order = [5, 1];
-                array_push($lookups, [
-                    "category" => "Typology",
-                    "table_name" => "pottery_base_types",
-                    "column_name" => "base_type_id",
-                    "display_name" => "Base Partition",
-                    "category_order" => 11,
-                    "group_order" => 1
-                ]);
-                break;
-
-            case "Fauna":
-                $order = [2, 1];
-
-                array_push($lookups, [
-                    "category" => "Taxon",
-                    "table_name" => "fauna_taxon_L1",
-                    "column_name" => "taxon_L1_id",
-                    "display_name" => "Base Taxon",
-                    "category_order" => 3,
-                    "group_order" => 1
-                ]);
-                array_push($lookups, [
-                    "category" => "Element",
-                    "table_name" => "fauna_elements_L1",
-                    "column_name" => "element_L1_id",
-                    "display_name" => "Element",
-                    "category_order" => 4,
-                    "group_order" => 1
-                ]);
-
-                break;
-        }
-
-        //add preservation (common to all finds)
-        array_push($lookups, [
-            "category" => "Basic Characteristics",
-            "table_name" => "preservations",
-            "column_name" => "preservation_id",
-            "display_name" => "Preservation",
-            "category_order" => $order[0],
-            "group_order" => $order[1]
-        ]);
-
-        //access DB and format
-        foreach ($lookups as $index => $lookup) {
-            $params = DB::table($lookup["table_name"])->get();
-
-            array_push(self::$groups, [
-                "category" => $lookup["category"],
-                "group_type" => "Lookup",
-                "category_order" => $lookup["category_order"],
-                "group_order" => $lookup["group_order"],
-                "column_name" => $lookup["column_name"],
-                "display_name" => $lookup["display_name"],
-                'params' => $params
-            ]);
-        }
-    }
-    private static function addTags()
-    {
-
-        if (self::$moduleName === 'Fauna') {
-            //not About, Area, Season
-            $tagTypes = FaunaTagType::with(['tags' => function ($q) {
-                $q->select('id', 'name', 'type_id');
-            }])
-                ->get(['id', 'name AS str_id', 'category', 'category_order', 'group_order','display_name', 'multiple', 'dependency']);
-
-            //format tags to fit $typesAndParams structure.
-            $tagGroup = [];
-            foreach ($tagTypes as $index => $tagType) {
-                $params = [];
-                foreach ($tagType->tags as $index => $tag) {
-                    array_push($params, ['id' => $tag->id, 'name' => $tag->name]);
-                }
-                $tagGroup["category"] = $tagType->category;
-                $tagGroup["group_type"] = "Tag";
-                $tagGroup["str_id"] = $tagType->str_id;
-                $tagGroup["category_order"] = $tagType->category_order;
-                $tagGroup["group_order"] = $index;
-                $tagGroup["display_name"] = $tagType->display_name;
-                $tagGroup["multiple"] = $tagType->multiple;
-                $tagGroup["dependency"] = is_null($tagType->dependency) ? null : json_decode($tagType->dependency);
-                $tagGroup["params"] = $tagType->tags;
-                array_push(self::$groups, $tagGroup);
-            }
-            return;
-        }
-
-        //not About, Area, Season
-        $tagTypes = TagType::where('subject', self::$moduleName)
-            ->with(['tags' => function ($q) {
-                $q->select('id', 'name', 'type');
-            }])
-            ->get(['category', 'str_id', 'category_order', 'group_order', 'display_name', 'multiple', 'dependency']);
-
-        //format tags to fit $typesAndParams structure.
-        $tagGroup = [];
-        foreach ($tagTypes as $index => $tagType) {
-            $params = [];
-            foreach ($tagType->tags as $index => $tag) {
-                array_push($params, ['id' => $tag->id, 'name' => $tag->name]);
-            }
-            $tagGroup["category"] = $tagType->category;
-            $tagGroup["group_type"] = "Tag";
-            $tagGroup["str_id"] = $tagType->str_id;
-            $tagGroup["category_order"] = $tagType->category_order;
-            $tagGroup["group_order"] = $tagType->group_order;
-            $tagGroup["display_name"] = $tagType->display_name;
-            $tagGroup["multiple"] = $tagType->multiple;
-            $tagGroup["dependency"] = is_null($tagType->dependency) ? null : json_decode($tagType->dependency);
-            $tagGroup["params"] = $params;
-
-            array_push(self::$groups, $tagGroup);
         }
     }
 }

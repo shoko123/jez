@@ -43,6 +43,8 @@ Route::post('get-id', [TestController::class, 'getId']);
 Route::post('module-initializer', [ModuleInitializerController::class, 'index']);
 Route::get('accessibility', [GlobalSettingsController::class, 'accessibility']);
 
+
+//authorized users (depending on config/accessibility settings)
 Route::group(['middleware' => 'authorizedUsersOnly'], function ($router) {
   
     Route::post('dig/show', [BaseDigModuleController::class, 'show']);
