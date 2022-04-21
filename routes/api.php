@@ -79,7 +79,8 @@ Route::group(['middleware' => 'jwt.auth'], function ($router) {
 
     //tags
     Route::post('tags/sync', [TagController::class, 'sync']);
-
+    Route::post('tags/sync-module', [TagController::class, 'syncModule']);
+    Route::put('tags/lookups', [TagController::class, 'lookups']);
     //areas
     Route::put('areas/store', [AreaController::class, 'store']); //Only updates allowed.
 

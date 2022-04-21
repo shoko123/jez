@@ -165,6 +165,7 @@ class ModuleInitializerController extends Controller
             "category" => $group[0],
             "display_name" => $group[1],
             "group_type" => "Tag",
+            "isGlobalTag" => true,
             "str_id" => $group[3],
             "multiple" => $tagType->multiple,
             "dependency" => is_null($tagType->dependency) ? null : json_decode($tagType->dependency),
@@ -176,8 +177,6 @@ class ModuleInitializerController extends Controller
     {
         $modelName = "App\\Models\\tags\\" . self::$moduleName . "TagType";
         $model = new $modelName;
-
-
 
         $tagType = $model->with(['tags' => function ($q) {
             $q->select('id', 'name', 'type_id');
@@ -195,6 +194,7 @@ class ModuleInitializerController extends Controller
             "category" => $group[0],
             "display_name" => $group[1],
             "group_type" => "Tag",
+            "isGlobalTag" => false,
             "str_id" => $group[3],
             "multiple" => $tagType->multiple,
             "dependency" => is_null($tagType->dependency) ? null : json_decode($tagType->dependency),
@@ -311,8 +311,7 @@ class ModuleInitializerController extends Controller
             $periodGroup["display_name"] = $tagType->display_name;
             $periodGroup["group_type"] = "Tag";
             $periodGroup["str_id"] = $tagType->str_id;
-            $periodGroup["category_order"] = $tagType->category_order;
-            $periodGroup["group_order"] = $tagType->group_order;
+            $periodGroup["isGlobalTag"] = true;
             $periodGroup["multiple"] = $tagType->multiple;
             $periodGroup["dependency"] = is_null($tagType->dependency) ? null : json_decode($tagType->dependency);
             $periodGroup["params"] = $params;

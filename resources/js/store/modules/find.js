@@ -80,7 +80,7 @@ export default {
             state.newItem.registration_category = registrationData.registration_category;
             state.newItem.basket_no = registrationData.basket_no;
             state.newItem.artifact_no = registrationData.artifact_no;
-            console.log("find.setRegistrationData" + JSON.stringify(state.newItem, null, 2));
+            //console.log("find.setRegistrationData" + JSON.stringify(state.newItem, null, 2));
         },
         preservation_id(state, payload) {
             //console.log(`store.commit.preservation_id(${payload})`);
@@ -141,7 +141,7 @@ export default {
             commit("level_top", toCopy ? current.level_top : null);
             commit("level_bottom", toCopy ? current.level_bottom : null);
             commit("artifact_count", toCopy ? current.artifact_count : '1');
-            console.log("fnd/prepare newFind: " + JSON.stringify(getters["newItem"], null, 2));
+            //console.log("fnd/prepare newFind: " + JSON.stringify(getters["newItem"], null, 2));
         },
     }
 }

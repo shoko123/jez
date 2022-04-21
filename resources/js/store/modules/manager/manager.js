@@ -588,7 +588,7 @@ export default {
                 action: rootGetters["mgr/status"].isCreate ? 'post' : 'put',
                 data: newItem,
                 spinner: true,
-                verbose: true,
+                verbose: false,
                 snackbar: { onSuccess: true, onFailure: true, },
                 messages: { loading: "storing item", onSuccess: `item ${getters["status"].isCreate ? 'created' : 'updated'} successfully`, onFailure: `failed to save item - redirected to previous screen`, },
             };

@@ -395,17 +395,12 @@ class BaseDigModel extends Model implements HasMedia
             ]);
         }
 
-        $flags = [
-            "scopeIsBasket" => $find->artifact_no === 0,
-            "scopeIsArtifact" => $find->artifact_no !== 0,
-        ];
 
         //format media.
         $itemMedia = $this->allMedia($item);
         $item["hasMedia"] = $itemMedia->primary->hasMedia;
         $item["tnUrl"] = $itemMedia->primary->tnUrl;
         $item["fullUrl"] = $itemMedia->primary->fullUrl;
-        $item["flags"] = $flags;
 
 
         //if Pottery or Fauna add related artifacts

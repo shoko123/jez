@@ -63,7 +63,7 @@ export default {
                     return state.params[d].selectedIn[isFilter ? "filters" : "newParams"];
                 } else {
                     if (isFilter) {
-                        
+
                         return state.params[d].selectedIn["filters"];
                     } else {
                         let chopped = d.split(">");
@@ -485,14 +485,14 @@ export default {
         sync({ state, getters, rootGetters, commit, dispatch }, payload) {
             //First define the two db access functions (one for tags, one for lookup columns).
             //Entry point is below them.
-            function syncTags(state, getters, rootGetters, tagGroupsToSync) {
+            function syncTags(state, getters, rootGetters, params) {
                 let tagsToSync = [];
-                tagGroupsToSync.forEach(x => { tagsToSync.push({ type: x.type, tags: x.tags }) });
+                params.tagGroupsToSync.forEach(x => { tagsToSync.push({ type: x.type, tags: x.tags }) });
 
-                console.log(`aux/sync(Tags) groups: ${JSON.stringify(tagsToSync, null, 2)}`);
+                console.log(`aux/sync(${params.isGlobalTag ? "Global" : "Module"}) groups: ${JSON.stringify(tagsToSync, null, 2)}`);
 
                 let xhrRequest = {
-                    endpoint: `/api/tags/sync`,
+                    endpoint: params.isGlobalTag ? `/api/tags/sync` : `/api/tags/sync-module`,
                     action: `post`,
                     data: {
                         digModel: rootGetters["mgr/module"],
@@ -507,42 +507,40 @@ export default {
 
                 return dispatch('xhr/xhr', xhrRequest, { root: true })
                     .then(res => {
-                        console.log("syncTags returned - success")
+                        console.log(`syncTags(${params.isGlobalTag ? "Global" : "Module"}) returned - success`);
                         return res;
                     })
                     .catch(err => {
-                        console.log('syncTags err: ' + err);
+                        console.log(`syncTags(${params.isGlobalTag ? "Global" : "Module"}) error: ${err}`);
                         return err;
                     })
             }
 
             function updateLookups(state, getters, rootGetters, lookupGroupsToUpdate) {
-                let moduleName = rootGetters["mgr/status"].moduleStoreName;
+               
+                let list = [];
+                lookupGroupsToUpdate.forEach(x => { list.push({ column_name: x.column_name, id: x.id }) });
+                let xhrRequest = {
+                    endpoint: `/api/tags/lookups`,
+                    action: `put`,
+                    data: {
+                        digModel: rootGetters["mgr/module"],
+                        id: rootGetters["mgr/item"].id,
+                        list: list,
+                    },
+                    spinner: true,
+                    verbose: false,
+                    snackbar: { onSuccess: true, onFailure: true, },
+                    messages: { loading: "updating lookups tags", onSuccess: `lookup updated sucessfully`, onFailure: `failed to update lookups`, },
+                };
 
-                dispatch(`${moduleName}/prepare`, true, { root: true });
-                dispatch('fnd/prepare', true, { root: true });
-
-                //change lookup values
-                lookupGroupsToUpdate.forEach(x => {
-
-                    console.log("aux/lookupGroupToUpdate: " + JSON.stringify(lookupGroupsToUpdate, null, 2))
-                    if (x.column_name === "preservation_id") {
-                        let commitName = `fnd/${x.column_name}`;
-                        console.log("commit preservation_id: " + commitName + " id: " + x.id);
-                        commit(commitName, x.id, { root: true });
-                    } else {
-                        let commitName = `${moduleName}/${x.column_name}`;
-                        console.log("commitName: " + commitName + " id: " + x.id);
-                        commit(commitName, x.id, { root: true });
-                    }
-                });
-
-                return dispatch("mgr/store", false, { root: true })
+                return dispatch('xhr/xhr', xhrRequest, { root: true })
                     .then(res => {
-                        console.log("aux/updateLookups - returned success");
+                        console.log(`updateLookups() returned - success`);
+                        return res;
                     })
                     .catch(err => {
-                        console.log('aux/updateLookups err: ' + err);
+                        console.log(`updateLookups() error: ${err}`);
                         return err;
                     })
             }
@@ -563,23 +561,29 @@ export default {
                         case "Lookup":
                             return { group_type: "Lookup", column_name: x.column_name, id: x.newLookupId };
                         case "Tag":
-                            return { group_type: "Tag", type: x.str_id, tags: x.params.filter(y => y["selectedIn"]["newParams"]).map(y => { return { id: y.id, name: y.name } }) }
+
+                            return { group_type: x.isGlobalTag ? "GlobalTag" : "ModuleTag", type: x.str_id, tags: x.params.filter(y => y["selectedIn"]["newParams"]).map(y => { return { id: y.id, name: y.name } }) }
                     }
                 });
 
-            let tagGroupsToSync = groupsToSync.filter(x => x.group_type === "Tag");
+            let globalTagGroupsToSync = groupsToSync.filter(x => x.group_type === "GlobalTag");
+            let moduleTagGroupsToSync = groupsToSync.filter(x => x.group_type === "ModuleTag");
             let lookupGroupsToUpdate = groupsToSync.filter(x => x.group_type === "Lookup");
-            let requiresSyncTags = tagGroupsToSync.length > 0;
+            let requiresGlobalTagsSync = globalTagGroupsToSync.length > 0;
+            let requiresModuleTagsSync = moduleTagGroupsToSync.length > 0;
+
             let requiresUpdateItem = lookupGroupsToUpdate.length > 0;
-            console.log(`sync() tags: ${tagGroupsToSync.length > 0} lookups: ${lookupGroupsToUpdate.length > 0}`);
+
+            console.log(`sync() global tags: ${globalTagGroupsToSync.length > 0} module tags: ${moduleTagGroupsToSync.length > 0} lookups: ${lookupGroupsToUpdate.length > 0}`);
 
 
             //////////////////
-            var p1 = requiresSyncTags ? syncTags(state, getters, rootGetters, tagGroupsToSync) : null;
-            var p2 = requiresUpdateItem ? updateLookups(state, getters, rootGetters, lookupGroupsToUpdate) : null;
+            var p1 = requiresGlobalTagsSync ? syncTags(state, getters, rootGetters, { tagGroupsToSync: globalTagGroupsToSync, isGlobalTag: true }) : null;
+            var p2 = requiresModuleTagsSync ? syncTags(state, getters, rootGetters, { tagGroupsToSync: moduleTagGroupsToSync, isGlobalTag: false }) : null;
+            var p3 = requiresUpdateItem ? updateLookups(state, getters, rootGetters, lookupGroupsToUpdate) : null;
 
             commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
-            return Promise.all([p1, p2])
+            return Promise.all([p1, p2, p3])
                 .then(values => {
                     commit('snackbar/displaySnackbar', {
                         isSuccess: true,

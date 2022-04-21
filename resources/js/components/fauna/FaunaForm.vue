@@ -110,7 +110,7 @@ export default {
         : "Right";
     },
     scopeIsBasket() {
-      return this.item.hasOwnProperty('flags') ? this.item.flags.scopeIsBasket : false;
+      return this.$store.getters["fnd/scopeIs"]("Basket");
     },
   
     measurements() {

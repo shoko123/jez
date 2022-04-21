@@ -155,8 +155,15 @@ export default {
         case "Lithic":
         case "Metal":
         case "Pottery":
+        
           break;
-
+      case "Fauna":
+        if( this.$store.getters["fnd/scopeIs"]("Basket")){
+          alert("Fauna tagging is allowed only for artifacts (not baskets)");
+          return;
+        } else {
+          break;
+        }
         default:
           alert("'Tagging' page not implemented yet");
           return;
