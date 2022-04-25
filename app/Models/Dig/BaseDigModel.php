@@ -3,7 +3,7 @@
 namespace App\Models\Dig;
 
 use App\Models\ItemTag;
-use App\Models\tags\FaunaTag;
+use App\Models\Tags\FaunaTag;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
@@ -352,22 +352,39 @@ class BaseDigModel extends Model implements HasMedia
     //show common to all small finds
     public function show($p)
     {
-        $builder = $this->with(
-            [
-                'find',
-                'find.locus' => function ($query) {
-                    $query->select('id', 'locus_no', 'area_season_id');
-                },
-                'find.locus.areaSeason' => function ($query) {
-                    $query->select('id', 'dot');
-                },
-                'tags' => function ($query) {
-                    $query->select('id', 'name', 'type');
-                },
-                'media',
-            ]
-        );
-
+        if ($p["module"] === "Fauna") {
+            $builder = $this->with(
+                [
+                    'find',
+                    'find.locus' => function ($query) {
+                        $query->select('id', 'locus_no', 'area_season_id');
+                    },
+                    'find.locus.areaSeason' => function ($query) {
+                        $query->select('id', 'dot');
+                    },
+                   
+                    'module_tags',
+                    'module_tags.tag_type',
+                    'media',
+                ]
+            );
+        } else {
+            $builder = $this->with(
+                [
+                    'find',
+                    'find.locus' => function ($query) {
+                        $query->select('id', 'locus_no', 'area_season_id');
+                    },
+                    'find.locus.areaSeason' => function ($query) {
+                        $query->select('id', 'dot');
+                    },
+                    'tags' => function ($query) {
+                        $query->select('id', 'name', 'type');
+                    },
+                    'media',
+                ]
+            );
+        }
         //$builder->select("$tableName.id AS id", DB::raw("CONCAT(finds.loci.areas_seasons.tag,'/',finds.loci.locus_no ,'.', finds.registration_category ,'.', finds.basket_no  ,'.', finds.artifact_no) as tag"));
 
         $item = $builder->findOrFail($p["id"]);
@@ -388,11 +405,22 @@ class BaseDigModel extends Model implements HasMedia
 
         //format tags
         $tags = [];
-        foreach ($item->tags as $tag) {
-            array_push($tags, (object) [
-                'type' => $tag->type,
-                'id' => $tag->pivot->tag_id,
-            ]);
+        if ($p["module"] === "Fauna") {
+            foreach ($item->module_tags as $tag) {
+                array_push($tags, (object) [
+                    'type_id' => $tag->type_id,
+                    'type' => $tag->tag_type->name,
+                    'id' => $tag->pivot->tag_id,
+                    'name' => $tag->name
+                ]);
+            }
+        } else {
+            foreach ($item->tags as $tag) {
+                array_push($tags, (object) [
+                    'type' => $tag->type,
+                    'id' => $tag->pivot->tag_id,
+                ]);
+            }
         }
 
 

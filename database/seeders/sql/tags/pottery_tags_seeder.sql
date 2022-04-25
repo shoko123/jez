@@ -1,12 +1,3 @@
-INSERT INTO `pottery_base_types` (`id`, `name`) VALUES
-(1,'Unassigned'),
-(2,'Vessel/Lid'),
-(3, 'Lamp'),
-(4,'Ceramic Artifact'),
-(5,'Architectural/Installation'),
-(6,'Ceramic Production/Waste'),
-(7,'Miscellenia');
-
 INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `group_order`, `display_name`, `multiple`, `dependency`) VALUES 
 ('Pottery:Architectural','Pottery','Typology',12,8,'Architectural/Installation Typology',1,'[["L>base_type_id>5"]]'),
 ('Pottery:Ceramic-Artifact','Pottery','Typology',12,7,'Ceramic Artifact Typology',1,'[["L>base_type_id>4"]]'),

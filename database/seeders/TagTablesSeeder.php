@@ -26,9 +26,9 @@ class TagTablesSeeder extends Seeder
             $sql = file_get_contents($path);
             DB::unprepared($sql);
 
-            $path = base_path() . '/database/seeders/sql/tags/lithic_tags_seeder.sql';
-            $sql = file_get_contents($path);
-            DB::unprepared($sql);
+            // $path = base_path() . '/database/seeders/sql/tags/lithic_tags_seeder.sql';
+            // $sql = file_get_contents($path);
+            // DB::unprepared($sql);
 
             $path = base_path() . '/database/seeders/sql/tags/glass_tags_seeder.sql';
             $sql = file_get_contents($path);
@@ -38,9 +38,9 @@ class TagTablesSeeder extends Seeder
             $sql = file_get_contents($path);
             DB::unprepared($sql);
 
-            $path = base_path() . '/database/seeders/sql/tags/flora_tags_seeder.sql';
-            $sql = file_get_contents($path);
-            DB::unprepared($sql);
+            // $path = base_path() . '/database/seeders/sql/tags/flora_tags_seeder.sql';
+            // $sql = file_get_contents($path);
+            // DB::unprepared($sql);
 
             $path = base_path() . '/database/seeders/sql/tags/fauna_tags_seeder.sql';
             $sql = file_get_contents($path);

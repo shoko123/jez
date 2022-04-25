@@ -103,13 +103,13 @@ class CreateFaunaTables extends Migration
         });
 
         Schema::create('fauna-fauna_tags', function (Blueprint $table) {
-            $table->unsignedInteger('fauna_id');
-            $table->foreign('fauna_id')->references('id')->on('fauna')->onDelete('cascade');
+            $table->unsignedInteger('item_id');
+            $table->foreign('item_id')->references('id')->on('fauna')->onDelete('cascade');
 
-            $table->unsignedSmallInteger('fauna_tag_id')->unsigned();
-            $table->foreign('fauna_tag_id')->references('id')->on('fauna_tags')->onDelete('cascade');
+            $table->unsignedSmallInteger('tag_id')->unsigned();
+            $table->foreign('tag_id')->references('id')->on('fauna_tags')->onDelete('cascade');
 
-            $table->primary(['fauna_id', 'fauna_tag_id']);
+            $table->primary(['item_id', 'tag_id']);
         });
     }
 

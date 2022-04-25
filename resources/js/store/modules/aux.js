@@ -483,13 +483,22 @@ export default {
         },
 
         sync({ state, getters, rootGetters, commit, dispatch }, payload) {
-            //First define the two db access functions (one for tags, one for lookup columns).
-            //Entry point is below them.
+            //First define the two db access functions (one for tags(both glbal and module), the other for lookup columns).
+            
+            //This func deals with sending both global and local tag sync requests.
             function syncTags(state, getters, rootGetters, params) {
-                let tagsToSync = [];
-                params.tagGroupsToSync.forEach(x => { tagsToSync.push({ type: x.type, tags: x.tags }) });
+                let globalTagsToSync = [];
+                let moduleTagsToSync = [];
 
-                console.log(`aux/sync(${params.isGlobalTag ? "Global" : "Module"}) groups: ${JSON.stringify(tagsToSync, null, 2)}`);
+                params.tagGroupsToSync.forEach(x => {
+                    if (params.isGlobalTag) {
+                        globalTagsToSync.push({ type: x.type, tags: x.tags })
+                    } else {
+                        moduleTagsToSync.push({ tag_type_id: x.tag_type_id, type: x.type, tags: x.tags })
+                    }
+                });
+
+                console.log(`aux/sync(${params.isGlobalTag ? "Global" : "Module"}) groups: ${JSON.stringify(params.isGlobalTag ? globalTagsToSync : moduleTagsToSync, null, 2)}`);
 
                 let xhrRequest = {
                     endpoint: params.isGlobalTag ? `/api/tags/sync` : `/api/tags/sync-module`,
@@ -497,7 +506,7 @@ export default {
                     data: {
                         digModel: rootGetters["mgr/module"],
                         id: rootGetters["mgr/item"].id,
-                        tagsByType: tagsToSync,
+                        tagsByType: params.isGlobalTag ? globalTagsToSync : moduleTagsToSync,
                     },
                     spinner: true,
                     verbose: false,
@@ -517,9 +526,9 @@ export default {
             }
 
             function updateLookups(state, getters, rootGetters, lookupGroupsToUpdate) {
-               
                 let list = [];
                 lookupGroupsToUpdate.forEach(x => { list.push({ column_name: x.column_name, id: x.id }) });
+                console.log(`aux/updateLookups: : ${JSON.stringify(list)}`);                
                 let xhrRequest = {
                     endpoint: `/api/tags/lookups`,
                     action: `put`,
@@ -562,25 +571,20 @@ export default {
                             return { group_type: "Lookup", column_name: x.column_name, id: x.newLookupId };
                         case "Tag":
 
-                            return { group_type: x.isGlobalTag ? "GlobalTag" : "ModuleTag", type: x.str_id, tags: x.params.filter(y => y["selectedIn"]["newParams"]).map(y => { return { id: y.id, name: y.name } }) }
+                            return { group_type: x.isGlobalTag ? "GlobalTag" : "ModuleTag", type: x.str_id, tag_type_id: x.isGlobalTag ? null : x.tag_type_id, tags: x.params.filter(y => y["selectedIn"]["newParams"]).map(y => { return { id: y.id, name: y.name } }) }
                     }
                 });
 
             let globalTagGroupsToSync = groupsToSync.filter(x => x.group_type === "GlobalTag");
             let moduleTagGroupsToSync = groupsToSync.filter(x => x.group_type === "ModuleTag");
             let lookupGroupsToUpdate = groupsToSync.filter(x => x.group_type === "Lookup");
-            let requiresGlobalTagsSync = globalTagGroupsToSync.length > 0;
-            let requiresModuleTagsSync = moduleTagGroupsToSync.length > 0;
-
-            let requiresUpdateItem = lookupGroupsToUpdate.length > 0;
-
-            console.log(`sync() global tags: ${globalTagGroupsToSync.length > 0} module tags: ${moduleTagGroupsToSync.length > 0} lookups: ${lookupGroupsToUpdate.length > 0}`);
-
 
             //////////////////
-            var p1 = requiresGlobalTagsSync ? syncTags(state, getters, rootGetters, { tagGroupsToSync: globalTagGroupsToSync, isGlobalTag: true }) : null;
-            var p2 = requiresModuleTagsSync ? syncTags(state, getters, rootGetters, { tagGroupsToSync: moduleTagGroupsToSync, isGlobalTag: false }) : null;
-            var p3 = requiresUpdateItem ? updateLookups(state, getters, rootGetters, lookupGroupsToUpdate) : null;
+            var p1 = globalTagGroupsToSync.length > 0 ? syncTags(state, getters, rootGetters, { tagGroupsToSync: globalTagGroupsToSync, isGlobalTag: true }) : null;
+            var p2 = moduleTagGroupsToSync.length > 0 ? syncTags(state, getters, rootGetters, { tagGroupsToSync: moduleTagGroupsToSync, isGlobalTag: false }) : null;
+            var p3 = lookupGroupsToUpdate.length > 0 ? updateLookups(state, getters, rootGetters, lookupGroupsToUpdate) : null;
+            
+            console.log(`sync() global tags(${p1 === null ? "+": "-"}) module tags(${p2 === null ? "+":"-"}) lookups(${p3 === null ? "+" : "-"})`);
 
             commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
             return Promise.all([p1, p2, p3])

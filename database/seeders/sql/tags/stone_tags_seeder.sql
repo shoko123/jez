@@ -1,29 +1,4 @@
-INSERT INTO `stone_materials` (`id`, `name`) VALUES
-(1,'Unassigned'),
-(2,'Basalt-vesicular'),
-(3,'Basalt-dense'),
-(4,'Scoria'),
-(5,'Pumice'),
-(6,'Limestone'),
-(7,'Chalk'),
-(8,'Flint or Chert'),
-(9,'Sandstone'),
-(10,'Granite'),
-(11,'amethyst'),
-(12,'Steatite'),
-(100,'unknown');
-
-INSERT INTO `stone_base_types` (`id`, `name`) VALUES
-(1,'Unassigned'),
-(2,'Passive'),
-(3,'Active (handheld)'),
-(4,'Indeterminate Slab or Upper Grinding Stone'),
-(5,'Vessel'),
-(6,'Non-Processor'),
-(7,'Tbd');
-
 INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `group_order`, `display_name`, `multiple`, `dependency`) VALUES 
-
 /*registration comes here 1.1,2... */
 /*periods come here 2.1,2...)*/
 /*preservation comes here 3.1 (preservation_id)*/

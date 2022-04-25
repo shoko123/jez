@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\JezStatic\WelcomePages;
 use App\Models\TagType;
-use App\Models\tags\FaunaTagType;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -63,7 +62,7 @@ class ModuleInitializerController extends Controller
         $firstDot = null;
         $firstRecord = null;
 
-       
+
 
         if (self::$moduleName !== 'About') {
             $counts['items'] = self::$fullModuleName::count();
@@ -175,7 +174,7 @@ class ModuleInitializerController extends Controller
 
     private static function addTagModuleGroup($group)
     {
-        $modelName = "App\\Models\\tags\\" . self::$moduleName . "TagType";
+        $modelName = "App\\Models\\Tags\\" . self::$moduleName . "TagType";
         $model = new $modelName;
 
         $tagType = $model->with(['tags' => function ($q) {
@@ -191,11 +190,13 @@ class ModuleInitializerController extends Controller
         }
 
         array_push(self::$groups, [
+
             "category" => $group[0],
             "display_name" => $group[1],
             "group_type" => "Tag",
             "isGlobalTag" => false,
             "str_id" => $group[3],
+            "tag_type_id" => $tagType->id,
             "multiple" => $tagType->multiple,
             "dependency" => is_null($tagType->dependency) ? null : json_decode($tagType->dependency),
             'params' => $params
@@ -271,8 +272,6 @@ class ModuleInitializerController extends Controller
                     ["id" => 5, "name" => "AR"],
                 ]
             ]);
-
-         
         }
         if (self::$moduleName === "Pottery" || self::$moduleName === "Fauna") {
             array_push(self::$groups, [
@@ -286,7 +285,7 @@ class ModuleInitializerController extends Controller
                     ["id" => "basket", "name" => "Basket"],
                     ["id" => "artifact", "name" => "Artifact"],
                 ]
-            ]);   
+            ]);
         }
     }
 

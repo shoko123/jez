@@ -1,13 +1,3 @@
-
-INSERT INTO `glass_base_types` (`id`, `name`) VALUES
-(1,'Unassigned'),
-(2, 'Vessel/Lamp'),
-(3, 'Bead'),
-(4, 'Bangle'),
-(5, 'Window Glass'),
-(6, 'Tbd'),
-(7, 'Unknown');
-
 INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `group_order`, `display_name`, `multiple`, `dependency`) VALUES 
 /*preservation_id comes here 3.1*/
 ('Glass:Color','Glass','Basic Characteristics',3,2,'Color',1,NULL),

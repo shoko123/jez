@@ -3,7 +3,7 @@
 namespace App\Models;
 
 
-use App\Models\tags\FaunaTag;
+use App\Models\Tags\FaunaTag;
 
 use Illuminate\Database\Eloquent\Model;
 

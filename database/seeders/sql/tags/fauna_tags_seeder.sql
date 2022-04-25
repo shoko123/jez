@@ -1,26 +1,3 @@
-INSERT INTO `fauna_taxon_L1` (`id`, `name`) VALUES
-(1, 'Unassigned'),
-(2, 'Tbd'),
-(3, 'Human'),
-(4, 'Mammal'),
-(5, 'Bird'),
-(6, 'Fish'),
-(7, 'Insect'),
-(8, 'Reptile'),
-(9, 'Mollusca');
-/*
-(10, 'Microfauna');
-*/
-INSERT INTO `fauna_elements_L1` (`id`, `name`) VALUES
-(1, 'Unassigned'),
-(2, 'Tbd'),
-(3, 'Bone'),
-(4, 'Tooth'),
-(5, 'Horn/Antler/Hoof'),
-(6, 'Leather'),
-(7, 'Shell'),
-(8, 'Carapace/Spicule');
-
 INSERT INTO `fauna_tag_types` (`id`, `name`, `category`, `category_order`, `group_order`,`display_name`, `multiple`, `dependency`) VALUES 
 (1,'Mammal','Taxon',3,2,'Mammal',0,'[["L>taxon_L1_id>4"]]'),
 (2,'Bird','Taxon',3,2,'Bird',0,'[["L>taxon_L1_id>5"]]'),
@@ -121,3 +98,9 @@ INSERT INTO `fauna_tags` (`id`, `type_id`, `order_column`, `name`) VALUES
 (401,13,1,"Butchery"),
 (402,13,1,"Burning"),
 (403,13,1,"Other BSM");
+
+INSERT INTO `fauna-fauna_tags` (`item_id`, `tag_id`) VALUES
+(1057,281),
+(1057,291),
+(1057, 154),
+(1057, 268);
