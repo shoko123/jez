@@ -99,8 +99,10 @@ INSERT INTO `fauna_tags` (`id`, `type_id`, `order_column`, `name`) VALUES
 (402,13,1,"Burning"),
 (403,13,1,"Other BSM");
 
+/*
 INSERT INTO `fauna-fauna_tags` (`item_id`, `tag_id`) VALUES
 (1057,281),
 (1057,291),
 (1057, 154),
 (1057, 268);
+*/

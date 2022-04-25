@@ -75,35 +75,25 @@ class TagController extends Controller
         //$modelName = "App\Models\Dig\\" . $v["digModel"];
         $model = new $modelName;
         $all = [];
-        //$newTypesWithTags = ;
-        //$existingTypesWithTags = [];
+       
         foreach ($v["tagsByType"] as $x) {
             $group = $model->select('id', 'name')->with(['tags'  => function ($query) {
                 $query->select('type_id', 'id', 'name');
             }])->find($x["tag_type_id"]);
             $tags = [];
             foreach ($group->tags as $t) {
-                array_push($tags, [
-                    "tag_id" => $t->id,
+                $tags[$t->id] = [
+                    "tag_name" => $t->name,
                     "inCurrent" => false,
-                    "inNew" => in_array($t["id"], array_map(function ($y) {
+                    "inNew" => empty($x["tags"]) ? false : in_array($t["id"], array_map(function ($y) {
                         return $y["id"];
-                    }, $x["tags"])),
-                ]);
+                    }, $x["tags"]))
+                ];
             }
-            array_push(
-                $all,
-                [
-                    "group_id" => $group->id,
-                    "group_name" => $group->name,
-                    "tags" => $tags
-                ]
-            );
-
-
-            // $item->syncTagsWithType(array_map(function ($y) {
-            //     return $y->name;
-            // }, $x->tags), $x->type);
+            $all[$group->id] = [
+                "group_name" => $group->name,
+                "tags" => $tags
+            ];
         }
 
         $modelName = "App\\Models\\Tags\\" . $v["digModel"] . "Tag";
@@ -112,9 +102,32 @@ class TagController extends Controller
             $sub->where('item_id', $v["id"]);
         })->get();
 
-        $modelName = "App\\Models\\Dig\\" . $v["digModel"];
+
+        foreach ($currentTags as $current) {
+            $all[$current->type_id]["tags"][$current->id]["inCurrent"] = true;
+        }
+        $attach = [];
+        $detach = [];
+
+
+        foreach ($all as $type_id => $group) {
+            foreach ($group["tags"] as $tag_id => $in) {
+                if ($in["inCurrent"] !== $in["inNew"]) {
+                    if ($in["inNew"]) {
+                        array_push($attach, $tag_id);
+                    } else {
+                        array_push($detach, $tag_id);
+                    }
+                }
+            }
+        }
+
+
+        $modelName = "App\Models\Dig\\" . $v["digModel"];
         $model = new $modelName;
-        $itemWithTags = $model->with('module_tags')->select('id')->find($v["id"]);
+        $item = $model->findOrFail($v["id"]);
+        $item->module_tags()->detach($detach);
+        $item->module_tags()->attach($attach);
 
 
         //$modelName = "App\Models\Dig\\" . $v["digModel"];
@@ -137,8 +150,9 @@ class TagController extends Controller
             "message" => "back from tag/syncModule()",
             "new" => $v["tagsByType"],
             "all" => $all,
-            "itemWithTags" => $itemWithTags,
-            "currentTags" => $currentTags
+            "currentTags" => $currentTags,
+            "attach" => $attach,
+            "detach" => $detach
             //"exising" => $existingTypesWithTags
         ], 200);
     }
