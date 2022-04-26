@@ -71,46 +71,64 @@ class TagController extends Controller
             ], 405);
         }
 
+        //get dirtyTypes and all their tags, fill inNew flag for each tag.
+        //(make place for inCurrent that will be filled later.)
         $modelName = "App\\Models\\Tags\\" . $v["digModel"] . "TagType";
-        //$modelName = "App\Models\Dig\\" . $v["digModel"];
         $model = new $modelName;
-        $all = [];
-       
+        $dirty_types = [];
+
         foreach ($v["tagsByType"] as $x) {
             $group = $model->select('id', 'name')->with(['tags'  => function ($query) {
                 $query->select('type_id', 'id', 'name');
             }])->find($x["tag_type_id"]);
+
+            //format all tags with flags
             $tags = [];
             foreach ($group->tags as $t) {
                 $tags[$t->id] = [
                     "tag_name" => $t->name,
                     "inCurrent" => false,
-                    "inNew" => empty($x["tags"]) ? false : in_array($t["id"], array_map(function ($y) {
+                    "inNew" => in_array($t["id"], array_map(function ($y) {
                         return $y["id"];
-                    }, $x["tags"]))
+                    }, $x["tags"])),
                 ];
             }
-            $all[$group->id] = [
+            //save
+            $dirty_types[$x["tag_type_id"]] = [
                 "group_name" => $group->name,
                 "tags" => $tags
             ];
         }
 
+        //fill current tags by reading all tags attached to current item
         $modelName = "App\\Models\\Tags\\" . $v["digModel"] . "Tag";
         $model = new $modelName;
-        $currentTags = $model->whereHas('item', function ($sub) use ($v) {
-            $sub->where('item_id', $v["id"]);
-        })->get();
+
+        //extract dirty type ids
+        $d = array_map(function ($y) {
+            return $y["tag_type_id"];
+        }, $v["tagsByType"]);
+
+        //select with two conditions:
+        // 1. belongs to item.
+        // 2. belongs to a dirty group.
+        $currentTags = $model
+            ->whereIn('type_id', $d)
+            ->whereHas('item', function ($sub) use ($v) {
+                $sub->where('item_id', $v["id"]);
+            })->get();
 
 
+        //assign
         foreach ($currentTags as $current) {
-            $all[$current->type_id]["tags"][$current->id]["inCurrent"] = true;
+            $dirty_types[$current->type_id]["tags"][$current->id]["inCurrent"] = true;
         }
+
+        //prepare attach and detach lists
         $attach = [];
         $detach = [];
 
-
-        foreach ($all as $type_id => $group) {
+        foreach ($dirty_types as $type_id => $group) {
             foreach ($group["tags"] as $tag_id => $in) {
                 if ($in["inCurrent"] !== $in["inNew"]) {
                     if ($in["inNew"]) {
@@ -122,38 +140,16 @@ class TagController extends Controller
             }
         }
 
-
+        //perform attach/detach
         $modelName = "App\Models\Dig\\" . $v["digModel"];
         $model = new $modelName;
         $item = $model->findOrFail($v["id"]);
         $item->module_tags()->detach($detach);
         $item->module_tags()->attach($attach);
 
-
-        //$modelName = "App\Models\Dig\\" . $v["digModel"];
-        //     $current = Appointment::whereHas('therapies', function ($sub) use ($request) {
-        //         $sub->where('therapy_id', $request->therapy_id);
-        //      })->with('therapies')->get();
-
-
-
-        //after syncing tags return new tags to caller
-        //$item = $digModelName::with('tags')->findOrFail($id);
-
-        // $tagIds = [];
-
-        // foreach ($item->tags as $tag) {
-        //     array_push($tagIds, $tag->pivot->tag_id);
-        // }
-        //return new tagIds. (may be used to update local storage).
         return response()->json([
-            "message" => "back from tag/syncModule()",
+            "message" => "back from tag/syncModule() seems OK",
             "new" => $v["tagsByType"],
-            "all" => $all,
-            "currentTags" => $currentTags,
-            "attach" => $attach,
-            "detach" => $detach
-            //"exising" => $existingTypesWithTags
         ], 200);
     }
 
