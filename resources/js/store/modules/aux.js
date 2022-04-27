@@ -58,7 +58,7 @@ export default {
 
         isVisibleTagGroup: (state) => (group, isFilter) => {
             function isSelected(d, isFilter) {
-                if (d.charAt(0) === "T") {
+                if (d.charAt(0) === "T" || d.charAt(0) === "M") {
                     //console.log(`isVisibleTagGroup: ${JSON.stringify(d, null, 2)}, isFilter: ${isFilter})`);
                     return state.params[d].selectedIn[isFilter ? "filters" : "newParams"];
                 } else {
@@ -276,7 +276,7 @@ export default {
                 if (filters && value.selectedIn["filters"]) {
                     value.selectedIn["filters"] = false;
                 }
-                if (value.groupKey.charAt(0) === "T") {
+                if (value.groupKey.charAt(0) === "T" || value.groupKey.charAt(0) === "M") {
                     if (itemParams && value.selectedIn["itemParams"]) {
                         value.selectedIn["itemParams"] = false;
                     }
@@ -288,8 +288,6 @@ export default {
         },
 
         selectParam(state, payload) {
-            //console.log(`******selectParam()\npayload: ${JSON.stringify(payload, null, 2)}`);
-
             let group = state.groups[(state.params[payload.key]).groupKey];
             switch (group.group_type) {
                 case "Registration":
@@ -314,9 +312,16 @@ export default {
         itemTags({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`aux/itemTags: ${JSON.stringify(payload, null, 2)}`);
             commit("clear", ["itemParams"]);//clear itemParams (not filters)
-            payload.forEach(x => {
+            payload.tags.forEach(x => {
                 commit("selectParam", {
                     key: `T>${x.id}`,
+                    source: "itemParams",
+                    value: true
+                });
+            });
+            payload.moduleTags.forEach(x => {
+                commit("selectParam", {
+                    key: `M>${x.id}`,
                     source: "itemParams",
                     value: true
                 });
@@ -326,10 +331,11 @@ export default {
         setLocalFilters({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`aux/setLocalFilters: ${JSON.stringify(payload, null, 2)}`);
             commit("clear", ["filters"]);
-
+            
             //set filters from queryString
             if (payload !== null) {
-                payload.forEach(x => commit("selectParam", {
+                payload.forEach(x => 
+                    commit("selectParam", {
                     key: x,
                     source: "filters",
                     value: true

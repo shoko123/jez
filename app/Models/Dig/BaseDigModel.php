@@ -236,9 +236,8 @@ class BaseDigModel extends Model implements HasMedia
         if (!empty($queryParams["tags"])) {
 
 
-            if ($this->eloquent_model_name === 'Fauna') {
-                $tags = FaunaTag::whereIn($queryParams["tags"])->with("type_id")->get();
-            } else {
+            if (!empty($queryParams["tags"]["tags"]) ){
+                //global tags filtering
 
                 $tag_types = (object) [];
                 foreach ($queryParams["tags"]["tags"] as $index => $tag_id) {
@@ -254,6 +253,13 @@ class BaseDigModel extends Model implements HasMedia
                 foreach ($tag_types as $key => $value) {
                     $builder->withAnyTags($value, $key);
                 }
+
+            }
+            if (!empty($queryParams["tags"]["module-tags"]) ){
+                //module tags filtering
+
+                
+                
             }
         }
 
@@ -405,9 +411,10 @@ class BaseDigModel extends Model implements HasMedia
 
         //format tags
         $tags = [];
+        $moduleTags = [];
         if ($p["module"] === "Fauna") {
             foreach ($item->module_tags as $tag) {
-                array_push($tags, (object) [
+                array_push($moduleTags, (object) [
                     'type_id' => $tag->type_id,
                     'type' => $tag->tag_type->name,
                     'id' => $tag->pivot->tag_id,
@@ -459,6 +466,7 @@ class BaseDigModel extends Model implements HasMedia
             "find" => $find,
             "itemMedia" => $itemMedia,
             "tags" => $tags,
+            "moduleTags" => $moduleTags,
             "related" => $related
         ];
     }

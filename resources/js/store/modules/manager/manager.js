@@ -430,6 +430,7 @@ export default {
                         commit("ready", { entity: "chunk", isReady: false });
                         dispatch("page", { name: "main", page: 1 });
                     }
+                    
                     return res;
                 })
                 .catch(err => {
@@ -491,7 +492,7 @@ export default {
                                 collection: res.data.related.map(x => { return { dot: x, tag: dotToTag({ module: state.routes.to.module, dot: x }) } })
                             });
 
-                            dispatch('aux/itemTags', res.data.tags, { root: true });
+                            dispatch('aux/itemTags', {tags: res.data.tags, moduleTags: res.data.moduleTags }, { root: true });
                     }
 
                     res.data.item["tag"] = dotToTag({ module: state.routes.to.module, dot: res.data.item.dot });

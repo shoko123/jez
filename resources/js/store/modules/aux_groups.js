@@ -66,12 +66,12 @@ export default {
 
             //tags
             const tagParamSchema = new schema.Entity('tagParams', {}, {
-                idAttribute: (value, parent, key) => `T>${value.id}`,
+                idAttribute: (value, parent, key) => `${parent.isGlobalTag ? "T" : "M"}>${value.id}`,
                 processStrategy: (value, parent, key) => {
                     return {
                         ...value,
-                        key: `T>${value.id}`,
-                        groupKey: `T>${parent.str_id}`,
+                        key: `${parent.isGlobalTag ? "T" : "M"}>${value.id}`,
+                        groupKey: `${parent.isGlobalTag ? "T" : "M"}>${parent.str_id}`,
                         selectedIn: { filters: false, itemParams: false, newParams: false },
                         affectsTagGroups: [],
                     };
@@ -81,11 +81,11 @@ export default {
             const tagGroupSchema = new schema.Entity('tagGroups', {
                 params: [tagParamSchema],
             }, {
-                idAttribute: (value, parent, key) => `T>${value.str_id}`,
+                idAttribute: (value, parent, key) => `${value.isGlobalTag ? "T" : "M"}>${value.str_id}`,
                 processStrategy: (value, parent, key) => {
                     return {
                         ...value,
-                        key: `T>${value.str_id}`,
+                        key: `${value.isGlobalTag ? "T" : "M"}>${value.str_id}`,
                     };
                 },
             });

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { filtersToQueryString } from "../../routing/queryString.js"
+import { filtersToQueryParams } from "../../routing/queryString.js"
 export default {
   data() {
     return {};
@@ -24,9 +24,8 @@ export default {
   methods: {
     submit() {
       let filters = this.$store.getters["aux/selectedFilters"];
-      let qp = filtersToQueryString(filters);
+      let qp = filtersToQueryParams(filters);
       //console.log(`filter.submit() selectedFilters: ${JSON.stringify(filters, null, 2)}`);
-      //console.log(`qp: ${JSON.stringify(qp, null, 2)}`);
       this.$store.dispatch("mgr/goToRoute", {
         module: this.$store.getters["mgr/module"],
         action: "list",

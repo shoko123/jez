@@ -1,10 +1,11 @@
-export function filtersToQueryString(localFilters) {
+export function filtersToQueryParams(localFilters) {
     let areas = "";
     let seasons = "";
     let media = "";
     let scopes = "";
     let registration_categories = "";
     let tags = "";
+    let moduleTags = "";
     let lookups = [];
 
     localFilters.forEach((group => {
@@ -53,7 +54,11 @@ export function filtersToQueryString(localFilters) {
             case "Tag":
                 //format tagParams according to Spatie interface (types with tags).
                 group.params.forEach(x => {
-                    tags += x.id + ",";
+                    if (group.isGlobalTag) {
+                        tags += x.id + ",";
+                    } else {
+                        moduleTags += x.id + ",";
+                    }
                 })
                 break;
         }
@@ -77,6 +82,9 @@ export function filtersToQueryString(localFilters) {
     }
     if (tags.length > 0) {
         qs["T>tags"] = tags.substring(0, tags.length - 1);
+    }
+    if (moduleTags.length > 0) {
+        qs["T>module-tags"] = moduleTags.substring(0, moduleTags.length - 1);
     }
     if (lookups.length > 0) {
         lookups.forEach(x => {
@@ -109,6 +117,7 @@ export function filtersFromQueryString(qs) {
 
                 case "L":
                 case "T":
+                case "M":
                     return false;
                 default:
                     console.log(`aux/filtersFromQueryString BAD group: ${prop}`);//(groups) ${JSON.stringify(payload, null, 2)}`);
@@ -129,6 +138,7 @@ export function filtersFromQueryString(qs) {
     }
 
     //code run starts here.
+    //console.log(`filtersFromQueryString: ${JSON.stringify(qs, null, 2)}`)
     let xhrParams = {};
     let localParams = [];
     //iterate thru queryString, add properties to xhrParams and push ids 
@@ -141,6 +151,7 @@ export function filtersFromQueryString(qs) {
         let cat;
         switch (catCode) {
             case "T":
+            case "M":
                 cat = "tags";
                 break;
             case "R":
@@ -154,12 +165,23 @@ export function filtersFromQueryString(qs) {
         }
         //console.log(`[${prop}]: ${idsString} cat: ${cat} catCode: ${catCode} name: ${name}`);
         let filtersArray = idsStringToArray(catCode, name, idsString);
-
         //localParams
+        //console.log(`filtersArray:  ${JSON.stringify(filtersArray, null, 2)}`);
+
         filtersArray.forEach(x => {
             switch (catCode) {
                 case "T":
-                    localParams.push(catCode + ">" + x);
+                    switch (name) {
+                        case "tags":
+                            localParams.push("T>" + x);
+                            break;
+                        case "module-tags":
+                            localParams.push("M>" + x);
+                            break;
+                        default:
+                            alert("wrong name");
+                            break;
+                    }
                     break;
                 case "R":
                     switch (name) {
@@ -195,15 +217,7 @@ export function filtersFromQueryString(qs) {
             //}
         } else {
             xhrParams[cat] = { [name]: idsStringToArray(catCode, name, idsString) };
-            //console.log(`add "${cat}" property. xhrParams: ${JSON.stringify(xhrParams, null, 2)}`);
-
-            //(xhrParams[cat])[name] = idsStringToArray(catCode, name, idsString);
-            //Object.assign(xhrParams[cat], {[name]: idsStringToArray(catCode, name, idsString)});
-            //console.log(`add "${name}" property to ${cat}. xhrParams: ${JSON.stringify(xhrParams, null, 2)}`);
-
-        }
+                  }
     }
-    //return xhrParams;
     return { xhr: xhrParams, local: localParams };
 }
-//export default {filtersToQueryString, filtersFromQueryString}
