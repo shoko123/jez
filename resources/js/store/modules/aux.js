@@ -331,15 +331,15 @@ export default {
         setLocalFilters({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`aux/setLocalFilters: ${JSON.stringify(payload, null, 2)}`);
             commit("clear", ["filters"]);
-            
+
             //set filters from queryString
             if (payload !== null) {
-                payload.forEach(x => 
+                payload.forEach(x =>
                     commit("selectParam", {
-                    key: x,
-                    source: "filters",
-                    value: true
-                }));
+                        key: x,
+                        source: "filters",
+                        value: true
+                    }));
             }
         },
 
@@ -428,7 +428,7 @@ export default {
                                 //select the new param.
                                 commit("selectParam", { key: payload.key, source: "newParams", value: true });
                             } else {
-                                console.log(`Toggle(Tag,single) currently selected param: ${JSON.stringify(currentlySelectedParamKey, null, 2)}`);
+                                //console.log(`Toggle(Tag,single) currently selected param: ${JSON.stringify(currentlySelectedParamKey, null, 2)}`);
 
                                 //select the new param (unless already selected)
                                 if (currentlySelectedParamKey !== payload.key) {
@@ -490,7 +490,7 @@ export default {
 
         sync({ state, getters, rootGetters, commit, dispatch }, payload) {
             //First define the two db access functions (one for tags(both glbal and module), the other for lookup columns).
-            
+
             //This func deals with sending both global and local tag sync requests.
             function syncTags(state, getters, rootGetters, params) {
                 let globalTagsToSync = [];
@@ -534,7 +534,7 @@ export default {
             function updateLookups(state, getters, rootGetters, lookupGroupsToUpdate) {
                 let list = [];
                 lookupGroupsToUpdate.forEach(x => { list.push({ column_name: x.column_name, id: x.id }) });
-                console.log(`aux/updateLookups: : ${JSON.stringify(list)}`);                
+                console.log(`aux/updateLookups: : ${JSON.stringify(list)}`);
                 let xhrRequest = {
                     endpoint: `/api/tags/lookups`,
                     action: `put`,
@@ -589,8 +589,8 @@ export default {
             var p1 = globalTagGroupsToSync.length > 0 ? syncTags(state, getters, rootGetters, { tagGroupsToSync: globalTagGroupsToSync, isGlobalTag: true }) : null;
             var p2 = moduleTagGroupsToSync.length > 0 ? syncTags(state, getters, rootGetters, { tagGroupsToSync: moduleTagGroupsToSync, isGlobalTag: false }) : null;
             var p3 = lookupGroupsToUpdate.length > 0 ? updateLookups(state, getters, rootGetters, lookupGroupsToUpdate) : null;
-            
-            console.log(`sync() global tags(${p1 === null ? "+": "-"}) module tags(${p2 === null ? "+":"-"}) lookups(${p3 === null ? "+" : "-"})`);
+
+            console.log(`sync() global tags(${p1 === null ? "+" : "-"}) module tags(${p2 === null ? "+" : "-"}) lookups(${p3 === null ? "+" : "-"})`);
 
             commit("mgr/ready", { entity: "item", isReady: false }, { root: true });
             return Promise.all([p1, p2, p3])

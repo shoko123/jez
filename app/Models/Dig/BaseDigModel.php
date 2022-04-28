@@ -258,8 +258,27 @@ class BaseDigModel extends Model implements HasMedia
             if (!empty($queryParams["tags"]["module-tags"]) ){
                 //module tags filtering
 
-                
-                
+                //organize tags by tag_type
+                $modelName = "App\\Models\\Tags\\" . $this->eloquent_model_name . "Tag";
+                $model = new $modelName;
+                $types = [];
+                      
+                foreach ($queryParams["tags"]["module-tags"] as $index => $tag_id) {                                       
+                    $item = $model->select('type_id')->findOrFail($tag_id);
+                    
+                    if (array_key_exists($item->type_id, $types)) {
+                        array_push($types[$item->type_id], $tag_id);
+                    } else {
+                        $types[$item->type_id] = [$tag_id];
+                    }
+                }
+
+                //filter
+                foreach ($types as $type_id => $x) {
+                    $builder->whereHas('module_tags', function (Builder $q) use ($x) {      
+                        $q->whereIn('id', $x);
+                    });
+                }           
             }
         }
 
