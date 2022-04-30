@@ -98,10 +98,6 @@ class BaseDigModel extends Model implements HasMedia
     {
         $builder = $this->leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
 
-        if (!empty($queryParams["registration.media"])) {
-            $builder->with('media');
-        }
-
         if (!empty($queryParams["tags"])) {
             $tag_types = (object) [];
             foreach ($queryParams["tags"]["tags"] as $index => $tag_id) {
@@ -151,16 +147,6 @@ class BaseDigModel extends Model implements HasMedia
         //get results
         $collection = $builder->get();
 
-        if (!empty($queryParams["registration.media"])) {
-            foreach ($collection as $index => $item) {
-                unset($item->media);
-            }
-        }
-        /*
-        foreach ($collection as $index => $item) {
-            $item->dot = str_replace('/', '.', $item->tag);
-        }
-        */
         return $collection;
     }
 
@@ -176,10 +162,6 @@ class BaseDigModel extends Model implements HasMedia
         })
             ->leftJoin('loci', 'finds.locus_id', '=', 'loci.id')
             ->leftJoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
-
-        if (!empty($queryParams["registration.media"])) {
-            $builder->with('media');
-        }
 
         if (!empty($queryParams["registration"])) {
             foreach ($queryParams["registration"] as $key => $ids) {
@@ -234,13 +216,11 @@ class BaseDigModel extends Model implements HasMedia
 
         //filter by tags
         if (!empty($queryParams["tags"])) {
-
-
-            if (!empty($queryParams["tags"]["tags"]) ){
+            if (!empty($queryParams["tags"]["globals"]) ){
                 //global tags filtering
 
                 $tag_types = (object) [];
-                foreach ($queryParams["tags"]["tags"] as $index => $tag_id) {
+                foreach ($queryParams["tags"]["globals"] as $index => $tag_id) {
                     $t = ItemTag::select('type', 'name')->findOrFail($tag_id);
                     $type = $t->type;
                     if (property_exists($tag_types, $type)) {
@@ -253,9 +233,8 @@ class BaseDigModel extends Model implements HasMedia
                 foreach ($tag_types as $key => $value) {
                     $builder->withAnyTags($value, $key);
                 }
-
             }
-            if (!empty($queryParams["tags"]["module-tags"]) ){
+            if (!empty($queryParams["tags"]["module"]) ){
                 //module tags filtering
 
                 //organize tags by tag_type
@@ -263,7 +242,7 @@ class BaseDigModel extends Model implements HasMedia
                 $model = new $modelName;
                 $types = [];
                       
-                foreach ($queryParams["tags"]["module-tags"] as $index => $tag_id) {                                       
+                foreach ($queryParams["tags"]["module"] as $index => $tag_id) {                                       
                     $item = $model->select('type_id')->findOrFail($tag_id);
                     
                     if (array_key_exists($item->type_id, $types)) {
@@ -294,12 +273,6 @@ class BaseDigModel extends Model implements HasMedia
 
         $collection = $builder->get();
 
-        //if query included media, delete it.
-        if (!empty($queryParams["registration.media"])) {
-            foreach ($collection as $item) {
-                unset($item->media);
-            }
-        }
         return $collection;
     }
 

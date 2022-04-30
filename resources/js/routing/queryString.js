@@ -81,10 +81,10 @@ export function filtersToQueryParams(localFilters) {
         qs["R>media"] = media.substring(0, media.length - 1);
     }
     if (tags.length > 0) {
-        qs["T>tags"] = tags.substring(0, tags.length - 1);
+        qs["T>globals"] = tags.substring(0, tags.length - 1);
     }
     if (moduleTags.length > 0) {
-        qs["T>module-tags"] = moduleTags.substring(0, moduleTags.length - 1);
+        qs["T>module"] = moduleTags.substring(0, moduleTags.length - 1);
     }
     if (lookups.length > 0) {
         lookups.forEach(x => {
@@ -172,14 +172,14 @@ export function filtersFromQueryString(qs) {
             switch (catCode) {
                 case "T":
                     switch (name) {
-                        case "tags":
+                        case "globals":
                             localParams.push("T>" + x);
                             break;
-                        case "module-tags":
+                        case "module":
                             localParams.push("M>" + x);
                             break;
                         default:
-                            alert("wrong name");
+                            alert(`wrong name: ${name}`);
                             break;
                     }
                     break;
