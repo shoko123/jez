@@ -114,7 +114,7 @@ export default {
 
             //f2 - filter by scope: non artifacts see only periods tags ???
             let f2 = scopeIsArtifact ? f1 :
-                f1.filter(x => (x.category === "Period"));
+                f1.filter(x => (x.category === "Periods/Groups"));
 
             //f3 - all remaining lookups, and visible newParams tags.
             return f2.filter(x => {
@@ -164,7 +164,7 @@ export default {
             //(this will change with other modules [think Flora])
             // (2) allow only selected
             return getters["all"].filter(x => {
-                return scopeIsBasket ? x.category === "Period" : true;
+                return scopeIsBasket ? x.category === "Periods/Groups" : true;
             }).filter(x => {
                 return x.params.some(x => x.selectedIn["itemParams"]);
             }).map(x => {

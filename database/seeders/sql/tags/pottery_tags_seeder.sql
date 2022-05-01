@@ -4,7 +4,7 @@ INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `gro
 ('Pottery:Foot-Type','Pottery','Typology',11,4,'Foot',1,'[["T>1302"]]'),
 ('Pottery:Handle','Pottery','Typology',11,6,'Handle',1,'[["T>1308"]]'),
 ('Pottery:Life-Stage','Pottery','Basic Characteristics',5,2,'Life Stage',1,NULL),
-('Pottery:Named-Groups-I','Pottery','Group(s)',3,1,'Named Groups I',1,'[["T>10300", "T>10400", "T>10500", "T>10600", "T>10700"]]'),
+('Pottery:Named-Groups-I','Pottery','Group(s)',3,1,'Named Groups I',1,'[["T>10300", "T>10400", "T>10500"]]'),
 ('Pottery:Named-Groups-II','Pottery','Group(s)',3,2,'Named Groups II',1,'[["T>10800", "T>10900", "T>11000"]]'),
 ('Pottery:Named-Groups-III','Pottery','Group(s)',3,3,'Named Groups III',1,'[["T>11100", "T>11200", "T>11300", "T>11400"]]'),
 ('Pottery:Production','Pottery','Basic Characteristics',5,3,'Production',1,NULL),

@@ -84,8 +84,6 @@ class CreateFaunaTables extends Migration
             $table->tinyIncrements('id');
             $table->string('name', 40);
             $table->string('category', 40);
-            $table->unsignedTinyInteger('category_order');
-            $table->unsignedTinyInteger('group_order');
             $table->string('display_name', 40);
             $table->boolean('multiple')->default(0);
             $table->json('dependency')->nullable();
@@ -104,10 +102,10 @@ class CreateFaunaTables extends Migration
 
         Schema::create('fauna-fauna_tags', function (Blueprint $table) {
             $table->unsignedInteger('item_id');
-            $table->foreign('item_id')->references('id')->on('fauna')->onDelete('cascade');
+            $table->foreign('item_id')->references('id')->on('fauna')->onUpdate('cascade');
 
             $table->unsignedSmallInteger('tag_id')->unsigned();
-            $table->foreign('tag_id')->references('id')->on('fauna_tags')->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')->on('fauna_tags')->onUpdate('cascade');
 
             $table->primary(['item_id', 'tag_id']);
         });

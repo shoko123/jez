@@ -71,7 +71,7 @@ export default {
                     return {
                         ...value,
                         key: `${parent.isGlobalTag ? "T" : "M"}>${value.id}`,
-                        groupKey: `${parent.isGlobalTag ? "T" : "M"}>${parent.str_id}`,
+                        groupKey: `T>${parent.str_id}`,
                         selectedIn: { filters: false, itemParams: false, newParams: false },
                         affectsTagGroups: [],
                     };
@@ -81,11 +81,11 @@ export default {
             const tagGroupSchema = new schema.Entity('tagGroups', {
                 params: [tagParamSchema],
             }, {
-                idAttribute: (value, parent, key) => `${value.isGlobalTag ? "T" : "M"}>${value.str_id}`,
+                idAttribute: (value, parent, key) => `T>${value.str_id}`,
                 processStrategy: (value, parent, key) => {
                     return {
                         ...value,
-                        key: `${value.isGlobalTag ? "T" : "M"}>${value.str_id}`,
+                        key: `T>${value.str_id}`,
                     };
                 },
             });
@@ -113,6 +113,7 @@ export default {
             commit("paramsAddProperties", normalizedData.entities.lookupParams);
             commit("paramsAddProperties", normalizedData.entities.tagParams);
 
+            //console.log(`aux/normalizeGroups() before addAffect() groups:\n${JSON.stringify(getters["all"], null, 2)}`);
             //make params aware of their dependant groups
             getters["all"].forEach(x => {
                 if (x.group_type === "Tag" && x.dependency !== null) {
@@ -124,7 +125,7 @@ export default {
                     })
                 }
             })
-            //console.log(`aux/normalizeGroups() done`);
+            //console.log(`aux/normalizeGroups() success`);
         },
     }
 }

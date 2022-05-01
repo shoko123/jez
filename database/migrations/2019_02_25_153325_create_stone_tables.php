@@ -46,7 +46,6 @@ class CreateStoneTables extends Migration
             $table->unsignedSmallInteger('base_diameter')->nullable();
             $table->unsignedSmallInteger('base_thickness')->nullable();
 
-
             //by default delete of row in parent table is rejected if any refernece exists.
             $table->foreign('base_type_id')
                 ->references('id')->on('stone_base_types')
@@ -55,6 +54,38 @@ class CreateStoneTables extends Migration
             $table->foreign('material_id')
                 ->references('id')->on('stone_materials')
                 ->onUpdate('cascade');
+        });
+
+        Schema::create('stone_tag_types', function (Blueprint $table) {
+            $table->tinyIncrements('id');
+            $table->string('name', 40);
+            $table->string('category', 40);
+            $table->unsignedTinyInteger('category_order');
+            $table->unsignedTinyInteger('group_order');
+            $table->string('display_name', 40);
+            $table->boolean('multiple')->default(0);
+            $table->json('dependency')->nullable();
+        });
+
+        Schema::create('stone_tags', function (Blueprint $table) {
+            $table->smallIncrements('id');
+            $table->unsignedTinyInteger('type_id');
+            $table->foreign('type_id')
+                ->references('id')
+                ->on('stone_tag_types')
+                ->onUpdate('cascade');
+            $table->unsignedSmallInteger('order_column');
+            $table->string('name', 50);
+        });
+
+        Schema::create('stone-stone_tags', function (Blueprint $table) {
+            $table->unsignedInteger('item_id');
+            $table->foreign('item_id')->references('id')->on('stones')->onUpdate('cascade');
+
+            $table->unsignedSmallInteger('tag_id')->unsigned();
+            $table->foreign('tag_id')->references('id')->on('stone_tags')->onUpdate('cascade');
+
+            $table->primary(['item_id', 'tag_id']);
         });
     }
 
