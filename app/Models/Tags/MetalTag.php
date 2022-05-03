@@ -9,7 +9,7 @@ use App\Models\Dig\Metal;
 class MetalTag extends Model
 {
     public $timestamps = false;
-    protected $table = 'metals_tags';
+    protected $table = 'metal_tags';
 
     public function tag_type()
     {

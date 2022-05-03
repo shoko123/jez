@@ -5,7 +5,7 @@
         v-model="item.periods"
         label="Periods"
         rows="1"
-        class="mr-1"
+        class="mr-1 mt-1"
         auto-grow
         readonly
         filled

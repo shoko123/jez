@@ -1,17 +1,17 @@
-INSERT INTO `fauna_tag_types` (`id`, `name`, `category`, `display_name`, `multiple`, `dependency`) VALUES 
-(1,'Mammal','Taxon','Mammal',0,'[["L>taxon_L1_id>4"]]'),
-(2,'Bird','Taxon','Bird',0,'[["L>taxon_L1_id>5"]]'),
-(3, 'Bone-Partition','Bone','Bone Type',0,'[["L>element_L1_id>3"]]'),
-(4,'Bone-Long','Bone','Long Bone',0,'[["M>151"]]'),
-(5,'Bone-Short','Bone','Short Bone',0,'[["M>152"]]'),
-(6,'Bone-Flat','Bone','Flat Bone',0,'[["M>153"]]'),
-(7,'Bone-Irregular','Bone','Irregular Bone',0,'[["M>154"]]'),
-(8,'Bone-Symmetry','Bone','Symmetry',0,'[["L>element_L1_id>3"]]'),
-(9,'Bone-Fusion','Bone','Fusion',0,'[["L>element_L1_id>3"]]'),
-(10,'Tooth-Name','Tooth','Tooth Name',0,'[["L>element_L1_id>4"]]'),
-(11,'Tooth-Age','Tooth','Tooth Age',0,'[["L>element_L1_id>4"]]'),
-(12,'Tooth-Wear','Tooth','Tooth Wear',1,'[["L>element_L1_id>4"]]'),
-(13, 'Life-Stage','Basic Characteristics','Life Stage',1,NULL);
+INSERT INTO `fauna_tag_types` VALUES 
+(1,'Mammal',0,'[[\"L>taxon_L1_id>4\"]]'),
+(2,'Bird',0,'[[\"L>taxon_L1_id>5\"]]'),
+(3,'Bone-Partition',0,'[[\"L>element_L1_id>3\"]]'),
+(4,'Bone-Long',0,'[[\"M>151\"]]'),
+(5,'Bone-Short',0,'[[\"M>152\"]]'),
+(6,'Bone-Flat',0,'[[\"M>153\"]]'),
+(7,'Bone-Irregular',0,'[[\"M>154\"]]'),
+(8,'Bone-Symmetry',0,'[[\"L>element_L1_id>3\"]]'),
+(9,'Bone-Fusion',0,'[[\"L>element_L1_id>3\"]]'),
+(10,'Tooth-Name',0,'[[\"L>element_L1_id>4\"]]'),
+(11,'Tooth-Age',0,'[[\"L>element_L1_id>4\"]]'),
+(12,'Tooth-Wear',1,'[[\"L>element_L1_id>4\"]]'),
+(13,'Life-Stage',1,NULL);
 
 INSERT INTO `fauna_tags` (`id`, `type_id`, `order_column`, `name`) VALUES
 (11,1,1,"Ovis"),

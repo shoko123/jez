@@ -9,7 +9,7 @@ class ModuleGroupOrder
             "Periods/Groups" => [
                 ["Periods (Top-Level)", "Tag-Global", "Periods:Top-Level"],
                 ["Neolithic Subperiods", "Tag-Global", "Periods:Neolithic"],
-                ["Neolithic-Bronze Groups", "Tag-Global", "Pottery:Named-Groups-I"],
+                ["Neolithic-Bronze Groups", "Tag-Module", "Named-Groups-I"],
                 ["Bronze Subperiods", "Tag-Global", "Periods:Bronze"],
                 ["Iron Subperiods", "Tag-Global", "Periods:Iron"],
                 ["Hellenistic Subperiods", "Tag-Global", "Periods:Hellenistic"],
@@ -28,33 +28,33 @@ class ModuleGroupOrder
             */
 
             "Ware" => [
-                ["Ware Coarseness", "Tag-Global", "Pottery:Ware-Coarseness"],
-                ["Ware Color", "Tag-Global", "Pottery:Ware-Color"],
-                ["Ware Temper", "Tag-Global", "Pottery:Ware-Temper"],
-                ["Grit Color", "Tag-Global", "Pottery:Ware-Grit-Color"],
+                ["Ware Coarseness", "Tag-Module", "Ware-Coarseness"],
+                ["Ware Color", "Tag-Module", "Ware-Color"],
+                ["Ware Temper", "Tag-Module", "Ware-Temper"],
+                ["Grit Color", "Tag-Module", "Ware-Grit-Color"],
             ],
             "Basic Characteristics" => [
                 ["Preservation", "Lookup", "preservations", "preservation_id"],
-                ["Life Stage", "Tag-Global", "Pottery:Life-Stage"],
-                ["Production", "Tag-Global", "Pottery:Production"],
+                ["Life Stage", "Tag-Module", "Life-Stage"],
+                ["Production", "Tag-Module", "Production"],
             ],
             "Typology" => [
                 ["Base Partition", "Lookup", "pottery_base_types", "base_type_id"],
-                ["Vessel/Lid Part", "Tag-Global", "Pottery:Vessel-Part"],
-                ["Base", "Tag-Global", "Pottery:Vessel-Base-Type"],
-                ["Foot", "Tag-Global", "Pottery:Foot-Type"],
-                ["Rim", "Tag-Global", "Pottery:Rim-Type"],
-                ["Handle", "Tag-Global", "Pottery:Handle"],
-                ["Vessel Shape Typology", "Tag-Global", "Pottery:Vessel-Shape-Types"],
-                ["Ceramic Artifact Typology", "Tag-Global", "Pottery:Ceramic-Artifact"],
-                ["Architectural/Installation Typology", "Tag-Global", "Pottery:Architectural"],
+                ["Vessel/Lid Part", "Tag-Module", "Vessel-Part"],
+                ["Base", "Tag-Module", "Vessel-Base-Type"],
+                ["Foot", "Tag-Module", "Foot-Type"],
+                ["Rim", "Tag-Module", "Rim-Type"],
+                ["Handle", "Tag-Module", "Handle"],
+                ["Vessel Shape Typology", "Tag-Module", "Vessel-Shape-Types"],
+                ["Ceramic Artifact Typology", "Tag-Module", "Ceramic-Artifact"],
+                ["Architectural/Installation Typology", "Tag-Module", "Architectural"],
             ],
             "Surface-Treatment" => [
-                ["Surface", "Tag-Global", "Pottery:STF"],
-                ["Slip Color", "Tag-Global", "Pottery:STF-Slip-Color"],
-                ["Paint Color", "Tag-Global", "Pottery:STF-Paint-Color"],
-                ["Paint/Slip Pattern", "Tag-Global", "Pottery:STF-Paint-Slip-Pattern"],
-                ["Reductive/Additive", "Tag-Global", "Pottery:STRA"],
+                ["Surface", "Tag-Module", "STF"],
+                ["Slip Color", "Tag-Module", "STF-Slip-Color"],
+                ["Paint Color", "Tag-Module", "STF-Paint-Color"],
+                ["Paint/Slip Pattern", "Tag-Module", "STF-Paint-Slip-Pattern"],
+                ["Reductive/Additive", "Tag-Module", "STRA"],
             ],
         ],
 
@@ -74,21 +74,21 @@ class ModuleGroupOrder
             "Basic Characteristics" => [
                 ["Preservation", "Lookup", "preservations", "preservation_id"],
                 ["Material", "Lookup", "stone_materials", "material_id"],
-                ["Life Stage", "Tag-Global", "Stone:Life-Stage"],
-                ["Morphology", "Tag-Global", "Stone:Morphology"],
-                ["Profile", "Tag-Global", "Stone:Profile"],
-                ["Production", "Tag-Global", "Stone:Production"],
-                ["Use Wear", "Tag-Global", "Stone:Use-Wear"],
+                ["Life Stage", "Tag-Module", "Life-Stage"],
+                ["Morphology", "Tag-Module", "Morphology"],
+                ["Profile", "Tag-Module", "Profile"],
+                ["Production", "Tag-Module", "Production"],
+                ["Use Wear", "Tag-Module", "Use-Wear"],
                 ["Base Typology", "Lookup", "stone_base_types", "base_type_id"],
             ],
             "Typology" => [
-                ["Passive Subtype", "Tag-Global", "Stone:Type-Passive"],
-                ["Active Subtype", "Tag-Global", "Stone:Type-Active"],
-                ["Vessel Part", "Tag-Global", "Stone:Vessel-Part"],
-                ["Vessel Base", "Tag-Global", "Stone:Vessel-Base"],
-                ["Vessel Wall", "Tag-Global", "Stone:Vessel-Wall"],
-                ["Vessel Rim", "Tag-Global", "Stone:Vessel-Rim"],
-                ["Non-Processor Subtype", "Tag-Global", "Stone:Type-Non-Processor"]
+                ["Passive Subtype", "Tag-Module", "Type-Passive"],
+                ["Active Subtype", "Tag-Module", "Type-Active"],
+                ["Vessel Part", "Tag-Module", "Vessel-Part"],
+                ["Vessel Base", "Tag-Module", "Vessel-Base"],
+                ["Vessel Wall", "Tag-Module", "Vessel-Wall"],
+                ["Vessel Rim", "Tag-Module", "Vessel-Rim"],
+                ["Non-Processor Subtype", "Tag-Module", "Type-Non-Processor"]
             ],
         ],
 
@@ -118,7 +118,7 @@ class ModuleGroupOrder
                 ["Material", "Lookup", "metal_materials", "material_id"],
             ],
             "Modern Weaponry Partition" => [
-                ["Modern-weaponry", "Tag-Global", "Metal:Modern-Weaponry"]
+                ["Modern-weaponry", "Tag-Module", "Modern-Weaponry"]
             ]
         ],
 
@@ -166,16 +166,16 @@ class ModuleGroupOrder
             ],
             "Basic Characteristics" => [
                 ["Preservation", "Lookup", "preservations", "preservation_id"],
-                ["Color", "Tag-Global", "Glass:Color"],
-                ["Weathering", "Tag-Global", "Glass:Weathering"],
-                ["Weathering-Type", "Tag-Global", "Glass:Weathering-Type"],
+                ["Color", "Tag-Module", "Color"],
+                ["Weathering", "Tag-Module", "Weathering"],
+                ["Weathering-Type", "Tag-Module", "Weathering-Type"],
                 ["Base Typology", "Lookup", "glass_base_types", "base_type_id"],
             ],
             "Typology" => [
-                ["Vessel/Lamp Subtype", "Tag-Global", "Glass:Vessel-Subtype"],
+                ["Vessel/Lamp Subtype", "Tag-Module", "Vessel-Subtype"],
             ],
             "Production" => [
-                ["Production", "Production", "Tag-Global", "Glass:Production"],
+                ["Production", "Tag-Module", "Production"],
             ],
         ],
     ];

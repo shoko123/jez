@@ -43,10 +43,6 @@ class CreateMetalTables extends Migration
         Schema::create('metal_tag_types', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->string('name', 40);
-            $table->string('category', 40);
-            $table->unsignedTinyInteger('category_order');
-            $table->unsignedTinyInteger('group_order');
-            $table->string('display_name', 40);
             $table->boolean('multiple')->default(0);
             $table->json('dependency')->nullable();
         });

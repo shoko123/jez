@@ -5,7 +5,7 @@ namespace App\Models\Dig;
 use App\Models\Dig\Find;
 use App\Models\ItemTag;
 use App\Models\Lookups\LithicBaseType;
-use App\Models\Scene;
+use App\Models\Tags\LithicTag;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Tags\HasTags;
 
@@ -33,6 +33,11 @@ class Lithic extends BaseDigModel
             ->orderBy('order_column');
     }
 
+    public function module_tags()
+    {
+        return $this->belongsToMany(LithicTag::class, 'lithic-lithic_tags', 'item_id', 'tag_id');
+    }
+    
     public function find()
     {
         return $this->morphOne(Find::class, 'findable');

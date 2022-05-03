@@ -5,6 +5,7 @@ namespace App\Models\Dig;
 use App\Models\Dig\BaseDigModel;
 use App\Models\Dig\Find;
 use App\Models\ItemTag;
+use App\Models\Tags\PotteryTag;
 use App\Models\Lookups\PotteryBaseType;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Tags\HasTags;
@@ -35,6 +36,10 @@ class Pottery extends BaseDigModel
             ->orderBy('order_column');
     }
 
+    public function module_tags()
+    {
+        return $this->belongsToMany(PotteryTag::class, 'pottery-pottery_tags', 'item_id', 'tag_id');
+    }
     public function find()
     {
         return $this->morphOne(Find::class, 'findable');

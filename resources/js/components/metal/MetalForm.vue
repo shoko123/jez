@@ -5,6 +5,7 @@
         v-model="item.description"
         label="Description"
         rows="1"
+        class="mt-1"
         auto-grow
         readonly
         filled

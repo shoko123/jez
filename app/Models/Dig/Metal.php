@@ -3,6 +3,7 @@
 namespace App\Models\Dig;
 
 use App\Models\Dig\Find;
+use App\Models\Tags\MetalTag;
 use App\Models\ItemTag;
 use App\Models\Lookups\MetalBaseType;
 use App\Models\Lookups\MetalMaterial;
@@ -33,6 +34,11 @@ class Metal extends BaseDigModel
         return $this
             ->morphToMany(self::getTagClassName(), 'taggable', 'taggables', null, 'tag_id')
             ->orderBy('order_column');
+    }
+
+    public function module_tags()
+    {
+        return $this->belongsToMany(MetalTag::class, 'metal-metal_tags', 'item_id','tag_id');
     }
 
     public function find()

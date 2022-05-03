@@ -4,6 +4,7 @@ namespace App\Models\Dig;
 
 use App\Models\Dig\Find;
 use App\Models\ItemTag;
+use App\Models\Tags\GlassTag;
 use App\Models\Lookups\GlassBaseType;
 use App\Models\Scene;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -33,6 +34,11 @@ class Glass  extends BaseDigModel
         return $this
             ->morphToMany(self::getTagClassName(), 'taggable', 'taggables', null, 'tag_id')
             ->orderBy('order_column');
+    }
+
+    public function module_tags()
+    {
+        return $this->belongsToMany(GlassTag::class, 'glass-glass_tags', 'item_id', 'tag_id');
     }
 
     public function find()

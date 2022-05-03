@@ -350,7 +350,8 @@ class BaseDigModel extends Model implements HasMedia
     //show common to all small finds
     public function show($p)
     {
-        if ($p["module"] === "Fauna") {
+        /*
+        if ( in_array($p["module"], ["Fauna", "Glass"])) {
             $builder = $this->with(
                 [
                     'find',
@@ -362,7 +363,7 @@ class BaseDigModel extends Model implements HasMedia
                     },
                    
                     'module_tags',
-                    'module_tags.tag_type',
+                    //'module_tags.tag_type',
                     'media',
                 ]
             );
@@ -383,6 +384,24 @@ class BaseDigModel extends Model implements HasMedia
                 ]
             );
         }
+        */
+        $builder = $this->with(
+            [
+                'find',
+                'find.locus' => function ($query) {
+                    $query->select('id', 'locus_no', 'area_season_id');
+                },
+                'find.locus.areaSeason' => function ($query) {
+                    $query->select('id', 'dot');
+                },
+               
+                'module_tags',
+                'tags' => function ($query) {
+                    $query->select('id', 'name', 'type');
+                },
+                'media',
+            ]
+            );
         //$builder->select("$tableName.id AS id", DB::raw("CONCAT(finds.loci.areas_seasons.tag,'/',finds.loci.locus_no ,'.', finds.registration_category ,'.', finds.basket_no  ,'.', finds.artifact_no) as tag"));
 
         $item = $builder->findOrFail($p["id"]);
@@ -404,7 +423,7 @@ class BaseDigModel extends Model implements HasMedia
         //format tags
         $tags = [];
         $moduleTags = [];
-        if ($p["module"] === "Fauna") {
+        //if ( in_array($p["module"], ["Fauna", "Glass"])) {
             foreach ($item->module_tags as $tag) {
                 array_push($moduleTags, (object) [
                     'type_id' => $tag->type_id,
@@ -413,14 +432,14 @@ class BaseDigModel extends Model implements HasMedia
                     'name' => $tag->name
                 ]);
             }
-        } else {
+        //} else {
             foreach ($item->tags as $tag) {
                 array_push($tags, (object) [
                     'type' => $tag->type,
                     'id' => $tag->pivot->tag_id,
                 ]);
             }
-        }
+        //}
 
 
         //format media.

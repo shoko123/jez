@@ -5,6 +5,7 @@ namespace App\Models\Dig;
 use App\Models\Dig\BaseDigModel;
 use App\Models\Dig\Find;
 use App\Models\ItemTag;
+use App\Models\Tags\StoneTag;
 use App\Models\Lookups\StoneBaseType;
 use App\Models\Lookups\StoneMaterial;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -33,6 +34,11 @@ class Stone extends BaseDigModel
         return $this
             ->morphToMany(self::getTagClassName(), 'taggable', 'taggables', null, 'tag_id')
             ->orderBy('order_column');
+    }
+
+    public function module_tags()
+    {
+        return $this->belongsToMany(StoneTag::class, 'stone-stone_tags', 'item_id', 'tag_id');
     }
 
     public function find()

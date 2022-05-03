@@ -100,7 +100,7 @@ class ModuleInitializer extends Model
             $tagType = $model->with(['tags' => function ($q) {
                 $q->select('id', 'name', 'type_id');
             }])
-                ->select('id', 'name AS str_id', 'category', 'display_name', 'multiple', 'dependency')
+                ->select('id', 'name AS str_id', 'multiple', 'dependency')
                 ->where('name', $group[2])
                 ->first();
         }
