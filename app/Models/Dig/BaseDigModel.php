@@ -76,21 +76,7 @@ class BaseDigModel extends Model implements HasMedia
         }
 
         $builder->orderBy('id', 'asc');
-
         $collection = $builder->get();
-
-        /*
-        if ($this->eloquent_model_name === 'AreaSeason') {
-            foreach ($collection as $item) {
-                $item->dot = str_replace('/', '.', $item->tag);;
-            }
-        }
-        if ($this->eloquent_model_name === 'Season') {
-            foreach ($collection as $item) {
-                $item->dot = strval($item->dot);
-            }
-        }
-        */
         return $collection;
     }
 
@@ -216,7 +202,7 @@ class BaseDigModel extends Model implements HasMedia
 
         //filter by tags
         if (!empty($queryParams["tags"])) {
-            if (!empty($queryParams["tags"]["globals"]) ){
+            if (!empty($queryParams["tags"]["globals"])) {
                 //global tags filtering
 
                 $tag_types = (object) [];
@@ -234,17 +220,17 @@ class BaseDigModel extends Model implements HasMedia
                     $builder->withAnyTags($value, $key);
                 }
             }
-            if (!empty($queryParams["tags"]["module"]) ){
+            if (!empty($queryParams["tags"]["module"])) {
                 //module tags filtering
 
                 //organize tags by tag_type
                 $modelName = "App\\Models\\Tags\\" . $this->eloquent_model_name . "Tag";
                 $model = new $modelName;
                 $types = [];
-                      
-                foreach ($queryParams["tags"]["module"] as $index => $tag_id) {                                       
+
+                foreach ($queryParams["tags"]["module"] as $index => $tag_id) {
                     $item = $model->select('type_id')->findOrFail($tag_id);
-                    
+
                     if (array_key_exists($item->type_id, $types)) {
                         array_push($types[$item->type_id], $tag_id);
                     } else {
@@ -254,10 +240,10 @@ class BaseDigModel extends Model implements HasMedia
 
                 //filter
                 foreach ($types as $type_id => $x) {
-                    $builder->whereHas('module_tags', function (Builder $q) use ($x) {      
+                    $builder->whereHas('module_tags', function (Builder $q) use ($x) {
                         $q->whereIn('id', $x);
                     });
-                }           
+                }
             }
         }
 
@@ -350,41 +336,6 @@ class BaseDigModel extends Model implements HasMedia
     //show common to all small finds
     public function show($p)
     {
-        /*
-        if ( in_array($p["module"], ["Fauna", "Glass"])) {
-            $builder = $this->with(
-                [
-                    'find',
-                    'find.locus' => function ($query) {
-                        $query->select('id', 'locus_no', 'area_season_id');
-                    },
-                    'find.locus.areaSeason' => function ($query) {
-                        $query->select('id', 'dot');
-                    },
-                   
-                    'module_tags',
-                    //'module_tags.tag_type',
-                    'media',
-                ]
-            );
-        } else {
-            $builder = $this->with(
-                [
-                    'find',
-                    'find.locus' => function ($query) {
-                        $query->select('id', 'locus_no', 'area_season_id');
-                    },
-                    'find.locus.areaSeason' => function ($query) {
-                        $query->select('id', 'dot');
-                    },
-                    'tags' => function ($query) {
-                        $query->select('id', 'name', 'type');
-                    },
-                    'media',
-                ]
-            );
-        }
-        */
         $builder = $this->with(
             [
                 'find',
@@ -394,18 +345,16 @@ class BaseDigModel extends Model implements HasMedia
                 'find.locus.areaSeason' => function ($query) {
                     $query->select('id', 'dot');
                 },
-               
+
                 'module_tags',
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');
                 },
                 'media',
             ]
-            );
-        //$builder->select("$tableName.id AS id", DB::raw("CONCAT(finds.loci.areas_seasons.tag,'/',finds.loci.locus_no ,'.', finds.registration_category ,'.', finds.basket_no  ,'.', finds.artifact_no) as tag"));
+        );
 
         $item = $builder->findOrFail($p["id"]);
-
 
         //format tag
         $find = $item->find;
@@ -423,24 +372,21 @@ class BaseDigModel extends Model implements HasMedia
         //format tags
         $tags = [];
         $moduleTags = [];
-        //if ( in_array($p["module"], ["Fauna", "Glass"])) {
-            foreach ($item->module_tags as $tag) {
-                array_push($moduleTags, (object) [
-                    'type_id' => $tag->type_id,
-                    'type' => $tag->tag_type->name,
-                    'id' => $tag->pivot->tag_id,
-                    'name' => $tag->name
-                ]);
-            }
-        //} else {
-            foreach ($item->tags as $tag) {
-                array_push($tags, (object) [
-                    'type' => $tag->type,
-                    'id' => $tag->pivot->tag_id,
-                ]);
-            }
-        //}
 
+        foreach ($item->module_tags as $tag) {
+            array_push($moduleTags, (object) [
+                'type_id' => $tag->type_id,
+                'type' => $tag->tag_type->name,
+                'id' => $tag->pivot->tag_id,
+                'name' => $tag->name
+            ]);
+        }
+        foreach ($item->tags as $tag) {
+            array_push($tags, (object) [
+                'type' => $tag->type,
+                'id' => $tag->pivot->tag_id,
+            ]);
+        }
 
         //format media.
         $itemMedia = $this->allMedia($item);
@@ -469,8 +415,8 @@ class BaseDigModel extends Model implements HasMedia
         unset($item->find);
         unset($item->media);
         unset($item->tags);
+        unset($item->moduleTags);
         unset($find->locus);
-
 
         return [
             "item" => $item,

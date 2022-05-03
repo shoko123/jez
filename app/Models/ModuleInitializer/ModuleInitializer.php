@@ -34,7 +34,7 @@ class ModuleInitializer extends Model
         self::getCounts();
         self::addRegistrationGroups();
         self::addModuleGroups();
-      
+
         return [
             "groups" => self::$groups,
             "welcomeData" => [
@@ -45,7 +45,7 @@ class ModuleInitializer extends Model
         ];
     }
 
-    private static function addModuleGroups() 
+    private static function addModuleGroups()
     {
         if (in_array(self::$moduleName, self::$finds)) {
             $categories = ModuleGroupOrder::getCategories(self::$moduleName);
@@ -251,69 +251,4 @@ class ModuleInitializer extends Model
             }
         }
     }
-
-
-    /*
-    private static function addPeriods()
-    {
-        $tagTypes = TagType::where('category', 'Period')
-            ->with(['tags' => function ($q) {
-                $q->select('id', 'name', 'type');
-            }])
-            ->select('str_id', 'subject', 'category', 'category_order', 'group_order', 'display_name', 'multiple', 'dependency')
-            ->orderBy('category_order')
-            ->orderBy('group_order')
-            ->get();
-
-        foreach ($tagTypes as $index => $tagType) {
-            $params = [];
-            foreach ($tagType->tags as $index => $tag) {
-                array_push($params, ['id' => $tag->id, 'name' => $tag->name]);
-            }
-
-            $periodGroup["category"] = $tagType->category;
-            $periodGroup["display_name"] = $tagType->display_name;
-            $periodGroup["group_type"] = "Tag";
-            $periodGroup["str_id"] = $tagType->str_id;
-            $periodGroup["isGlobalTag"] = true;
-            $periodGroup["multiple"] = $tagType->multiple;
-            $periodGroup["dependency"] = is_null($tagType->dependency) ? null : json_decode($tagType->dependency);
-            $periodGroup["params"] = $params;
-            array_push(self::$groups, $periodGroup);
-        }
-    }
-    */
-
-
-    /*
-    private static function addTagModuleGroup($category, $group)
-    {
-        $modelName = "App\\Models\\Tags\\" . self::$moduleName . "TagType";
-        $model = new $modelName;
-
-        $tagType = $model->with(['tags' => function ($q) {
-            $q->select('id', 'name', 'type_id');
-        }])
-            ->select('id', 'name AS str_id', 'category', 'display_name', 'multiple', 'dependency')
-            ->where('name', $group[3])
-            ->first();
-
-        $params = [];
-        foreach ($tagType->tags as $index => $tag) {
-            array_push($params, ['id' => $tag->id, 'name' => $tag->name]);
-        }
-
-        array_push(self::$groups, [
-            "category" => $group[0],
-            "display_name" => $group[1],
-            "group_type" => "Tag",
-            "isGlobalTag" => false,
-            "str_id" => $group[3],
-            "tag_type_id" => $tagType->id,
-            "multiple" => $tagType->multiple,
-            "dependency" => is_null($tagType->dependency) ? null : json_decode($tagType->dependency),
-            'params' => $params
-        ]);
-    }
-    */
 }
