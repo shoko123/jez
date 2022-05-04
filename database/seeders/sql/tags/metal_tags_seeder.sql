@@ -1,10 +1,7 @@
-INSERT INTO `tag_types` (`str_id`, `subject`, `category`, `category_order`, `group_order`, `display_name`, `multiple`, `dependency`) VALUES 
-('Metal:Modern-Weaponry','Metal','Modern Weaponry Partition',4,1,'Modern-weaponry',0, '[["L>base_type_id>40"]]');
+INSERT INTO `metal_tag_types` VALUES (1,'Modern-Weaponry',0,'[[\"L>base_type_id>40\"]]');
 
-INSERT INTO `tags` (`id`, `type`, `order_column`, `name`, `created_at`, `updated_at`, `slug`) VALUES 
-(5001,'Metal:Modern-Weaponry',1,'{"en": "Cartridge"}',NULL,NULL,'{"en": ""}'),
-(5002,'Metal:Modern-Weaponry',2,'{"en": "Cartridge Case"}',NULL,NULL,'{"en": ""}'),
-(5003,'Metal:Modern-Weaponry',3,'{"en": "Bullet"}',NULL,NULL,'{"en": ""}'),
-(5004,'Metal:Modern-Weaponry',4,'{"en": "Shell Head"}',NULL,NULL,'{"en": ""}'),
-(5005,'Metal:Modern-Weaponry',5,'{"en": "Shrapnel"}',NULL,NULL,'{"en": ""}');
+INSERT INTO `metal_tags` VALUES (5001,1,1,'Cartridge'),(5002,1,2,'Cartridge Case'),(5003,1,3,'Bullet'),(5004,1,4,'Shell Head'),(5005,1,5,'Shrapnel');
+
+INSERT INTO `metal-metal_tags` VALUES (102,5001),(104,5001),(12,5002),(15,5002),(105,5002),(106,5002),(107,5002),(108,5002),(109,5002),(110,5002),(111,5002),(112,5002),(113,5002),(114,5002),(115,5002),(116,5002),(118,5002),(205,5002),(208,5002),(3,5003),(8,5003),(53,5003),(128,5003),(17,5004),(28,5004),(29,5004),(122,5004),(206,5004),(207,5004),(38,5005),(94,5005),(125,5005),(126,5005);
+
 

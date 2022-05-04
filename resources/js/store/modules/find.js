@@ -39,6 +39,20 @@ export default {
             let source = rootGetters["mgr/status"].isCreate ? state.newItem : state.find;
             return (source.artifact_no === 0)
         },
+
+        scopeIsArtifact(state, getters, rootState, rootGetters) {
+            if (!rootGetters["mgr/status"].isFind ||
+                (
+                    !rootGetters["mgr/status"].isShow &&
+                    !rootGetters["mgr/status"].isUpdate &&
+                    !rootGetters["mgr/status"].isCreate &&
+                    !rootGetters["mgr/status"].isTags)
+            ) { return false; }
+
+            let source = rootGetters["mgr/status"].isCreate ? state.newItem : state.find;
+            return (source.artifact_no !== 0)
+        },
+        
         scopeIs: (state, rootState, getters, rootGetters) => (scope) => {
             if (!rootGetters["mgr/status"].isFind ||
                 (

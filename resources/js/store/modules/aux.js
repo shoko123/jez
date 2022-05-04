@@ -154,11 +154,8 @@ export default {
 
         selectedItemParams(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isShow || !rootGetters["mgr/item"]) { return [] };
-            let scopeIsBasket = (rootGetters["mgr/status"].isFind &&
-                rootGetters["fnd/item"] &&
-                rootGetters["fnd/item"].basket_no > 0 &&
-                (rootGetters["fnd/item"].artifact_no === 0));
-
+            let scopeIsBasket = rootGetters["fnd/scopeIsBasket"];
+           
             //2 filters:
             // (1) if scope is basket (currently only Pottery) allow only period tags.
             //(this will change with other modules [think Flora])
@@ -172,6 +169,30 @@ export default {
                     .filter(y => y.selectedIn["itemParams"])
                     .map(({ selectedIn, ...y }) => y)
                 let group = { ...x };
+
+                group.params = selectedParams;
+                group.count = selectedParams.length;
+                return group;
+            })
+        },
+
+        itemTags(state, getters, rootState, rootGetters) {
+            if (!rootGetters["mgr/status"].isShow || !rootGetters["mgr/item"]) { return [] };
+            let scopeIsBasket = rootGetters["fnd/scopeIsBasket"];
+           
+            //2 filters:
+            // (1) if scope is basket (currently only Pottery) allow only period tags.
+            //(this will change with other modules [think Flora])
+            // (2) allow only selected
+            return getters["all"].filter(x => {
+                return scopeIsBasket ? x.category === "Periods/Groups" : true;
+            }).filter(x => {
+                return x.params.some(x => x.selectedIn["itemParams"]);
+            }).map(x => {
+                let selectedParams = x.params
+                    .filter(y => y.selectedIn["itemParams"])
+                    .map(p => { return {name: p.name};})
+                let group = { category: x.category, display_name: x.display_name, group_type: x.group_type };
 
                 group.params = selectedParams;
                 group.count = selectedParams.length;
