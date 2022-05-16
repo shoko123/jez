@@ -13,8 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
-
+    'default' => env('FILESYSTEM_DRIVER'),
     /*
     |--------------------------------------------------------------------------
     | Default Cloud Filesystem Disk
@@ -77,6 +76,15 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'minio' => [
+            'driver' => 's3',
+            'endpoint' => env('MINIO_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'key' => env('MINIO_KEY'),
+            'secret' => env('MINIO_SECRET'),
+            'region' => env('MINIO_REGION'),
+            'bucket' => env('MINIO_BUCKET'),
+        ],
     ],
 
 ];

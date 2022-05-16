@@ -25,7 +25,7 @@ class CreateLociTable extends Migration
             $table->string('locus_above', 50)->nullable();
             $table->string('locus_below', 50)->nullable();
             $table->string('locus_co_existing', 50)->nullable();
-            $table->string('description', 500)->nullable();
+            $table->string('description', 1000)->nullable();
             $table->string('deposit', 500)->nullable();
             $table->string('registration_notes', 500)->nullable();
             $table->string('clean', 1)->nullable();

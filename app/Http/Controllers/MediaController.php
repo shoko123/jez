@@ -96,36 +96,15 @@ class MediaController extends Controller
         ], 200);
     }
 
-    public function getAppMedia(Request $request)
+    public function getAppAssetsBaseUrl()
     {
-        $backgroundUrls = [];
-
-        $myModels = array("Auth", "About", "Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Metal", "Glass", "Flora", "Fauna", "Tbd");
-
-        foreach ($myModels as $modelName) {
-            $fullMediaName = 'backgrounds/' . $modelName . '.jpg';
-            $thumbMediaName = 'backgrounds/' . $modelName . '-tn.jpg';
-            //$backgroundUrls[$modelName] = \Storage::disk('app-media')->url($fullMediaName);
-
-            $backgroundUrls[$modelName] = (object) [
-                'fullUrl' => Storage::disk('app-media')->url($fullMediaName),
-                'tnUrl' => Storage::disk('app-media')->url($thumbMediaName),
-            ];
-        }
-
-        $carouselItems = [];
-        for ($index = 0; $index <= 6; $index++) {
-            $fullMediaName = 'carousel/item' . $index . '.jpg';
-            $thumbMediaName = 'carousel/item' . $index . '-tn.jpg';
-            array_push($carouselItems, (object) [
-                'fullUrl' => Storage::disk('app-media')->url($fullMediaName),
-                'tnUrl' => Storage::disk('app-media')->url($fullMediaName)]);
-        }
+        $pilot = str('web-assets/pilot.txt');
+        $pilotUrl = Storage::url($pilot);
+        $appAssetsBaseUrl = substr($pilotUrl, 0, str($pilotUrl)->length() - 9);
 
         return response()->json([
-            "message" => "succesfully initiated app_media (carousel item, etc...)",
-            "appMediaUrl" => env('APP_URL') . '/app-media',
-            "carousel" => $carouselItems,
+            "message" => "returning asset's base url",
+            "appAssetsBaseUrl" => $appAssetsBaseUrl,        
         ], 200);
     }
 }

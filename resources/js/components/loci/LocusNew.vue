@@ -143,7 +143,7 @@
 
 <script>
 import StepButtons from "../stepper/StepButtons";
-import { required } from "vuelidate/lib/validators";
+import { required, maxLength } from "vuelidate/lib/validators";
 
 export default {
   components: { StepButtons },
@@ -160,7 +160,9 @@ export default {
   },
 
   validations: {
-    description: { required }
+    description: { required,
+      maxLength: maxLength(10)
+    },
   },
 
   computed: {
@@ -261,6 +263,7 @@ export default {
       }
       !this.$v.description.required &&
         errors.push("Locus description is required");
+        !this.$v.description.maxLength && errors.push("Text length exceeds 1000 characters");
       return errors;
     },
 

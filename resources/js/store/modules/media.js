@@ -3,6 +3,7 @@ export default {
 
     state: {
         appMediaUrl: null,
+        appAssetsBaseUrl: null,
         dialogAddMedia: false,
         lightBox: {
             isOpen: false,
@@ -25,15 +26,15 @@ export default {
             //let storageName = rootGetters["mgr/storageName"](state.lightBox.source);
             if (state.lightBox.isOpen === false) return null;
 
-            function hasDescription(val){
+            function hasDescription(val) {
                 return (val === undefined || val == null || val.length <= 0) ? true : false;
             }
-            function getItemText(item){
+            function getItemText(item) {
                 let text = "";
-                if(state.lightBox.source === "media") {
+                if (state.lightBox.source === "media") {
                     return "";
-                } 
-                if(!item.hasMedia){
+                }
+                if (!item.hasMedia) {
                     text += `[No media]` + '\n';
                 }
                 text += item.description ? item.description : " [No description]"
@@ -70,16 +71,16 @@ export default {
                     //header = `Showing ${mod} Query Results: ${media.tag}`;
                     lightBoxHeader = `${mod} query results (${index}/${length})`;
                     itemHeader = `${mod} ${media.tag}`;
-                   
+
                     break;
                 case "media":
                     //header = `Showing ${mod} ${itemTag} Related Media`;
                     lightBoxHeader = `${mod} ${itemTag} media (${index}/${length})`;
                     itemHeader = `Media item ${index}`;
-                 
+
                     break;
                 case "related":
-                    
+
                     switch (rootGetters["mgr/module"]) {
                         case "Area":
                         case "Season":
@@ -100,21 +101,27 @@ export default {
                 counter = ` (${index}/${length})`;
             }
             lb["header"] = "******"; //[${index}/${length}]`;
-            lb["lightBoxHeader"] = lightBoxHeader; 
-            lb["itemHeader"] = itemHeader; 
-            lb["itemText"] = getItemText(item); 
+            lb["lightBoxHeader"] = lightBoxHeader;
+            lb["itemHeader"] = itemHeader;
+            lb["itemText"] = getItemText(item);
             return lb;
         },
 
-
         carousel(state) {
-            return state.carousel;
+            let c = [];
+            for (let i = 1; i <= 6; i++) {
+                c.push({
+                    fullUrl: state.appAssetsBaseUrl + 'carousel/item' + i + '.jpg',
+                    tnUrl: state.appAssetsBaseUrl + 'carousel/item' + i + '-tn.jpg'
+                })
+            }
+            return c;
         },
 
         background(state, rootState, getters, rootGetters) {
             let module = rootGetters["mgr/module"];
-            let fullUrl = `${state.appMediaUrl}/backgrounds/${module}.jpg`;
-            let tnUrl = `${state.appMediaUrl}/backgrounds/${module}-tn.jpg`;
+            let fullUrl = `${state.appAssetsBaseUrl}backgrounds/${module}.jpg`;
+            let tnUrl = `${state.appAssetsBaseUrl}backgrounds/${module}-tn.jpg`;
             return { fullUrl, tnUrl };
         },
     },
@@ -138,6 +145,9 @@ export default {
         },
         appMediaUrl(state, payload) {
             state.appMediaUrl = payload;
+        },
+        appAssetsBaseUrl(state, payload) {
+            state.appAssetsBaseUrl = payload;
         },
         carousel(state, payload) {
             state.carousel = payload;
@@ -219,7 +229,7 @@ export default {
         },
 
         //delete a single media item.
-        delete({ state,  getters, rootGetters, commit, dispatch }, payload) {
+        delete({ state, getters, rootGetters, commit, dispatch }, payload) {
             let xhrRequest = {
                 endpoint: `/api/media`,
                 action: "delete",
@@ -246,13 +256,11 @@ export default {
                 })
         },
 
-
-
         //load general media used by the app (backgrounds, fillers, etc.).
         //This media is unrelated to media stored in the DB.
-        getAppMedia({ state, commit, dispatch }, payload) {
+        getAppAssetsBaseUrl({ state, commit, dispatch }, payload) {
             let xhrRequest = {
-                endpoint: `/api/media/app-media`,
+                endpoint: `/api/media/app-assets`,
                 action: "get",
                 data: null,
                 spinner: false,
@@ -260,11 +268,10 @@ export default {
                 snackbar: { onSuccess: false, onFailure: true, },
                 messages: { loading: `loading app's media`, onSuccess: '', onFailure: 'Failed to load app media', },
             };
+
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    //console.log('load app media returned: ' + JSON.stringify(res.data, null, 2));
-                    commit('appMediaUrl', res.data.appMediaUrl);
-                    commit('carousel', res.data.carousel);
+                    commit('appAssetsBaseUrl', res.data.appAssetsBaseUrl);
                     return res;
 
                 }).catch(err => {

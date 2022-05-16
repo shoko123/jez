@@ -544,8 +544,8 @@ class BaseDigModel extends Model implements HasMedia
     {
         $fullMediaName = 'fillers/' . $eloquent_model_name . '0.jpg';
         $tnMediaName = 'fillers/' . $eloquent_model_name . '0-tn.jpg';
-        $fullUrl = Storage::disk('app-media')->url($fullMediaName);
-        $tnUrl = Storage::disk('app-media')->url($tnMediaName);
+        $fullUrl = Storage::url($fullMediaName);
+        $tnUrl = Storage::url($tnMediaName);
         return (object) [
             'hasMedia' => false,
             'fullUrl' => $fullUrl,
