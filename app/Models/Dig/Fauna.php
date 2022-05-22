@@ -2,15 +2,13 @@
 
 namespace App\Models\Dig;
 
-use App\Models\Dig\Find;
+use App\Models\Find;
 use App\Models\Tags\FaunaTag;
 use App\Models\ItemTag;
 use App\Models\Lookups\FaunaTaxon;
-use App\Models\Lookups\FaunaElements;
-
-use App\Models\Scene;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Tags\HasTags;
+use App\Models\BaseDigModel;
 
 class Fauna extends BaseDigModel
 {
@@ -21,7 +19,7 @@ class Fauna extends BaseDigModel
 
     public function __construct()
     {
-        parent::__construct("Fauna");
+        $this->eloquent_model_name = "Fauna";
     }
 
     //The following 2 functions are needed because I use my owm ItemTag model instead of Spatie/tag.
@@ -38,7 +36,7 @@ class Fauna extends BaseDigModel
     }
     public function module_tags()
     {
-        return $this->belongsToMany(FaunaTag::class, 'fauna-fauna_tags', 'item_id','tag_id');
+        return $this->belongsToMany(FaunaTag::class, 'fauna-fauna_tags', 'item_id', 'tag_id');
     }
 
     public function find()

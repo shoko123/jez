@@ -2,8 +2,8 @@
 
 namespace App\Models\Dig;
 
+use App\Models\BaseDigModel;
 use App\Models\Dig\AreaSeason;
-use App\Models\Dig\BaseDigModel;
 
 class Area extends BaseDigModel
 {
@@ -12,7 +12,7 @@ class Area extends BaseDigModel
 
     public function __construct()
     {
-        parent::__construct("Area");
+        $this->eloquent_model_name = "Area";
     }
   
     public function areas_seasons()

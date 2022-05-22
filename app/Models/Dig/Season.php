@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Models\Dig;
 
+use App\Models\BaseDigModel;
 use App\Models\Dig\AreaSeason;
-use App\Models\Dig\BaseDigModel;
 
 class Season extends BaseDigModel
 {
@@ -11,7 +12,7 @@ class Season extends BaseDigModel
 
     public function __construct()
     {
-        parent::__construct("Season");
+        $this->eloquent_model_name = "Season";
     }
 
     public function areas_seasons()
@@ -20,7 +21,7 @@ class Season extends BaseDigModel
     }
 
     public function show($ids)
-    {   
+    {
         $item = $this->with(['media', 'areas_seasons'])->findOrFail($ids["id"]);
 
         //get related media.
@@ -57,6 +58,5 @@ class Season extends BaseDigModel
             "itemMedia" => $itemMedia,
             "areasSeasons" => $areasSeasons,
         ];
-        
     }
 }

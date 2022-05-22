@@ -3,8 +3,7 @@
 namespace App\Models\Dig;
 
 
-use App\Models\Dig\BaseDigModel;
-use Illuminate\Support\Facades\Storage;
+use App\Models\BaseDigModel;
 
 class About extends BaseDigModel
 {
@@ -14,18 +13,18 @@ class About extends BaseDigModel
     
     public function __construct()
     {
-        parent::__construct("About");
+        $this->eloquent_model_name = "About";
     }
 
     public function show($ids)
     {
         $item = $this->findOrFail($ids["id"]);
-
         $item->dot = $item->tab . '.' . $item->no;
         $item->title = strval($item->tab) . "." . strval($item->no) . " " . $item->title;
-        $item->fullUrl = Storage::url('web-assets/about/' .  $item->image . '.jpg');
-        $item->tnUrl = Storage::url('web-assets/about/' . $item->image . '-tn.jpg');        
-        //$item->tag = $item->name;
+        $item->fullUrl = self::$bucketUrl . 'app/about/'.  $item->image . '.jpg'; 
+        $item->tnUrl = self::$bucketUrl . 'app/about/'.  $item->image . '-tn.jpg'; 
+        // $item->fullUrl = Storage::url('app/about/' .  $item->image . '.jpg');
+        // $item->tnUrl = Storage::url('app/about/' . $item->image . '-tn.jpg');        
         return [
             "item" => $item,
         ];

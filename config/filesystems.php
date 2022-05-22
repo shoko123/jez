@@ -25,7 +25,8 @@ return [
     |
     */
 
-    'cloud' => env('FILESYSTEM_CLOUD', 's3'),
+    'cloud' => env('FILESYSTEM_DRIVER'),
+    //'cloud' => env('FILESYSTEM_CLOUD', 's3'),
 
     /*
     |--------------------------------------------------------------------------
@@ -53,7 +54,8 @@ return [
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
-        
+  
+        /*
         'media' => [
             'driver' => 'local',
             'root'   => public_path('media'),
@@ -65,8 +67,7 @@ return [
             'root'   => public_path('app-media'),
             'url' => env('APP_URL').'/app-media',
         ],
-        
-
+        */
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -76,9 +77,11 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+    
         'minio' => [
             'driver' => 's3',
             'endpoint' => env('MINIO_ENDPOINT'),
+            'url' => env('MINIO_ENDPOINT'),
             'use_path_style_endpoint' => true,
             'key' => env('MINIO_KEY'),
             'secret' => env('MINIO_SECRET'),

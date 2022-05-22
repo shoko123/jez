@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dig\Stone;
+use App\Models\BaseDigModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class MediaController extends Controller
 {
     protected $model;
-
-    //we get the stone model in order to use its MediaTrait
-    public function __construct(Stone $model)
+    public function __construct(BaseDigModel $model)
     {
         $this->model = $model;
     }
@@ -66,8 +65,7 @@ class MediaController extends Controller
                 "collection" => $itemMedia->collection,
                 "item_id" => $id,
             ]);
-
-        } catch (\Exception$error) {
+        } catch (\Exception $error) {
             return response()->json(["error" => $error->getMessage()], 500);
         }
     }
@@ -96,15 +94,11 @@ class MediaController extends Controller
         ], 200);
     }
 
-    public function getAppAssetsBaseUrl()
+    public function getBucketUrl()
     {
-        $pilot = str('web-assets/pilot.txt');
-        $pilotUrl = Storage::url($pilot);
-        $appAssetsBaseUrl = substr($pilotUrl, 0, str($pilotUrl)->length() - 9);
-
         return response()->json([
             "message" => "returning asset's base url",
-            "appAssetsBaseUrl" => $appAssetsBaseUrl,        
+            "bucketUrl" => $this->model->getBucketUrl(),
         ], 200);
     }
 }

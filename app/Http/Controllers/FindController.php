@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dig\Find;
+use App\Models\Find;
 
 class FindController extends Controller
 {

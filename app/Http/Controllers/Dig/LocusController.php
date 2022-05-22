@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dig;
 use App\Http\Controllers\BaseDigModuleController;
 use App\Http\Requests\LocusStoreRequest;
 use App\Models\Dig\AreaSeason;
-use App\Models\Dig\Find;
+use App\Models\Find;
 use App\Models\Dig\Locus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;

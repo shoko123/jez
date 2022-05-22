@@ -2,7 +2,7 @@
 
 namespace App\Models\Dig;
 
-use App\Models\Dig\Find;
+use App\Models\Find;
 use Illuminate\Database\Eloquent\Model;
 
 class Specialist extends Model

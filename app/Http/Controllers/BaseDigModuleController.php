@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Http\Requests\ShowRequest;
 use App\Http\Requests\ChunkRequest;
-use App\Models\Dig\BaseDigModel;
+use App\Models\BaseDigModel;
 
 class BaseDigModuleController extends Controller
 {
@@ -16,7 +16,7 @@ class BaseDigModuleController extends Controller
     public function __construct()
     {
         $this->modules = array("About", "Area", "Season", "AreaSeason", "Locus", "Pottery", "Stone", "Lithic", "Glass", "Metal", "Flora", "Fauna", "Tbd");
-        $this->baseDigModel = new BaseDigModel("hh");
+        $this->baseDigModel = new BaseDigModel();
     }
 
     public function show(ShowRequest $r)

@@ -3,7 +3,7 @@ export default {
 
     state: {
         appMediaUrl: null,
-        appAssetsBaseUrl: null,
+        bucketUrl: null,
         dialogAddMedia: false,
         lightBox: {
             isOpen: false,
@@ -111,8 +111,8 @@ export default {
             let c = [];
             for (let i = 1; i <= 6; i++) {
                 c.push({
-                    fullUrl: state.appAssetsBaseUrl + 'carousel/item' + i + '.jpg',
-                    tnUrl: state.appAssetsBaseUrl + 'carousel/item' + i + '-tn.jpg'
+                    fullUrl: `${state.bucketUrl}app/carousel/Carousel_item${i}.jpg`,
+                    tnUrl: `${state.bucketUrl}app/carousel/Carousel_item${i}-tn.jpg`
                 })
             }
             return c;
@@ -120,8 +120,8 @@ export default {
 
         background(state, rootState, getters, rootGetters) {
             let module = rootGetters["mgr/module"];
-            let fullUrl = `${state.appAssetsBaseUrl}backgrounds/${module}.jpg`;
-            let tnUrl = `${state.appAssetsBaseUrl}backgrounds/${module}-tn.jpg`;
+            let fullUrl = `${state.bucketUrl}app/backgrounds/${module}_Background.jpg`;
+            let tnUrl = `${state.bucketUrl}app/backgrounds/${module}_Background-tn.jpg`;
             return { fullUrl, tnUrl };
         },
     },
@@ -146,8 +146,8 @@ export default {
         appMediaUrl(state, payload) {
             state.appMediaUrl = payload;
         },
-        appAssetsBaseUrl(state, payload) {
-            state.appAssetsBaseUrl = payload;
+        bucketUrl(state, payload) {
+            state.bucketUrl = payload;
         },
         carousel(state, payload) {
             state.carousel = payload;
@@ -258,9 +258,9 @@ export default {
 
         //load general media used by the app (backgrounds, fillers, etc.).
         //This media is unrelated to media stored in the DB.
-        getAppAssetsBaseUrl({ state, commit, dispatch }, payload) {
+        getBucketUrl({ state, commit, dispatch }, payload) {
             let xhrRequest = {
-                endpoint: `/api/media/app-assets`,
+                endpoint: `/api/media/bucket-url`,
                 action: "get",
                 data: null,
                 spinner: false,
@@ -271,7 +271,8 @@ export default {
 
             return dispatch('xhr/xhr', xhrRequest, { root: true })
                 .then((res) => {
-                    commit('appAssetsBaseUrl', res.data.appAssetsBaseUrl);
+                    console.log(`Setting bucketUrl: ${res.data.bucketUrl}`);
+                    commit('bucketUrl', res.data.bucketUrl);
                     return res;
 
                 }).catch(err => {

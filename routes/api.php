@@ -32,8 +32,8 @@ use App\Http\Controllers\ModuleInitializerController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TestController;
 
-//get app-assets location (used by carousel images, fillers, etc...).
-Route::get('media/app-assets', [MediaController::class, 'getAppAssetsBaseUrl']);
+//get bucket-url where assets are stored.
+Route::get('media/bucket-url', [MediaController::class, 'getBucketUrl']);
 
 //test (dev only)
 Route::post('test', [TestController::class, 'test']);

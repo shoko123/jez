@@ -2,10 +2,12 @@
 
 namespace App\Models\Dig;
 
-use App\Models\Dig\Find;
+use App\Models\BaseDigModel;
+use App\Models\Find;
 use App\Models\Tags\FloraTag;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Tags\HasTags;
+
 
 class Flora extends BaseDigModel
 {
@@ -15,7 +17,7 @@ class Flora extends BaseDigModel
 
     public function __construct()
     {
-        parent::__construct("Flora");
+        $this->eloquent_model_name = "Flora";
     }
 
     //The following 2 functions are needed because I use my owm ItemTag model instead of Spatie/tag.
@@ -33,7 +35,7 @@ class Flora extends BaseDigModel
 
     public function module_tags()
     {
-        return $this->belongsToMany(FloraTag::class, 'flora-flora_tags', 'item_id','tag_id');
+        return $this->belongsToMany(FloraTag::class, 'flora-flora_tags', 'item_id', 'tag_id');
     }
 
     public function find()

@@ -2,7 +2,8 @@
 
 namespace App\Models\Dig;
 
-use App\Models\Dig\Find;
+use App\Models\BaseDigModel;
+use App\Models\Find;
 use App\Models\ItemTag;
 use App\Models\Tags\GlassTag;
 use App\Models\Lookups\GlassBaseType;
@@ -20,7 +21,7 @@ class Glass  extends BaseDigModel
 
     public function __construct()
     {
-        parent::__construct("Glass");
+        $this->eloquent_model_name = "Glass";
     }
 
     //The following 2 functions are needed because I use my owm ItemTag model instead of Spatie/tag.

@@ -2,7 +2,8 @@
 
 namespace App\Models\Dig;
 
-use App\Models\Dig\Find;
+use App\Models\BaseDigModel;
+use App\Models\Find;
 use App\Models\Scene;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Tags\HasTags;
@@ -16,7 +17,7 @@ class Tbd extends BaseDigModel
 
     public function __construct()
     {
-        parent::__construct("Tbd");
+        $this->eloquent_model_name = "Tbd";
     }
 
     //The following 2 functions are needed because I use my owm ItemTag model instead of Spatie/tag.
@@ -34,7 +35,7 @@ class Tbd extends BaseDigModel
 
     public function find()
     {
-        return $this->morphOne('\App\Models\Dig\Find', 'findable');
+        return $this->morphOne(Find::class, 'findable');
     }
 
     public function scenes()

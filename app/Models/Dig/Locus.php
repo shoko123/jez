@@ -2,9 +2,9 @@
 
 namespace App\Models\Dig;
 
+use App\Models\BaseDigModel;
 use App\Models\Dig\AreaSeason;
-use App\Models\Dig\BaseDigModel;
-use App\Models\Dig\Find;
+use App\Models\Find;
 
 class Locus extends BaseDigModel
 {
@@ -14,7 +14,7 @@ class Locus extends BaseDigModel
 
     public function __construct()
     {
-        parent::__construct("Locus");
+        $this->eloquent_model_name = "Locus";
     }
     public function areaSeason()
     {
@@ -25,7 +25,7 @@ class Locus extends BaseDigModel
     {
         return $this->hasMany(Find::class);
     }
-    
+
     public function show($ids)
     {
         $locus = $this->with(
@@ -44,7 +44,7 @@ class Locus extends BaseDigModel
 
         //format dot
         $locus->dot = $locus->areaSeason->dot . '.' . $locus->locus_no;
-        
+
         //get tags
         $tags = [];
         foreach ($locus->tags as $tag) {
@@ -75,7 +75,7 @@ class Locus extends BaseDigModel
             "tags" => $tags,
         ];
     }
- 
+
     protected function locusFinds($locus_dot, $finds)
     {
         $order = array("Pottery" => 1, "Stone" => 2, "Lithic" => 3, "Metal" => 4, "Glass" => 5, "Flora" => 6, "Fauna" => 7, "Tbd" => 8);
@@ -85,7 +85,7 @@ class Locus extends BaseDigModel
             //set type to order by.
             $type = $find->findable_type;
 
-           
+
             //create formatted find with media info. (media was preloaded in query)
             $formatted = $this->primaryMedia($find->findable);
 

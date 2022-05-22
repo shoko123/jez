@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dig;
 use App\Http\Controllers\BaseDigModuleController;
 use App\Http\Requests\FindStoreRequest;
 use App\Http\Requests\FaunaStoreRequest;
-use App\Models\Dig\Find;
+use App\Models\Find;
 use App\Models\Dig\Fauna;
 use App\Models\Dig\Locus;
 use Illuminate\Http\Request;

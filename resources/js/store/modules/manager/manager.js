@@ -354,7 +354,7 @@ export default {
 
             //dispatch("mgr/initApp", null, { root: true });
             //load global settings and load media used by app
-            dispatch("med/getAppAssetsBaseUrl", null, { root: true });
+            dispatch("med/getBucketUrl", null, { root: true });
 
             //get current app setting (authorizedUsersOnly, readOnly)
             let xhrRequest = {

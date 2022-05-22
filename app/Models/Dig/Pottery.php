@@ -2,8 +2,8 @@
 
 namespace App\Models\Dig;
 
-use App\Models\Dig\BaseDigModel;
-use App\Models\Dig\Find;
+use App\Models\BaseDigModel;
+use App\Models\Find;
 use App\Models\ItemTag;
 use App\Models\Tags\PotteryTag;
 use App\Models\Lookups\PotteryBaseType;
@@ -20,7 +20,7 @@ class Pottery extends BaseDigModel
 
     public function __construct()
     {
-        parent::__construct("Pottery");
+        $this->eloquent_model_name = "Pottery";
     }
     
     //The following 2 functions are needed because I use my owm ItemTag model instead of Spatie/tag.
