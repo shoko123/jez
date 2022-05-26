@@ -13,7 +13,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\HasTags;
 use App\Models\Dig\AreaSeason;
 use App\Models\Dig\Locus;
-
+use Exception;
 
 class BaseDigModel extends Model implements HasMedia
 {
@@ -28,11 +28,18 @@ class BaseDigModel extends Model implements HasMedia
         $this->eloquent_model_name = $eloquent_model_name;
         $pilot = 'pilot';
 
-        if (env('S3_IS_LOCAL')) {
-            self::$bucketUrl = 'http://127.0.0.1:9000/jezreel/';
-        } else {
-            $pilotUrl = Storage::url($pilot);
-            self::$bucketUrl = substr($pilotUrl, 0, str($pilotUrl)->length() - str($pilot)->length());
+        switch (env('FILESYSTEM_DISK')) {
+            case 'minio':
+                self::$bucketUrl = 'http://127.0.0.1:9000/jezreel/';
+                break;
+
+            case 'do':
+                $pilotUrl = Storage::url($pilot);
+                self::$bucketUrl = substr($pilotUrl, 0, str($pilotUrl)->length() - str($pilot)->length());
+                break;
+                
+            default:
+                throw new Exception('Unrecognized filesystem disk name');
         }
     }
 
@@ -551,7 +558,7 @@ class BaseDigModel extends Model implements HasMedia
 
     public function getBucketUrl(): string
     {
-       
+
         return self::$bucketUrl;
     }
 

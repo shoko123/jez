@@ -60,17 +60,18 @@ return [
             'endpoint' => env('DO_SPACES_ENDPOINT'),
             'region' => env('DO_SPACES_REGION'),
             'bucket' => env('DO_SPACES_BUCKET'),
+            'visibility' => 'public',            
         ],
     
         'minio' => [
-            'driver' => 's3',
-            'endpoint' => env('MINIO_ENDPOINT'),
-            'url' => env('MINIO_ENDPOINT'),
-            'use_path_style_endpoint' => true,
+            'driver' => 's3',            
             'key' => env('MINIO_KEY'),
             'secret' => env('MINIO_SECRET'),
+            'endpoint' => env('MINIO_ENDPOINT'),
             'region' => env('MINIO_REGION'),
-            'bucket' => env('MINIO_BUCKET'),
+            'bucket' => env('MINIO_BUCKET'),           
+            'url' => env('MINIO_ENDPOINT'),
+            'use_path_style_endpoint' => true,
         ],
     ],
 

@@ -12,15 +12,16 @@ use Illuminate\Support\Facades\Storage;
 class TestController extends Controller
 {
     public function url() {
-
-        $pilotUrl = Storage::url('pilot');
+        $pilot = 'pilot';
+        $pilotUrl = Storage::url($pilot);
         $visibility = Storage::getVisibility('pilot');
         $files = Storage::files('/app/about/');
         $time = Storage::lastModified('pilot');
         return response()->json([
-            "pilotUrl" => $pilotUrl,
+            "FILESYSTEM_DISK" => env('FILESYSTEM_DISK'),
+            "bucketUrl" => substr($pilotUrl, 0, str($pilotUrl)->length() - str($pilot)->length()),
             "visibility" => $visibility,
-            "files" => $files,
+            "files in app folder" => $files,
             "time" => $time
         ], 200);
     }  
