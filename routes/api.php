@@ -38,7 +38,8 @@ Route::get('media/bucket-url', [MediaController::class, 'getBucketUrl']);
 //test (dev only)
 Route::post('test', [TestController::class, 'test']);
 Route::post('get-id', [TestController::class, 'getId']);
-
+Route::post('url', [TestController::class, 'url']);
+Route::post('store', [TestController::class, 'store']);
 //open routes
 Route::post('module-initializer', [ModuleInitializerController::class, 'index']);
 Route::get('accessibility', [GlobalSettingsController::class, 'accessibility']);

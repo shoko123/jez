@@ -13,7 +13,7 @@ class About extends BaseDigModel
     
     public function __construct()
     {
-        $this->eloquent_model_name = "About";
+        parent::__construct("About");
     }
 
     public function show($ids)
@@ -22,9 +22,8 @@ class About extends BaseDigModel
         $item->dot = $item->tab . '.' . $item->no;
         $item->title = strval($item->tab) . "." . strval($item->no) . " " . $item->title;
         $item->fullUrl = self::$bucketUrl . 'app/about/'.  $item->image . '.jpg'; 
-        $item->tnUrl = self::$bucketUrl . 'app/about/'.  $item->image . '-tn.jpg'; 
-        // $item->fullUrl = Storage::url('app/about/' .  $item->image . '.jpg');
-        // $item->tnUrl = Storage::url('app/about/' . $item->image . '-tn.jpg');        
+        $item->tnUrl = self::$bucketUrl . 'app/about/'.  $item->image . '-tn.jpg';
+             
         return [
             "item" => $item,
         ];

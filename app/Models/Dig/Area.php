@@ -12,7 +12,7 @@ class Area extends BaseDigModel
 
     public function __construct()
     {
-        $this->eloquent_model_name = "Area";
+        parent::__construct("Area");
     }
   
     public function areas_seasons()

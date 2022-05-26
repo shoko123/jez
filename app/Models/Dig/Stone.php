@@ -20,7 +20,7 @@ class Stone extends BaseDigModel
 
     public function __construct()
     {
-        $this->eloquent_model_name = "Stone";
+        parent::__construct("Stone");
     }
 
     //The following 2 functions are needed because I use my owm ItemTag model instead of Spatie/tag.

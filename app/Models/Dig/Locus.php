@@ -14,7 +14,7 @@ class Locus extends BaseDigModel
 
     public function __construct()
     {
-        $this->eloquent_model_name = "Locus";
+        parent::__construct("Locus");
     }
     public function areaSeason()
     {

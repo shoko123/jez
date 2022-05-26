@@ -21,7 +21,7 @@ class Metal extends BaseDigModel
 
     public function __construct()
     {
-        $this->eloquent_model_name = "Metal";
+        parent::__construct("Metal");
     }
 
     //The following 2 functions are needed because I use my owm ItemTag model instead of Spatie/tag.

@@ -21,11 +21,19 @@ class BaseDigModel extends Model implements HasMedia
     public $timestamps = false;
     protected $guarded = [];
     protected $eloquent_model_name;
-    protected static $bucketUrl = 'http://127.0.0.1:9000/jezreel/';
+    protected static $bucketUrl = null;
 
-    public function __construct()
+    public function __construct($eloquent_model_name = null)
     {
-        //
+        $this->eloquent_model_name = $eloquent_model_name;
+        $pilot = 'pilot';
+
+        if (env('S3_IS_LOCAL')) {
+            self::$bucketUrl = 'http://127.0.0.1:9000/jezreel/';
+        } else {
+            $pilotUrl = Storage::url($pilot);
+            self::$bucketUrl = substr($pilotUrl, 0, str($pilotUrl)->length() - str($pilot)->length());
+        }
     }
 
     public function registerMediaConversions(Media $media = null): void
@@ -543,21 +551,8 @@ class BaseDigModel extends Model implements HasMedia
 
     public function getBucketUrl(): string
     {
-        $pilot = 'pilot';
-        $bucketUrl = null;
-
-        switch (env('FILESYSTEM_DRIVER')) {
-            case 'do_space':
-                $pilotUrl = Storage::url($pilot);
-                $bucketUrl = substr($pilotUrl, 0, str($pilotUrl)->length() - str($pilot)->length());
-                break;
-            case 'minio':
-                $bucketUrl = 'http://127.0.0.1:9000/jezreel/';
-                break;
-            default:
-                //return null;
-        }
-        return $bucketUrl;
+       
+        return self::$bucketUrl;
     }
 
     public function filler(String $eloquent_model_name)
