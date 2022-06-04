@@ -2,7 +2,6 @@ export default {
     namespaced: true,
 
     state: {
-        appMediaUrl: null,
         bucketUrl: null,
         dialogAddMedia: false,
         lightBox: {
@@ -126,6 +125,10 @@ export default {
         },
     },
     mutations: {
+        bucketUrl(state, payload) {
+            state.bucketUrl = payload;
+        },
+        
         dialogAddMedia(state, payload) {
             state.dialogAddMedia = payload;
         },
@@ -143,12 +146,7 @@ export default {
         indexInChunk(state, payload) {
             state.lightBox.indexInChunk = payload;
         },
-        appMediaUrl(state, payload) {
-            state.appMediaUrl = payload;
-        },
-        bucketUrl(state, payload) {
-            state.bucketUrl = payload;
-        },
+
         carousel(state, payload) {
             state.carousel = payload;
         },

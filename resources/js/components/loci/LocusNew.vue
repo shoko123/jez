@@ -161,7 +161,7 @@ export default {
 
   validations: {
     description: { required,
-      maxLength: maxLength(10)
+      maxLength: maxLength(1000)
     },
   },
 
