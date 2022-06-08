@@ -5,6 +5,7 @@ namespace App\Models\Dig;
 use App\Models\BaseDigModel;
 use App\Models\Dig\AreaSeason;
 use App\Models\Find;
+use App\Models\Tags\LocusTag;
 
 class Locus extends BaseDigModel
 {
@@ -26,6 +27,11 @@ class Locus extends BaseDigModel
         return $this->hasMany(Find::class);
     }
 
+    public function module_tags()
+    {
+        return $this->belongsToMany(LocusTag::class, 'locus-locus_tags', 'item_id', 'tag_id');
+    }
+
     public function show($ids)
     {
         $locus = $this->with(
@@ -38,6 +44,7 @@ class Locus extends BaseDigModel
                 'tags' => function ($query) {
                     $query->select('id', 'name', 'type');
                 },
+                'module_tags',
                 'media',
             ]
         )->findOrFail($ids["id"]);
@@ -47,10 +54,14 @@ class Locus extends BaseDigModel
 
         //get tags
         $tags = [];
-        foreach ($locus->tags as $tag) {
-            array_push($tags, (object) [
-                'type' => $tag->type,
+        $moduleTags = [];
+
+        foreach ($locus->module_tags as $tag) {
+            array_push($moduleTags, (object) [
+                'type_id' => $tag->type_id,
+                'type' => $tag->tag_type->name,
                 'id' => $tag->pivot->tag_id,
+                'name' => $tag->name
             ]);
         }
 
@@ -73,6 +84,7 @@ class Locus extends BaseDigModel
             "locusFinds" => $locusFinds,
             "itemMedia" => $itemMedia,
             "tags" => $tags,
+            "moduleTags" => $moduleTags,
         ];
     }
 

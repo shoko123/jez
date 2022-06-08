@@ -5,6 +5,13 @@ namespace App\JezStatic;
 class ModuleGroupOrder
 {
     private static $modules = [
+        "Locus" => [
+            "Square and Type" => [
+                ["Square", "Tag-Module", "Square"],
+                ["Locus Type", "Tag-Module", "Locus Type"],
+            ],
+        ],
+
         "Pottery" => [
             "Periods/Groups" => [
                 ["Periods (Top-Level)", "Tag-Global", "Periods:Top-Level"],

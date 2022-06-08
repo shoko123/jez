@@ -100,20 +100,32 @@ class BaseDigModel extends Model implements HasMedia
     {
         $builder = $this->leftjoin('areas_seasons', 'loci.area_season_id', '=', 'areas_seasons.id');
 
+        //filter by tags
         if (!empty($queryParams["tags"])) {
-            $tag_types = (object) [];
-            foreach ($queryParams["tags"]["tags"] as $index => $tag_id) {
-                $t = ItemTag::select('type', 'name')->findOrFail($tag_id);
-                $type = $t->type;
-                if (property_exists($tag_types, $type)) {
-                    array_push($tag_types->$type, $t->name);
-                } else {
-                    $tag_types->$type = array($t->name);
-                }
-            }
+            if (!empty($queryParams["tags"]["module"])) {
+                //module tags filtering
 
-            foreach ($tag_types as $key => $value) {
-                $builder->withAnyTags($value, $key);
+                //organize tags by tag_type
+                $modelName = "App\\Models\\Tags\\" . $this->eloquent_model_name . "Tag";
+                $model = new $modelName;
+                $types = [];
+
+                foreach ($queryParams["tags"]["module"] as $index => $tag_id) {
+                    $item = $model->select('type_id')->findOrFail($tag_id);
+
+                    if (array_key_exists($item->type_id, $types)) {
+                        array_push($types[$item->type_id], $tag_id);
+                    } else {
+                        $types[$item->type_id] = [$tag_id];
+                    }
+                }
+
+                //filter
+                foreach ($types as $type_id => $x) {
+                    $builder->whereHas('module_tags', function (Builder $q) use ($x) {
+                        $q->whereIn('id', $x);
+                    });
+                }
             }
         }
 

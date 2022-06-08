@@ -47,7 +47,7 @@ class ModuleInitializer extends Model
 
     private static function addModuleGroups()
     {
-        if (in_array(self::$moduleName, self::$finds)) {
+        if (in_array(self::$moduleName, self::$finds) || self::$moduleName === "Locus") {
             $categories = ModuleGroupOrder::getCategories(self::$moduleName);
 
             foreach ($categories as $category => $groups) {

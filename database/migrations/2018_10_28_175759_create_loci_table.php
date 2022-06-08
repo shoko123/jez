@@ -36,9 +36,35 @@ class CreateLociTable extends Migration
                   ->references('id')->on('areas_seasons')
                   ->onDelete('cascade')
                   ->onUpdate('cascade');
+        });
 
+        Schema::create('locus_tag_types', function (Blueprint $table) {
+            $table->tinyIncrements('id');
+            $table->string('name', 40);
+            $table->boolean('multiple')->default(0);
+            $table->json('dependency')->nullable();
+        });
 
-            //$table->unique('area_season_id', 'locus');
+        Schema::create('locus_tags', function (Blueprint $table) {
+            $table->smallIncrements('id');
+            $table->string('name', 50);
+            $table->unsignedTinyInteger('type_id');
+            $table->unsignedSmallInteger('order_column');
+                
+            $table->foreign('type_id')
+                ->references('id')
+                ->on('locus_tag_types')
+                ->onUpdate('cascade');
+        });
+
+        Schema::create('locus-locus_tags', function (Blueprint $table) {
+            $table->unsignedInteger('item_id');
+            $table->foreign('item_id')->references('id')->on('loci')->onUpdate('cascade');
+
+            $table->unsignedSmallInteger('tag_id')->unsigned();
+            $table->foreign('tag_id')->references('id')->on('locus_tags')->onUpdate('cascade');
+
+            $table->primary(['item_id', 'tag_id']);
         });
     }
 
