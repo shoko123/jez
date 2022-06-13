@@ -18,6 +18,6 @@ class LocusTag extends Model
 
     public function item()
     {
-        return $this->belongsToMany(Locus::class, 'Locus-Locus_tags', 'tag_id', 'item_id');
+        return $this->belongsToMany(Locus::class, 'locus-locus_tags', 'tag_id', 'item_id');
     }
 }

@@ -89,13 +89,14 @@ class CreateFaunaTables extends Migration
 
         Schema::create('fauna_tags', function (Blueprint $table) {
             $table->smallIncrements('id');
+            $table->string('name', 50);
             $table->unsignedTinyInteger('type_id');
+            $table->unsignedSmallInteger('order_column');
+
             $table->foreign('type_id')
                 ->references('id')
                 ->on('fauna_tag_types')
                 ->onUpdate('cascade');
-            $table->unsignedSmallInteger('order_column');
-            $table->string('name', 50);
         });
 
         Schema::create('fauna-fauna_tags', function (Blueprint $table) {

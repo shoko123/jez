@@ -37,6 +37,7 @@ Route::get('media/bucket-url', [MediaController::class, 'getBucketUrl']);
 
 //test (dev only)
 Route::post('test', [TestController::class, 'test']);
+Route::get('totals', [TestController::class, 'totals']);
 Route::post('get-id', [TestController::class, 'getId']);
 Route::post('url', [TestController::class, 'url']);
 Route::post('store', [TestController::class, 'store']);

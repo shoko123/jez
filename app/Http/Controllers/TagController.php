@@ -57,7 +57,7 @@ class TagController extends Controller
     {
         //basic validation and authorization
         $v = $request->validate([
-            'digModel' => [Rule::in(['Pottery', 'Lithic', 'Stone', 'Glass', 'Metal', 'Fauna', 'Flora'])],
+            'digModel' => [Rule::in(['Locus', 'Pottery', 'Lithic', 'Stone', 'Glass', 'Metal', 'Fauna', 'Flora'])],
             'id' => 'numeric',
             'tagsByType' => 'required|array',
         ]);

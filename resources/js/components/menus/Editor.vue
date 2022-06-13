@@ -149,27 +149,27 @@ export default {
 
     goToTagger() {
       switch (this.$store.getters["mgr/module"]) {
-        //case "Locus":
+        case "Locus":
         case "Stone":
         case "Glass":
         case "Lithic":
         case "Metal":
         case "Pottery":
-        
           break;
-      case "Fauna":
-        if( this.$store.getters["fnd/scopeIs"]("Basket")){
-          alert("Fauna tagging is allowed only for artifacts (not baskets)");
-          return;
-        } else {
-          break;
-        }
+        case "Fauna":
+          if (this.$store.getters["fnd/scopeIs"]("Basket")) {
+            alert("Fauna tagging is allowed only for artifacts (not baskets)");
+            return;
+          } else {
+            break;
+          }
         default:
           alert("'Tagging' page not implemented yet");
           return;
       }
       return this.$store.dispatch("mgr/goToRoute", "tags");
     },
+    
     itemDelete() {
       switch (this.$store.getters["mgr/module"]) {
         case "Locus":

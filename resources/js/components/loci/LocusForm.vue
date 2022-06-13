@@ -64,11 +64,16 @@
             ></v-textarea>
           </v-col>
         </v-row>
+        <TagList />
    </v-container>
 </template>
 
 <script>
+import TagList from "../tags/TagList";
 export default {
+  components: {
+    TagList,
+  },
   computed: {
     item() {
       return this.$store.getters["mgr/item"];

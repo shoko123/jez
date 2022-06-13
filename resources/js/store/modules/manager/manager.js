@@ -475,6 +475,7 @@ export default {
 
                         case "Locus":
                             commit('collections', { name: "related", collection: res.data.locusFinds });
+                            dispatch('aux/itemTags', {tags: res.data.tags, moduleTags: res.data.moduleTags }, { root: true });
                             break;
 
                         case "Pottery":

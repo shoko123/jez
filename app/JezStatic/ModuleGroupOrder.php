@@ -7,7 +7,7 @@ class ModuleGroupOrder
     private static $modules = [
         "Locus" => [
             "Square and Type" => [
-                ["Square", "Tag-Module", "Square"],
+                ["Squares", "Tag-Module", "Square"],
                 ["Locus Type", "Tag-Module", "Locus Type"],
             ],
         ],
@@ -129,10 +129,13 @@ class ModuleGroupOrder
             ]
         ],
 
-        "Fauna" => [
+
+        "Fauna" => [       
             "Basic Characteristics" => [
                 ["Preservation", "Lookup", "preservations", "preservation_id"],
                 ["Life Stage", "Tag-Module", "Life-Stage"],
+                ["Symmetry", "Tag-Module", "Symmetry"],
+                ["Weathering (Behrensmeyer 1978)", "Tag-Module", "Weathering"],                
             ],
             "Taxon" => [
                 ["Base Taxon", "Lookup", "fauna_taxon_L1", "taxon_L1_id"],
@@ -141,19 +144,17 @@ class ModuleGroupOrder
             ],
             "Element" => [
                 ["Element", "Lookup", "fauna_elements_L1", "element_L1_id"],
-            ],
+            ], 
+           
             "Bone" => [
-                ["Symmetry", "Tag-Module", "Bone-Symmetry"],
-                ["Fusion", "Tag-Module", "Bone-Fusion"],
-                ["Bone Type", "Tag-Module", "Bone-partition"],
-                ["Long Bone", "Tag-Module", "Bone-Long"],
-                ["Short Bone", "Tag-Module", "Bone-Short"],
-                ["Flat Bone", "Tag-Module", "Bone-Flat"],
-                ["Irregular Bone", "Tag-Module", "Bone-Irregular"],
+                ["Fusion", "Tag-Module", "Fusion"],
+                ["Breakage", "Tag-Module", "Breakage"],
+                ["D&R (Grant 1982)", "Tag-Module", "D&R"],
+                ["Bone Name", "Tag-Module", "Bone-Name"],
             ],
             "Tooth" => [
                 ["Tooth Name", "Tag-Module", "Tooth-Name"],
-                ["Tooth Age", "Tag-Module", "Tooth-Age"],
+                ["Deciduous", "Tag-Module", "Tooth-Age"],
                 ["Tooth Wear", "Tag-Module", "Tooth-Wear"],
             ]
         ],

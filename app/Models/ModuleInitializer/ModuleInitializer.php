@@ -189,7 +189,7 @@ class ModuleInitializer extends Model
                 ]
             ]);
         }
-        if (in_array(self::$moduleName, ["Pottery", "Fauna"])) {
+        if (in_array(self::$moduleName, ["Pottery", "Fauna", "Lithic"])) {
             array_push(self::$groups, [
                 "category" => "Registration",
                 "display_name" => "Scopes",
