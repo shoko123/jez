@@ -1,6 +1,6 @@
 <template>
    <v-container v-if="item" fluid class="pa-1 ma-0">
-        <v-row wrap no-gutters>
+        <v-row wrap no-gutters class="pt-2">
           <v-col md2 lg1 class="px-1">
             <v-text-field v-model="item.square" readonly label="Square" filled></v-text-field>
           </v-col>

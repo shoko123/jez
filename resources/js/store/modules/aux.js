@@ -103,22 +103,22 @@ export default {
         //item scope ("artifact" or not)
         //if group_type == "Tag" according to dependency
         visibleNewParams(state, getters, rootState, rootGetters) {
-            if (!rootGetters["mgr/status"].isFilterable ||
-                !rootGetters["mgr/status"].isTags) { return [] };
+            if (!rootGetters["mgr/status"].isTags) { return [] };
+
 
             //f1 - not registration
-            let f1 = getters["all"].filter(x => (x.group_types !== "Registration"));
+            let f = getters["all"].filter(x => (x.group_types !== "Registration"));
+            if (rootGetters["mgr/status"].isFind) {
+                let scopeIsArtifact = (rootGetters["fnd/item"] &&
+                    rootGetters["fnd/item"].artifact_no !== 0);
 
-            let scopeIsArtifact = (rootGetters["fnd/item"] &&
-                rootGetters["fnd/item"].artifact_no !== 0);
+                //f2 - filter by scope: non artifacts see only periods tags ???
+                f = scopeIsArtifact ? f :
+                    f.filter(x => (x.category === "Periods/Groups"));
 
-            //f2 - filter by scope: non artifacts see only periods tags ???
-            let f2 = scopeIsArtifact ? f1 :
-                f1.filter(x => (x.category === "Periods/Groups"));
-
+            }
             //f3 - all remaining lookups, and visible newParams tags.
-            return f2.filter(x => {
-
+            return f.filter(x => {
                 switch (x.group_type) {
                     case "Lookup":
                         return true;
@@ -155,7 +155,7 @@ export default {
         selectedItemParams(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isShow || !rootGetters["mgr/item"]) { return [] };
             let scopeIsBasket = rootGetters["fnd/scopeIsBasket"];
-           
+
             //2 filters:
             // (1) if scope is basket (currently only Pottery) allow only period tags.
             //(this will change with other modules [think Flora])
@@ -179,7 +179,7 @@ export default {
         itemTags(state, getters, rootState, rootGetters) {
             if (!rootGetters["mgr/status"].isShow || !rootGetters["mgr/item"]) { return [] };
             let scopeIsBasket = rootGetters["fnd/scopeIsBasket"];
-           
+
             //2 filters:
             // (1) if scope is basket (currently only Pottery) allow only period tags.
             //(this will change with other modules [think Flora])
@@ -191,7 +191,7 @@ export default {
             }).map(x => {
                 let selectedParams = x.params
                     .filter(y => y.selectedIn["itemParams"])
-                    .map(p => { return {name: p.name};})
+                    .map(p => { return { name: p.name }; })
                 let group = { category: x.category, display_name: x.display_name, group_type: x.group_type };
 
                 group.params = selectedParams;

@@ -10,7 +10,6 @@ export default {
         normalizeGroups({ state, getters, rootGetters, commit, dispatch }, payload) {
             //console.log(`aux/normalizeGroups() payload: ${JSON.stringify(payload, null, 2)}`);
 
-            if (!rootGetters["mgr/status"].isFilterable) { return }
 
             const registrationParamSchema = new schema.Entity('registrationParams', {}, {
                 idAttribute: (value, parent, key) => `R>${parent.name}>${value.name}`,

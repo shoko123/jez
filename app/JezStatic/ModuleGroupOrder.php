@@ -154,7 +154,7 @@ class ModuleGroupOrder
             ],
             "Tooth" => [
                 ["Tooth Name", "Tag-Module", "Tooth-Name"],
-                ["Deciduous", "Tag-Module", "Tooth-Age"],
+                ["Tooth Age", "Tag-Module", "Tooth-Age"],
                 ["Tooth Wear", "Tag-Module", "Tooth-Wear"],
             ]
         ],
