@@ -39,7 +39,7 @@ export default {
 
   validations: {
     periods: {
-      maxLength: maxLength(100),
+      maxLength: maxLength(250),
     },
     description: {
       maxLength: maxLength(400),
@@ -66,7 +66,7 @@ export default {
         return errors;
       }
       !this.$v.periods.maxLength &&
-        errors.push("Periods text exceeds length of 100 characters");
+        errors.push("Periods text exceeds length of 250 characters");
       return errors;
     },
 

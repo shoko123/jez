@@ -23,30 +23,11 @@ import LocusView0 from "../loci/LocusView0";
 import LocusView1 from "../loci/LocusView1";
 import LocusView2 from "../loci/LocusView2";
 import LocusView3 from "../loci/LocusView3";
-import StoneView0 from "../stones/StoneView0";
-import StoneView1 from "../stones/StoneView1";
-import StoneView2 from "../stones/StoneView2";
-import StoneView3 from "../stones/StoneView3";
-import PotteryView0 from "../pottery/PotteryView0";
-import PotteryView1 from "../pottery/PotteryView1";
-import PotteryView2 from "../pottery/PotteryView2";
-import PotteryView3 from "../pottery/PotteryView3";
-import LithicView0 from "../lithics/LithicView0";
-import LithicView1 from "../lithics/LithicView1";
-import LithicView2 from "../lithics/LithicView2";
-import LithicView3 from "../lithics/LithicView3";
-import GlassView0 from "../glass/GlassView0";
-import GlassView1 from "../glass/GlassView1";
-import GlassView2 from "../glass/GlassView2";
-import GlassView3 from "../glass/GlassView3";
-import MetalView0 from "../metal/MetalView0";
-import MetalView1 from "../metal/MetalView1";
-import MetalView2 from "../metal/MetalView2";
-import MetalView3 from "../metal/MetalView3";
-import FaunaView0 from "../fauna/FaunaView0";
-import FaunaView1 from "../fauna/FaunaView1";
-import FaunaView2 from "../fauna/FaunaView2";
-import FaunaView3 from "../fauna/FaunaView3";
+import FindView0 from "../finds/FindView0";
+import FindView1 from "../finds/FindView1";
+import FindView2 from "../finds/FindView2";
+import FindView3 from "../finds/FindView3";
+import FindView4 from "../finds/FindView4";
 
 export default {
   name: "show-item",
@@ -68,30 +49,12 @@ export default {
     LocusView1,
     LocusView2,
     LocusView3,
-    StoneView0,
-    StoneView1,
-    StoneView2,
-    StoneView3,
-    PotteryView0,
-    PotteryView1,
-    PotteryView2,
-    PotteryView3,
-    LithicView0,
-    LithicView1,
-    LithicView2,
-    LithicView3,
-    GlassView0,
-    GlassView1,
-    GlassView2,
-    GlassView3,
-    MetalView0,
-    MetalView1,
-    MetalView2,
-    MetalView3,
-    FaunaView0,
-    FaunaView1,
-    FaunaView2,
-    FaunaView3
+    FindView0,
+    FindView1,
+    FindView2,
+    FindView3,
+    FindView4,
+  
   },
   data() {
     return {};
@@ -101,7 +64,12 @@ export default {
       return this.$store.getters["mgr/status"].itemDisplayOptionIndex;
     },
     view() {
-      return this.$store.getters["mgr/module"] + "View" + this.displayOption;
+      //return this.$store.getters["mgr/module"] + "View" + this.displayOption;
+      if (this.$store.getters["mgr/status"].isFind) {
+        return "FindView" + this.displayOption;
+      } else {
+        return this.$store.getters["mgr/module"] + "View" + this.displayOption;
+      }
     },
   },
 };

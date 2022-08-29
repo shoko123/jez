@@ -426,17 +426,20 @@ class BaseDigModel extends Model implements HasMedia
         //if Pottery or Fauna add related artifacts
         $related = [];
 
-        if ($p["module"] === "Pottery" || $p["module"] === "Fauna") {
-            $res = Find::where('findable_type', $p["module"])
-                ->where('locus_id', $p["locus_id"])
-                ->where('basket_no', $p["basket_no"])
-                ->where('artifact_no', '<>', $p["artifact_no"])
-                ->orderBy('artifact_no')
-                ->get()->pluck('artifact_no');
-            $related = collect($res)->map(function ($item) use ($dotWithoutArtifactNo) {
-                return $dotWithoutArtifactNo . $item;
-            });
-        }
+        $l = new Locus();
+        $related = $l->locusAllFinds($find->locus_id);
+
+        // if ($p["module"] === "Pottery" || $p["module"] === "Fauna") {
+        //     $res = Find::where('findable_type', $p["module"])
+        //         ->where('locus_id', $p["locus_id"])
+        //         ->where('basket_no', $p["basket_no"])
+        //         ->where('artifact_no', '<>', $p["artifact_no"])
+        //         ->orderBy('artifact_no')
+        //         ->get()->pluck('artifact_no');
+        //     $related = collect($res)->map(function ($item) use ($dotWithoutArtifactNo) {
+        //         return $dotWithoutArtifactNo . $item;
+        //     });
+        // }
 
 
         unset($itemMedia->primary);
@@ -452,7 +455,8 @@ class BaseDigModel extends Model implements HasMedia
             "itemMedia" => $itemMedia,
             "tags" => $tags,
             "moduleTags" => $moduleTags,
-            "related" => $related
+            "related" => $related,
+            //"locusFinds" => $locusFinds
         ];
     }
 

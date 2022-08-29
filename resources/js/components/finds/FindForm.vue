@@ -4,7 +4,7 @@
       <v-card-title class="grey py-0 mb-4">Registration Details</v-card-title>
       <v-card-text>
         <v-row no-gutters>
-          <v-col lg="showRelatedEntries ? 10 : 12">
+          <v-col lg="12">
             <v-card>
               <v-card-text>
                 <v-row no-gutters>
@@ -96,20 +96,6 @@
               </v-card-text>
             </v-card>
           </v-col>
-          <v-col v-if="showRelatedEntries" lg="2">
-            <v-card class="ml-2">
-              <v-card-text>
-                <v-row>
-                  {{ relatedHeader }}
-                </v-row>
-                <v-row wrap>
-                  <v-chip v-for="a in artifacts" :key="a.dot" class="ma-2">{{
-                    a.tag
-                  }}</v-chip>
-                </v-row>
-              </v-card-text>
-            </v-card>
-          </v-col>
         </v-row>
       </v-card-text>
     </v-card>
@@ -122,10 +108,6 @@ export default {
   computed: {
     find() {
       return this.$store.getters["fnd/item"];
-    },
-
-    showRelatedEntries() {
-      return this.$store.getters["fnd/showRelatedEntries"];
     },
 
     scopeIsBasket() {

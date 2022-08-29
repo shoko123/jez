@@ -122,6 +122,8 @@ export default {
                         case "Locus":
                             header = "Related Small Finds"
                             break;
+                        default:
+                            header = `All Finds in Locus "${state.item.tag.substring(0, state.item.tag.indexOf('.'))}"`
                     }
                     break;
                 case "media":
@@ -161,7 +163,9 @@ export default {
                 case "Locus":
                     header = "Related Small Finds"
                     break;
-            }
+                default:
+                    header = `All Finds in Locus "${state.item.tag.substring(0, state.item.tag.indexOf('.'))}"`
+                }
             c["header"] = header;
             return c;
         },
@@ -180,7 +184,7 @@ export default {
         },
 
         item(state) {
-            return  state.item;
+            return state.item;
         },
 
         welcomeData(state) {
@@ -430,7 +434,7 @@ export default {
                         commit("ready", { entity: "chunk", isReady: false });
                         dispatch("page", { name: "main", page: 1 });
                     }
-                    
+
                     return res;
                 })
                 .catch(err => {
@@ -475,7 +479,7 @@ export default {
 
                         case "Locus":
                             commit('collections', { name: "related", collection: res.data.locusFinds });
-                            dispatch('aux/itemTags', {tags: res.data.tags, moduleTags: res.data.moduleTags }, { root: true });
+                            dispatch('aux/itemTags', { tags: res.data.tags, moduleTags: res.data.moduleTags }, { root: true });
                             break;
 
                         case "Pottery":
@@ -487,13 +491,15 @@ export default {
                         case "Fauna":
                         case "Tbd":
                             commit('fnd/item', res.data.find, { root: true });
-
                             commit('collections', {
                                 name: "related",
-                                collection: res.data.related.map(x => { return { dot: x, tag: dotToTag({ module: state.routes.to.module, dot: x }) } })
+                                //collection: res.data.related.map(x => { return { ...x, tag: dotToTag({ module: state.routes.to.module, dot: x.dot }) } })
+                                collection: res.data.related.map(x => { return { ...x, tag: `${x.module} ${x.dot}`} })
                             });
 
-                            dispatch('aux/itemTags', {tags: res.data.tags, moduleTags: res.data.moduleTags }, { root: true });
+
+
+                            dispatch('aux/itemTags', { tags: res.data.tags, moduleTags: res.data.moduleTags }, { root: true });
                     }
 
                     res.data.item["tag"] = dotToTag({ module: state.routes.to.module, dot: res.data.item.dot });

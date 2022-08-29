@@ -18,6 +18,6 @@ class StoneTag extends Model
 
     public function item()
     {
-        return $this->belongsToMany(Stone::class, 'stones-stones_tags', 'tag_id', 'item_id');
+        return $this->belongsToMany(Stone::class, 'stone-stone_tags', 'tag_id', 'item_id');
     }
 }

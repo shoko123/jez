@@ -55,12 +55,13 @@ class AreaSeason extends BaseDigModel
             $media = $this->primaryMedia($locus);
 
             array_push($lociWithMedia, [
+                "module" => "Locus",
                 "id" => $locus->id,
+                "dot" => $dot,   
+                "tag" => $tag,                             
                 "description" => $locus->description,
-                "tag" => $tag,
-                "dot" => $dot,
-                "fullUrl" => $media->fullUrl,
                 "hasMedia" => $media->hasMedia,
+                "fullUrl" => $media->fullUrl,
                 "tnUrl" => $media->tnUrl,
             ]);
         }

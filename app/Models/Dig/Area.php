@@ -39,12 +39,13 @@ class Area extends BaseDigModel
             $media = $this->primaryMedia($as);
 
             array_push($areasSeasons, [
+                "module" => "AreaSeason",
                 "id" => $as->id,
-                "description" => $as->description,
-                "tag" => str_replace(".", "/", $as->dot),
                 "dot" => $as->dot,
+                "tag" => str_replace(".", "/", $as->dot),                
+                "description" => $as->description,
+                "hasMedia" => $media->hasMedia,                
                 "fullUrl" => $media->fullUrl,
-                "hasMedia" => $media->hasMedia,
                 "tnUrl" => $media->tnUrl,
             ]);
         }

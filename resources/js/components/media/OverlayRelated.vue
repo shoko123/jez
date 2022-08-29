@@ -61,26 +61,34 @@ export default {
       });
     },
 
-    goTo(locus) {
-      let module;
-      switch (this.$store.getters["mgr/module"]) {
-        case "Area":
-        case "Season":
-          module = "AreaSeason";
-          break;
-        case "AreaSeason":
-          module = "Locus";
-          break;
-        case "Locus":
-          module = this.item.findable_type;
-          break;
-      }
+    goTo() {
       this.$store.dispatch("mgr/goToRoute", {
-        module: module,
+        module: this.item.module,
         action: "show",
         dot: this.item.dot,
       });
     },
+
+    // goTo(locus) {
+    //   let module;
+    //   switch (this.$store.getters["mgr/module"]) {
+    //     case "Area":
+    //     case "Season":
+    //       module = "AreaSeason";
+    //       break;
+    //     case "AreaSeason":
+    //       module = "Locus";
+    //       break;
+    //     case "Locus":
+    //       module = this.item.findable_type;
+    //       break;
+    //   }
+    //   this.$store.dispatch("mgr/goToRoute", {
+    //     module: module,
+    //     action: "show",
+    //     dot: this.item.dot,
+    //   });
+    // },
   },
 };
 </script>

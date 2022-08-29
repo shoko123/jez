@@ -75,7 +75,7 @@ export default {
             apiBaseUrl: "/api/pottery",
             isDigModule: true,
             isFind: true,
-            itemDisplayOptions: ["2-panel", "3-panel", "Media", "Gallery"],
+            itemDisplayOptions: ["2-panel", "3-panel", "Media", "Gallery", "Locus Finds"],
             registrationOptions:
                 ["PT", "AR"],
         },
@@ -88,7 +88,7 @@ export default {
             apiBaseUrl: "/api/stones",
             isDigModule: true,
             isFind: true,
-            itemDisplayOptions: ["2-panel", "3-panel", "Media", "Gallery"],
+            itemDisplayOptions: ["2-panel", "3-panel", "Media", "Gallery", "Locus Finds"],
             registrationOptions:
                 ["GS", "AR"],
         },
@@ -101,7 +101,7 @@ export default {
             apiBaseUrl: "/api/glass",
             isDigModule: true,
             isFind: true,
-            itemDisplayOptions: ["2-panel", "3-panel", "Media", "Gallery"],
+            itemDisplayOptions: ["2-panel", "3-panel", "Media", "Gallery", "Locus Finds"],
             registrationOptions:
                 ["AR",],
         },
@@ -114,7 +114,7 @@ export default {
             apiBaseUrl: "/api/lithics",
             isDigModule: true,
             isFind: true,
-            itemDisplayOptions: ["2-panel", "3-panel", "Media", "Gallery"],
+            itemDisplayOptions: ["2-panel", "3-panel", "Media", "Gallery", "Locus Finds"],
             registrationOptions:
                 ["FL", "AR",],
         },
@@ -127,7 +127,7 @@ export default {
             apiBaseUrl: "/api/metals",
             isDigModule: true,
             isFind: true,
-            itemDisplayOptions: ["2-panel", "3-panel", "Media", "Gallery"],
+            itemDisplayOptions: ["2-panel", "3-panel", "Media", "Gallery", "Locus Finds"],
             registrationOptions:
                 ["AR",],
         },
@@ -140,7 +140,7 @@ export default {
             apiBaseUrl: "/api/fauna",
             isDigModule: true,
             isFind: true,
-            itemDisplayOptions: ["2-panel", "3-panel", "Media", "Gallery"],
+            itemDisplayOptions: ["2-panel", "3-panel", "Media", "Gallery", "Locus Finds"],
             registrationOptions:
                 ["AR", "LB"],
         },

@@ -91,6 +91,9 @@ export default {
                         case "Locus":
                             lightBoxHeader = `Showing (${length}) small finds retrieved from locus ${itemTag}`;
                             break;
+                        default:
+                            lightBoxHeader = `Showing all small finds retrieved from the locus`;
+                            break;
                     }
                     itemHeader = `${item.tag}  (${index}/${length})`;
                     break;
@@ -128,7 +131,7 @@ export default {
         bucketUrl(state, payload) {
             state.bucketUrl = payload;
         },
-        
+
         dialogAddMedia(state, payload) {
             state.dialogAddMedia = payload;
         },

@@ -73,7 +73,7 @@ class Locus extends BaseDigModel
         unset($itemMedia->primary);
 
         //get LocusFinds
-        $locusFinds = $this->locusFinds($locus->dot, $locus->finds);
+        $locusFinds = $this->formatLocusFinds($locus->dot, $locus->finds);
 
         //cleanup
         unset($locus->finds);
@@ -88,7 +88,7 @@ class Locus extends BaseDigModel
         ];
     }
 
-    protected function locusFinds($locus_dot, $finds)
+    protected function formatLocusFinds($locus_dot, $finds)
     {
         $order = array("Pottery" => 1, "Stone" => 2, "Lithic" => 3, "Metal" => 4, "Glass" => 5, "Flora" => 6, "Fauna" => 7, "Tbd" => 8);
         $locusFinds = [];
@@ -102,11 +102,14 @@ class Locus extends BaseDigModel
             $formatted = $this->primaryMedia($find->findable);
 
             //add fields
+            $formatted->module = $find->findable_type;            
+            $formatted->id = $find->findable_id;
+            $formatted->dot = $locus_dot . '.' . $this->findDot($find);                     
             $formatted->tag = $find->findable_type . " " . str_replace(".", "/", $locus_dot) . "." . $this->findDot($find);
-            $formatted->dot = $locus_dot . '.' . $this->findDot($find);
+            $formatted->description = $find->findable->description;            
+            
             $formatted->findable_type = $find->findable_type;
             $formatted->findable_id = $find->findable_id;
-            $formatted->description = $find->findable->description;
 
             //deal with order
             $formatted->type_order = $order[$type];
@@ -117,6 +120,57 @@ class Locus extends BaseDigModel
         usort($locusFinds, function ($a, $b) {
             if ($a->type_order === $b->type_order) {
                 return strcmp($a->tag, $b->tag);
+            }
+            return $a->type_order < $b->type_order ? -1 : 1;
+        });
+
+        foreach ($locusFinds as $index => $find) {
+            unset($find->type_order);
+        }
+        return $locusFinds;
+    }
+    
+    public function locusAllFinds($locus_id)
+    {
+        $order = array("Pottery" => 1, "Stone" => 2, "Lithic" => 3, "Metal" => 4, "Glass" => 5, "Flora" => 6, "Fauna" => 7, "Tbd" => 8);
+        $locusFinds = [];
+
+        $locus = $this->with(
+            [
+                'areaSeason' => function ($q) {
+                    $q->select('id', 'dot');
+                },
+                'finds',
+                'finds.findable.media',
+            ])->findOrFail($locus_id);
+
+        $locus_dot = $locus->areaSeason->dot . '.' . $locus->locus_no;
+
+        foreach ($locus->finds as $index => $find) {
+            //set type to order by.
+            $module = $find->findable_type;
+
+
+            //create formatted find with media info. (media was preloaded in query)
+            $formatted = $this->primaryMedia($find->findable);
+
+            //add fields
+            $formatted->module = $find->findable_type;
+            $formatted->id = $find->findable_id;
+            //$formatted->tag = $find->findable_type . " " . str_replace(".", "/", $locus_dot) . "." . $this->findDot($find);
+            $formatted->dot = $locus_dot . '.' . $this->findDot($find);
+            
+            $formatted->description = $find->findable->description;
+
+            //deal with order
+            $formatted->type_order = $order[$module];
+            array_push($locusFinds, $formatted);
+        }
+
+        //sort finds by type, registration (Pottery, Stone, Lithic, Metal...)
+        usort($locusFinds, function ($a, $b) {
+            if ($a->type_order === $b->type_order) {
+                return strcmp($a->dot, $b->dot);
             }
             return $a->type_order < $b->type_order ? -1 : 1;
         });
