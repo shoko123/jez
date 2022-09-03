@@ -17,7 +17,7 @@ export default {
     item: Object,
     page: Number,
     index: Number,
-    source: Number
+    source: String
   },
 
   created() {

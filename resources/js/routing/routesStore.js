@@ -287,26 +287,27 @@ export default {
                         case "show":
                             //console.log('mgr.dispatch(show)');// + JSON.stringify(res, null, 2));
                             if (sameModule()) {
-                                //if no collection loaded yet, retrieve new module's collection and then item
-                                let readyCollection = rootGetters["mgr/ready"].collection;
+                                //if no collection loaded yet, retrieve new module's collection let readyCollection = rootGetters["mgr/ready"].collection;
                                 let readyItem = rootGetters["mgr/ready"].item;
                                 //let sameItem = sameItemId();
                                 let sameItem = sameDot();
                                 if (!itemInCollection()) {
                                     //if same module, but item not in collection, then clear filters and retrieve collection and then item
                                     console.log('Item not in collection!');// + JSON.stringify(res, null, 2));
-                                    
+
                                     //reset filters
                                     commit("toQueryParams", null)
                                     commit("localFilters", null)
                                     dispatch("aux/setLocalFilters", null, { root: true });
-    
-                                    //show message
-                                    commit('snackbar/snackbar', {
-                                        color: "orange",
-                                        message: "Loading an item that is not in current collection - collection filters removed"
-                                    }, { root: true });
 
+                                    //show message if we messed with filters
+                                    if (state.current.action === 'show') {
+
+                                        commit('snackbar/snackbar', {
+                                            color: "orange",
+                                            message: "Loading an item that is not in current collection - collection filters removed"
+                                        }, { root: true });
+                                    }
                                     return dispatch("mgr/query", { params: {}, spinner: true }, { root: true })
                                         .then((res) => {
                                             return dispatch("mgr/loadItem", getters.toItemParams, { root: true });
