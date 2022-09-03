@@ -505,6 +505,7 @@ export default {
                     res.data.item["tag"] = dotToTag({ module: state.routes.to.module, dot: res.data.item.dot });
                     console.log(`mgr.loadItem() "${res.data.item.dot}" loaded successfully`)
                     commit('item', res.data.item);
+                    commit("mgr/routes/id", res.data.item.id, { root: true });
                     //commit('item', res.data.item);
                     commit("ready", { entity: "item", isReady: true });
                     if (state.routes.to.module !== "About") {

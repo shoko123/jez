@@ -59,6 +59,12 @@ export default {
         dot(state, payload) {
             state.to.dot = payload;
         },
+        id(state, payload) {
+            state.to.id = payload;
+        },
+        toQueryParams(state, payload) {
+            state.to.queryParams = payload;
+        },
         dotParams(state, payload) {
             state.to.dotParams = Object.assign({}, payload)
             //state.to.dotParams = payload;
@@ -235,6 +241,9 @@ export default {
             function sameDot() {
                 return state.current.dot === state.to.dot;
             }
+            function itemInCollection() {
+                return (rootState.mgr.collections["main"].collection.findIndex(x => x.dot == state.to.dot) !== -1);
+            }
 
             function loadPrepare() {
                 //console.log(`loadPrepare current: ${JSON.stringify(state.current, null, 2)} to: ${JSON.stringify(state.to, null, 2)}`);
@@ -283,8 +292,21 @@ export default {
                                 let readyItem = rootGetters["mgr/ready"].item;
                                 //let sameItem = sameItemId();
                                 let sameItem = sameDot();
-                                if (!readyCollection) {
-                                    //if same module, but collection empty, retrieve collection and then item
+                                if (!itemInCollection()) {
+                                    //if same module, but item not in collection, then clear filters and retrieve collection and then item
+                                    console.log('Item not in collection!');// + JSON.stringify(res, null, 2));
+                                    
+                                    //reset filters
+                                    commit("toQueryParams", null)
+                                    commit("localFilters", null)
+                                    dispatch("aux/setLocalFilters", null, { root: true });
+    
+                                    //show message
+                                    commit('snackbar/snackbar', {
+                                        color: "orange",
+                                        message: "Loading an item that is not in current collection - collection filters removed"
+                                    }, { root: true });
+
                                     return dispatch("mgr/query", { params: {}, spinner: true }, { root: true })
                                         .then((res) => {
                                             return dispatch("mgr/loadItem", getters.toItemParams, { root: true });
