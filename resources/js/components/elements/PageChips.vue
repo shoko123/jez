@@ -1,13 +1,7 @@
 <template>
   <v-row wrap>
-    <v-chip
-      v-for="(item, index) in chunk"
-      :key="index"
-      :disabled="disabledChips(item)"
-      class="font-weight-normal ma-2 body-1"
-      @click="goTo(item)"
-      >{{ item.tag }}</v-chip
-    >
+    <v-chip v-for="(item, index) in chunk" :key="index" :disabled="disabledChip(item)"
+      class="font-weight-normal ma-2 body-1" @click="goTo(item)">{{ item.tag }}</v-chip>
   </v-row>
 </template>
 
@@ -25,57 +19,28 @@ export default {
   },
 
   methods: {
-    disabledChips(item) {
-      if (this.source !== "related") {
-        return false;
-      }
-      if (this.$store.getters["mgr/module"] === "Locus")
-        switch (item.findable_type) {
-          case "Stone":
-          case "Pottery":
-          case "Lithic":
-          case "Glass":
-          case "Metal":
-            return false;
-          default:
-            return true;
-        }
-      else {
-        return false;
-      }
+    disabledChip(item) {
+      return (this.source === "related" && item.module === "Tbd")
     },
 
     goTo(item) {
-      //console.log(`goTo() source: ${this.source} newUrl: ${newUrl}`);
-      let current = this.$store.getters["mgr/module"],
-        module,
-        dot;
-      if (this.source === "main") {
-        module = current;
-        dot = item.dot;
-      } else {
-        //related
-        switch (current) {
-          case "Area":
-          case "Season":
-            module = "AreaSeason";
-            dot = item.dot;
-            break;
-          case "AreaSeason":
-            module = "Locus";
-            dot = item.dot;
-            break;
-          case "Locus":
-            module = item.findable_type;
-            dot = item.dot;
-            break;
-        }
+      let module;
+
+      switch (this.source) {
+        case 'main':
+          module = this.$store.getters["mgr/module"];
+          break;
+
+        case 'related':
+          module = item.module
+          break;
+
       }
 
       this.$store.dispatch("mgr/goToRoute", {
-        module: module,
+        module,
         action: "show",
-        dot: dot,
+        dot: item.dot,
       });
     },
   },

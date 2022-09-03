@@ -2,7 +2,7 @@
   <v-card class="mx-auto" color="transparent" flat>
     <v-card-text v-if="hasMedia" class="text-body-1 white--text"> {{ text }}</v-card-text> 
     <v-card-actions>
-    <v-btn @click="goTo(item)">Visit</v-btn>
+    <v-btn @click="goTo(item)" :disabled="disabledGoTo(item)">Visit</v-btn>
     <v-btn v-if="hasMedia" @click="openLightBox()">Lightbox</v-btn>
   </v-card-actions>
   </v-card>
@@ -17,6 +17,7 @@ export default {
     item: Object,
     page: Number,
     index: Number,
+    source: Number
   },
 
   created() {
@@ -46,7 +47,9 @@ export default {
         index: this.index % c.itemsPerPage,
       });
     },
-
+    disabledGoTo(item) {
+      return (this.source === "related" && item.module === "Tbd")
+    },
     goTo(item) {
       this.$store.dispatch("mgr/goToRoute", {
         module: this.$store.getters["mgr/module"],
