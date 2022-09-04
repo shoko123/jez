@@ -1,10 +1,9 @@
 <template>
   <v-card class="mx-auto" color="transparent" flat>
     <v-card-text v-if="hasMedia" class="text-body-1 white--text">
-      {{ text }}</v-card-text
-    >
+      {{ text }}</v-card-text>
     <v-card-actions>
-      <v-btn :disabled="!isImplemented" @click="goTo(item)">Visit</v-btn>
+      <v-btn :disabled="disabledGoTo(item)" @click="goTo(item)">Visit</v-btn>
       <v-btn v-if="hasMedia" @click="openLightBox()">Lightbox</v-btn>
     </v-card-actions>
   </v-card>
@@ -17,31 +16,17 @@ export default {
     item: Object,
     page: Number,
     index: Number,
+    source: String
   },
   created() {
-    /*
-    console.log(
-      `RelatedOL page: ${this.page} index: ${this.index} item: ${JSON.stringify(
-        this.item,
-        null,
-        2
-      )}`
-    );
-    */
+    //console.log(`relatedOL source: ${this.source} page: ${this.page} index: ${this.index} item: ${JSON.stringify(this.item, null, 2)}`);
   },
 
   computed: {
     hasMedia() {
       return this.item.hasMedia;
     },
-    module() {
-      return this.$store.getters["mgr/module"];
-    },
-    isImplemented() {
-      return this.module === "Locus"
-        ? this.$store.getters["mgr/isImplemented"](this.item.findable_type)
-        : true;
-    },
+
     text() {
       let text = this.item.description;
       if (text === null) {
@@ -51,6 +36,7 @@ export default {
       }
     },
   },
+
   methods: {
     openLightBox() {
       let c = this.$store.getters["mgr/collections"]("related");
@@ -61,6 +47,9 @@ export default {
       });
     },
 
+    disabledGoTo(item) {
+      return (this.source === "related" && item.module === "Tbd")
+    },
     goTo() {
       this.$store.dispatch("mgr/goToRoute", {
         module: this.item.module,
@@ -68,27 +57,6 @@ export default {
         dot: this.item.dot,
       });
     },
-
-    // goTo(locus) {
-    //   let module;
-    //   switch (this.$store.getters["mgr/module"]) {
-    //     case "Area":
-    //     case "Season":
-    //       module = "AreaSeason";
-    //       break;
-    //     case "AreaSeason":
-    //       module = "Locus";
-    //       break;
-    //     case "Locus":
-    //       module = this.item.findable_type;
-    //       break;
-    //   }
-    //   this.$store.dispatch("mgr/goToRoute", {
-    //     module: module,
-    //     action: "show",
-    //     dot: this.item.dot,
-    //   });
-    // },
   },
 };
 </script>

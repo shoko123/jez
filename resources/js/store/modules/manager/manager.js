@@ -123,7 +123,7 @@ export default {
                             header = "Related Small Finds"
                             break;
                         default:
-                            header = `All Finds in Locus "${state.item.tag.substring(0, state.item.tag.indexOf('.'))}"`
+                            header = `All Finds in Locus ${state.item.tag.substring(0, state.item.tag.indexOf('.'))}`
                     }
                     break;
                 case "media":
@@ -164,7 +164,7 @@ export default {
                     header = "Related Small Finds"
                     break;
                 default:
-                    header = `All Finds in Locus "${state.item.tag.substring(0, state.item.tag.indexOf('.'))}"`
+                    header = `All Finds in Locus ${state.item.tag.substring(0, state.item.tag.indexOf('.'))}`
                 }
             c["header"] = header;
             return c;
