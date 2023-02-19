@@ -468,7 +468,7 @@ class BaseDigModel extends Model implements HasMedia
 
         $items = $model->whereIn('id', $p["ids"])
             ->select('id', 'description')
-            ->orderByRaw(DB::raw("FIELD(id, $ids)"))
+            ->orderByRaw("FIELD(id, $ids)")
             ->get();
 
         if ($p["chunkType"]  === "Media") {
