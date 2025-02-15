@@ -18,13 +18,18 @@ class DigModuleService
         static::$tableName = $this->model->tableName();
     }
 
-    function uses_tags()
+    function uses_module_tags()
     {
-        return property_exists($this->model, 'moduleTagTable');
+        return method_exists($this->model, 'module_tags');
+    }
+
+    function uses_global_tags()
+    {
+        return property_exists($this->model, 'global_tags');
     }
 
     function uses_onps()
     {
-        return property_exists($this->model, 'onpTable');
+        return method_exists($this->model, 'onps');
     }
 }

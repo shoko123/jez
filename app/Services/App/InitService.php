@@ -17,16 +17,16 @@ use App\Services\App\CommonGroups;
 class InitService extends DigModuleService
 {
     protected Model $moduleTagGroup;
-    protected InitDetailsInterface $initDetails;
+    protected static InitDetailsInterface $initDetails;
     protected static ConfigInterface $moduleConfigs;
 
     public function __construct(string $module)
     {
         parent::__construct($module);
-        if ($this->uses_tags()) {
+        if ($this->uses_module_tags()) {
             $this->moduleTagGroup = GetService::getTagGroupModel($module);
         }
-        $this->initDetails = GetService::getInitDetails($module);
+        static::$initDetails = GetService::getInitDetails($module);
         static::$moduleConfigs = GetService::getConfigs($module);
     }
 
@@ -34,12 +34,12 @@ class InitService extends DigModuleService
     {
         return [
             'module' => self::$module,
-            'welcome_text' => $this->initDetails::welcomeText(),
+            'welcome_text' => static::$initDetails::welcomeText(),
             'counts' => [
                 'items' => $this->model->count(),
                 'media' => Media::where('model_type', class_basename($this->model))->count(),
             ],
-            'display_options' => $this->initDetails::displayOptions(),
+            'display_options' => static::$initDetails::displayOptions(),
             'first_id' => $this->model->select('id')->firstOrFail()['id'],
             'dateFields' => $this->model->dateFields(),
             'trio' => $this->trio(),
@@ -55,7 +55,7 @@ class InitService extends DigModuleService
     {
         $trio = [];
 
-        foreach ($this->initDetails::categories() as $name => $labels) {
+        foreach (static::$initDetails::categories() as $name => $labels) {
             $category = ['name' => $name, 'groups' => []];
             foreach ($labels as $label) {
                 array_push($category['groups'], array_merge(['label' => $label], $this->getGroupDetails($label)));

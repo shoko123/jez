@@ -54,10 +54,14 @@ class ShowService extends DigModuleService
             },
         ]);
 
-        if ($this->uses_tags()) {
+        if ($this->uses_module_tags()) {
             $with_arr->push('module_tags.tag_group');
+        }
+
+        if ($this->uses_global_tags()) {
             $with_arr->push('global_tags.tag_group');
         }
+
         if ($this->uses_onps()) {
             $with_arr->push('onps');
         }
@@ -69,7 +73,7 @@ class ShowService extends DigModuleService
     {
         $mediaArray = MediaService::format_media_collection($item->media);
 
-        //model tags (discrete)
+        //module tags (discrete)
         $module_tags = isset($item['module_tags']) ? $item->module_tags->map(function ($tag, int $key) {
             return ['group_label' => $tag->tag_group->name, 'tag_text' => $tag->name];
         }) : [];

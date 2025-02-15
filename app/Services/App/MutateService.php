@@ -154,13 +154,32 @@ class MutateService extends DigModuleService
 
     public function destroy(string $module, string $id): array
     {
-        //get item with tags
-        $model = GetService::getModel($module, true);
+        $with_arr = [];
+        if ($this->uses_module_tags()) {
+            array_push($with_arr, 'module_tags');
+        }
+        if ($this->uses_global_tags()) {
+            array_push($with_arr, 'glogal_tags');
+        }
+        if ($this->uses_onps()) {
+            array_push($with_arr, 'onps');
+        }
 
-        $item = $this->model->with(['module_tags', 'global_tags'])->findOrFail($id);
+        //get item with related tags/onps
+        $item = $this->model->with($with_arr)->findOrFail($id);
+
         DB::transaction(function () use ($item) {
-            $item->module_tags()->detach();
-            $item->global_tags()->detach();
+            if ($this->uses_module_tags()) {
+                $item->module_tags()->detach();
+            }
+
+            if ($this->uses_global_tags()) {
+                $item->global_tags()->detach();
+            }
+
+            if ($this->uses_onps()) {
+                $item->onps()->detach();
+            }
             $item->delete();
         });
 
