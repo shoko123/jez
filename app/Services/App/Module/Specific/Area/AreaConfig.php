@@ -5,6 +5,7 @@ namespace App\Services\App\Module\Specific\Area;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Builder;
 use App\Services\App\Module\ConfigInterface;
+use App\Services\App\Module\Specific\Area\AreaRelated;
 
 class AreaConfig implements ConfigInterface
 {
@@ -90,17 +91,14 @@ class AreaConfig implements ConfigInterface
         return ['id', 'description'];
     }
 
+    // Show
+    public static function relatedModules(string $id): array
+    {
+        return AreaRelated::relatedModules($id);
+    }
 
     public static function allowed_tagger_field_names(): array
     {
         return [];
     }
-
-    // Show
-    public static function relatedModules(string $id): array
-    {
-        return [];
-    }
-
-    // Tagger
 }

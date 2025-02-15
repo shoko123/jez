@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Services\App\DigModuleService;
 use App\Services\App\Utils\GetService;
-use App\Services\App\Module\ReadDetailsInterface;
+use App\Services\App\Module\ConfigInterface;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\MediaService;
 
@@ -15,12 +15,12 @@ class ShowService extends DigModuleService
 {
     protected DigModuleModel $model;
     protected Builder $builder;
-    protected ReadDetailsInterface $details;
+    protected static ConfigInterface $moduleConfigs;
 
     public function __construct(string $module)
     {
         parent::__construct($module);
-        $this->details = GetService::getDetails('Read', $module);
+        static::$moduleConfigs = GetService::getConfigs($module);
     }
 
     public function show_carousel(string $module, string $id): array
@@ -42,7 +42,7 @@ class ShowService extends DigModuleService
     {
         $this->applyShowLoad();
         $item = $this->builder->findOrFail($id);
-        $related = $this->details->relatedModules($id);
+        $related = static::$moduleConfigs::relatedModules($id);
         return $this->formatShowResponse($item, $related);
     }
 

@@ -9,14 +9,26 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Models\Module\DigModuleModel;
-use App\Services\App\Module\ReadDetailsInterface;
+use App\Services\App\Module\ConfigInterface;
 use App\Services\App\Utils\GetService;
 
 class ModuleRequest extends FormRequest
 {
     protected ValidationRules $rules;
     protected DigModuleModel $model;
-    protected ReadDetailsInterface $readDetails;
+    protected static ConfigInterface $moduleConfigs;
+    private static $valid_modules = [
+        'Area',
+        'Season',
+        'Survey',
+        'Locus',
+        'Ceramic',
+        'Fauna',
+        'Glass',
+        'Lithic',
+        'Metal',
+        'Stone',
+    ];
 
     protected function prepareForValidation(): void
     {
@@ -27,30 +39,19 @@ class ModuleRequest extends FormRequest
 
         $module = $this->input('module');
 
-        if (! in_array($module, [
-            'Area',
-            'Season',
-            'Survey',
-            'Locus',
-            'Ceramic',
-            'Fauna',
-            'Glass',
-            'Lithic',
-            'Metal',
-            'Stone',
-        ])) {
+        if (! in_array($module, static::$valid_modules)) {
             throw new GeneralJsonException('Invalid module name: `' . $this->input('module') . '`', 422);
         }
 
         $validation_full_class = 'App\Http\Requests\Module\Specific\\' . $module . 'ValidationRules';
         $this->rules = new $validation_full_class;
         $this->model = GetService::getModel($module, true);
-        $this->readDetails = GetService::getDetails('Read', $module);
+        static::$moduleConfigs = GetService::getConfigs($module);
     }
 
     protected function rule_module_name_is_valid()
     {
-        return 'required|in:Area,Season,Survey,Locus,Ceramic,Fauna,Glass,Lithic,Metal,Stone';
+        return 'required|in:' .  implode(',', static::$valid_modules);
     }
 
     // Generic for all modules
@@ -72,14 +73,18 @@ class ModuleRequest extends FormRequest
 
     protected function rule_discrete_value_filter_group_name_is_valid(): string
     {
-        $groupNames = array_keys($this->readDetails->discreteFilterOptions());
+        $groupNames = array_keys(static::$moduleConfigs->discreteFilterOptions());
         return 'in:' . implode(',', $groupNames);
     }
 
     protected function rule_order_by_group_name_is_valid(): string
     {
-        $groupNames = array_keys($this->readDetails->orderByOptions());
-        return 'in:' . implode(',', $groupNames);
+        // Season and Area mudules don't have "Order By" options
+        if (!array_key_exists('Order By', static::$moduleConfigs::groups())) {
+            return '';
+        }
+        $orderBy = array_keys(static::$moduleConfigs::groups()['Order By']['options']);
+        return 'in:' . implode(',', $orderBy);
     }
 
     // Module specific

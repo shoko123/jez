@@ -4,25 +4,25 @@ namespace App\Services\App\Module\Specific\Season;
 
 use Illuminate\Database\Eloquent\Collection;
 
+use App\Models\Module\DigModuleModel;
 use App\Services\App\DigModuleService;
+use App\Services\App\Utils\GetService;
 use App\Services\App\Utils\FormatDbResult;
 
 class SeasonRelated extends DigModuleService
 {
-    public function __construct()
+    static DigModuleModel $locus;
+
+    public static function relatedModules(string $id)
     {
-        parent::__construct('Locus');
+        static::$locus = GetService::getModel('Locus', true);
+        $res = static::accessDb($id);
+        return static::formatResponse($res);
     }
 
-    public function relatedModules(string $id)
+    private static function accessDb(string $id): Collection
     {
-        $res = $this->accessDb($id);
-        return $this->formatResponse($res);
-    }
-
-    private function accessDb(string $id): Collection
-    {
-        return $this->model->with([
+        return static::$locus->with([
             'media' => function ($query) {
                 $query->orderBy('order_column')->limit(1);
             },
@@ -31,7 +31,7 @@ class SeasonRelated extends DigModuleService
             ->get();
     }
 
-    private function formatResponse($recs): array
+    private static function formatResponse($recs): array
     {
         return FormatDbResult::transformArrayOfItems('Has Locus', 'Locus', $recs);
     }

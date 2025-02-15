@@ -43,9 +43,9 @@ class GetService
         return new $servicePath($module);
     }
 
-    public static function getDetails(string $serviceName, string $module)
+    public static function getInitDetails(string $module)
     {
-        $details = 'App\Services\App\Module\Specific\\' . $module  . '\\' . $module .  $serviceName . 'Details';
+        $details = 'App\Services\App\Module\Specific\\' . $module  . '\\' . $module . 'InitDetails';
         return new $details;
     }
 

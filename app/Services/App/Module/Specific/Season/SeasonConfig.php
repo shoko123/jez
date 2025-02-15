@@ -5,6 +5,7 @@ namespace App\Services\App\Module\Specific\Season;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Builder;
 use App\Services\App\Module\ConfigInterface;
+use App\Services\App\Module\Specific\Season\SeasonRelated;
 
 class SeasonConfig implements ConfigInterface
 {
@@ -93,17 +94,14 @@ class SeasonConfig implements ConfigInterface
         return ['id', 'description'];
     }
 
+    // Show
+    public static function relatedModules(string $id): array
+    {
+        return seasonRelated::relatedModules($id);
+    }
 
     public static function allowed_tagger_field_names(): array
     {
         return [];
     }
-
-    // Show
-    public static function relatedModules(string $id): array
-    {
-        return [];
-    }
-
-    // Tagger
 }

@@ -36,6 +36,7 @@ class CeramicInitDetails implements InitDetailsInterface
                 'Season',
                 'Area',
                 'Media',
+                'Includes Date',
                 'Order By',
             ],
             "Typology" => [
@@ -87,7 +88,6 @@ class CeramicInitDetails implements InitDetailsInterface
             'Search Text' => [
                 'Search Periods',
                 'Search Specialist-Description',
-                'Includes Date',
             ],
             'Processing' => [
                 'Specialist',

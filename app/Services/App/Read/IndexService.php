@@ -3,11 +3,11 @@
 namespace App\Services\App\Read;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 
+use App\Exceptions\GeneralJsonException;
 use App\Services\App\DigModuleService;
 use App\Services\App\Utils\GetService;
-use App\Services\App\Module\ReadDetailsInterface;
+use App\Services\App\Module\ConfigInterface;
 use App\Models\Module\DigModuleModel;
 use App\Models\Tag\Tag;
 
@@ -15,13 +15,12 @@ class IndexService extends DigModuleService
 {
     protected DigModuleModel $model;
     protected Builder $builder;
-
-    protected ReadDetailsInterface $details;
+    protected static ConfigInterface $moduleConfigs;
 
     public function __construct(string $module)
     {
         parent::__construct($module);
-        $this->details = GetService::getDetails('Read', $module);
+        static::$moduleConfigs = GetService::getConfigs($module);
     }
 
     /////////////// index ///////////////////
@@ -67,7 +66,7 @@ class IndexService extends DigModuleService
         }
 
         if (! empty($query['categorized'])) {
-            $this->builder =  $this->details::applyCategorizedFilters($this->builder, $query['categorized']); // $this->categorizedFilters($query['categorized']);
+            $this->builder =  static::$moduleConfigs::applyCategorizedFilters($this->builder, $query['categorized']); // $this->categorizedFilters($query['categorized']);
         }
 
         if (! empty($query['field_search'])) {
@@ -81,7 +80,7 @@ class IndexService extends DigModuleService
 
     public function applyFieldValueFilters(array $cols)
     {
-        $discreteFilters = $this->details::discreteFilterOptions();
+        $discreteFilters = static::$moduleConfigs::discreteFilterOptions();
 
         foreach ($cols as $key => $data) {
             if (!is_array($discreteFilters[$data['group_name']])) {
@@ -185,7 +184,11 @@ class IndexService extends DigModuleService
 
     public function applyOrderBy(array $order_by)
     {
-        $orderBy = $this->details::orderByOptions();
+        if (!array_key_exists('Order By', static::$moduleConfigs::groups())) {
+            throw new GeneralJsonException('Order By Groups is not defined for module ' . static::$module, 422);
+        }
+        $orderBy = static::$moduleConfigs::groups()['Order By']['options'];
+        // $orderBy = $orderBygroup['options'];
 
         foreach ($order_by as $key => $data) {
             if (!is_array($orderBy[$data['group_name']])) {
@@ -203,7 +206,7 @@ class IndexService extends DigModuleService
 
     public function applyDefaultOrderBy()
     {
-        $list = $this->details::defaultOrderBy();
+        $list = static::$moduleConfigs::defaultOrderBy();
 
         foreach ($list as $field => $direction) {
             $this->builder->orderBy($field, $direction === 'asc' ? 'asc' : 'desc');

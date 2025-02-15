@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use App\Services\App\DigModuleService;
 use App\Services\App\Utils\GetService;
-use App\Services\App\Module\ReadDetailsInterface;
+use App\Services\App\Module\ConfigInterface;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\MediaService;
 
@@ -14,7 +14,7 @@ class PageService extends DigModuleService
 {
     protected DigModuleModel $model;
     protected Builder $builder;
-    protected ReadDetailsInterface $details;
+    protected static ConfigInterface $moduleConfigs;
 
     // Used by tabularPage to define the query and parse result
     private $selectArr = [];
@@ -24,7 +24,7 @@ class PageService extends DigModuleService
     public function __construct(string $module)
     {
         parent::__construct($module);
-        $this->details = GetService::getDetails('Read', $module);
+        static::$moduleConfigs = GetService::getConfigs($module);
     }
 
     public function page(array $ids, string $view): array
@@ -64,7 +64,7 @@ class PageService extends DigModuleService
     public function parseTabularFields()
     {
         // Copy once; use it to build query and parse result
-        $this->tabularPageDetails = $this->details::tabularPage();
+        $this->tabularPageDetails = static::$moduleConfigs::tabularPage();
 
         foreach ($this->tabularPageDetails['fields'] as $key => $field_name) {
             array_push($this->selectArr, $field_name);
@@ -115,7 +115,7 @@ class PageService extends DigModuleService
     // Gallery
     public function buildGalleryQuery()
     {
-        $this->builder = $this->model->select($this->details::galleryPage())
+        $this->builder = $this->model->select(static::$moduleConfigs::galleryPage())
             ->with(['media' => function ($query) {
                 $query->orderBy('order_column')->limit(1);
             }]);

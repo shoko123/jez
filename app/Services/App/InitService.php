@@ -9,7 +9,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use App\Services\App\Utils\GetService;
 use App\Services\App\DigModuleService;
 use App\Services\App\Module\InitDetailsInterface;
-use App\Services\App\Module\ReadDetailsInterface;
 use App\Services\App\Module\ConfigInterface;
 use App\Models\Tag\TagGroup;
 use App\Exceptions\GeneralJsonException;
@@ -27,7 +26,7 @@ class InitService extends DigModuleService
         if ($this->uses_tags()) {
             $this->moduleTagGroup = GetService::getTagGroupModel($module);
         }
-        $this->initDetails = GetService::getDetails('Init', $module);
+        $this->initDetails = GetService::getInitDetails($module);
         static::$moduleConfigs = GetService::getConfigs($module);
     }
 
