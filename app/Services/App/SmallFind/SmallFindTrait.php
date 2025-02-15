@@ -11,7 +11,7 @@ trait SmallFindTrait
 {
     static DigModuleModel $locus;
 
-    public static function relatedModules(string $id)
+    public static function smallFindRelatedModules(string $id)
     {
         static::$locus = GetService::getModel('Locus', true);
         $res = static::accessDb($id);
@@ -72,7 +72,7 @@ trait SmallFindTrait
         return $formatted;
     }
 
-    public static function discreteFilterOptions(bool $withRegCode): array
+    public static function smallFindDiscreteFilterOptions(bool $withRegCode): array
     {
         $options = [
             'Season' => [

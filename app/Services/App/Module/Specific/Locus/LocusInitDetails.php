@@ -26,37 +26,6 @@ class LocusInitDetails  implements InitDetailsInterface
         ];
     }
 
-    public static function modelGroups(): array
-    {
-        return [
-            'Square' => [
-                'code' => 'TM',
-                'multiple' => true,
-                'dependency' => [],
-            ],
-            'Clean' => [
-                'code' => 'EM',
-                'field_name' => 'clean',
-                'useInTagger' => false,
-                'showAsTag' => false,
-                'dependency' => [],
-            ],
-            'Search Description' => [
-                'code' => 'SF',
-                'field_name' => 'description',
-            ],
-            'Search Deposit' => [
-                'code' => 'SF',
-                'field_name' => 'deposit',
-            ],
-            'Search Registration Notes' => [
-                'code' => 'SF',
-                'field_name' => 'registration_notes',
-            ],
-
-        ];
-    }
-
     public static function categories(): array
     {
         return [

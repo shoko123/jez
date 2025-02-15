@@ -26,24 +26,6 @@ class LithicInitDetails implements InitDetailsInterface
         ];
     }
 
-    public static function modelGroups(): array
-    {
-        return [
-            'Registration Code' => [
-                'code' => 'EM',
-                'field_name' => 'code',
-                'useInTagger' => false,
-                'showAsTag' => false,
-                'dependency' => [],
-            ],
-            'Primary Typology' => [
-                'code' => 'ON',
-                'field_name' => 'group_label',
-                'group_name' => 'Count'
-            ],
-        ];
-    }
-
     public static function categories(): array
     {
         return [

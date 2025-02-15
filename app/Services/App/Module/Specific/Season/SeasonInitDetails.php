@@ -26,11 +26,6 @@ class SeasonInitDetails   implements InitDetailsInterface
         ];
     }
 
-    public static function modelGroups(): array
-    {
-        return [];
-    }
-
     public static function categories(): array
     {
         return [];

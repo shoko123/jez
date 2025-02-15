@@ -26,16 +26,6 @@ class SurveyInitDetails implements InitDetailsInterface
         ];
     }
 
-    public static function modelGroups(): array
-    {
-        return [
-            'Search Description' => [
-                'code' => 'SF',
-                'field_name' => 'description',
-            ],
-        ];
-    }
-
     public static function categories(): array
     {
         return [

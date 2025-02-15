@@ -58,7 +58,7 @@ class Glass extends DigModuleModel
     protected function short(): Attribute
     {
         return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['description'] ?? '[No description]'
+            get: fn(mixed $value, array $attributes) => $attributes['specialist_description'] ?? '[No specialist description]'
         );
     }
 }

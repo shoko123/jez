@@ -26,46 +26,6 @@ class GlassInitDetails implements InitDetailsInterface
         ];
     }
 
-    public static function modelGroups(): array
-    {
-        return [
-            'Primary Classification' => [
-                'code' => 'LV',
-                'field_name' => 'primary_classification_id',
-                'lookup_table_name' => 'glass_primary_classifications',
-                'lookup_text_field' => 'name',
-                'useInTagger' => true,
-                'showAsTag' => true,
-                'dependency' => [],
-            ],
-            'Production' => [
-                'code' => 'TM',
-                'multiple' => true,
-                'dependency' => [],
-            ],
-            'Vessel-Subtype' => [
-                'code' => 'TM',
-                'multiple' => true,
-                'dependency' => [['Primary Classification:Vessel/Lamp']],
-            ],
-            'Color' => [
-                'code' => 'TM',
-                'multiple' => true,
-                'dependency' => [],
-            ],
-            'Weathering' => [
-                'code' => 'TM',
-                'multiple' => true,
-                'dependency' => [],
-            ],
-            'Weathering-Type' => [
-                'code' => 'TM',
-                'multiple' => true,
-                'dependency' => [],
-            ],
-        ];
-    }
-
     public static function categories(): array
     {
         return [

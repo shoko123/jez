@@ -26,57 +26,6 @@ class MetalInitDetails   implements InitDetailsInterface
         ];
     }
 
-    public static function modelGroups(): array
-    {
-        return [
-            'Registration Code' => [
-                'code' => 'EM',
-                'field_name' => 'code',
-                'useInTagger' => false,
-                'showAsTag' => false,
-                'dependency' => [],
-            ],
-            'Specialist' => [
-                'code' => 'EM',
-                'field_name' => 'specialist',
-                'useInTagger' => false,
-                'showAsTag' => false,
-                'dependency' => [],
-            ],
-            'Primary Classification' => [
-                'code' => 'LV',
-                'field_name' => 'primary_classification_id',
-                'lookup_table_name' => 'metal_primary_classifications',
-                'lookup_text_field' => 'name',
-                'useInTagger' => true,
-                'showAsTag' => true,
-                'dependency' => [],
-            ],
-            'Material' => [
-                'code' => 'LV',
-                'field_name' => 'material_id',
-                'lookup_table_name' => 'metal_materials',
-                'lookup_text_field' => 'name',
-                'useInTagger' => true,
-                'showAsTag' => true,
-                'dependency' => [],
-            ],
-            'Modern Weaponry' => [
-                'code' => 'TM',
-                'multiple' => true,
-                'dependency' => [['Primary Classification:Modern Weaponry']],
-            ],
-            'Field Description' => [
-                'code' => 'SF',
-                'field_name' => 'field_description',
-            ],
-            'Specialist Description' => [
-                'code' => 'SF',
-                'field_name' => 'specialist_description',
-            ],
-        ];
-    }
-
     public static function categories(): array
     {
         return [

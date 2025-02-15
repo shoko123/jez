@@ -220,7 +220,7 @@ class CeramicConfig implements ConfigInterface
 
     public static function discreteFilterOptions(): array
     {
-        return array_merge(static::discreteFilterOptions(true), [
+        return array_merge(static::smallFindDiscreteFilterOptions(true), [
             'Primary Classification' => 'primary_classification_id',
             'Specialist' => 'specialist',
         ]);
@@ -313,7 +313,7 @@ class CeramicConfig implements ConfigInterface
     // Show
     public static function relatedModules(string $id): array
     {
-        return static::relatedModules(substr($id, 0, 5));
+        return static::smallFindRelatedModules(substr($id, 0, 5));
     }
 
     // Tagger
