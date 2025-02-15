@@ -10,15 +10,17 @@ use App\Services\App\Utils\GetService;
 use App\Services\App\DigModuleService;
 use App\Services\App\Module\InitDetailsInterface;
 use App\Services\App\Module\ReadDetailsInterface;
+use App\Services\App\Module\ConfigInterface;
 use App\Models\Tag\TagGroup;
 use App\Exceptions\GeneralJsonException;
-use App\Services\App\InitGlobalGroups;
+use App\Services\App\CommonGroups;
 
 class InitService extends DigModuleService
 {
     protected Model $moduleTagGroup;
     protected InitDetailsInterface $initDetails;
-    protected ReadDetailsInterface $readDetails;
+    protected static ConfigInterface $moduleConfigs;
+
     public function __construct(string $module)
     {
         parent::__construct($module);
@@ -26,7 +28,7 @@ class InitService extends DigModuleService
             $this->moduleTagGroup = GetService::getTagGroupModel($module);
         }
         $this->initDetails = GetService::getDetails('Init', $module);
-        $this->readDetails = GetService::getDetails('Read', $module);
+        static::$moduleConfigs = GetService::getConfigs($module);
     }
 
     public function init(): array
@@ -47,7 +49,7 @@ class InitService extends DigModuleService
 
     protected function allGroups(): array
     {
-        return array_merge(InitGlobalGroups::groups(), $this->initDetails::modelGroups());
+        return array_merge(CommonGroups::groups(), static::$moduleConfigs::groups());
     }
 
     public function trio(): array
@@ -262,7 +264,6 @@ class InitService extends DigModuleService
 
     private function getOrderByGroupDetails($group)
     {
-        $ob = $this->readDetails::orderByOptions();
-        return array_merge($group, ['options' => array_keys($ob)]);
+        return array_merge($group, ['options' => array_keys($group['options'])]);
     }
 }

@@ -46,6 +46,12 @@ class GetService
     public static function getDetails(string $serviceName, string $module)
     {
         $details = 'App\Services\App\Module\Specific\\' . $module  . '\\' . $module .  $serviceName . 'Details';
-        return new $details; // 'App\Services\App\Module\Specific\\' . $module  . '\\' . $module .  $serviceName . 'Details';
+        return new $details;
+    }
+
+    public static function getConfigs(string $module)
+    {
+        $configs = 'App\Services\App\Module\Specific\\' . $module  . '\\' . $module .  'Config';
+        return new $configs;
     }
 }

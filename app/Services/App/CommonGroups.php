@@ -2,7 +2,7 @@
 
 namespace App\Services\App;
 
-class InitGlobalGroups
+class CommonGroups
 {
     public static function groups(): array
     {
@@ -60,9 +60,6 @@ class InitGlobalGroups
             'Modern Subperiods' => [
                 'code' => 'TG',
                 'dependency' => [['Periods:Modern']],
-            ],
-            'Order By' => [
-                'code' => 'OB',
             ],
         ];
     }
