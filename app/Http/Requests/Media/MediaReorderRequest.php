@@ -8,7 +8,7 @@ class MediaReorderRequest extends ModuleRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return $this->user('sanctum')->can($this->input('module') . '-media');
     }
 
     public function rules(): array

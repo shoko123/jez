@@ -10,13 +10,13 @@ class MediaUploadRequest extends ModuleRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return $this->user('sanctum')->can($this->input('module') . '-media');
     }
 
     public function rules(): array
     {
         $media_collections = MediaService::collection_names();
-        $media_collection_rule = 'nullable|in:'.$media_collections->implode(',');
+        $media_collection_rule = 'nullable|in:' . $media_collections->implode(',');
 
         return [
             'module' => $this->rule_module_name_is_valid(),

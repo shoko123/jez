@@ -9,14 +9,11 @@ class TagSyncRequest extends ModuleRequest
 {
     public function authorize(): bool
     {
-        $p = $this->input('module') . '-tag';
-
-        return $this->user('sanctum')->can($p);
+        return $this->user('sanctum')->can($this->input('module') . '-tag');
     }
 
     public function rules(): array
     {
-        //TODO  field_values Rule
         return [
             'module' => $this->rule_module_name_is_valid(),
             'module_id' => $this->rule_id_exists_in_module_table(),

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Module\IndexRequest;
+use App\Http\Requests\Module\DestroyRequest;
 use App\Http\Requests\Module\ItemByIdRequest;
 use App\Http\Requests\Module\ModuleRequest;
 use App\Http\Requests\Module\PageRequest;
@@ -67,7 +68,7 @@ class DigModuleController extends BaseController
         return response()->json($mutateService->update($v['data']), 200);
     }
 
-    public function destroy(ItemByIdRequest $r)
+    public function destroy(DestroyRequest $r)
     {
         $v = $r->validated();
         $mutateService = static::makeDigModuleService(ServiceEnum::Mutate, $r['module']);
