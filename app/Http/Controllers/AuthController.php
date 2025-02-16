@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\User;
 
 class AuthController extends BaseController
 {
     public function me()
     {
-        //dd("ME");
-        $user = auth()->user();
+        $user = Auth::user();
         $me = User::findOrFail($user->id);
 
         return response()->json([

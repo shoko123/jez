@@ -16,18 +16,20 @@ class ModuleRequest extends FormRequest
 {
     protected ValidationRules $rules;
     protected DigModuleModel $model;
+    private string $module;
     protected static ConfigInterface $moduleConfigs;
-    private static $valid_modules = [
-        'Area',
-        'Season',
-        'Survey',
-        'Locus',
-        'Ceramic',
-        'Fauna',
-        'Glass',
-        'Lithic',
-        'Metal',
-        'Stone',
+
+    private static $modules = [
+        'Area' => 'areas',
+        'Season' => 'seasons',
+        'Survey' => 'survey',
+        'Locus' => 'loci',
+        'Ceramic' => 'ceramics',
+        'Fauna' => 'fauna',
+        'Glass' => 'glass',
+        'Lithic' => 'lithics',
+        'Metal' => 'metals',
+        'Stone' => 'stones',
     ];
 
     protected function prepareForValidation(): void
@@ -37,21 +39,21 @@ class ModuleRequest extends FormRequest
             throw new GeneralJsonException('No module name supplied!', 422);
         }
 
-        $module = $this->input('module');
+        $this->module = $this->input('module');
 
-        if (! in_array($module, static::$valid_modules)) {
+        if (! in_array($this->module, array_keys(static::$modules))) {
             throw new GeneralJsonException('Invalid module name: `' . $this->input('module') . '`', 422);
         }
 
-        $validation_full_class = 'App\Http\Requests\Module\Specific\\' . $module . 'ValidationRules';
+        $validation_full_class = 'App\Http\Requests\Module\Specific\\' . $this->module . 'ValidationRules';
         $this->rules = new $validation_full_class;
-        $this->model = GetService::getModel($module, true);
-        static::$moduleConfigs = GetService::getConfigs($module);
+        $this->model = GetService::getModel($this->module, true);
+        static::$moduleConfigs = GetService::getConfigs($this->module);
     }
 
     protected function rule_module_name_is_valid()
     {
-        return 'required|in:' .  implode(',', static::$valid_modules);
+        return 'required|in:' .  implode(',', array_keys(static::$modules));
     }
 
     // Generic for all modules
@@ -73,7 +75,7 @@ class ModuleRequest extends FormRequest
 
     protected function rule_discrete_value_filter_group_name_is_valid(): string
     {
-        $groupNames = array_keys(static::$moduleConfigs->discreteFilterOptions());
+        $groupNames = array_keys(static::$moduleConfigs::discreteFilterOptions());
         return 'in:' . implode(',', $groupNames);
     }
 
@@ -89,29 +91,41 @@ class ModuleRequest extends FormRequest
 
     // Module specific
     //////////////////
-    protected function rule_categorized_group_name_is_valid(): string
+    protected function rule_categorized_group_name_is_valid()
     {
-        return $this->rules->rule_categorized_group_name_is_valid();
+        return 'in:' . implode(',', static::$moduleConfigs::allowed_categorized_filter_group_names());
     }
 
     protected function rule_search_field_name_is_valid(): string
     {
-        return $this->rules->rule_search_field_name_is_valid();
+        return 'in:' . implode(',', static::$moduleConfigs::allowed_search_field_names());
     }
 
     protected function rule_tagger_field_name_is_valid(): string
     {
-        return $this->rules->rule_tagger_field_name_is_valid();
+        return 'in:' . implode(',', static::$moduleConfigs::allowed_tagger_field_names());
     }
 
     protected function create_rules(): array
     {
-        return $this->rules->create_rules();
+        return $this->format_fields_rules(true);
     }
 
     protected function update_rules(): array
     {
-        return $this->rules->update_rules();
+        return $this->format_fields_rules(false);
+    }
+
+    private  function format_fields_rules(bool $is_create): array
+    {
+        $formatted = [];
+        foreach (static::$moduleConfigs::fieldsValidation() as $k => $v) {
+            $formatted['data.fields.' . $k] = $v;
+        }
+        $formatted['data.fields.id'] .= '|' . ($is_create ? 'unique' : 'exists') . ':' . static::$modules[$this->module] . ',id';
+
+
+        return $formatted;
     }
 
     public function authorize(): bool

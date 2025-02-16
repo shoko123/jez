@@ -11,7 +11,7 @@ class SurveyConfig implements ConfigInterface
     public static function fieldsValidation(): array
     {
         return [
-            'id' => 'required|string|min:5|max:5',
+            'id' => 'required|string|min:2|max:5',
             'area_id' => 'required|exists:areas,id',
             'feature_no' => 'required|numeric|between:1,200',
             'surveyed_date' => 'date|nullable',
@@ -81,7 +81,7 @@ class SurveyConfig implements ConfigInterface
 
     public static function defaultOrderBy(): array
     {
-        return ['id' => 'asc'];
+        return ['area_id' => 'asc', 'feature_no' => 'asc'];
     }
 
     public static function applyCategorizedFilters(Builder $builder, array $groups): Builder
@@ -107,7 +107,6 @@ class SurveyConfig implements ConfigInterface
     {
         return ['id', 'description'];
     }
-
 
     public static function allowed_tagger_field_names(): array
     {
