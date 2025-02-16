@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Module;
 
 use App\Exceptions\GeneralJsonException;
-use App\Http\Requests\Module\Specific\ValidationRules;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -14,7 +13,6 @@ use App\Services\App\Utils\GetService;
 
 class ModuleRequest extends FormRequest
 {
-    protected ValidationRules $rules;
     protected DigModuleModel $model;
     private string $module;
     protected static ConfigInterface $moduleConfigs;
@@ -45,8 +43,6 @@ class ModuleRequest extends FormRequest
             throw new GeneralJsonException('Invalid module name: `' . $this->input('module') . '`', 422);
         }
 
-        $validation_full_class = 'App\Http\Requests\Module\Specific\\' . $this->module . 'ValidationRules';
-        $this->rules = new $validation_full_class;
         $this->model = GetService::getModel($this->module, true);
         static::$moduleConfigs = GetService::getConfigs($this->module);
     }
@@ -124,7 +120,11 @@ class ModuleRequest extends FormRequest
         }
         $formatted['data.fields.id'] .= '|' . ($is_create ? 'unique' : 'exists') . ':' . static::$modules[$this->module] . ',id';
 
-
+        if (!is_null(!$this->model->onpTableName())) {
+            $formatted['data.onps'] = 'array';
+            $formatted['data.onps.*.id'] = 'required|exists:' . $this->model->onpTableName() . ',id';
+            $formatted['data.onps.*.value'] = 'required|numeric|between:1,999';
+        }
         return $formatted;
     }
 
