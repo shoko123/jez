@@ -8,14 +8,12 @@ use Illuminate\Database\Eloquent\Builder;
 interface ConfigInterface
 {
     public static function fieldsValidation(): array;
-    public static function derivedId(): Attribute;
     public static function short(): Attribute;
 
-    public static function enumFields(): array;
     public static function dateFields(): array;
     public static function allowed_search_field_names(): array;
 
-    // groups
+    // trio
     public static function groups(): array;
 
     // filter validations

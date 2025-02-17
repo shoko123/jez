@@ -19,11 +19,6 @@ class Fauna extends DigModuleModel
         return [];
     }
 
-    public static function enumFields(): array
-    {
-        return ['code', 'symmetry', 'weathering'];
-    }
-
     public static function dateFields(): array
     {
         return ['date_retrieved'];

@@ -17,11 +17,6 @@ class Area extends DigModuleModel
         ]];
     }
 
-    public static function enumFields(): array
-    {
-        return [];
-    }
-
     public static function dateFields(): array
     {
         return [];

@@ -25,13 +25,6 @@ class AreaConfig implements ConfigInterface
         ]];
     }
 
-    public static function derivedId(): Attribute
-    {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['id']
-        );
-    }
-
     public static function short(): Attribute
     {
         return Attribute::make(
@@ -40,11 +33,6 @@ class AreaConfig implements ConfigInterface
     }
 
     public static function dateFields(): array
-    {
-        return [];
-    }
-
-    public static function enumFields(): array
     {
         return [];
     }

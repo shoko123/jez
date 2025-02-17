@@ -22,13 +22,6 @@ class SurveyConfig implements ConfigInterface
         ];
     }
 
-    public static function derivedId(): Attribute
-    {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['area_id'] . (string)$attributes['feature_no']
-        );
-    }
-
     public static function short(): Attribute
     {
         return Attribute::make(
@@ -39,11 +32,6 @@ class SurveyConfig implements ConfigInterface
     public static function dateFields(): array
     {
         return ['surveyed_date'];
-    }
-
-    public static function enumFields(): array
-    {
-        return [];
     }
 
     public static function groups(): array

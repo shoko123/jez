@@ -27,8 +27,6 @@ abstract class DigModuleModel extends Model implements HasMedia
 
     abstract protected function derivedId(): Attribute;
 
-    abstract public static function enumFields(): array;
-
     abstract public static function dateFields(): array;
 
     public function tableName(): string

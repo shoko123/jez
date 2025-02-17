@@ -18,11 +18,6 @@ class Stone extends DigModuleModel
         return [];
     }
 
-    public static function enumFields(): array
-    {
-        return ['code'];
-    }
-
     public static function dateFields(): array
     {
         return ['date_retrieved'];

@@ -18,11 +18,6 @@ class Glass extends DigModuleModel
         return [];
     }
 
-    public static function enumFields(): array
-    {
-        return [];
-    }
-
     public static function dateFields(): array
     {
         return ['date_retrieved'];

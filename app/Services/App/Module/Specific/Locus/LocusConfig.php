@@ -30,13 +30,6 @@ class LocusConfig implements ConfigInterface
         ];
     }
 
-    public static function derivedId(): Attribute
-    {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['season_id'] .  $attributes['area_id'] . str_pad($attributes['locus_no'], 3, '0', STR_PAD_LEFT)
-        );
-    }
-
     public static function short(): Attribute
     {
         return Attribute::make(
@@ -47,11 +40,6 @@ class LocusConfig implements ConfigInterface
     public static function dateFields(): array
     {
         return ['date_opened', 'date_closed'];
-    }
-
-    public static function enumFields(): array
-    {
-        return ['clean'];
     }
 
     public static function groups(): array

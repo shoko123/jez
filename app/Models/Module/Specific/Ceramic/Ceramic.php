@@ -18,11 +18,6 @@ class Ceramic extends DigModuleModel
         return [];
     }
 
-    public static function enumFields(): array
-    {
-        return ['specialist'];
-    }
-
     public static function dateFields(): array
     {
         return ['date_retrieved'];

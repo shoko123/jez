@@ -18,11 +18,6 @@ class Locus extends DigModuleModel
         return [];
     }
 
-    public static function enumFields(): array
-    {
-        return ['clean'];
-    }
-
     public static function dateFields(): array
     {
         return ['date_opened', 'date_closed'];

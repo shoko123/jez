@@ -150,8 +150,6 @@ class MutateService extends DigModuleService
         }
     }
 
-
-
     public function destroy(string $module, string $id): array
     {
         $with_arr = [];
@@ -165,7 +163,7 @@ class MutateService extends DigModuleService
             array_push($with_arr, 'onps');
         }
 
-        //get item with related tags/onps
+        //get item with related tags,onps
         $item = $this->model->with($with_arr)->findOrFail($id);
 
         DB::transaction(function () use ($item) {
@@ -182,9 +180,6 @@ class MutateService extends DigModuleService
             }
             $item->delete();
         });
-
-        unset($item->module_tags);
-        unset($item->global_tags);
 
         return ["deleted_id" => $item->id];
     }

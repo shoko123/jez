@@ -48,13 +48,6 @@ class StoneConfig implements ConfigInterface
         ];
     }
 
-    public static function derivedId(): Attribute
-    {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['locus_id'] . $attributes['code'] .  str_pad($attributes['basket_no'], 2, '0', STR_PAD_LEFT) .  str_pad($attributes['artifact_no'], 2, '0', STR_PAD_LEFT)
-        );
-    }
-
     public static function short(): Attribute
     {
         return Attribute::make(
@@ -65,11 +58,6 @@ class StoneConfig implements ConfigInterface
     public static function dateFields(): array
     {
         return ['date_retrieved'];
-    }
-
-    public static function enumFields(): array
-    {
-        return [];
     }
 
     public static function groups(): array
