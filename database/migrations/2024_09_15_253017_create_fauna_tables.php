@@ -108,6 +108,7 @@ return new class extends Migration
             $table->enum('group_label', ['Measurements']);
             $table->string('label', 50);
             $table->unsignedTinyInteger('order_column');
+            $table->unsignedTinyInteger('shift');
             //
             $table->unique(['group_label', 'label']);
         });

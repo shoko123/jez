@@ -37,8 +37,8 @@
       <template v-if="showMeasurements">
         Measurements
         <v-row class="border-md" dense>
-          <v-col v-for="(np, index) in onps" :key="index" :cols="2">
-            <v-text-field v-model="np.value" :label="np.label" readonly filled> </v-text-field>
+          <v-col v-for="(np, index) in onpsFormatted" :key="index" :cols="2">
+            <v-text-field v-model="np.val" :label="np.label" readonly filled> </v-text-field>
           </v-col>
         </v-row>
       </template>
@@ -62,14 +62,15 @@ const item = computed(() => {
   return fields.value as TFields<'Fauna'>
 })
 
-// const lf = computed(() => {
-//   return lookupEnums.value as TFields<'Fauna'>
-// })
+const onpsFormatted = computed(() => {
+  return onps.value.map(x => {
+    return { val: (x.value / Math.pow(10, x.shift)), label: x.label }
+  })
+})
 
 const isArtifact = computed(() => {
   return item.value.artifact_no !== 0
 })
-
 
 const showMeasurements = computed(() => {
   return isArtifact.value && onps.value.length > 0

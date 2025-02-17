@@ -41,7 +41,7 @@ class FaunaConfig implements ConfigInterface
             'measured' => 'max:1',
             'data.onps' => 'array',
             'data.onps.*.id' => 'required|exists:fauna_onps,id',
-            'data.onps.*.value' => 'required|numeric|between:1,999',
+            'data.onps.*.value' => 'required|numeric|between:10,32767',
         ];
     }
 

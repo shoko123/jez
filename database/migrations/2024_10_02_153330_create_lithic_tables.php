@@ -65,6 +65,7 @@ return new class extends Migration
             $table->enum('group_label', ['Count']);
             $table->string('label', 50);
             $table->unsignedTinyInteger('order_column');
+            $table->unsignedTinyInteger('shift');
         });
 
         Schema::create('lithic-lithic_onps', function (Blueprint $table) {

@@ -10,7 +10,9 @@ type TDefs = {
     API: {
       field_name: string
       dependency: string[][]
-      options: { index: number; label: string; useInTagger: boolean }[]
+      options: { index: number; label: string }[]
+      useInTagger: boolean
+      showAsTag: boolean
     }
     TRIO: { field_name: string; useInTagger: boolean; showAsTag: boolean; dependency: string[][] }
   }
@@ -60,7 +62,7 @@ type TDefs = {
   ON: {
     API: {
       onp_group_id: number
-      options: { onp_id: number; label: string }[]
+      options: { onp_id: number; label: string; shift: number }[]
     }
     TRIO: { group_id: number }
   }
@@ -104,6 +106,7 @@ type TApiTrio = { name: string; groups: TApiGroup[] }[]
 type TOptionWithoutGroupKey = {
   text: string
   extra: TFieldValue
+  shift?: number
 }
 
 type TOption = TOptionWithoutGroupKey & {

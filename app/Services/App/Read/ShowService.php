@@ -84,7 +84,7 @@ class ShowService extends DigModuleService
         }) : [];
 
         $onps = isset($item['onps']) ? $item->onps->map(function ($onp, int $key) {
-            return ['group_label' => $onp->group_label, 'label' => $onp->label, 'value' => $onp->pivot->value];
+            return ['group_label' => $onp->group_label, 'label' => $onp->label, 'value' => $onp->pivot->value, 'shift' => $onp->shift];
         }) : [];
 
         return [

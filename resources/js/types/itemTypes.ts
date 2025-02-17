@@ -7,6 +7,7 @@ type TOnp = {
   group_label: string
   label: string
   value: number
+  shift: number
 }
 type TApiTag = { group_label: string; tag_text: string }
 type TApiItemShow<F extends TApiFields> = {

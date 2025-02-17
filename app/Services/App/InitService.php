@@ -169,6 +169,7 @@ class InitService extends DigModuleService
                 return [
                     'label' => $y->label,
                     'onp_id' => $y->id,
+                    'shift' => $y->shift,
                 ];
             }),
         ]);

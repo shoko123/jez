@@ -201,7 +201,7 @@ function handleTag<C extends 'TM' | 'TG'>(grp: TApiGroup<C>) {
 // Optional Numeric Properties
 function handleOnp<C extends 'ON'>(grp: TApiGroup<C>) {
   const options = [...grp.options].map((x) => {
-    return { text: x.label, extra: x.onp_id }
+    return { text: x.label, extra: x.onp_id, shift: x.shift }
   })
   addToGroupAndOptionObjects(grp, options)
 }

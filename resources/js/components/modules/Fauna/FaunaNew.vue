@@ -47,9 +47,11 @@
 
     <v-row v-if="isArtifact" class="border-md" dense>
       <v-col v-for="(item, index) in dataNew.allOnps" :key="index" :cols="2">
-        <v-text-field v-model="item.value" :label="item.label" :error-messages="onpsErrorMessages[index]" filled>
-        </v-text-field>
+
+        <v-text-field v-model="item.value" :label="item.label" :error-messages="onpsErrorMessages[index]"
+          filled></v-text-field>
       </v-col>
+
     </v-row>
     <v-row class="ga-1">
       <v-text-field v-model="nf.specialist_notes" label="Specialist Notes" :error-messages="errors.specialist_notes"
@@ -67,7 +69,7 @@ import { TFields, TFieldsErrors, TFieldsDefaultsAndRules } from '@/types/moduleT
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useVuelidate } from '@vuelidate/core'
-import { required, between, minLength, maxLength, helpers } from '@vuelidate/validators'
+import { required, between, minLength, maxLength, helpers, numeric } from '@vuelidate/validators'
 import { useModuleStore } from '../../../scripts/stores/module'
 import { useItemStore } from '../../../scripts/stores/item'
 import { useItemNewStore } from '../../../scripts/stores/itemNew'
@@ -119,8 +121,9 @@ const rulesObj = computed(() => {
     fields: fieldsRules,
     allOnps: {
       $each: helpers.forEach({
+        numeric,
         value: {
-          betweenValue: between(1, 999),
+          betweenValue: between(1, 3276),
         },
       })
     }

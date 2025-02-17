@@ -29,7 +29,7 @@ export const useItemNewStore = defineStore('itemNew', () => {
 
   const dataNew = ref<{
     fields: Partial<TFields>
-    allOnps: { label: string; id: number; value: number | null }[]
+    allOnps: { label: string; id: number; value: number | null; shift: number }[]
   }>({ fields: {}, allOnps: [] })
 
   const mainArray = computed(() => {
@@ -79,7 +79,12 @@ export const useItemNewStore = defineStore('itemNew', () => {
     dataNew.value.allOnps = dataNew.value.allOnps.concat(
       group.optionKeys.map((x) => {
         const paramInfo = trio.value.optionsObj[x]!
-        return { label: paramInfo.text, id: paramInfo.extra as number, value: null }
+        return {
+          label: paramInfo.text,
+          id: paramInfo.extra as number,
+          value: null,
+          shift: paramInfo.shift!,
+        }
       }),
     )
 
@@ -89,7 +94,7 @@ export const useItemNewStore = defineStore('itemNew', () => {
     if (!isCreate.value) {
       onps.value.forEach((e) => {
         const index = dataNew.value.allOnps.findIndex((n) => n.label === e.label)
-        dataNew.value.allOnps[index]!.value = e.value
+        dataNew.value.allOnps[index]!.value = e.value / Math.pow(10, e.shift)
       })
     }
   }
@@ -111,7 +116,7 @@ export const useItemNewStore = defineStore('itemNew', () => {
             return x.value
           })
           .map((x) => {
-            return { id: x.id, value: x.value === null ? null : +x.value }
+            return { id: x.id, value: x.value === null ? null : +x.value * Math.pow(10, x.shift) }
           }),
       },
     })

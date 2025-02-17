@@ -38,20 +38,12 @@ abstract class DigModuleModel extends Model implements HasMedia
 
     public function tagTableName(): ?string
     {
-        if (property_exists($this, 'moduleTagTable')) {
-            return $this->moduleTagTable;
-        } else {
-            return null;
-        }
+        return property_exists($this, 'moduleTagTable') ? $this->moduleTagTable : null;
     }
 
     public function onpTableName(): ?string
     {
-        if (property_exists($this, 'onpTable')) {
-            return $this->onpTable;
-        } else {
-            return null;
-        }
+        return property_exists($this, 'onpTable') ? $this->onpTable : null;
     }
 
     public function registerMediaConversions(?Media $media = null): void
