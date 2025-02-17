@@ -13,16 +13,6 @@ class Metal extends DigModuleModel
     protected $table = 'metals';
     protected $moduleTagTable = 'metal_tags';
 
-    public static function restrictedValues(): array
-    {
-        return [];
-    }
-
-    public static function dateFields(): array
-    {
-        return ['date_retrieved'];
-    }
-
     public function locus()
     {
         return $this->belongsTo(Locus::class);

@@ -18,7 +18,7 @@ class SeasonConfig implements ConfigInterface
         ];
     }
 
-    public static function restrictedValues(): array
+    public static function restricted_values(): array
     {
         return ['id' => [
             'vals' => ['3', '4', '5', '6', '7', '8'],

@@ -13,16 +13,6 @@ class Locus extends DigModuleModel
     protected $table = 'loci';
     protected $moduleTagTable = 'locus_tags';
 
-    public static function restrictedValues(): array
-    {
-        return [];
-    }
-
-    public static function dateFields(): array
-    {
-        return ['date_opened', 'date_closed'];
-    }
-
     public function area()
     {
         return $this->belongsTo(GetService::getModel('Area'));

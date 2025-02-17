@@ -16,16 +16,6 @@ class Survey extends DigModuleModel
         return $this->belongsTo(GetService::getModel('Area'));
     }
 
-    public static function restrictedValues(): array
-    {
-        return [];
-    }
-
-    public static function dateFields(): array
-    {
-        return ['surveyed_date'];
-    }
-
     protected function derivedId(): Attribute
     {
         return Attribute::make(

@@ -10,16 +10,11 @@ class Area extends DigModuleModel
 {
     protected $table = 'areas';
 
-    public static function restrictedValues(): array
+    public static function restricted_values(): array
     {
         return ['id' => [
             'vals' => ['K', 'L', 'M', 'N', 'P', 'Q', 'S'],
         ]];
-    }
-
-    public static function dateFields(): array
-    {
-        return [];
     }
 
     protected function derivedId(): Attribute

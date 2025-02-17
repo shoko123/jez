@@ -10,7 +10,7 @@ class Season extends DigModuleModel
 {
     protected $table = 'seasons';
 
-    public static function restrictedValues(): array
+    public static function restricted_values(): array
     {
         return ['id' => [
             'vals' => ['3', '4', '5', '6', '7', '8'],
@@ -18,11 +18,6 @@ class Season extends DigModuleModel
                 return (string) ($val + 2010);
             }
         ]];
-    }
-
-    public static function dateFields(): array
-    {
-        return [];
     }
 
     protected function derivedId(): Attribute

@@ -18,7 +18,7 @@ class AreaConfig implements ConfigInterface
         ];
     }
 
-    public static function restrictedValues(): array
+    public static function restricted_values(): array
     {
         return ['id' => [
             'vals' => ['K', 'L', 'M', 'N', 'P', 'Q', 'S'],

@@ -41,7 +41,7 @@ class InitService extends DigModuleService
             ],
             'display_options' => static::$initDetails::displayOptions(),
             'first_id' => $this->model->select('id')->firstOrFail()['id'],
-            'dateFields' => $this->model->dateFields(),
+            'dateFields' => static::$moduleConfigs::dateFields(),
             'trio' => $this->trio(),
         ];
     }
@@ -89,7 +89,7 @@ class InitService extends DigModuleService
             case 'RV':  // restricted value lists;
                 // they often belong to a different module.
                 // e.g. to filter Stone by area we use the area restricted values list
-                return $this->getRestrictedValuesGroupDetails($group);
+                return $this->getRestrictedValuesGroupDetails($label, $group);
 
             case 'CT': //categorized group
                 return $this->getCategorizedGroupDetails($group);
@@ -221,13 +221,13 @@ class InitService extends DigModuleService
         );
     }
 
-
-    private function getRestrictedValuesGroupDetails($group)
+    private function getRestrictedValuesGroupDetails($label, $group)
     {
-        // throw_if(is_null(self::$restrictedValues[$label]), new GeneralJsonException('** MODEL INIT ERROR - RVGroup Bad format for "' . $label . '" ***', 500));
-
         $model = GetService::getModel($group['values_source_module']);
-        $resVals =  $model::restrictedValues();
+
+        throw_if(!method_exists($model, 'restricted_values'), new GeneralJsonException('** Init of RV group ' . $label . 'failed! restricted_values() not defined on' . $group['values_source_module'] . '.', 500));
+
+        $resVals =  $model::restricted_values();
         $specific = $resVals[$group['values_source_field']];
         $manipulator = array_key_exists('manipulator', $specific) ? $specific['manipulator'] : function ($val) {
             return $val;
