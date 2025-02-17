@@ -123,7 +123,7 @@ class ModuleRequest extends FormRequest
         if (!is_null(!$this->model->onpTableName())) {
             $formatted['data.onps'] = 'array';
             $formatted['data.onps.*.id'] = 'required|exists:' . $this->model->onpTableName() . ',id';
-            $formatted['data.onps.*.value'] = 'required|numeric|between:10,32767';
+            $formatted['data.onps.*.value'] = 'required|numeric|between:1,32767';
         }
         return $formatted;
     }

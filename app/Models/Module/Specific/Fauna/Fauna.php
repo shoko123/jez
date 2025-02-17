@@ -48,15 +48,6 @@ class Fauna extends DigModuleModel
     {
         return $this->belongsToMany(FaunaOnp::class, 'fauna-fauna_onps', 'item_id', 'onp_id')->withPivot('value');
     }
-    // protected function casts(): array
-    // {
-    //     return [
-    //         'has_butchery_evidence' => 'boolean',
-    //         'has_burning_evidence' => 'boolean',
-    //         'has_other_bsm_evidence' => 'boolean',
-
-    //     ];
-    // }
 
     protected function derivedId(): Attribute
     {

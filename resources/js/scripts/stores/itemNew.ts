@@ -94,6 +94,7 @@ export const useItemNewStore = defineStore('itemNew', () => {
     if (!isCreate.value) {
       onps.value.forEach((e) => {
         const index = dataNew.value.allOnps.findIndex((n) => n.label === e.label)
+        // onps are store as integers and shown as floats (divided by 'shift')
         dataNew.value.allOnps[index]!.value = e.value / Math.pow(10, e.shift)
       })
     }
@@ -116,6 +117,8 @@ export const useItemNewStore = defineStore('itemNew', () => {
             return x.value
           })
           .map((x) => {
+            // onps on itemNew are divided by 'shift' so here we multiple them to be stored as integers
+            // +x.value - Unary plus operator - convert to number
             return { id: x.id, value: x.value === null ? null : +x.value * Math.pow(10, x.shift) }
           }),
       },
