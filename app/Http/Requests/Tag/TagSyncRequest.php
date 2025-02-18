@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\Tag;
 
-use App\Http\Requests\Module\ModuleRequest;
+use App\Http\Requests\Module\BaseRequest;
 use App\Rules\RuleStringIntOrBool;
 
-class TagSyncRequest extends ModuleRequest
+class TagSyncRequest extends BaseRequest
 {
     public function authorize(): bool
     {
@@ -16,9 +16,9 @@ class TagSyncRequest extends ModuleRequest
     {
         return [
             'module' => $this->rule_module_name_is_valid(),
-            'module_id' => $this->rule_id_exists_in_module_table(),
+            'module_id' => $this->rule_id_exists_in_module_table($this->model),
             'module_tag_ids' => 'array',
-            'module_tag_ids.*' => $this->rule_id_exists_in_module_tags_table(),
+            'module_tag_ids.*' => $this->rule_id_exists_in_module_tags_table($this->model),
             'global_tag_ids' => 'array',
             'global_tag_ids.*' => 'exists:tags,id',
             'fields' => ['array'],

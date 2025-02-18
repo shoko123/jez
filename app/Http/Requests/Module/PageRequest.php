@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Module;
 
-class PageRequest extends ModuleRequest
+class PageRequest extends BaseRequest
 {
     public function authorize(): bool
     {
@@ -14,7 +14,7 @@ class PageRequest extends ModuleRequest
         return [
             'module' => $this->rule_module_name_is_valid(),
             'ids' => ['required', 'array', 'between:1,200'],
-            'ids.*' => $this->rule_id_exists_in_module_table(),
+            'ids.*' => $this->rule_id_exists_in_module_table($this->model),
             'view' => ['required', 'in:Tabular,Gallery'],
         ];
     }

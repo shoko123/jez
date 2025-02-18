@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Module\IndexRequest;
 use App\Http\Requests\Module\DestroyRequest;
 use App\Http\Requests\Module\ItemByIdRequest;
-use App\Http\Requests\Module\ModuleRequest;
+use App\Http\Requests\Module\BaseRequest;
 use App\Http\Requests\Module\PageRequest;
 use App\Http\Requests\Module\StoreRequest;
 
@@ -14,7 +14,7 @@ class DigModuleController extends BaseController
     /**
      * Get the module's init data (counts, trio, description_text)
      */
-    public function init(ModuleRequest $r)
+    public function init(BaseRequest $r)
     {
         $v = $r->validated();
         $service = static::makeDigModuleService(ServiceEnum::Init, $v['module']);

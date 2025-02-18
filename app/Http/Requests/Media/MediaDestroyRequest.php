@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Media;
 
-use App\Http\Requests\Module\ModuleRequest;
+use App\Http\Requests\Module\BaseRequest;
 
-class MediaDestroyRequest extends ModuleRequest
+class MediaDestroyRequest extends BaseRequest
 {
     public function authorize(): bool
     {
@@ -15,7 +15,7 @@ class MediaDestroyRequest extends ModuleRequest
     {
         return [
             'module' => $this->rule_module_name_is_valid(),
-            'module_id' => $this->rule_id_exists_in_module_table(),
+            'module_id' => $this->rule_id_exists_in_module_table($this->model),
             'media_id' => 'exists:media,id',
         ];
     }

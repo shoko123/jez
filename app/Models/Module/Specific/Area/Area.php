@@ -2,9 +2,8 @@
 
 namespace App\Models\Module\Specific\Area;
 
-use App\Models\Module\DigModuleModel;
-use App\Models\Tag\Tag;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Models\Module\DigModuleModel;
 
 class Area extends DigModuleModel
 {

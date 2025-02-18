@@ -7,6 +7,19 @@ use Illuminate\Database\Eloquent\Builder;
 
 interface ConfigInterface
 {
+    public const modules = [
+        'Area',
+        'Season',
+        'Survey',
+        'Locus',
+        'Ceramic',
+        'Fauna',
+        'Glass',
+        'Lithic',
+        'Metal',
+        'Stone',
+    ];
+
     public static function fieldsValidation(): array;
     public static function short(): Attribute;
 

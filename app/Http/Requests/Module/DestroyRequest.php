@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Module;
 
-class DestroyRequest extends ModuleRequest
+class DestroyRequest extends BaseRequest
 {
     public function authorize(): bool
     {
@@ -13,7 +13,7 @@ class DestroyRequest extends ModuleRequest
     {
         return [
             'module' => $this->rule_module_name_is_valid(),
-            'id' => ['required', $this->rule_id_exists_in_module_table()],
+            'id' => ['required', $this->rule_id_exists_in_module_table($this->model)],
         ];
     }
 

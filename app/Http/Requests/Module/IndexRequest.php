@@ -4,7 +4,7 @@ namespace App\Http\Requests\Module;
 
 use App\Rules\RuleStringIntOrBool;
 
-class IndexRequest extends ModuleRequest
+class IndexRequest extends BaseRequest
 {
     public function authorize(): bool
     {
@@ -14,17 +14,17 @@ class IndexRequest extends ModuleRequest
     public function rules(): array
     {
         return [
-            //'module' => verified also in ModuleRequest.prepareForValidation(),
+            //'module' => verified also in BaseRequest.prepareForValidation(),
             'module' => $this->rule_module_name_is_valid(),
             //
             'query.module_tag_ids' => ['array'],
-            'query.module_tag_ids.*' => $this->rule_id_exists_in_module_tags_table(),
+            'query.module_tag_ids.*' => $this->rule_id_exists_in_module_tags_table($this->model),
             //
             'query.global_tag_ids' => ['array'],
             'query.global_tag_ids.*' => 'exists:tags,id',
             //
             'query.onp_ids' => ['array'],
-            'query.onp_ids.*' => $this->rule_id_exists_in_onps_table(),
+            'query.onp_ids.*' => $this->rule_id_exists_in_onps_table($this->model),
             //
             //TODO validate that vals exist in the other tables' values (awkward)
             'query.discrete_field_values' => ['array'],

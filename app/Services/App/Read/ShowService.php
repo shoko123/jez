@@ -23,7 +23,7 @@ class ShowService extends DigModuleService
         static::$moduleConfigs = GetService::getConfigs($module);
     }
 
-    public function show_carousel(string $module, string $id): array
+    public function carousel_main(string $module, string $id): array
     {
         $mediaCollection = MediaService::media_by_module_and_id($module, $id);
 

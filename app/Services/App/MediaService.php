@@ -28,7 +28,7 @@ class MediaService
         return $ordered_media_collection_names;
     }
 
-    public static function show_carousel(string $media_id)
+    public static function carousel_media(string $media_id)
     {
         $media = Media::findOrFail($media_id);
 

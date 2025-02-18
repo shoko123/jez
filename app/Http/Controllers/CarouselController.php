@@ -15,12 +15,11 @@ class CarouselController extends BaseController
         $v = $r->validated();
         switch ($v['source']) {
             case 'media':
-                return response()->json(MediaService::show_carousel($v['media_id']), 200);
+                return response()->json(MediaService::carousel_media($v['media_id']), 200);
 
             case 'main':
                 $rs = static::makeDigModuleService(ServiceEnum::Show, $v['module']);
-
-                return response()->json($rs->show_carousel($v['module'], $v['module_id']), 200);
+                return response()->json($rs->carousel_main($v['module'], $v['module_id']), 200);
 
             case 'related':
             default:

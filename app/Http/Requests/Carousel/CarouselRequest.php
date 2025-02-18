@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Carousel;
 
-use App\Http\Requests\Module\ModuleRequest;
+use App\Http\Requests\Module\BaseRequest;
 
-class CarouselRequest extends ModuleRequest
+class CarouselRequest extends BaseRequest
 {
     public function authorize(): bool
     {
@@ -16,7 +16,7 @@ class CarouselRequest extends ModuleRequest
         return [
             'source' => ['required', 'in:main,media,related'],
             'module' => $this->rule_module_name_is_valid(),
-            'module_id' => ['required_if:source,main', $this->rule_id_exists_in_module_table()],
+            'module_id' => ['required_if:source,main', $this->rule_id_exists_in_module_table($this->model)],
             'media_id' => ['required_if:source,media', 'numeric', 'integer'],
         ];
     }

@@ -2,12 +2,8 @@
 
 namespace App\Http\Requests\Module;
 
-//use App\Http\Requests\Module\Specific\StoreRules;
-
-class StoreRequest extends ModuleRequest
+class StoreRequest extends BaseRequest
 {
-    //protected StoreRules $rulesClass;
-
     public function authorize(): bool
     {
         $p = '';
@@ -26,7 +22,7 @@ class StoreRequest extends ModuleRequest
             [
                 'module' => $this->rule_module_name_is_valid(),
             ],
-            $this->isMethod('post') ? $this->create_rules() : $this->update_rules()
+            $this->isMethod('post') ? $this->create_rules($this->model) : $this->update_rules($this->model)
         );
     }
 }
