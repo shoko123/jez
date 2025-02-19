@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Media;
 
-use App\Http\Requests\Module\BaseRequest;
+use App\Http\Requests\BaseRequest;
 
 class MediaDestroyRequest extends BaseRequest
 {

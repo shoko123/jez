@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Module;
 
+use App\Http\Requests\BaseRequest;
+
 class StoreRequest extends BaseRequest
 {
     public function authorize(): bool

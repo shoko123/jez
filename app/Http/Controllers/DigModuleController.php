@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Module\IndexRequest;
 use App\Http\Requests\Module\DestroyRequest;
 use App\Http\Requests\Module\ItemByIdRequest;
-use App\Http\Requests\Module\BaseRequest;
+use App\Http\Requests\BaseRequest;
 use App\Http\Requests\Module\PageRequest;
 use App\Http\Requests\Module\StoreRequest;
 

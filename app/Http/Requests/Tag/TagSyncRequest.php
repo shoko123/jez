@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Tag;
 
-use App\Http\Requests\Module\BaseRequest;
+use App\Http\Requests\BaseRequest;
 use App\Rules\RuleStringIntOrBool;
 
 class TagSyncRequest extends BaseRequest

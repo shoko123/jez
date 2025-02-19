@@ -4,6 +4,8 @@ namespace App\Http\Requests\Module;
 
 use App\Rules\RuleStringIntOrBool;
 
+use App\Http\Requests\BaseRequest;
+
 class IndexRequest extends BaseRequest
 {
     public function authorize(): bool

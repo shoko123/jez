@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Carousel;
 
-use App\Http\Requests\Module\BaseRequest;
+use App\Http\Requests\BaseRequest;
 
 class CarouselRequest extends BaseRequest
 {

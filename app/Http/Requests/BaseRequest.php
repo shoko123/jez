@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Requests\Module;
+namespace App\Http\Requests;
 
 use App\Exceptions\GeneralJsonException;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
