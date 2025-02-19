@@ -8,8 +8,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 use App\Services\App\Utils\GetService;
 use App\Services\App\BaseService;
-use App\Services\App\Module\InitDetailsInterface;
-use App\Services\App\Module\ConfigInterface;
+use App\Services\App\InitDetailsInterface;
+use App\Services\App\ConfigInterface;
 use App\Models\Tag\TagGroup;
 use App\Exceptions\GeneralJsonException;
 use App\Services\App\Init\CommonGroups;

@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
 
+use App\Services\App\ConfigInterface;
 use App\Services\App\ServiceEnum;
 use App\Services\App\Utils\GetService;
 
@@ -15,18 +16,7 @@ class BaseController extends Controller
 
     protected static function makeDigModuleService(ServiceEnum $service, string $module)
     {
-        if (! in_array($module, [
-            'Area',
-            'Season',
-            'Survey',
-            'Locus',
-            'Ceramic',
-            'Fauna',
-            'Glass',
-            'Lithic',
-            'Metal',
-            'Stone',
-        ])) {
+        if (! in_array($module, ConfigInterface::modules)) {
             abort(422, '*** Illegal module field value: "' . $module . '"');
         }
 

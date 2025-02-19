@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use App\Services\App\BaseService;
 use App\Services\App\Utils\GetService;
-use App\Services\App\Module\ConfigInterface;
+use App\Services\App\ConfigInterface;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\Media\MediaService;
 

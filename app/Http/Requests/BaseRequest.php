@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 use App\Models\Module\DigModuleModel;
-use App\Services\App\Module\ConfigInterface;
+use App\Services\App\ConfigInterface;
 use App\Services\App\Utils\GetService;
 use App\Http\Requests\RulesTrait;
 
