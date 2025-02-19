@@ -32,7 +32,7 @@ class GlassConfig implements ConfigInterface
             'base_diameter' => 'numeric|nullable|between:1,500',
             'bangle_diameter' => 'numeric|nullable|between:1,500',
             'bead_diameter' => 'numeric|nullable|between:1,500',
-            'pontil_diameter' => 'numeric|between:1,500',
+            'pontil_diameter' => 'numeric|nullable|between:1,500',
             'primary_classification_id' => 'required|exists:glass_primary_classifications,id',
         ];
     }

@@ -25,7 +25,7 @@ class GetService
         $servicePath = '';
         switch ($serviceName) {
             case 'Init':
-                $servicePath = 'App\Services\App\InitService';
+                $servicePath = 'App\Services\App\Init\InitService';
                 break;
             case 'Index':
                 $servicePath = 'App\Services\App\Read\IndexService';
@@ -37,7 +37,7 @@ class GetService
                 $servicePath = 'App\Services\App\Read\ShowService';
                 break;
             case 'Mutate':
-                $servicePath = 'App\Services\App\MutateService';
+                $servicePath = 'App\Services\App\Mutate\MutateService';
                 break;
         }
         return new $servicePath($module);

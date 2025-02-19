@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\App;
+namespace App\Services\App\Init;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +12,7 @@ use App\Services\App\Module\InitDetailsInterface;
 use App\Services\App\Module\ConfigInterface;
 use App\Models\Tag\TagGroup;
 use App\Exceptions\GeneralJsonException;
-use App\Services\App\CommonGroups;
+use App\Services\App\Init\CommonGroups;
 
 class InitService extends DigModuleService
 {

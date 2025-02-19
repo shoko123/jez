@@ -9,7 +9,7 @@ use App\Services\App\DigModuleService;
 use App\Services\App\Utils\GetService;
 use App\Services\App\Module\ConfigInterface;
 use App\Models\Module\DigModuleModel;
-use App\Services\App\MediaService;
+use App\Services\App\Media\MediaService;
 
 class ShowService extends DigModuleService
 {

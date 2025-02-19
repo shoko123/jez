@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\App;
+namespace App\Services\App\Init;
 
 class CommonGroups
 {

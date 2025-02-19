@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\App;
+namespace App\Services\App\Mutate;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Exception;
 use App\Exceptions\GeneralJsonException;
-use App\Services\App\Utils\GetService;
+use App\Services\App\DigModuleService;
 
 class MutateService extends DigModuleService
 {

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Media\MediaDestroyRequest;
 use App\Http\Requests\Media\MediaReorderRequest;
 use App\Http\Requests\Media\MediaUploadRequest;
-use App\Services\App\MediaService;
+use App\Services\App\Media\MediaService;
 use Illuminate\Http\Request;
 
 class MediaController extends BaseController
