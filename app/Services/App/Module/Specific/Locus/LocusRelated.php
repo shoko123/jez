@@ -4,10 +4,10 @@ namespace App\Services\App\Module\Specific\Locus;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\Services\App\DigModuleService;
+use App\Services\App\BaseService;
 use App\Services\App\Utils\FormatDbResult;
 
-class LocusRelated extends DigModuleService
+class LocusRelated extends BaseService
 {
     public function __construct()
     {

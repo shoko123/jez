@@ -5,7 +5,7 @@ namespace App\Services\App;
 use App\Services\App\Utils\GetService;
 use App\Models\Module\DigModuleModel;
 
-class DigModuleService
+class BaseService
 {
     protected DigModuleModel $model;
     protected static $module;

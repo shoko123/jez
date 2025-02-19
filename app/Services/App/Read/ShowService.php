@@ -5,13 +5,13 @@ namespace App\Services\App\Read;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Services\App\DigModuleService;
+use App\Services\App\BaseService;
 use App\Services\App\Utils\GetService;
 use App\Services\App\Module\ConfigInterface;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\Media\MediaService;
 
-class ShowService extends DigModuleService
+class ShowService extends BaseService
 {
     protected DigModuleModel $model;
     protected Builder $builder;

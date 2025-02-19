@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Exception;
 use App\Exceptions\GeneralJsonException;
-use App\Services\App\DigModuleService;
+use App\Services\App\BaseService;
 
-class MutateService extends DigModuleService
+class MutateService extends BaseService
 {
     private bool $isCreate;
 

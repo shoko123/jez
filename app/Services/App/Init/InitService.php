@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\DB;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 use App\Services\App\Utils\GetService;
-use App\Services\App\DigModuleService;
+use App\Services\App\BaseService;
 use App\Services\App\Module\InitDetailsInterface;
 use App\Services\App\Module\ConfigInterface;
 use App\Models\Tag\TagGroup;
 use App\Exceptions\GeneralJsonException;
 use App\Services\App\Init\CommonGroups;
 
-class InitService extends DigModuleService
+class InitService extends BaseService
 {
     protected Model $moduleTagGroup;
     protected static InitDetailsInterface $initDetails;

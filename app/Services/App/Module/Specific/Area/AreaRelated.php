@@ -5,11 +5,11 @@ namespace App\Services\App\Module\Specific\Area;
 use Illuminate\Database\Eloquent\Collection;
 
 use App\Models\Module\DigModuleModel;
-use App\Services\App\DigModuleService;
+use App\Services\App\BaseService;
 use App\Services\App\Utils\GetService;
 use App\Services\App\Utils\FormatDbResult;
 
-class AreaRelated extends DigModuleService
+class AreaRelated extends BaseService
 {
     static DigModuleModel $locus;
 

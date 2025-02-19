@@ -5,11 +5,11 @@ namespace App\Services\App\Module\Specific\Season;
 use Illuminate\Database\Eloquent\Collection;
 
 use App\Models\Module\DigModuleModel;
-use App\Services\App\DigModuleService;
+use App\Services\App\BaseService;
 use App\Services\App\Utils\GetService;
 use App\Services\App\Utils\FormatDbResult;
 
-class SeasonRelated extends DigModuleService
+class SeasonRelated extends BaseService
 {
     static DigModuleModel $locus;
 
