@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
 
+use App\Services\App\ServiceEnum;
 use App\Services\App\Utils\GetService;
 
 class BaseController extends Controller

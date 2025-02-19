@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 use App\Exceptions\GeneralJsonException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 use App\Models\Module\DigModuleModel;
 use App\Services\App\Module\ConfigInterface;
@@ -46,14 +45,5 @@ class BaseRequest extends FormRequest
     public function rules(): array
     {
         return ['module' => $this->rule_module_name_is_valid()];
-    }
-
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Validation errors',
-            'data' => $validator->errors(),
-        ], 400));
     }
 }

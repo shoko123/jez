@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\App\ServiceEnum;
 use App\Http\Requests\Module\IndexRequest;
 use App\Http\Requests\Module\DestroyRequest;
 use App\Http\Requests\Module\ItemByIdRequest;
