@@ -5,7 +5,7 @@ namespace App\Services\App\SmallFind;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\App\Utils\GetService;
 use App\Models\Module\DigModuleModel;
-use App\Services\App\Utils\FormatDbResult;
+use App\Services\App\Utils\RelatedFormat;
 
 trait SmallFindTrait
 {
@@ -57,17 +57,17 @@ trait SmallFindTrait
     private static function formatResponse($res): array
     {
         $formatted = [
-            FormatDbResult::transformOneItem('Belongs To', 'Locus', $res),
+            RelatedFormat::transformOneItem('Belongs To', 'Locus', $res),
         ];
 
         $small = ['ceramics' => 'Ceramic', 'stones' => 'Stone',  'lithics' => 'Lithic', 'fauna' => 'Fauna', 'glass' => 'Glass', 'metals' => 'Metal'];
         foreach ($small as $key => $val) {
-            $list = FormatDbResult::transformArrayOfItems('Locus find', $val, $res->$key);
+            $list = RelatedFormat::transformArrayOfItems('Locus find', $val, $res->$key);
             $formatted = array_merge($formatted, $list);
         }
 
-        array_push($formatted, FormatDbResult::transformOneItem('Belongs To', 'Season', $res->season));
-        array_push($formatted, FormatDbResult::transformOneItem('Belongs To', 'Area', $res->area));
+        array_push($formatted, RelatedFormat::transformOneItem('Belongs To', 'Season', $res->season));
+        array_push($formatted, RelatedFormat::transformOneItem('Belongs To', 'Area', $res->area));
 
         return $formatted;
     }

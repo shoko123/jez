@@ -5,24 +5,25 @@ namespace App\Services\App\Module\Locus;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Services\App\BaseService;
-use App\Services\App\Utils\FormatDbResult;
+use App\Services\App\Utils\RelatedFormat;
+use App\Services\App\Utils\GetService;
+use App\Models\Module\DigModuleModel;
 
 class LocusRelated extends BaseService
 {
-    public function __construct()
+    static DigModuleModel $locus;
+
+    public static function relatedModules(string $id)
     {
-        parent::__construct('Locus');
+        $res = static::accessDb($id);
+        return static::formatResponse($res);
     }
 
-    public function relatedModules(string $id)
+    private static function accessDb(string $id): Model
     {
-        $res = $this->accessDb($id);
-        return $this->formatResponse($res);
-    }
+        static::$locus = GetService::getModel('Locus', true);
 
-    private function accessDb(string $id): Model
-    {
-        return $this->model->with([
+        return static::$locus->with([
             'area.media' => function ($query) {
                 $query->orderBy('order_column')->limit(1);
             },
@@ -53,21 +54,19 @@ class LocusRelated extends BaseService
             ->findOrfail($id);
     }
 
-    static $smallFinds = ['ceramics'];
-
-    private function formatResponse($res): array
+    private static function formatResponse($res): array
     {
         $formatted = [];
 
         $small = ['ceramics' => 'Ceramic', 'stones' => 'Stone',  'lithics' => 'Lithic', 'fauna' => 'Fauna', 'glass' => 'Glass', 'metals' => 'Metal'];
         foreach ($small as $key => $val) {
-            $list = FormatDbResult::transformArrayOfItems('Has Find', $val, $res->$key);
+            $list = RelatedFormat::transformArrayOfItems('Has Find', $val, $res->$key);
             $formatted = array_merge($formatted, $list);
         }
 
         $area_season = [
-            FormatDbResult::transformOneItem('Belongs To', 'Area', $res->area),
-            FormatDbResult::transformOneItem('Belongs To', 'Season', $res->season),
+            RelatedFormat::transformOneItem('Belongs To', 'Area', $res->area),
+            RelatedFormat::transformOneItem('Belongs To', 'Season', $res->season),
         ];
         return array_merge($formatted, $area_season);
     }

@@ -3,11 +3,10 @@
 namespace App\Services\App\Utils;
 
 use Illuminate\Database\Eloquent\Collection;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 use App\Services\App\Media\MediaService;
 
-class FormatDbResult
+class RelatedFormat
 {
     public static function transformOneItem(string $relation_name, string $module, object $rec): array
     {

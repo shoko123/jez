@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
+use App\Services\App\Module\Locus\LocusRelated;
 
 class LocusConfig implements ConfigInterface
 {
@@ -138,7 +139,7 @@ class LocusConfig implements ConfigInterface
     // Show
     public static function relatedModules(string $id): array
     {
-        return [];
+        return LocusRelated::relatedModules($id);
     }
 
     // Tagger
