@@ -26,11 +26,4 @@ class Season extends DigModuleModel
             get: fn(mixed $value, array $attributes) => $attributes['id']
         );
     }
-
-    protected function short(): Attribute
-    {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['description']
-        );
-    }
 }

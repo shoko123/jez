@@ -2,8 +2,9 @@
 
 namespace App\Services\App\Module\Lithic;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Builder;
+
+use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\SmallFind\SmallFindTrait;
 
@@ -29,11 +30,9 @@ class LithicConfig implements ConfigInterface
         ];
     }
 
-    public static function short(): Attribute
+    public static function shortFormat(DigModuleModel $model): string
     {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['field_description'] ?? '[No field description]'
-        );
+        return $model->field_description ?? '[No field description]';
     }
 
     public static function dateFields(): array

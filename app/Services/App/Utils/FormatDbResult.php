@@ -2,25 +2,26 @@
 
 namespace App\Services\App\Utils;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
+use App\Services\App\Media\MediaService;
 
 class FormatDbResult
 {
     public static function transformOneItem(string $relation_name, string $module, object $rec): array
     {
+        $moduleConfigs = GetService::getConfigs($module);
+
         $item = [
             'relation_name' => $relation_name,
             'module' => $module,
             'id' => $rec->id,
-            'short' => $rec->short,
+            'short' => $moduleConfigs::shortFormat($rec),
+            'urls' => $rec->media->isEmpty() ? null :
+                MediaService::get_paths($rec->media[0])
         ];
 
-        if (count($rec->media) > 0) {
-            $item['urls'] = self::mediaToUrls($rec->media[0]);
-        }
         return $item;
     }
 
@@ -32,10 +33,5 @@ class FormatDbResult
             array_push($all, $one);
         }
         return $all;
-    }
-
-    public static function mediaToUrls(Media $media): array
-    {
-        return ['full' => $media->getPath(), 'tn' => $media->getPath('tn')];
     }
 }

@@ -21,8 +21,6 @@ abstract class DigModuleModel extends Model implements HasMedia
 
     protected $guarded = [];
 
-    abstract protected function short(): Attribute;
-
     abstract protected function derivedId(): Attribute;
 
     public function tableName(): string

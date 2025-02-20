@@ -123,6 +123,18 @@ class MediaService
 
     public static function format_media_item(Media $record): array
     {
-        return ['id' => $record['id'], 'urls' => ['full' => $record->getPath(), 'tn' => $record->getPath('tn')], 'order_column' => $record['order_column']];
+        return [
+            'id' => $record['id'],
+            'urls' => static::get_paths($record),
+            'order_column' => $record['order_column']
+        ];
+    }
+
+    public static function get_paths(Media $record): array
+    {
+        return [
+            'full' => $record->getPath(),
+            'tn' => $record->getPath('tn')
+        ];
     }
 }

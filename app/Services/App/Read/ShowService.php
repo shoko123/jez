@@ -3,7 +3,6 @@
 namespace App\Services\App\Read;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 
 use App\Services\App\BaseService;
 use App\Services\App\Utils\GetService;
@@ -25,15 +24,17 @@ class ShowService extends BaseService
 
     public function carousel_main(string $module, string $id): array
     {
-        $mediaCollection = MediaService::media_by_module_and_id($module, $id);
-
         $model = GetService::getModel($module, true);
-        $item = $model->findOrfail($id);
+        $item = $model
+            ->with(['media' => function ($query) {
+                $query->orderBy('order_column')->limit(1);
+            }])
+            ->findOrfail($id);
 
         return [
             'id' => $item['id'],
-            'short' => $item['short'],
-            'urls' => count($item->media) === 0 ? null : $mediaCollection[0]['urls'],
+            'short' => static::$moduleConfigs::shortFormat($item),
+            'urls' => $item->media->isEmpty()  ? null : MediaService::get_paths($item->media[0]),
             'module' => $module,
         ];
     }

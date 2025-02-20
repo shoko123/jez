@@ -2,8 +2,8 @@
 
 namespace App\Services\App;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\Module\DigModuleModel;
 
 interface ConfigInterface
 {
@@ -21,8 +21,7 @@ interface ConfigInterface
     ];
 
     public static function fieldsValidation(): array;
-    public static function short(): Attribute;
-
+    public static function shortFormat(DigModuleModel $model): string;
     public static function dateFields(): array;
     public static function allowed_search_field_names(): array;
 

@@ -2,8 +2,9 @@
 
 namespace App\Services\App\Module\Survey;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Builder;
+
+use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 
 class SurveyConfig implements ConfigInterface
@@ -22,11 +23,9 @@ class SurveyConfig implements ConfigInterface
         ];
     }
 
-    public static function short(): Attribute
+    public static function shortFormat(DigModuleModel $model): string
     {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['description']
-        );
+        return $model->description ?? '[No description given]';
     }
 
     public static function dateFields(): array

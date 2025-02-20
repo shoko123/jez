@@ -69,11 +69,4 @@ class Locus extends DigModuleModel
             get: fn(mixed $value, array $attributes) => $attributes['season_id'] .  $attributes['area_id'] . str_pad($attributes['locus_no'], 3, '0', STR_PAD_LEFT)
         );
     }
-
-    protected function short(): Attribute
-    {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['description']
-        );
-    }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Services\App\Module\Area;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\Module\Area\AreaRelated;
 
@@ -25,11 +25,9 @@ class AreaConfig implements ConfigInterface
         ]];
     }
 
-    public static function short(): Attribute
+    public static function shortFormat(DigModuleModel $model): string
     {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['description']
-        );
+        return $model->description;
     }
 
     public static function dateFields(): array

@@ -126,7 +126,7 @@ class PageService extends BaseService
         return $res->map(function ($item, $key) {
             return [
                 'id' => $item['id'],
-                'short' => $item['short'],
+                'short' => static::$moduleConfigs::shortFormat($item),
                 'urls' => $item->media->isEmpty() ? null :
                     MediaService::format_media_item($item->media[0])['urls'],
             ];

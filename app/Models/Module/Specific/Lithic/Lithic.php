@@ -35,24 +35,10 @@ class Lithic extends DigModuleModel
         return $this->belongsToMany(LithicOnp::class, 'lithic-lithic_onps', 'item_id', 'onp_id')->withPivot('value');
     }
 
-    // protected function casts(): array
-    // {
-    //     return [
-    //         'whole' => 'boolean',
-    //     ];
-    // }
-
     protected function derivedId(): Attribute
     {
         return Attribute::make(
             get: fn(mixed $value, array $attributes) => $attributes['locus_id'] . $attributes['code'] . str_pad($attributes['basket_no'], 2, '0', STR_PAD_LEFT) . str_pad($attributes['artifact_no'], 2, '0', STR_PAD_LEFT)
-        );
-    }
-
-    protected function short(): Attribute
-    {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['field_description'] ?? '[No field description]'
         );
     }
 }

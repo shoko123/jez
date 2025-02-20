@@ -2,8 +2,9 @@
 
 namespace App\Services\App\Module\Metal;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Builder;
+
+use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\SmallFind\SmallFindTrait;
 
@@ -32,13 +33,10 @@ class MetalConfig implements ConfigInterface
         ];
     }
 
-    public static function short(): Attribute
+    public static function shortFormat(DigModuleModel $model): string
     {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['specialist_description'] ?? '[No Specialist Description]'
-        );
+        return $model->specialist_description ?? '[No specialistdescription]';
     }
-
     public static function dateFields(): array
     {
         return ['date_retrieved'];

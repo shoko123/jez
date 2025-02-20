@@ -22,11 +22,4 @@ class Survey extends DigModuleModel
             get: fn(mixed $value, array $attributes) => $attributes['area_id'] . (string)$attributes['feature_no']
         );
     }
-
-    protected function short(): Attribute
-    {
-        return Attribute::make(
-            get: fn(mixed $value, array $attributes) => $attributes['description']
-        );
-    }
 }
