@@ -4,10 +4,11 @@ namespace App\Services\App\Module\Survey;
 
 use Illuminate\Database\Eloquent\Builder;
 
+use App\Services\App\BaseConfig;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 
-class SurveyConfig implements ConfigInterface
+class SurveyConfig  extends BaseConfig implements ConfigInterface
 {
     public static function fieldsValidation(): array
     {

@@ -4,11 +4,12 @@ namespace App\Services\App\Module\Season;
 
 use Illuminate\Database\Eloquent\Builder;
 
+use App\Services\App\BaseConfig;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\Module\Season\SeasonRelated;
 
-class SeasonConfig implements ConfigInterface
+class SeasonConfig  extends BaseConfig implements ConfigInterface
 {
     public static function fieldsValidation(): array
     {

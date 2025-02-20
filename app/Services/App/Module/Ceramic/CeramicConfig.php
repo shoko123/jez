@@ -4,11 +4,12 @@ namespace App\Services\App\Module\Ceramic;
 
 use Illuminate\Database\Eloquent\Builder;
 
+use App\Services\App\BaseConfig;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\SmallFind\SmallFindTrait;
 
-class CeramicConfig implements ConfigInterface
+class CeramicConfig  extends BaseConfig implements ConfigInterface
 {
     use SmallFindTrait;
 

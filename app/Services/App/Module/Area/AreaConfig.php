@@ -3,11 +3,14 @@
 namespace App\Services\App\Module\Area;
 
 use Illuminate\Database\Eloquent\Builder;
+
+use App\Services\App\BaseConfig;
+
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\Module\Area\AreaRelated;
 
-class AreaConfig implements ConfigInterface
+class AreaConfig  extends BaseConfig implements ConfigInterface
 {
     public static function fieldsValidation(): array
     {

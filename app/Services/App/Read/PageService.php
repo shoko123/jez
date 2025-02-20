@@ -115,10 +115,14 @@ class PageService extends BaseService
     // Gallery
     public function buildGalleryQuery()
     {
-        $this->builder = $this->model->select(static::$moduleConfigs::galleryPage())
-            ->with(['media' => function ($query) {
-                $query->orderBy('order_column')->limit(1);
-            }]);
+        $withArr = ['media' => function ($query) {
+            $query->orderBy('order_column')->limit(1);
+        }];
+
+        array_merge($withArr, self::$moduleConfigs::shortWith());
+
+        $this->builder = $this->model
+            ->with($withArr);
     }
 
     public function formatGalleryResult(Collection $res)

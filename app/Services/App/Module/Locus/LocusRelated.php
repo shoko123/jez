@@ -36,12 +36,10 @@ class LocusRelated extends BaseService
             'fauna.media' => function ($query) {
                 $query->orderBy('order_column')->limit(1);
             },
-            'glass.media'
-            => function ($query) {
+            'glass.media' => function ($query) {
                 $query->orderBy('order_column')->limit(1);
             },
-            'lithics.media'
-            => function ($query) {
+            'lithics.media' => function ($query) {
                 $query->orderBy('order_column')->limit(1);
             },
             'metals.media' => function ($query) {

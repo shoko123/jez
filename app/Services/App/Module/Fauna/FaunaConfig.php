@@ -4,11 +4,12 @@ namespace App\Services\App\Module\Fauna;
 
 use Illuminate\Database\Eloquent\Builder;
 
+use App\Services\App\BaseConfig;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\SmallFind\SmallFindTrait;
 
-class FaunaConfig implements ConfigInterface
+class FaunaConfig  extends BaseConfig implements ConfigInterface
 {
     use SmallFindTrait;
 
@@ -46,7 +47,7 @@ class FaunaConfig implements ConfigInterface
         ];
     }
 
-    public static function shortFormat(DigModuleModel $model): string
+    public static function shortFormat(DigModuleModel $r): string
     {
         return $model->taxa ?? '[No Taxa Given]';
     }

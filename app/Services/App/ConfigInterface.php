@@ -21,6 +21,7 @@ interface ConfigInterface
     ];
 
     public static function fieldsValidation(): array;
+    public static function shortWith(): array; // default (empty array) is defined in BaseConfig
     public static function shortFormat(DigModuleModel $model): string;
     public static function dateFields(): array;
     public static function allowed_search_field_names(): array;

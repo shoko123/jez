@@ -4,11 +4,12 @@ namespace App\Services\App\Module\Lithic;
 
 use Illuminate\Database\Eloquent\Builder;
 
+use App\Services\App\BaseConfig;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\SmallFind\SmallFindTrait;
 
-class LithicConfig implements ConfigInterface
+class LithicConfig  extends BaseConfig implements ConfigInterface
 {
     use SmallFindTrait;
 
@@ -30,9 +31,22 @@ class LithicConfig implements ConfigInterface
         ];
     }
 
-    public static function shortFormat(DigModuleModel $model): string
+    public static function shortWith(): array
     {
-        return $model->field_description ?? '[No field description]';
+        return ['onps'];
+    }
+
+    public static function shortFormat(DigModuleModel $r): string
+    {
+        if (count($r->onps) === 0) {
+            return $r->field_description;
+        }
+
+        $all = $r->onps->reduce(function (?string $carry, object $item) {
+            return $carry .= $item['label'] . '(' . $item['pivot']['value'] . '), ';
+        });
+
+        return  substr($all, 0, -2);
     }
 
     public static function dateFields(): array

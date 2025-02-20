@@ -4,11 +4,12 @@ namespace App\Services\App\Module\Metal;
 
 use Illuminate\Database\Eloquent\Builder;
 
+use App\Services\App\BaseConfig;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\SmallFind\SmallFindTrait;
 
-class MetalConfig implements ConfigInterface
+class MetalConfig  extends BaseConfig implements ConfigInterface
 {
     use SmallFindTrait;
 
