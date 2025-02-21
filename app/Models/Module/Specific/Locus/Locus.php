@@ -4,7 +4,7 @@ namespace App\Models\Module\Specific\Locus;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-use App\Services\App\Utils\GetService;
+use App\Services\App\GetService;
 use App\Models\Module\DigModuleModel;
 use App\Models\Tag\Tag;
 

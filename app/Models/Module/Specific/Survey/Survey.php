@@ -5,7 +5,7 @@ namespace App\Models\Module\Specific\Survey;
 use App\Models\Module\DigModuleModel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-use App\Services\App\Utils\GetService;
+use App\Services\App\GetService;
 
 class Survey extends DigModuleModel
 {

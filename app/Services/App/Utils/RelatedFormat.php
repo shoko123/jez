@@ -3,7 +3,7 @@
 namespace App\Services\App\Utils;
 
 use Illuminate\Database\Eloquent\Collection;
-
+use App\Services\App\GetService;
 use App\Services\App\Media\MediaService;
 
 class RelatedFormat

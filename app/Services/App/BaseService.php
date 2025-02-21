@@ -2,7 +2,7 @@
 
 namespace App\Services\App;
 
-use App\Services\App\Utils\GetService;
+use App\Services\App\GetService;
 use App\Models\Module\DigModuleModel;
 
 class BaseService

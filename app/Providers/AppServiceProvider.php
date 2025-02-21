@@ -6,7 +6,7 @@ use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
-use App\Services\App\Utils\GetService;
+use App\Services\App\GetService;
 
 class AppServiceProvider extends ServiceProvider
 {

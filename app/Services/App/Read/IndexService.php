@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 use App\Exceptions\GeneralJsonException;
 use App\Services\App\BaseService;
-use App\Services\App\Utils\GetService;
+use App\Services\App\GetService;
 use App\Services\App\ConfigInterface;
 use App\Models\Module\DigModuleModel;
 use App\Models\Tag\Tag;

@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
-use App\Services\App\Utils\GetService;
+use App\Services\App\GetService;
 use App\Http\Requests\RulesTrait;
 
 class BaseRequest extends FormRequest

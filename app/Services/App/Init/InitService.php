@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-use App\Services\App\Utils\GetService;
+use App\Services\App\GetService;
 use App\Services\App\BaseService;
 use App\Services\App\InitDetailsInterface;
 use App\Services\App\ConfigInterface;

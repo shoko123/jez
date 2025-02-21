@@ -4,7 +4,7 @@ namespace App\Services\App\Tag;
 
 use Illuminate\Support\Facades\DB;
 
-use App\Services\App\Utils\GetService;
+use App\Services\App\GetService;
 
 class TagService
 {

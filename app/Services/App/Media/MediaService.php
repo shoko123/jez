@@ -2,11 +2,13 @@
 
 namespace App\Services\App\Media;
 
-use App\Exceptions\GeneralJsonException;
+
 use Exception;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use App\Services\App\Utils\GetService;
+
+use App\Services\App\GetService;
+use App\Exceptions\GeneralJsonException;
 
 class MediaService
 {

@@ -8,7 +8,7 @@ use Illuminate\Routing\Controller;
 
 use App\Services\App\ConfigInterface;
 use App\Services\App\ServiceEnum;
-use App\Services\App\Utils\GetService;
+use App\Services\App\GetService;
 
 class BaseController extends Controller
 {
