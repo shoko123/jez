@@ -4,12 +4,11 @@ namespace App\Services\App\Module\Locus;
 
 use Illuminate\Database\Eloquent\Builder;
 
-use App\Services\App\BaseConfig;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\Module\Locus\LocusRelated;
 
-class LocusConfig  extends BaseConfig implements ConfigInterface
+class LocusConfig  implements ConfigInterface
 {
     public static function fieldsValidation(): array
     {
@@ -30,6 +29,14 @@ class LocusConfig  extends BaseConfig implements ConfigInterface
             'deposit' => 'max:500',
             'registration_notes' => 'max:500',
             'clean' => 'required|in:Unassigned,Yes,No',
+        ];
+    }
+
+
+    public static function shortQuery(): array
+    {
+        return [
+            'select' => ['description']
         ];
     }
 

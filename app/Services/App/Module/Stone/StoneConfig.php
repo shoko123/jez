@@ -4,12 +4,11 @@ namespace App\Services\App\Module\Stone;
 
 use Illuminate\Database\Eloquent\Builder;
 
-use App\Services\App\BaseConfig;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\SmallFind\SmallFindTrait;
 
-class StoneConfig  extends BaseConfig implements ConfigInterface
+class StoneConfig  implements ConfigInterface
 {
     use SmallFindTrait;
 
@@ -48,6 +47,11 @@ class StoneConfig  extends BaseConfig implements ConfigInterface
             'stone_primary_classification_id' => 'required|exists:stone_primary_classifications,id',
             'material_id' => 'required|exists:stone_materials,id',
         ];
+    }
+
+    public static function shortQuery(): array
+    {
+        return ['select' => ['description']];
     }
 
     public static function shortFormat(DigModuleModel $model): string

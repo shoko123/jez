@@ -4,13 +4,11 @@ namespace App\Services\App\Module\Area;
 
 use Illuminate\Database\Eloquent\Builder;
 
-use App\Services\App\BaseConfig;
-
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\Module\Area\AreaRelated;
 
-class AreaConfig  extends BaseConfig implements ConfigInterface
+class AreaConfig  implements ConfigInterface
 {
     public static function restricted_values(): array
     {
@@ -26,6 +24,11 @@ class AreaConfig  extends BaseConfig implements ConfigInterface
             'description' => 'max:2000',
             'notes' => 'max:2000',
         ];
+    }
+
+    public static function shortQuery(): array
+    {
+        return ['select' => ['description']];
     }
 
     public static function shortFormat(DigModuleModel $model): string

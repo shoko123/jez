@@ -56,7 +56,7 @@ class PageService extends BaseService
             ->select($queryDefs['select']);
 
         if ($withArr) {
-            $this->builder = $this->builder->with($queryDefs['with']);
+            $this->builder = $this->builder->with($withArr);
         }
     }
 
@@ -70,11 +70,12 @@ class PageService extends BaseService
     // Gallery
     public function buildGalleryQuery()
     {
-        $withArr = ['media' => function ($query) {
-            $query->orderBy('order_column')->limit(1);
-        }];
 
-        array_merge($withArr, self::$moduleConfigs::shortWith());
+        $withArr = array_key_exists('with', self::$moduleConfigs::shortQuery()) ? self::$moduleConfigs::shortQuery()['with'] : [];
+
+        $withArr = array_merge($withArr, ['media' => function ($query) {
+            $query->orderBy('order_column')->limit(1);
+        }]);
 
         $this->builder = $this->model
             ->with($withArr);

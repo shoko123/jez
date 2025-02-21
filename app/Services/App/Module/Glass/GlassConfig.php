@@ -4,12 +4,11 @@ namespace App\Services\App\Module\Glass;
 
 use Illuminate\Database\Eloquent\Builder;
 
-use App\Services\App\BaseConfig;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\SmallFind\SmallFindTrait;
 
-class GlassConfig  extends BaseConfig implements ConfigInterface
+class GlassConfig  implements ConfigInterface
 {
     use SmallFindTrait;
 
@@ -36,6 +35,14 @@ class GlassConfig  extends BaseConfig implements ConfigInterface
             'bead_diameter' => 'numeric|nullable|between:1,500',
             'pontil_diameter' => 'numeric|nullable|between:1,500',
             'primary_classification_id' => 'required|exists:glass_primary_classifications,id',
+        ];
+    }
+
+
+    public static function shortQuery(): array
+    {
+        return [
+            'select' => ['specialist_description']
         ];
     }
 

@@ -4,12 +4,11 @@ namespace App\Services\App\Module\Fauna;
 
 use Illuminate\Database\Eloquent\Builder;
 
-use App\Services\App\BaseConfig;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\SmallFind\SmallFindTrait;
 
-class FaunaConfig  extends BaseConfig implements ConfigInterface
+class FaunaConfig  implements ConfigInterface
 {
     use SmallFindTrait;
 
@@ -45,6 +44,12 @@ class FaunaConfig  extends BaseConfig implements ConfigInterface
             'data.onps.*.id' => 'required|exists:fauna_onps,id',
             'data.onps.*.value' => 'required|numeric|between:10,32767',
         ];
+    }
+
+
+    public static function shortQuery(): array
+    {
+        return ['select' => ['taxa']];
     }
 
     public static function shortFormat(DigModuleModel $r): string

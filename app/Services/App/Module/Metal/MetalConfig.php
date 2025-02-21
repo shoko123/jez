@@ -4,12 +4,11 @@ namespace App\Services\App\Module\Metal;
 
 use Illuminate\Database\Eloquent\Builder;
 
-use App\Services\App\BaseConfig;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\SmallFind\SmallFindTrait;
 
-class MetalConfig  extends BaseConfig implements ConfigInterface
+class MetalConfig  implements ConfigInterface
 {
     use SmallFindTrait;
 
@@ -32,6 +31,12 @@ class MetalConfig  extends BaseConfig implements ConfigInterface
             'primary_classification_id' => 'required|exists:metal_primary_classifications,id',
             'specialist' => 'required|in:Unassigned,UE Students',
         ];
+    }
+
+
+    public static function shortQuery(): array
+    {
+        return ['select' => ['specialist_description']];
     }
 
     public static function shortFormat(DigModuleModel $model): string

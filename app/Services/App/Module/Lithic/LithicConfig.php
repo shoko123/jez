@@ -4,12 +4,11 @@ namespace App\Services\App\Module\Lithic;
 
 use Illuminate\Database\Eloquent\Builder;
 
-use App\Services\App\BaseConfig;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\SmallFind\SmallFindTrait;
 
-class LithicConfig  extends BaseConfig implements ConfigInterface
+class LithicConfig  implements ConfigInterface
 {
     use SmallFindTrait;
 
@@ -28,6 +27,15 @@ class LithicConfig  extends BaseConfig implements ConfigInterface
             'data.onps' => 'array',
             'data.onps.*.id' => 'required|exists:lithic_onps,id',
             'data.onps.*.value' => 'required|numeric|between:1,999',
+        ];
+    }
+
+
+    public static function shortQuery(): array
+    {
+        return [
+            'select' => ['description'],
+            'with' => ['onps']
         ];
     }
 

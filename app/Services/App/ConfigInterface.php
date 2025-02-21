@@ -21,8 +21,12 @@ interface ConfigInterface
     ];
 
     public static function fieldsValidation(): array;
-    public static function shortWith(): array; // default (empty array) is defined in BaseConfig
+    public static function shortQuery(): array;
     public static function shortFormat(DigModuleModel $model): string;
+    public static function tabularPageQuery(): array;
+    public static function tabularPageFormat(DigModuleModel $r): array;
+
+
     public static function dateFields(): array;
     public static function allowed_search_field_names(): array;
 
@@ -35,9 +39,6 @@ interface ConfigInterface
     public static function applyCategorizedFilters(Builder $builder, array $groups): Builder;
     public static function defaultOrderBy(): array;
 
-    // Pages
-    public static function tabularPageQuery(): array;
-    public static function tabularPageFormat(DigModuleModel $r): array;
 
     // Show
     public static function relatedModules(string $id): array;

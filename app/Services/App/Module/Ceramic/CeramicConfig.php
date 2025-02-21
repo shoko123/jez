@@ -4,12 +4,11 @@ namespace App\Services\App\Module\Ceramic;
 
 use Illuminate\Database\Eloquent\Builder;
 
-use App\Services\App\BaseConfig;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 use App\Services\App\SmallFind\SmallFindTrait;
 
-class CeramicConfig  extends BaseConfig implements ConfigInterface
+class CeramicConfig  implements ConfigInterface
 {
     use SmallFindTrait;
 
@@ -33,6 +32,12 @@ class CeramicConfig  extends BaseConfig implements ConfigInterface
             'periods' => 'max:250',
             'primary_classification_id' => 'required|exists:ceramic_primary_classifications,id',
         ];
+    }
+
+
+    public static function shortQuery(): array
+    {
+        return ['select' => ['periods']];
     }
 
     public static function shortFormat(DigModuleModel $model): string

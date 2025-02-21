@@ -4,11 +4,10 @@ namespace App\Services\App\Module\Survey;
 
 use Illuminate\Database\Eloquent\Builder;
 
-use App\Services\App\BaseConfig;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
 
-class SurveyConfig  extends BaseConfig implements ConfigInterface
+class SurveyConfig  implements ConfigInterface
 {
     public static function fieldsValidation(): array
     {
@@ -22,6 +21,11 @@ class SurveyConfig  extends BaseConfig implements ConfigInterface
             'description' => 'max:1000|nullable',
             'notes' => 'max:100|nullable',
         ];
+    }
+
+    public static function shortQuery(): array
+    {
+        return ['select' => ['description']];
     }
 
     public static function shortFormat(DigModuleModel $model): string
