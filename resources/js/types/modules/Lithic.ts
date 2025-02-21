@@ -1,6 +1,4 @@
-import type { TModuleInfo } from '@/types/moduleTypes'
-
-type TLithic<T extends TModuleInfo = TModuleInfo> = {
+type TLithic = {
   url_name: 'lithics'
   fields: {
     id: string
@@ -14,10 +12,7 @@ type TLithic<T extends TModuleInfo = TModuleInfo> = {
     registration_notes: string
     specialist_notes: string
   }
-  apiTabularPageFields: Pick<
-    TLithic<T>['fields'],
-    'id' | 'date_retrieved' | 'field_description' | 'weight'
-  >
+  apiTabularPageFields: 'id' | 'date_retrieved' | 'field_description' | 'weight'
 }
 
 export { TLithic }

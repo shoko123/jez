@@ -49,6 +49,38 @@ class LithicConfig  extends BaseConfig implements ConfigInterface
         return  substr($all, 0, -2);
     }
 
+    public static function tabularPageQuery(): array
+    {
+        return [
+            'select' => [
+                'id',
+                'date_retrieved',
+                'weight',
+                'field_description',
+                'registration_notes',
+                'specialist_notes'
+            ],
+            'with' => ['onps']
+        ];
+    }
+
+    public static function tabularPageFormat(DigModuleModel $r): array
+    {
+        $counts_text = (count($r->onps) === 0) ? '[Not Given]' : substr($r->onps->reduce(function (?string $carry, object $item) {
+            return $carry .= $item['label'] . '(' . $item['pivot']['value'] . '), ';
+        }), 0, -2);
+
+        return [
+            'id' => $r->id,
+            'date_retrieved' => $r->date_retrieved,
+            // 'weight' => $r->weight,
+            // 'field_description' => $r->field_description,
+            // 'registration_notes' => $r->registration_notes,
+            'Specialist Notes' => $r->specialist_notes,
+            'Counts' => $counts_text
+        ];
+    }
+
     public static function dateFields(): array
     {
         return ['date_retrieved'];
@@ -129,27 +161,6 @@ class LithicConfig  extends BaseConfig implements ConfigInterface
     public static function defaultOrderBy(): array
     {
         return ['id' => 'asc'];
-    }
-
-    // Pages
-    public static function tabularPage(): array
-    {
-        return [
-            'fields' => [
-                'id',
-                'date_retrieved',
-                'weight',
-                'field_description',
-                'registration_notes',
-                'specialist_notes'
-            ],
-            'onps' => []
-        ];
-    }
-
-    public static function galleryPage(): array
-    {
-        return ['id', 'field_description'];
     }
 
     // Tagger

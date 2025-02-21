@@ -1,6 +1,4 @@
-import type { TModuleInfo } from '@/types/moduleTypes'
-
-type TFauna<T extends TModuleInfo = TModuleInfo> = {
+type TFauna = {
   url_name: 'fauna'
   fields: {
     id: string
@@ -31,7 +29,7 @@ type TFauna<T extends TModuleInfo = TModuleInfo> = {
     specialist_notes: string
     measured: string
   }
-  apiTabularPageFields: Pick<TFauna<T>['fields'], 'id' | 'taxa' | 'bone'>
+  apiTabularPageFields: 'id' | 'taxa' | 'bone'
 }
 
 export { TFauna }

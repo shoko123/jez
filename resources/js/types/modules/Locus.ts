@@ -1,5 +1,4 @@
-import type { TModuleInfo } from '@/types/moduleTypes'
-type TLocus<T extends TModuleInfo = TModuleInfo> = {
+type TLocus = {
   url_name: 'loci'
   fields: {
     id: string
@@ -19,10 +18,7 @@ type TLocus<T extends TModuleInfo = TModuleInfo> = {
     registration_notes: string
     clean: string
   }
-  apiTabularPageFields: Pick<
-    TLocus<T>['fields'],
-    'id' | 'square' | 'date_opened' | 'description' | 'registration_notes'
-  >
+  apiTabularPageFields: 'id' | 'square' | 'date_opened' | 'description' | 'registration_notes'
 }
 
 export { TLocus }

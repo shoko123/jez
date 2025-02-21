@@ -38,6 +38,34 @@ class MetalConfig  extends BaseConfig implements ConfigInterface
     {
         return $model->specialist_description ?? '[No specialistdescription]';
     }
+
+    public static function tabularPageQuery(): array
+    {
+        return [
+            'select' => [
+                'id',
+                'date_retrieved',
+                'field_description',
+                'specialist_description',
+                'material_id',
+                'primary_classification_id'
+            ],
+            'with' => ['material', 'primaryClassification']
+        ];
+    }
+
+    public static function tabularPageFormat(DigModuleModel $r): array
+    {
+        return [
+            'id' => $r->id,
+            'Date Retrieved' => $r->date_retrieved,
+            'Field Description' => $r->field_description,
+            'Specialist Description' => $r->specialist_description,
+            'Material' => $r->material->name,
+            'Primary Classification' => $r->primaryClassification->name,
+        ];
+    }
+
     public static function dateFields(): array
     {
         return ['date_retrieved'];
@@ -45,7 +73,6 @@ class MetalConfig  extends BaseConfig implements ConfigInterface
 
     public static function groups(): array
     {
-
         return [
             'Registration Code' => [
                 'code' => 'EM',
@@ -153,28 +180,6 @@ class MetalConfig  extends BaseConfig implements ConfigInterface
     public static function defaultOrderBy(): array
     {
         return ['id' => 'asc'];
-    }
-
-    // Pages
-    public static function tabularPage(): array
-    {
-        return [
-            'fields' => [
-                'id',
-                'date_retrieved',
-                'field_description',
-                'specialist_description',
-            ],
-            'lookups' => [
-                'material_id' => 'material',
-                'primary_classification_id' => 'primaryClassification'
-            ]
-        ];
-    }
-
-    public static function galleryPage(): array
-    {
-        return ['id', 'specialist_description'];
     }
 
     // Tagger

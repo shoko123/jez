@@ -29,6 +29,30 @@ class SurveyConfig  extends BaseConfig implements ConfigInterface
         return $model->description ?? '[No description given]';
     }
 
+    public static function tabularPageQuery(): array
+    {
+        return [
+            'select' => [
+                'id',
+                'description',
+                'elevation',
+                'surveyed_date',
+                'notes'
+            ],
+        ];
+    }
+
+    public static function tabularPageFormat(DigModuleModel $r): array
+    {
+        return [
+            'id' => $r->id,
+            'Description' => $r->description,
+            'Elevation' => $r->elevation,
+            'Surveyed Date' => $r->surveyed_date,
+            'Notes' => $r->notes,
+        ];
+    }
+
     public static function dateFields(): array
     {
         return ['surveyed_date'];
@@ -75,25 +99,6 @@ class SurveyConfig  extends BaseConfig implements ConfigInterface
     public static function applyCategorizedFilters(Builder $builder, array $groups): Builder
     {
         return $builder;
-    }
-
-    // Pages
-    public static function tabularPage(): array
-    {
-        return [
-            'fields' => [
-                'id',
-                'description',
-                'elevation',
-                'surveyed_date',
-                'notes'
-            ]
-        ];
-    }
-
-    public static function galleryPage(): array
-    {
-        return ['id', 'description'];
     }
 
     public static function allowed_tagger_field_names(): array

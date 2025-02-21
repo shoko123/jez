@@ -11,15 +11,6 @@ use App\Services\App\Module\Season\SeasonRelated;
 
 class SeasonConfig  extends BaseConfig implements ConfigInterface
 {
-    public static function fieldsValidation(): array
-    {
-        return [
-            'id' => 'required|max:1',
-            'description' => 'max:2000',
-            'staff' => 'max:2000',
-        ];
-    }
-
     public static function restricted_values(): array
     {
         return ['id' => [
@@ -30,9 +21,34 @@ class SeasonConfig  extends BaseConfig implements ConfigInterface
         ]];
     }
 
+    public static function fieldsValidation(): array
+    {
+        return [
+            'id' => 'required|max:1',
+            'description' => 'max:2000',
+            'staff' => 'max:2000',
+        ];
+    }
+
     public static function shortFormat(DigModuleModel $model): string
     {
         return $model->description;
+    }
+
+    public static function tabularPageQuery(): array
+    {
+        return [
+            'select' => ['id', 'description', 'staff']
+        ];
+    }
+
+    public static function tabularPageFormat(DigModuleModel $r): array
+    {
+        return [
+            'id' => $r->id,
+            'Description' => $r->taxa,
+            'Staff' => $r->staff,
+        ];
     }
 
     public static function dateFields(): array
@@ -69,17 +85,6 @@ class SeasonConfig  extends BaseConfig implements ConfigInterface
     public static function defaultOrderBy(): array
     {
         return ['id' => 'asc'];
-    }
-
-    // Pages
-    public static function tabularPage(): array
-    {
-        return ['fields' => ['id', 'description', 'staff']];
-    }
-
-    public static function galleryPage(): array
-    {
-        return ['id', 'description'];
     }
 
     // Show

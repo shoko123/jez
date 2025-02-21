@@ -1,6 +1,4 @@
-import type { TModuleInfo } from '@/types/moduleTypes'
-
-type TCeramic<T extends TModuleInfo = TModuleInfo> = {
+type TCeramic = {
   url_name: 'ceramics'
   fields: {
     id: string
@@ -22,7 +20,7 @@ type TCeramic<T extends TModuleInfo = TModuleInfo> = {
     periods: string
     specialist_description: string
   }
-  apiTabularPageFields: Pick<TCeramic<T>['fields'], 'id' | 'periods' | 'specialist_description'>
+  apiTabularPageFields: 'id' | 'periods' | 'specialist_description'
 }
 
 export { TCeramic }

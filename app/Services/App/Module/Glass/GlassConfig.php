@@ -44,6 +44,31 @@ class GlassConfig  extends BaseConfig implements ConfigInterface
         return $model->specialist_description ?? '[No specialist description]';
     }
 
+    // Pages
+    public static function tabularPageQuery(): array
+    {
+        return [
+            'select' => [
+                'id',
+                'date_retrieved',
+                'field_description',
+                'specialist_description',
+                'primary_classification_id'
+            ],
+            'with' => ['primaryClassification']
+        ];
+    }
+
+    public static function tabularPageFormat(DigModuleModel $r): array
+    {
+        return [
+            'id' => $r->id,
+            'Field Description' => $r->field_description,
+            'Specialist Description' => $r->specialist_description,
+            'Notes' => $r->notes,
+        ];
+    }
+
     public static function dateFields(): array
     {
         return ['date_retrieved'];
@@ -146,27 +171,6 @@ class GlassConfig  extends BaseConfig implements ConfigInterface
     public static function defaultOrderBy(): array
     {
         return ['id' => 'asc'];
-    }
-
-    // Pages
-    public static function tabularPage(): array
-    {
-        return [
-            'fields' => [
-                'id',
-                'date_retrieved',
-                'field_description',
-                'specialist_description'
-            ],
-            'lookups' => [
-                'primary_classification_id' => 'primaryClassification'
-            ]
-        ];
-    }
-
-    public static function galleryPage(): array
-    {
-        return ['id', 'specialist_description'];
     }
 
     public static function allowed_tagger_field_names(): array

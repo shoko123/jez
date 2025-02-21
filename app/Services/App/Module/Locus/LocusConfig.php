@@ -38,6 +38,30 @@ class LocusConfig  extends BaseConfig implements ConfigInterface
         return $model->description ?? '[No description given]';
     }
 
+    public static function tabularPageQuery(): array
+    {
+        return [
+            'select' => [
+                'id',
+                'date_opened',
+                'description',
+                'deposit',
+                'registration_notes'
+            ],
+        ];
+    }
+
+    public static function tabularPageFormat(DigModuleModel $r): array
+    {
+        return [
+            'id' => $r->id,
+            'Date Opened' => $r->date_opened,
+            'Description' => $r->description,
+            'Deposit' => $r->deposit,
+            'Registration Notes' => $r->registration_notes,
+        ];
+    }
+
     public static function dateFields(): array
     {
         return ['date_opened', 'date_closed'];
@@ -78,7 +102,6 @@ class LocusConfig  extends BaseConfig implements ConfigInterface
                     'Locus No.' => 'locus_no'
                 ]
             ]
-
         ];
     }
 
@@ -111,26 +134,6 @@ class LocusConfig  extends BaseConfig implements ConfigInterface
     {
         return $builder;
     }
-
-    // Pages
-    public static function tabularPage(): array
-    {
-        return [
-            'fields' => [
-                'id',
-                'date_opened',
-                'description',
-                'deposit',
-                'registration_notes'
-            ]
-        ];
-    }
-
-    public static function galleryPage(): array
-    {
-        return ['id', 'description'];
-    }
-
 
     public static function allowed_tagger_field_names(): array
     {

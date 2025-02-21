@@ -71,6 +71,7 @@ export const useCollectionMainStore = defineStore('collectionMain', () => {
         if (res.success) {
           apiPage.value = res.data
           pageNoB1.value = pageNo
+
           return { success: true, message: '' }
         } else {
           console.log(`loadPage failed. err: ${JSON.stringify(res.message, null, 2)}`)
@@ -83,13 +84,24 @@ export const useCollectionMainStore = defineStore('collectionMain', () => {
   const page = computed(() => {
     return apiPage.value.map((x) => {
       const tagAndSlug = tagAndSlugFromId(x.id)
-      let y = { ...x, ...tagAndSlug }
+      let y = { ...tagAndSlug, ...x }
       if ('urls' in y) {
         const media = buildMedia(y.urls, module.value)
         y = { ...y, ...{ media } }
       }
       return y
     })
+  })
+
+  const tabularHeaders = computed(() => {
+    const obj = page.value[0]
+    delete obj.id
+    delete obj.slug
+    const headers = Object.keys(obj).map((x) => {
+      return [x, typeof x === 'string' ? 'start' : 'end', x]
+    })
+
+    return headers
   })
 
   const info = computed(() => {
@@ -125,6 +137,8 @@ export const useCollectionMainStore = defineStore('collectionMain', () => {
     setArray,
     array,
     apiPage,
+    // tableFields,
+    tabularHeaders,
     loadPage,
     page,
     pageNoB1,

@@ -12,6 +12,13 @@ use App\Services\App\Module\Area\AreaRelated;
 
 class AreaConfig  extends BaseConfig implements ConfigInterface
 {
+    public static function restricted_values(): array
+    {
+        return ['id' => [
+            'vals' => ['K', 'L', 'M', 'N', 'P', 'Q', 'S'],
+        ]];
+    }
+
     public static function fieldsValidation(): array
     {
         return [
@@ -21,16 +28,25 @@ class AreaConfig  extends BaseConfig implements ConfigInterface
         ];
     }
 
-    public static function restricted_values(): array
-    {
-        return ['id' => [
-            'vals' => ['K', 'L', 'M', 'N', 'P', 'Q', 'S'],
-        ]];
-    }
-
     public static function shortFormat(DigModuleModel $model): string
     {
         return $model->description;
+    }
+
+    public static function tabularPageQuery(): array
+    {
+        return [
+            'select' => ['id', 'description', 'notes']
+        ];
+    }
+
+    public static function tabularPageFormat(DigModuleModel $r): array
+    {
+        return [
+            'id' => $r->id,
+            'Description' => $r->description,
+            'Notes' => $r->notes,
+        ];
     }
 
     public static function dateFields(): array
@@ -67,17 +83,6 @@ class AreaConfig  extends BaseConfig implements ConfigInterface
     public static function defaultOrderBy(): array
     {
         return ['id' => 'asc'];
-    }
-
-    // Pages
-    public static function tabularPage(): array
-    {
-        return ['fields' => ['id', 'description', 'notes']];
-    }
-
-    public static function galleryPage(): array
-    {
-        return ['id', 'description'];
     }
 
     // Show

@@ -36,8 +36,8 @@ interface ConfigInterface
     public static function defaultOrderBy(): array;
 
     // Pages
-    public static function tabularPage(): array;
-    public static function galleryPage(): array;
+    public static function tabularPageQuery(): array;
+    public static function tabularPageFormat(DigModuleModel $r): array;
 
     // Show
     public static function relatedModules(string $id): array;

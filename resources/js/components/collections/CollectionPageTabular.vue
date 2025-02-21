@@ -19,7 +19,7 @@ import { storeToRefs } from 'pinia'
 import { useCollectionsStore } from '../../scripts/stores/collections/collections'
 import { useCollectionRelatedStore } from '../../scripts/stores/collections/collectionRelated'
 import { useRoutesMainStore } from '../../scripts/stores/routes/routesMain'
-import { useModuleStore } from '../../scripts/stores/module'
+import { useCollectionMainStore } from '@/scripts/stores/collections/collectionMain'
 
 type THeader = { title: string, align: 'start' | 'end' | 'center' | undefined, key: string }
 const props = defineProps<{
@@ -29,7 +29,7 @@ const props = defineProps<{
 
 const { getCollectionStore } = useCollectionsStore()
 const { relatedTableHeaders } = storeToRefs(useCollectionRelatedStore())
-const { tabularHeaders } = storeToRefs(useModuleStore())
+const { tabularHeaders } = storeToRefs(useCollectionMainStore())
 const { routerPush, moveToRelatedItem } = useRoutesMainStore()
 
 const headers = computed(() => {

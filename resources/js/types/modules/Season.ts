@@ -1,13 +1,11 @@
-import type { TModuleInfo } from '@/types/moduleTypes'
-
-type TSeason<T extends TModuleInfo = TModuleInfo> = {
+type TSeason = {
   url_name: 'seasons'
   fields: {
     id: string
     description: string
     staff: string
   }
-  apiTabularPageFields: Pick<TSeason<T>['fields'], 'id' | 'description' | 'staff'>
+  apiTabularPageFields: 'id' | 'Description' | 'Staff'
 }
 
 export { TSeason }

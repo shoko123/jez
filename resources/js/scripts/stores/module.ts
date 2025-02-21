@@ -84,10 +84,6 @@ export const useModuleStore = defineStore('module', () => {
     return arr
   })
 
-  const tabularHeaders = computed(() => {
-    return moduleDefinitions[module.value].tabHeaders
-  })
-
   // item views related
   function setNextItemView() {
     itemViews.value.index = (itemViews.value.index + 1) % itemViews.value.options.length
@@ -190,7 +186,6 @@ export const useModuleStore = defineStore('module', () => {
     itemView,
     setNextItemView,
     resetItemView,
-    tabularHeaders,
     dateFields,
     prepareNewFields,
     changeCount,

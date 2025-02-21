@@ -16,11 +16,6 @@ class PageService extends BaseService
     protected Builder $builder;
     protected static ConfigInterface $moduleConfigs;
 
-    // Used by tabularPage to define the query and parse result
-    private $selectArr = [];
-    private $withArr = [];
-    private $tabularPageDetails = [];
-
     public function __construct(string $module)
     {
         parent::__construct($module);
@@ -54,62 +49,22 @@ class PageService extends BaseService
     // Tabular
     public function buildTabularQuery()
     {
-        $this->parseTabularFields();
+        $queryDefs = static::$moduleConfigs::tabularPageQuery();
+        $withArr = array_key_exists('with', $queryDefs) ? $queryDefs['with'] : null;
 
         $this->builder = $this->model
-            ->select($this->selectArr)
-            ->with($this->withArr);
-    }
+            ->select($queryDefs['select']);
 
-    public function parseTabularFields()
-    {
-        // Copy once; use it to build query and parse result
-        $this->tabularPageDetails = static::$moduleConfigs::tabularPage();
-
-        foreach ($this->tabularPageDetails['fields'] as $key => $field_name) {
-            array_push($this->selectArr, $field_name);
-        }
-
-        if (array_key_exists('lookups', $this->tabularPageDetails)) {
-            foreach ($this->tabularPageDetails['lookups'] as $name => $access) {
-                array_push($this->withArr, $access);
-                array_push($this->selectArr, $name);
-            }
-        }
-
-        if (array_key_exists('onps', $this->tabularPageDetails)) {
-            array_push($this->withArr, 'onps');
+        if ($withArr) {
+            $this->builder = $this->builder->with($queryDefs['with']);
         }
     }
 
     public function formatTabularResult(Collection $res)
     {
         return $res->map(function (object $rec) {
-            return $this->formatTabularRecord($rec);
+            return static::$moduleConfigs::tabularPageFormat($rec);
         });
-    }
-
-    public function formatTabularRecord(object $obj)
-    {
-        $formatted = [];
-        foreach ($this->tabularPageDetails['fields'] as $key => $data) {
-            $formatted[$data] = $obj->$data;
-        }
-
-        if (array_key_exists('lookups', $this->tabularPageDetails)) {
-            foreach ($this->tabularPageDetails['lookups'] as $key => $data) {
-                $formatted[$key] = $obj->$data['name'];
-            }
-        }
-
-        if (array_key_exists('onps', $this->tabularPageDetails)) {
-            $all = $obj->onps->reduce(function (?string $carry, object $item) {
-                return $carry .= $item['label'] . '(' . $item['pivot']['value'] . '), ';
-            });
-
-            $formatted['onps'] =  substr($all, 0, -2);
-        }
-        return $formatted;
     }
 
     // Gallery

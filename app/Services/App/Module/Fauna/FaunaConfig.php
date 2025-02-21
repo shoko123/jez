@@ -52,6 +52,37 @@ class FaunaConfig  extends BaseConfig implements ConfigInterface
         return $model->taxa ?? '[No Taxa Given]';
     }
 
+    public static function tabularPageQuery(): array
+    {
+        return [
+            'select' => [
+                'id',
+                'taxa',
+                'bone',
+                'primary_taxon_id',
+                'scope_id',
+                'material_id'
+            ],
+            'with' => [
+                'primaryTaxon',
+                'scope',
+                'material',
+            ],
+        ];
+    }
+
+    public static function tabularPageFormat(DigModuleModel $r): array
+    {
+        return [
+            'id' => $r->id,
+            'Taxa' => $r->taxa,
+            'Bone' => $r->bone,
+            'Primary Taxon' => $r->primaryTaxon->name,
+            'Scope' => $r->scope->name,
+            'Material' => $r->material->name,
+        ];
+    }
+
     public static function dateFields(): array
     {
         return ['date_retrieved'];
@@ -239,28 +270,6 @@ class FaunaConfig  extends BaseConfig implements ConfigInterface
     public static function defaultOrderBy(): array
     {
         return ['id' => 'asc'];
-    }
-
-    // Pages
-    public static function tabularPage(): array
-    {
-        return [
-            'fields' => [
-                'id',
-                'taxa',
-                'bone',
-            ],
-            'lookups' => [
-                'primary_taxon_id' => 'primaryTaxon',
-                'scope_id' => 'scope',
-                'material_id' => 'material',
-            ]
-        ];
-    }
-
-    public static function galleryPage(): array
-    {
-        return ['id', 'taxa'];
     }
 
     public static function allowed_tagger_field_names(): array

@@ -40,7 +40,6 @@ type TModuleDefinitionImplementation = {
     slugRegExp: RegExp
     idFormatter: (g: Record<string, string>) => string
     categorizerFunc?: (p: TFields) => Record<string, number> // Use generic TFields and narrow in specific implementations
-    tabHeaders: [string, 'start' | 'end' | 'center', string][] //[title, align, key] per vuetify v-data-table-virtual
   }
 }
 

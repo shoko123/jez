@@ -1,5 +1,4 @@
-import type { TModuleInfo } from '@/types/moduleTypes'
-type TSurvey<T extends TModuleInfo = TModuleInfo> = {
+type TSurvey = {
   url_name: 'survey'
   fields: {
     id: string
@@ -11,10 +10,7 @@ type TSurvey<T extends TModuleInfo = TModuleInfo> = {
     description: string
     notes: string
   }
-  apiTabularPageFields: Pick<
-    TSurvey<T>['fields'],
-    'id' | 'surveyed_date' | 'elevation' | 'description' | 'notes'
-  >
+  apiTabularPageFields: 'id' | 'Surveyed Date' | 'Elevation' | 'Description' | 'Notes'
 }
 
 export { TSurvey }

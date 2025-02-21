@@ -1,6 +1,4 @@
-import type { TModuleInfo } from '@/types/moduleTypes'
-
-type TGlass<T extends TModuleInfo = TModuleInfo> = {
+type TGlass = {
   url_name: 'glass'
   fields: {
     id: string
@@ -24,7 +22,7 @@ type TGlass<T extends TModuleInfo = TModuleInfo> = {
 
     primary_classification_id: number
   }
-  apiTabularPageFields: Pick<TGlass<T>['fields'], 'id' | 'specialist_description'>
+  apiTabularPageFields: 'id' | 'specialist_description'
 }
 
 export { TGlass }

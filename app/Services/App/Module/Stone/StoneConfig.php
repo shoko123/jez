@@ -54,6 +54,37 @@ class StoneConfig  extends BaseConfig implements ConfigInterface
     {
         return $model->description ?? '[No description]';
     }
+
+    public static function tabularPageQuery(): array
+    {
+        return [
+            'select' => [
+                'id',
+                'date_retrieved',
+                'description',
+                'notes',
+                'material_id',
+                'stone_primary_classification_id'
+            ],
+            'with' => [
+                'material',
+                'primaryClassification'
+            ]
+        ];
+    }
+
+    public static function tabularPageFormat(DigModuleModel $r): array
+    {
+        return [
+            'id' => $r->id,
+            'Date Retrieved' => $r->date_retrieved,
+            'Description' => $r->description,
+            'Notes' => $r->notes,
+            'Material' => $r->material->name,
+            'Primary Classification' => $r->primaryClassification->name,
+        ];
+    }
+
     public static function dateFields(): array
     {
         return ['date_retrieved'];
@@ -217,28 +248,6 @@ class StoneConfig  extends BaseConfig implements ConfigInterface
     public static function defaultOrderBy(): array
     {
         return ['id' => 'asc'];
-    }
-
-    // Pages
-    public static function tabularPage(): array
-    {
-        return [
-            'fields' => [
-                'id',
-                'date_retrieved',
-                'description',
-                'notes'
-            ],
-            'lookups' => [
-                'material_id' => 'material',
-                'stone_primary_classification_id' => 'primaryClassification'
-            ]
-        ];
-    }
-
-    public static function galleryPage(): array
-    {
-        return ['id', 'description'];
     }
 
     // Tagger

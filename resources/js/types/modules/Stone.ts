@@ -1,5 +1,4 @@
-import type { TModuleInfo } from '@/types/moduleTypes'
-type TStone<T extends TModuleInfo = TModuleInfo> = {
+type TStone = {
   url_name: 'stones'
   fields: {
     id: string
@@ -35,7 +34,13 @@ type TStone<T extends TModuleInfo = TModuleInfo> = {
     stone_primary_classification_id: number
     material_id: number
   }
-  apiTabularPageFields: Pick<TStone<T>['fields'], 'id' | 'field_description'>
+  apiTabularPageFields:
+    | 'id'
+    | 'Date Retrieved'
+    | 'Description'
+    | 'Notes'
+    | 'Material'
+    | 'Primary Classification'
 }
 
 export { TStone }

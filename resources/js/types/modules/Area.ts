@@ -1,13 +1,11 @@
-import type { TModuleInfo } from '@/types/moduleTypes'
-
-type TArea<T extends TModuleInfo = TModuleInfo> = {
+type TArea = {
   url_name: 'areas'
   fields: {
     id: string
     description: string
     notes: string
   }
-  apiTabularPageFields: Pick<TArea<T>['fields'], 'id' | 'description' | 'notes'>
+  apiTabularPageFields: 'id' | 'Description' | 'Notes'
 }
 
 export { TArea }

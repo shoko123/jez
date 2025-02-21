@@ -1,6 +1,4 @@
-import type { TModuleInfo } from '@/types/moduleTypes'
-
-type TMetal<T extends TModuleInfo = TModuleInfo> = {
+type TMetal = {
   url_name: 'metals'
   fields: {
     id: string
@@ -20,15 +18,13 @@ type TMetal<T extends TModuleInfo = TModuleInfo> = {
     primary_classification_id: number
     specialist: string
   }
-  apiTabularPageFields: Pick<
-    TMetal<T>['fields'],
+  apiTabularPageFields:
     | 'id'
     | 'date_retrieved'
     | 'field_description'
     | 'specialist_description'
     | 'primary_classification_id'
     | 'material_id'
-  >
 }
 
 export { TMetal }

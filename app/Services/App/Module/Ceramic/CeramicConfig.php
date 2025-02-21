@@ -40,6 +40,32 @@ class CeramicConfig  extends BaseConfig implements ConfigInterface
         return $model->periods ?? '[No periods description]';
     }
 
+    public static function tabularPageQuery(): array
+    {
+        return [
+            'select' => [
+                'id',
+                'date_retrieved',
+                'field_description',
+                'field_notes',
+                'specialist_description',
+                'periods'
+            ],
+        ];
+    }
+
+    public static function tabularPageFormat(DigModuleModel $r): array
+    {
+        return [
+            'id' => $r->id,
+            'Date Retrieved' => $r->date_retrieved,
+            'Field Description' => $r->field_description,
+            'Field Notes' => $r->field_notes,
+            'Specialist Description' => $r->specialist_description,
+            'Periods ' => $r->periods
+        ];
+    }
+
     public static function dateFields(): array
     {
         return ['date_retrieved'];
@@ -271,26 +297,6 @@ class CeramicConfig  extends BaseConfig implements ConfigInterface
     public static function defaultOrderBy(): array
     {
         return ['id' => 'asc'];
-    }
-
-    // Pages
-    public static function tabularPage(): array
-    {
-        return [
-            'fields' => [
-                'id',
-                'date_retrieved',
-                'field_description',
-                'field_notes',
-                'specialist_description',
-                'periods'
-            ]
-        ];
-    }
-
-    public static function galleryPage(): array
-    {
-        return ['id', 'periods'];
     }
 
     public static function allowed_tagger_field_names(): array
