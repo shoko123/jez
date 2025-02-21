@@ -38,16 +38,16 @@ class GetService
                 $servicePath = 'App\Services\App\Init\InitService';
                 break;
             case 'Index':
-                $servicePath = 'App\Services\App\Read\IndexService';
+                $servicePath = 'App\Services\App\Services\IndexService';
                 break;
             case 'Page':
-                $servicePath = 'App\Services\App\Read\PageService';
+                $servicePath = 'App\Services\App\Services\PageService';
                 break;
             case 'Show':
-                $servicePath = 'App\Services\App\Read\ShowService';
+                $servicePath = 'App\Services\App\Services\ShowService';
                 break;
             case 'Mutate':
-                $servicePath = 'App\Services\App\Mutate\MutateService';
+                $servicePath = 'App\Services\App\Services\MutateService';
                 break;
         }
         return new $servicePath($module);

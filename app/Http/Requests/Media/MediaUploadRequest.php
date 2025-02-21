@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Media;
 
 use App\Http\Requests\BaseRequest;
-use App\Services\App\Media\MediaService;
+use App\Services\App\Services\MediaService;
 use Illuminate\Validation\Rules\File;
 
 class MediaUploadRequest extends BaseRequest

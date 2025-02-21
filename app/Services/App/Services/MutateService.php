@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\App\Mutate;
+namespace App\Services\App\Services;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;

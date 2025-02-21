@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Tag\TagSyncRequest;
-use App\Services\App\Tag\TagService;
+use App\Services\App\Services\TagService;
 
 class TagController extends BaseController
 {

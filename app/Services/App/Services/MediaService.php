@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\App\Media;
+namespace App\Services\App\Services;
 
 
 use Exception;

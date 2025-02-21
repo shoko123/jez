@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\App\Read;
+namespace App\Services\App\Services;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -8,7 +8,7 @@ use App\Services\App\BaseService;
 use App\Services\App\GetService;
 use App\Services\App\ConfigInterface;
 use App\Models\Module\DigModuleModel;
-use App\Services\App\Media\MediaService;
+use App\Services\App\Services\MediaService;
 
 class PageService extends BaseService
 {

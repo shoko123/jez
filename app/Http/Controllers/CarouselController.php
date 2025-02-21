@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Carousel\CarouselRequest;
 use App\Services\App\ServiceEnum;
-use App\Services\App\Media\MediaService;
+use App\Services\App\Services\MediaService;
 
 class CarouselController extends BaseController
 {

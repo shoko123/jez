@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\App\Media\MediaService;
+use App\Services\App\Services\MediaService;
 
 class AppController extends BaseController
 {
