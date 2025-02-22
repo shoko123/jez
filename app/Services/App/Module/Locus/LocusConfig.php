@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 use App\Models\Module\DigModuleModel;
 use App\Services\App\Interfaces\ConfigInterface;
-use App\Services\App\Module\Locus\LocusRelated;
+use App\Services\App\Services\Utils\LocusRelated;
 
 class LocusConfig  implements ConfigInterface
 {

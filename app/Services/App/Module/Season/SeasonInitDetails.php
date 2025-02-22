@@ -4,7 +4,7 @@ namespace App\Services\App\Module\Season;
 
 use App\Services\App\Interfaces\InitDetailsInterface;
 
-class SeasonInitDetails   implements InitDetailsInterface
+class SeasonInitDetails implements InitDetailsInterface
 {
     public static function displayOptions(): array
     {

@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Services\App\Module\Locus;
+namespace App\Services\App\Services\Utils;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Services\App\GetService;
 use App\Services\App\Services\Utils\BaseService;
 use App\Services\App\Services\Utils\RelatedFormat;
-
-use App\Services\App\GetService;
 use App\Models\Module\DigModuleModel;
 
 class LocusRelated extends BaseService

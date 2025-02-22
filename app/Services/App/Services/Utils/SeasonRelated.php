@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\App\Module\Season;
+namespace App\Services\App\Services\Utils;
 
 use Illuminate\Database\Eloquent\Collection;
 
-use App\Models\Module\DigModuleModel;
-use App\Services\App\Services\Utils\BaseService;
 use App\Services\App\GetService;
+use App\Services\App\Services\Utils\BaseService;
 use App\Services\App\Services\Utils\RelatedFormat;
+use App\Models\Module\DigModuleModel;
 
 class SeasonRelated extends BaseService
 {
