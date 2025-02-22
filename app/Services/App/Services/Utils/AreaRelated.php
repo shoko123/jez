@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\Services\Utils\BaseService;
 use App\Services\App\GetService;
-use App\Services\App\Services\Utils\RelatedFormat;
+use App\Services\App\Services\Utils\FormatRelated;
 
 class AreaRelated extends BaseService
 {
@@ -33,6 +33,6 @@ class AreaRelated extends BaseService
 
     private static function formatResponse($recs): array
     {
-        return RelatedFormat::transformArrayOfItems('Has Locus', 'Locus', $recs);
+        return FormatRelated::transformArrayOfItems('Has Locus', 'Locus', $recs);
     }
 }

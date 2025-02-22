@@ -6,24 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Services\App\GetService;
 use App\Services\App\Services\Utils\BaseService;
-use App\Services\App\Services\Utils\RelatedFormat;
+use App\Services\App\Services\Utils\FormatRelated;
 use App\Models\Module\DigModuleModel;
 
 class LocusRelated extends BaseService
 {
     static DigModuleModel $locus;
 
-    public static function relatedModules(string $id)
+    public static function relatedModules(string $locus_id)
     {
-        return [];
-        $res = static::accessDb($id);
+        static::$locus = GetService::getModel('Locus', true);
+        $res = static::accessDb($locus_id);
         return static::formatResponse($res);
     }
 
     private static function accessDb(string $id): Model
     {
-        static::$locus = GetService::getModel('Locus', true);
-
         return static::$locus->with([
             'area.media' => function ($query) {
                 $query->orderBy('order_column')->limit(1);
@@ -59,14 +57,13 @@ class LocusRelated extends BaseService
 
         $small = ['ceramics' => 'Ceramic', 'stones' => 'Stone',  'lithics' => 'Lithic', 'fauna' => 'Fauna', 'glass' => 'Glass', 'metals' => 'Metal'];
         foreach ($small as $key => $val) {
-            $list = RelatedFormat::transformArrayOfItems('Has Find', $val, $res->$key);
+            $list = FormatRelated::transformArrayOfItems('Has Find', $val, $res->$key);
             $formatted = array_merge($formatted, $list);
         }
 
-        $area_season = [
-            RelatedFormat::transformOneItem('Belongs To', 'Area', $res->area),
-            RelatedFormat::transformOneItem('Belongs To', 'Season', $res->season),
-        ];
-        return array_merge($formatted, $area_season);
+        array_push($formatted, FormatRelated::transformOneItem('Belongs To', 'Season', $res->season));
+        array_push($formatted, FormatRelated::transformOneItem('Belongs To', 'Area', $res->area));
+
+        return $formatted;
     }
 }

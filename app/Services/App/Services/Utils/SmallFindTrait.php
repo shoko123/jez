@@ -5,70 +5,20 @@ namespace App\Services\App\Services\Utils;
 use Illuminate\Database\Eloquent\Model;
 use App\Services\App\GetService;
 use App\Models\Module\DigModuleModel;
-use App\Services\App\Services\Utils\RelatedFormat;
+use App\Services\App\Services\Utils\FormatRelated;
+use App\Services\App\Services\Utils\LocusFormat;
+use PgSql\Lob;
 
 trait SmallFindTrait
 {
     static DigModuleModel $locus;
 
-    public static function smallFindRelatedModules(string $id)
+    public static function smallFindRelatedModules(string $locus_id)
     {
-        static::$locus = GetService::getModel('Locus', true);
-        $res = static::accessDb($id);
-        return static::formatResponse($res);
-    }
-
-    private static function accessDb(string $id): Model
-    {
-        return static::$locus->with([
-            'media' => function ($query) {
-                $query->orderBy('order_column')->limit(1);
-            },
-            'area.media' => function ($query) {
-                $query->orderBy('order_column')->limit(1);
-            },
-            'season.media' => function ($query) {
-                $query->orderBy('order_column')->limit(1);
-            },
-            'ceramics.media' => function ($query) {
-                $query->orderBy('order_column')->limit(1);
-            },
-            'fauna.media' => function ($query) {
-                $query->orderBy('order_column')->limit(1);
-            },
-            'glass.media'
-            => function ($query) {
-                $query->orderBy('order_column')->limit(1);
-            },
-            'lithics.media'
-            => function ($query) {
-                $query->orderBy('order_column')->limit(1);
-            },
-            'metals.media' => function ($query) {
-                $query->orderBy('order_column')->limit(1);
-            },
-            'stones.media' => function ($query) {
-                $query->orderBy('order_column')->limit(1);
-            },
-        ])
-            ->findOrfail($id);
-    }
-
-    private static function formatResponse($res): array
-    {
-        $formatted = [
-            RelatedFormat::transformOneItem('Belongs To', 'Locus', $res),
-        ];
-
-        $small = ['ceramics' => 'Ceramic', 'stones' => 'Stone',  'lithics' => 'Lithic', 'fauna' => 'Fauna', 'glass' => 'Glass', 'metals' => 'Metal'];
-        foreach ($small as $key => $val) {
-            $list = RelatedFormat::transformArrayOfItems('Locus find', $val, $res->$key);
-            $formatted = array_merge($formatted, $list);
-        }
-
-        array_push($formatted, RelatedFormat::transformOneItem('Belongs To', 'Season', $res->season));
-        array_push($formatted, RelatedFormat::transformOneItem('Belongs To', 'Area', $res->area));
-
+        $locus = GetService::getModel('Locus', true);
+        $locus->findOrfail($locus_id);
+        $formatted = LocusRelated::relatedModules($locus_id);
+        array_unshift($formatted, FormatRelated::transformOneItem('Belongs To', 'Locus', $locus));
         return $formatted;
     }
 
