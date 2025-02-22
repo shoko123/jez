@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\App\Module\Glass;
+namespace App\Services\App\Configs;
 
 use App\Services\App\Interfaces\InitDetailsInterface;
 
-class GlassInitDetails implements InitDetailsInterface
+class LocusInitDetails  implements InitDetailsInterface
 {
     public static function displayOptions(): array
     {
@@ -22,7 +22,7 @@ class GlassInitDetails implements InitDetailsInterface
     public static function welcomeText(): array
     {
         return [
-            'This module displays the glass artifacts found at the site.',
+            'This module displays the loci from the six excavation seasons (2013-2018).',
         ];
     }
 
@@ -33,28 +33,16 @@ class GlassInitDetails implements InitDetailsInterface
                 'Season',
                 'Area',
                 'Media',
-                'Order By'
+                'Square',
+                'Clean'
             ],
-            "Charactaristics" => [
-                'Color',
-                'Production',
-                'Weathering',
-                'Weathering-Type'
+            'Search' => [
+                'Search Description',
+                'Search Deposit',
+                'Search Registration Notes',
             ],
-            "Typology" => [
-                'Primary Classification',
-                'Vessel-Subtype'
-            ],
-            'Periods' => [
-                'Periods',
-                'Neolithic Subperiods',
-                'Bronze Subperiods',
-                'Iron Subperiods',
-                'Hellenistic Subperiods',
-                'Roman Subperiods',
-                'Early-Islamic Subperiods',
-                'Medieval Subperiods',
-                'Modern Subperiods',
+            'Order By' => [
+                'Order By',
             ],
         ];
     }

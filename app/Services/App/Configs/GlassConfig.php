@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\App\Module\Metal;
+namespace App\Services\App\Configs;
 
 use Illuminate\Database\Eloquent\Builder;
 
@@ -8,7 +8,7 @@ use App\Models\Module\DigModuleModel;
 use App\Services\App\Interfaces\ConfigInterface;
 use App\Services\App\Services\Utils\SmallFindTrait;
 
-class MetalConfig  implements ConfigInterface
+class GlassConfig  implements ConfigInterface
 {
     use SmallFindTrait;
 
@@ -16,34 +16,42 @@ class MetalConfig  implements ConfigInterface
     {
         return [
             'id' => 'required|string|min:11|max:11',
+            'locus_id' => 'required|exists:loci,id',
             'code' => 'required|in:AR',
             'basket_no' => 'required|numeric|between:0,99',
             'artifact_no' => 'required|numeric|between:0,99',
             'date_retrieved' => 'date|nullable',
             'field_description' => 'max:400',
+            'field_notes' => 'max:400',
+            'artifact_count' => 'max:10',
             'square' => 'max:20',
             'level_top' => 'max:20',
             'level_bottom' => 'max:20',
             //
-            'specialist_description' => 'max:400',
-            'measurements' => 'max:200',
-            'material_id' => 'required|exists:metal_materials,id',
-            'primary_classification_id' => 'required|exists:metal_primary_classifications,id',
-            'specialist' => 'required|in:Unassigned,UE Students',
+            'description' => 'max:400',
+            'rim_diameter' => 'numeric|nullable|between:1,500',
+            'base_diameter' => 'numeric|nullable|between:1,500',
+            'bangle_diameter' => 'numeric|nullable|between:1,500',
+            'bead_diameter' => 'numeric|nullable|between:1,500',
+            'pontil_diameter' => 'numeric|nullable|between:1,500',
+            'primary_classification_id' => 'required|exists:glass_primary_classifications,id',
         ];
     }
 
 
     public static function shortQuery(): array
     {
-        return ['select' => ['specialist_description']];
+        return [
+            'select' => ['specialist_description']
+        ];
     }
 
     public static function shortFormat(DigModuleModel $model): string
     {
-        return $model->specialist_description ?? '[No specialistdescription]';
+        return $model->specialist_description ?? '[No specialist description]';
     }
 
+    // Pages
     public static function tabularPageQuery(): array
     {
         return [
@@ -52,10 +60,9 @@ class MetalConfig  implements ConfigInterface
                 'date_retrieved',
                 'field_description',
                 'specialist_description',
-                'material_id',
                 'primary_classification_id'
             ],
-            'with' => ['material', 'primaryClassification']
+            'with' => ['primaryClassification']
         ];
     }
 
@@ -63,11 +70,9 @@ class MetalConfig  implements ConfigInterface
     {
         return [
             'id' => $r->id,
-            'Date Retrieved' => $r->date_retrieved,
             'Field Description' => $r->field_description,
             'Specialist Description' => $r->specialist_description,
-            'Material' => $r->material->name,
-            'Primary Classification' => $r->primaryClassification->name,
+            'Notes' => $r->notes,
         ];
     }
 
@@ -79,50 +84,39 @@ class MetalConfig  implements ConfigInterface
     public static function groups(): array
     {
         return [
-            'Registration Code' => [
-                'code' => 'EM',
-                'field_name' => 'code',
-                'useInTagger' => false,
-                'showAsTag' => false,
-                'dependency' => [],
-            ],
-            'Specialist' => [
-                'code' => 'EM',
-                'field_name' => 'specialist',
-                'useInTagger' => false,
-                'showAsTag' => false,
-                'dependency' => [],
-            ],
             'Primary Classification' => [
                 'code' => 'LV',
                 'field_name' => 'primary_classification_id',
-                'lookup_table_name' => 'metal_primary_classifications',
+                'lookup_table_name' => 'glass_primary_classifications',
                 'lookup_text_field' => 'name',
                 'useInTagger' => true,
                 'showAsTag' => true,
                 'dependency' => [],
             ],
-            'Material' => [
-                'code' => 'LV',
-                'field_name' => 'material_id',
-                'lookup_table_name' => 'metal_materials',
-                'lookup_text_field' => 'name',
-                'useInTagger' => true,
-                'showAsTag' => true,
-                'dependency' => [],
-            ],
-            'Modern Weaponry' => [
+            'Production' => [
                 'code' => 'TM',
                 'multiple' => true,
-                'dependency' => [['Primary Classification:Modern Weaponry']],
+                'dependency' => [],
             ],
-            'Field Description' => [
-                'code' => 'SF',
-                'field_name' => 'field_description',
+            'Vessel-Subtype' => [
+                'code' => 'TM',
+                'multiple' => true,
+                'dependency' => [['Primary Classification:Vessel/Lamp']],
             ],
-            'Specialist Description' => [
-                'code' => 'SF',
-                'field_name' => 'specialist_description',
+            'Color' => [
+                'code' => 'TM',
+                'multiple' => true,
+                'dependency' => [],
+            ],
+            'Weathering' => [
+                'code' => 'TM',
+                'multiple' => true,
+                'dependency' => [],
+            ],
+            'Weathering-Type' => [
+                'code' => 'TM',
+                'multiple' => true,
+                'dependency' => [],
             ],
             'Order By' => [
                 'code' => 'OB',
@@ -139,14 +133,13 @@ class MetalConfig  implements ConfigInterface
 
     public static function allowed_search_field_names(): array
     {
-        return ['field_description', 'specialist_description'];
+        return ['specialist_description'];
     }
 
     public static function discreteFilterOptions(): array
     {
         return array_merge(static::smallFindDiscreteFilterOptions(false), [
             'Primary Classification' => 'primary_classification_id',
-            'Specialist' => 'specialist'
         ]);
     }
 
@@ -187,10 +180,9 @@ class MetalConfig  implements ConfigInterface
         return ['id' => 'asc'];
     }
 
-    // Tagger
     public static function allowed_tagger_field_names(): array
     {
-        return ['material_id', 'primary_classification_id'];
+        return ['primary_classification_id'];
     }
 
     // Show
@@ -198,4 +190,6 @@ class MetalConfig  implements ConfigInterface
     {
         return static::smallFindRelatedModules(substr($id, 0, 5));
     }
+
+    // Tagger
 }

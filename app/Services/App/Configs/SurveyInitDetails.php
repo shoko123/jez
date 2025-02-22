@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\App\Module\Locus;
+namespace App\Services\App\Configs;
 
 use App\Services\App\Interfaces\InitDetailsInterface;
 
-class LocusInitDetails  implements InitDetailsInterface
+class SurveyInitDetails implements InitDetailsInterface
 {
     public static function displayOptions(): array
     {
@@ -22,7 +22,7 @@ class LocusInitDetails  implements InitDetailsInterface
     public static function welcomeText(): array
     {
         return [
-            'This module displays the loci from the six excavation seasons (2013-2018).',
+            "This module describes the features documented in the survey season of summer 2012.",
         ];
     }
 
@@ -30,16 +30,11 @@ class LocusInitDetails  implements InitDetailsInterface
     {
         return [
             'Registration' => [
-                'Season',
                 'Area',
-                'Media',
-                'Square',
-                'Clean'
+                'Media'
             ],
             'Search' => [
                 'Search Description',
-                'Search Deposit',
-                'Search Registration Notes',
             ],
             'Order By' => [
                 'Order By',

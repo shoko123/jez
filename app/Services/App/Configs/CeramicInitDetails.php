@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\App\Module\Ceramic;
+namespace App\Services\App\Configs;
 
 use App\Services\App\Interfaces\InitDetailsInterface;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\App\Module\Lithic;
+namespace App\Services\App\Configs;
 
 use Illuminate\Database\Eloquent\Builder;
 
@@ -29,7 +29,6 @@ class LithicConfig  implements ConfigInterface
             'data.onps.*.value' => 'required|numeric|between:1,999',
         ];
     }
-
 
     public static function shortQuery(): array
     {

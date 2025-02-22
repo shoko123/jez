@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Services\App\Module\Survey;
+namespace App\Services\App\Configs;
 
 use App\Services\App\Interfaces\InitDetailsInterface;
 
-class SurveyInitDetails implements InitDetailsInterface
+class LithicInitDetails implements InitDetailsInterface
 {
     public static function displayOptions(): array
     {
         return [
             'item_views' => ['Main', 'Media', 'Related'],
             'collection_views' => (object)[
-                'main' => ['Gallery', 'Tabular', 'Chips'],
+                'main' => ['Tabular', 'Gallery', 'Chips'],
                 'related' => ['Gallery', 'Tabular', 'Chips'],
                 'media' => ['Gallery'],
             ],
@@ -22,7 +22,7 @@ class SurveyInitDetails implements InitDetailsInterface
     public static function welcomeText(): array
     {
         return [
-            "This module describes the features documented in the survey season of summer 2012.",
+            'This module displays the chipped and flaked stone tools found by the Jezreel Expedition.',
         ];
     }
 
@@ -30,14 +30,15 @@ class SurveyInitDetails implements InitDetailsInterface
     {
         return [
             'Registration' => [
+                'Season',
                 'Area',
-                'Media'
-            ],
-            'Search' => [
-                'Search Description',
-            ],
-            'Order By' => [
+                'Registration Code',
+                'Registration Scope',
+                'Media',
                 'Order By',
+            ],
+            "Types" => [
+                'Primary Typology',
             ],
         ];
     }

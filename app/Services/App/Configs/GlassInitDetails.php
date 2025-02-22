@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\App\Module\Metal;
+namespace App\Services\App\Configs;
 
 use App\Services\App\Interfaces\InitDetailsInterface;
 
-class MetalInitDetails   implements InitDetailsInterface
+class GlassInitDetails implements InitDetailsInterface
 {
     public static function displayOptions(): array
     {
@@ -22,7 +22,7 @@ class MetalInitDetails   implements InitDetailsInterface
     public static function welcomeText(): array
     {
         return [
-            'This module displays the metal artifacts found at the site.',
+            'This module displays the glass artifacts found at the site.',
         ];
     }
 
@@ -35,13 +35,19 @@ class MetalInitDetails   implements InitDetailsInterface
                 'Media',
                 'Order By'
             ],
-            "Basic Charactaristics" => [
-                'Material',
+            "Charactaristics" => [
+                'Color',
+                'Production',
+                'Weathering',
+                'Weathering-Type'
+            ],
+            "Typology" => [
                 'Primary Classification',
-                'Modern Weaponry'
+                'Vessel-Subtype'
             ],
             'Periods' => [
                 'Periods',
+                'Neolithic Subperiods',
                 'Bronze Subperiods',
                 'Iron Subperiods',
                 'Hellenistic Subperiods',
@@ -49,13 +55,6 @@ class MetalInitDetails   implements InitDetailsInterface
                 'Early-Islamic Subperiods',
                 'Medieval Subperiods',
                 'Modern Subperiods',
-            ],
-            'Search' => [
-                'Field Description',
-                'Specialist Description'
-            ],
-            'Processing' => [
-                'Specialist'
             ],
         ];
     }

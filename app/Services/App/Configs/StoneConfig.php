@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\App\Module\Stone;
+namespace App\Services\App\Configs;
 
 use Illuminate\Database\Eloquent\Builder;
 

@@ -55,13 +55,13 @@ class GetService
 
     public static function getInitDetails(string $module)
     {
-        $details = 'App\Services\App\Module\\' . $module  . '\\' . $module . 'InitDetails';
+        $details = 'App\Services\App\Configs\\' . $module  . 'InitDetails';
         return new $details;
     }
 
     public static function getConfigs(string $module)
     {
-        $configs = 'App\Services\App\Module\\' . $module  . '\\' . $module .  'Config';
+        $configs = 'App\Services\App\Configs\\'  . $module .  'Config';
         return new $configs;
     }
 }
