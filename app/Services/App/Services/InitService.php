@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\App\Init;
+namespace App\Services\App\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -10,7 +10,7 @@ use App\Services\App\GetService;
 use App\Services\App\Interfaces\InitDetailsInterface;
 use App\Services\App\Interfaces\ConfigInterface;
 use App\Services\App\Services\Utils\BaseService;
-use App\Services\App\Init\CommonGroups;
+use App\Services\App\Configs\Common\CommonInitGroups;
 use App\Models\Tag\TagGroup;
 use App\Exceptions\GeneralJsonException;
 
@@ -48,7 +48,7 @@ class InitService extends BaseService
 
     protected function allGroups(): array
     {
-        return array_merge(CommonGroups::groups(), static::$moduleConfigs::groups());
+        return array_merge(CommonInitGroups::groups(), static::$moduleConfigs::groups());
     }
 
     public function trio(): array

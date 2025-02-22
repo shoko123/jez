@@ -17,11 +17,7 @@ class GetService
     public static function getModel(string $module, bool $new = false)
     {
         $full_class = 'App\Models\Module\Specific\\' . $module . '\\' . $module;
-        if ($new) {
-            return new $full_class;
-        } else {
-            return $full_class;
-        }
+        return $new ? new $full_class : $full_class;
     }
 
     public static function getTagGroupModel(string $module)
@@ -32,24 +28,7 @@ class GetService
 
     public static function getService(string $serviceName, string $module)
     {
-        $servicePath = '';
-        switch ($serviceName) {
-            case 'Init':
-                $servicePath = 'App\Services\App\Init\InitService';
-                break;
-            case 'Index':
-                $servicePath = 'App\Services\App\Services\IndexService';
-                break;
-            case 'Page':
-                $servicePath = 'App\Services\App\Services\PageService';
-                break;
-            case 'Show':
-                $servicePath = 'App\Services\App\Services\ShowService';
-                break;
-            case 'Mutate':
-                $servicePath = 'App\Services\App\Services\MutateService';
-                break;
-        }
+        $servicePath = 'App\Services\App\Services\\' . $serviceName . 'Service';
         return new $servicePath($module);
     }
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\App\Init;
+namespace App\Services\App\Configs\Common;
 
-class CommonGroups
+class CommonInitGroups
 {
     public static function groups(): array
     {
