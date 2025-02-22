@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\App;
+namespace App\Services\App\Services\Utils;
 
 use App\Services\App\GetService;
 use App\Models\Module\DigModuleModel;

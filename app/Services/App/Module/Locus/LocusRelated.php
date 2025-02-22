@@ -4,7 +4,7 @@ namespace App\Services\App\Module\Locus;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\Services\App\BaseService;
+use App\Services\App\Services\Utils\BaseService;
 use App\Services\App\Services\Utils\RelatedFormat;
 
 use App\Services\App\GetService;

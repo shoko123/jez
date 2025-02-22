@@ -5,7 +5,7 @@ namespace App\Services\App\Services;
 use Illuminate\Database\Eloquent\Builder;
 
 use App\Exceptions\GeneralJsonException;
-use App\Services\App\BaseService;
+use App\Services\App\Services\Utils\BaseService;
 use App\Services\App\GetService;
 use App\Services\App\ConfigInterface;
 use App\Models\Module\DigModuleModel;

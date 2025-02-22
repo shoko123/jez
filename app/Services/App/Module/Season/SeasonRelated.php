@@ -5,7 +5,7 @@ namespace App\Services\App\Module\Season;
 use Illuminate\Database\Eloquent\Collection;
 
 use App\Models\Module\DigModuleModel;
-use App\Services\App\BaseService;
+use App\Services\App\Services\Utils\BaseService;
 use App\Services\App\GetService;
 use App\Services\App\Services\Utils\RelatedFormat;
 

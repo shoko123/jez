@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Exception;
 use App\Exceptions\GeneralJsonException;
-use App\Services\App\BaseService;
+use App\Services\App\Services\Utils\BaseService;
 
 class MutateService extends BaseService
 {
