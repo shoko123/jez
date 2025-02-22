@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\Interfaces\ConfigInterface;
 use App\Services\App\Services\Utils\SmallFindTrait;
+use App\Services\App\Services\MediaService;
+use App\Services\App\Services\TagService;
 
 class LithicConfig  implements ConfigInterface
 {
@@ -29,16 +31,31 @@ class LithicConfig  implements ConfigInterface
             'data.onps.*.value' => 'required|numeric|between:1,999',
         ];
     }
-
-
     public static function showQuery(): array
     {
-        return ['select' => ['description']];
+        return [
+            'with' => [
+                'module_tags.tag_group',
+                'global_tags.tag_group',
+                'media' => function ($query) {
+                    $query->orderBy('order_column')->limit(1);
+                },
+                'onps'
+            ]
+        ];
     }
 
-    public static function showFormat(DigModuleModel $model): array
+    public static function showFormat(DigModuleModel $m): array
     {
-        return $model->description;
+        return [
+            'fields' => $m->makeHidden(['media', 'module_tags', 'global_tags', 'onps']),
+            'media' => MediaService::format_media_collection($m->media),
+            'global_tags' => TagService::mapTags($m->global_tags),
+            'module_tags' => TagService::mapTags($m->module_tags),
+            'onps' => $m->onps->map(function ($onp, int $key) {
+                return ['group_label' => $onp->group_label, 'label' => $onp->label, 'value' => $onp->pivot->value, 'shift' => $onp->shift];
+            })
+        ];
     }
 
     public static function shortQuery(): array

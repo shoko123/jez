@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\Interfaces\ConfigInterface;
 use App\Services\App\Services\Utils\SmallFindTrait;
+use App\Services\App\Services\MediaService;
+use App\Services\App\Services\TagService;
 
 class CeramicConfig  implements ConfigInterface
 {
@@ -36,12 +38,26 @@ class CeramicConfig  implements ConfigInterface
 
     public static function showQuery(): array
     {
-        return ['select' => ['description']];
+        return [
+            'with' => [
+                'module_tags.tag_group',
+                'global_tags.tag_group',
+                'media' => function ($query) {
+                    $query->orderBy('order_column')->limit(1);
+                }
+            ]
+        ];
     }
 
-    public static function showFormat(DigModuleModel $model): array
+    public static function showFormat(DigModuleModel $m): array
     {
-        return $model->description;
+        return [
+            'fields' => $m->makeHidden(['media', 'module_tags', 'global_tags']),
+            'media' => MediaService::format_media_collection($m->media),
+            'global_tags' => TagService::mapTags($m->global_tags),
+            'module_tags' => TagService::mapTags($m->module_tags),
+            'onps' => [],
+        ];
     }
 
     public static function shortQuery(): array

@@ -26,7 +26,13 @@ class SurveyConfig  implements ConfigInterface
 
     public static function showQuery(): array
     {
-        return ['with' => []];
+        return [
+            'with' => [
+                'media' => function ($query) {
+                    $query->orderBy('order_column')->limit(1);
+                }
+            ]
+        ];
     }
 
     public static function showFormat(DigModuleModel $m): array

@@ -36,13 +36,21 @@ class LocusConfig  implements ConfigInterface
 
     public static function showQuery(): array
     {
-        return ['with' => ['module_tags.tag_group', 'global_tags.tag_group']];
+        return [
+            'with' => [
+                'module_tags.tag_group',
+                'global_tags.tag_group',
+                'media' => function ($query) {
+                    $query->orderBy('order_column')->limit(1);
+                }
+            ]
+        ];
     }
 
     public static function showFormat(DigModuleModel $m): array
     {
         return [
-            'fields' => $m->makeHidden(['media']),
+            'fields' => $m->makeHidden(['media', 'module_tags', 'global_tags']),
             'media' => MediaService::format_media_collection($m->media),
             'global_tags' => TagService::mapTags($m->global_tags),
             'module_tags' => TagService::mapTags($m->module_tags),

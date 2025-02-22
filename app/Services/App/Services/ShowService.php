@@ -50,11 +50,6 @@ class ShowService extends BaseService
     protected function buildShowQuery(): void
     {
         $withArr = array_key_exists('with', static::$moduleConfigs::showQuery()) ? static::$moduleConfigs::showQuery()['with'] : [];
-
-        $withArr = array_merge($withArr, ['media' => function ($query) {
-            $query->orderBy('order_column')->limit(1);
-        }]);
-
         $this->builder = $this->model->with($withArr);
 
         return;
