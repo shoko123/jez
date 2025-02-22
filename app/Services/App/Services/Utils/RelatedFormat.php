@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\App\Utils;
+namespace App\Services\App\Services\Utils;
 
 use Illuminate\Database\Eloquent\Collection;
 use App\Services\App\GetService;

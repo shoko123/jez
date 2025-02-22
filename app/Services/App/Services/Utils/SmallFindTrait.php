@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\App\SmallFind;
+namespace App\Services\App\Services\Utils;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Services\App\GetService;
 use App\Models\Module\DigModuleModel;
-use App\Services\App\Utils\RelatedFormat;
+use App\Services\App\Services\Utils\RelatedFormat;
 
 trait SmallFindTrait
 {

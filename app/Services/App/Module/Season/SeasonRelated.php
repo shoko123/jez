@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\BaseService;
 use App\Services\App\GetService;
-use App\Services\App\Utils\RelatedFormat;
+use App\Services\App\Services\Utils\RelatedFormat;
 
 class SeasonRelated extends BaseService
 {

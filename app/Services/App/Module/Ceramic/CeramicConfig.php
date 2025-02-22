@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 use App\Models\Module\DigModuleModel;
 use App\Services\App\ConfigInterface;
-use App\Services\App\SmallFind\SmallFindTrait;
+use App\Services\App\Services\Utils\SmallFindTrait;
 
 class CeramicConfig  implements ConfigInterface
 {
