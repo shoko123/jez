@@ -2,7 +2,7 @@
 
 namespace App\Services\App\Module\Season;
 
-use App\Services\App\InitDetailsInterface;
+use App\Services\App\Interfaces\InitDetailsInterface;
 
 class SeasonInitDetails   implements InitDetailsInterface
 {

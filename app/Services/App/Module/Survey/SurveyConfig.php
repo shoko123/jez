@@ -5,7 +5,7 @@ namespace App\Services\App\Module\Survey;
 use Illuminate\Database\Eloquent\Builder;
 
 use App\Models\Module\DigModuleModel;
-use App\Services\App\ConfigInterface;
+use App\Services\App\Interfaces\ConfigInterface;
 
 class SurveyConfig  implements ConfigInterface
 {

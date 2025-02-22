@@ -5,7 +5,7 @@ namespace App\Services\App\Module\Stone;
 use Illuminate\Database\Eloquent\Builder;
 
 use App\Models\Module\DigModuleModel;
-use App\Services\App\ConfigInterface;
+use App\Services\App\Interfaces\ConfigInterface;
 use App\Services\App\Services\Utils\SmallFindTrait;
 
 class StoneConfig  implements ConfigInterface

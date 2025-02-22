@@ -2,7 +2,7 @@
 
 namespace App\Services\App\Module\Lithic;
 
-use App\Services\App\InitDetailsInterface;
+use App\Services\App\Interfaces\InitDetailsInterface;
 
 class LithicInitDetails implements InitDetailsInterface
 {

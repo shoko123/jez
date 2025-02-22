@@ -7,13 +7,12 @@ use Illuminate\Support\Facades\DB;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 use App\Services\App\GetService;
+use App\Services\App\Interfaces\InitDetailsInterface;
+use App\Services\App\Interfaces\ConfigInterface;
 use App\Services\App\Services\Utils\BaseService;
-use App\Services\App\InitDetailsInterface;
-use App\Services\App\ConfigInterface;
 use App\Services\App\Init\CommonGroups;
 use App\Models\Tag\TagGroup;
 use App\Exceptions\GeneralJsonException;
-
 
 class InitService extends BaseService
 {

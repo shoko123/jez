@@ -2,7 +2,7 @@
 
 namespace App\Services\App\Module\Survey;
 
-use App\Services\App\InitDetailsInterface;
+use App\Services\App\Interfaces\InitDetailsInterface;
 
 class SurveyInitDetails implements InitDetailsInterface
 {

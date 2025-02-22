@@ -6,7 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;
 
-use App\Services\App\ConfigInterface;
+use App\Services\App\Interfaces\ConfigInterface;
 use App\Services\App\ServiceEnum;
 use App\Services\App\GetService;
 

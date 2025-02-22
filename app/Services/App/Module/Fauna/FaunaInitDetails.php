@@ -2,7 +2,7 @@
 
 namespace App\Services\App\Module\Fauna;
 
-use App\Services\App\InitDetailsInterface;
+use App\Services\App\Interfaces\InitDetailsInterface;
 
 class FaunaInitDetails implements InitDetailsInterface
 {

@@ -2,7 +2,7 @@
 
 namespace App\Services\App\Module\Ceramic;
 
-use App\Services\App\InitDetailsInterface;
+use App\Services\App\Interfaces\InitDetailsInterface;
 
 class CeramicInitDetails implements InitDetailsInterface
 {

@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Services\App\ConfigInterface;
+use App\Services\App\Interfaces\ConfigInterface;
 
 trait RulesTrait
 {

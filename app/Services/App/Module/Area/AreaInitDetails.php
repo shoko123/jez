@@ -2,7 +2,7 @@
 
 namespace App\Services\App\Module\Area;
 
-use App\Services\App\InitDetailsInterface;
+use App\Services\App\Interfaces\InitDetailsInterface;
 
 class AreaInitDetails implements InitDetailsInterface
 {

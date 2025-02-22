@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\App;
+namespace App\Services\App\Interfaces;
 
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Module\DigModuleModel;
