@@ -24,7 +24,7 @@ export const useItemStore = defineStore('item', () => {
   const onps = ref<TOnp[]>([])
   const slug = ref<string>('')
   const tag = ref<string>('')
-  const short = ref<string>('')
+  // const short = ref<string>('')
   const ready = ref<boolean>(false)
 
   const id = computed(() => {
@@ -75,7 +75,7 @@ export const useItemStore = defineStore('item', () => {
     fields.value = {}
     onps.value = []
     slug.value = ''
-    short.value = ''
+    // short.value = ''
     tag.value = ''
     setCollectionArray('media', [], true)
     setCollectionArray('related', [], true)
@@ -118,7 +118,7 @@ export const useItemStore = defineStore('item', () => {
   return {
     slug,
     tag,
-    short,
+    // short,
     ready,
     fields,
     onps,

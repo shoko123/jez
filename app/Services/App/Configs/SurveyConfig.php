@@ -4,8 +4,9 @@ namespace App\Services\App\Configs;
 
 use Illuminate\Database\Eloquent\Builder;
 
-use App\Models\Module\DigModuleModel;
 use App\Services\App\Interfaces\ConfigInterface;
+use App\Services\App\Services\MediaService;
+use App\Models\Module\DigModuleModel;
 
 class SurveyConfig  implements ConfigInterface
 {
@@ -20,6 +21,22 @@ class SurveyConfig  implements ConfigInterface
             'next_to' => 'max:50|nullable',
             'description' => 'max:1000|nullable',
             'notes' => 'max:100|nullable',
+        ];
+    }
+
+    public static function showQuery(): array
+    {
+        return ['with' => []];
+    }
+
+    public static function showFormat(DigModuleModel $m): array
+    {
+        return [
+            'fields' => $m->makeHidden(['media']),
+            'media' => MediaService::format_media_collection($m->media),
+            'global_tags' => [],
+            'module_tags' => [],
+            'onps' => [],
         ];
     }
 

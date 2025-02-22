@@ -15,6 +15,7 @@ class LocusRelated extends BaseService
 
     public static function relatedModules(string $id)
     {
+        return [];
         $res = static::accessDb($id);
         return static::formatResponse($res);
     }

@@ -30,17 +30,23 @@ class LithicConfig  implements ConfigInterface
         ];
     }
 
+
+    public static function showQuery(): array
+    {
+        return ['select' => ['description']];
+    }
+
+    public static function showFormat(DigModuleModel $model): array
+    {
+        return $model->description;
+    }
+
     public static function shortQuery(): array
     {
         return [
             'select' => ['description'],
             'with' => ['onps']
         ];
-    }
-
-    public static function shortWith(): array
-    {
-        return ['onps'];
     }
 
     public static function shortFormat(DigModuleModel $r): string

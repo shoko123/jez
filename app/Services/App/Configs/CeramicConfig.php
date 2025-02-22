@@ -34,6 +34,15 @@ class CeramicConfig  implements ConfigInterface
         ];
     }
 
+    public static function showQuery(): array
+    {
+        return ['select' => ['description']];
+    }
+
+    public static function showFormat(DigModuleModel $model): array
+    {
+        return $model->description;
+    }
 
     public static function shortQuery(): array
     {

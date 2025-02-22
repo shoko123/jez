@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 use App\Models\Module\DigModuleModel;
 use App\Services\App\Interfaces\ConfigInterface;
+use App\Services\App\Services\MediaService;
 use App\Services\App\Services\Utils\SeasonRelated;
 
 class SeasonConfig  implements ConfigInterface
@@ -26,6 +27,22 @@ class SeasonConfig  implements ConfigInterface
             'id' => 'required|max:1',
             'description' => 'max:2000',
             'staff' => 'max:2000',
+        ];
+    }
+
+    public static function showQuery(): array
+    {
+        return ['with' => []];
+    }
+
+    public static function showFormat(DigModuleModel $m): array
+    {
+        return [
+            'fields' => $m->makeHidden(['media']),
+            'media' => MediaService::format_media_collection($m->media),
+            'global_tags' => [],
+            'module_tags' => [],
+            'onps' => [],
         ];
     }
 

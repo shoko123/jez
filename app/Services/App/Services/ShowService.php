@@ -41,61 +41,75 @@ class ShowService extends BaseService
 
     public function show(string $id): array
     {
-        $this->applyShowLoad();
+        $this->buildShowQuery();
         $item = $this->builder->findOrFail($id);
         $related = static::$moduleConfigs::relatedModules($id);
         return $this->formatShowResponse($item, $related);
     }
 
-    protected function applyShowLoad(): void
+    protected function buildShowQuery(): void
     {
-        $with_arr = collect([
-            'media' => function ($query) {
-                $query->orderBy('order_column');
-            },
-        ]);
+        $withArr = array_key_exists('with', static::$moduleConfigs::showQuery()) ? static::$moduleConfigs::showQuery()['with'] : [];
 
-        if ($this->uses_module_tags()) {
-            $with_arr->push('module_tags.tag_group');
-        }
+        $withArr = array_merge($withArr, ['media' => function ($query) {
+            $query->orderBy('order_column')->limit(1);
+        }]);
 
-        if ($this->uses_global_tags()) {
-            $with_arr->push('global_tags.tag_group');
-        }
+        $this->builder = $this->model->with($withArr);
 
-        if ($this->uses_onps()) {
-            $with_arr->push('onps');
-        }
+        return;
+        ////
+        // $with_arr = collect([
+        //     'media' => function ($query) {
+        //         $query->orderBy('order_column');
+        //     },
+        // ]);
 
-        $this->builder = $this->model->with($with_arr->toArray());
+        // if ($this->uses_module_tags()) {
+        //     $with_arr->push('module_tags.tag_group');
+        // }
+
+        // if ($this->uses_global_tags()) {
+        //     $with_arr->push('global_tags.tag_group');
+        // }
+
+        // if ($this->uses_onps()) {
+        //     $with_arr->push('onps');
+        // }
+
+        // $this->builder = $this->model->with($with_arr->toArray());
     }
 
     protected function formatShowResponse(object $item, array $related): array
     {
-        $mediaArray = MediaService::format_media_collection($item->media);
+        $formatted = static::$moduleConfigs::showFormat($item);
+        $formatted['related'] = $related;
+        return $formatted;
+        //////////////
+        // $mediaArray = MediaService::format_media_collection($item->media);
 
-        //module tags (discrete)
-        $module_tags = isset($item['module_tags']) ? $item->module_tags->map(function ($tag, int $key) {
-            return ['group_label' => $tag->tag_group->name, 'tag_text' => $tag->name];
-        }) : [];
+        // //module tags (discrete)
+        // $module_tags = isset($item['module_tags']) ? $item->module_tags->map(function ($tag, int $key) {
+        //     return ['group_label' => $tag->tag_group->name, 'tag_text' => $tag->name];
+        // }) : [];
 
-        //global tags
-        $global_tags = isset($item['global_tags']) ? $item->global_tags->map(function ($tag, int $key) {
-            return ['group_label' => $tag->tag_group->name, 'tag_text' => $tag->name];
-        }) : [];
+        // //global tags
+        // $global_tags = isset($item['global_tags']) ? $item->global_tags->map(function ($tag, int $key) {
+        //     return ['group_label' => $tag->tag_group->name, 'tag_text' => $tag->name];
+        // }) : [];
 
-        $onps = isset($item['onps']) ? $item->onps->map(function ($onp, int $key) {
-            return ['group_label' => $onp->group_label, 'label' => $onp->label, 'value' => $onp->pivot->value, 'shift' => $onp->shift];
-        }) : [];
+        // $onps = isset($item['onps']) ? $item->onps->map(function ($onp, int $key) {
+        //     return ['group_label' => $onp->group_label, 'label' => $onp->label, 'value' => $onp->pivot->value, 'shift' => $onp->shift];
+        // }) : [];
 
-        return [
-            'fields' => $item->makeHidden(['short', 'media', 'module_tags', 'global_tags', 'onps']),
-            'media' => $mediaArray,
-            'global_tags' => $global_tags,
-            'module_tags' => $module_tags,
-            'short' => $item->short,
-            'onps' => $onps,
-            'related' =>  $related
-        ];
+        // return [
+        //     'fields' => $item->makeHidden(['short', 'media', 'module_tags', 'global_tags', 'onps']),
+        //     'media' => $mediaArray,
+        //     'global_tags' => $global_tags,
+        //     'module_tags' => $module_tags,
+        //     'short' => $item->short,
+        //     'onps' => $onps,
+        //     'related' =>  $related
+        // ];
     }
 }

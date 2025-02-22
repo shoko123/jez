@@ -4,10 +4,18 @@ namespace App\Services\App\Services;
 
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Collection;
 use App\Services\App\GetService;
 
 class TagService
 {
+    public static function mapTags(Collection $rawTags): Collection
+    {
+        return $rawTags->map(function ($tag, int $key) {
+            return ['group_label' => $tag->tag_group->name, 'tag_text' => $tag->name];
+        });
+    }
+
     public static function sync(string $module, string $id, array $module_tag_ids, array $global_tag_ids, array $fields): void
     {
         //get item with tags

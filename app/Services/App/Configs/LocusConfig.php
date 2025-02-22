@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Models\Module\DigModuleModel;
 use App\Services\App\Interfaces\ConfigInterface;
 use App\Services\App\Services\Utils\LocusRelated;
+use App\Services\App\Services\MediaService;
+use App\Services\App\Services\TagService;
 
 class LocusConfig  implements ConfigInterface
 {
@@ -32,6 +34,21 @@ class LocusConfig  implements ConfigInterface
         ];
     }
 
+    public static function showQuery(): array
+    {
+        return ['with' => ['module_tags.tag_group', 'global_tags.tag_group']];
+    }
+
+    public static function showFormat(DigModuleModel $m): array
+    {
+        return [
+            'fields' => $m->makeHidden(['media']),
+            'media' => MediaService::format_media_collection($m->media),
+            'global_tags' => TagService::mapTags($m->global_tags),
+            'module_tags' => TagService::mapTags($m->module_tags),
+            'onps' => [],
+        ];
+    }
 
     public static function shortQuery(): array
     {
