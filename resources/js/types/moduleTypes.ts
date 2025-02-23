@@ -62,7 +62,14 @@ type TUrlModule = keyof TUrlModuleNameToModule
 type TItemsPerPageByView = Record<TCollectionView, number>
 type TViewsForCollection = Record<TCName, TCollectionView[]>
 
-type TApiTabular<M extends TModule = TModule> = TDefs[M]['apiTabularPageFields']
+type TApiTabular = {
+  id: string
+  field: number
+  // } & {
+  [key: string]: string | number
+}
+
+// type TApiTabular<M extends TModule = TModule> = TDefs[M]['apiTabularPageFields']
 // type TApiTabular<M extends TModule = TModule> = M & { tag: string; slug: string }
 
 // Specific records - "item"

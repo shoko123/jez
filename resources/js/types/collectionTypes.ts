@@ -50,23 +50,15 @@ type TCName = keyof TDefs
 type TArray<C extends TCName = TCName> = TDefs[C]['array']
 type TView<S extends TCName = TCName> = keyof TDefs[S]['apiPages'] //TNewApiArrayObj<S>
 
-type TApiPage<
-  S extends TCName = TCName,
-  V extends TView<S> = TView<S>,
-  M extends TModule = TModule,
-> = S extends 'main'
+type TApiPage<S extends TCName = TCName, V extends TView<S> = TView<S>> = S extends 'main'
   ? V extends 'Tabular'
-    ? TApiTabular<M>
+    ? TApiTabular
     : TDefs[S]['apiPages'][V]
   : TDefs[S]['apiPages'][V]
 
-type TPage<
-  S extends TCName = TCName,
-  V extends TView<S> = TView<S>,
-  M extends TModule = TModule,
-> = V extends 'Gallery'
-  ? SwapUrlWithMedia<TApiPage<S, V, M>> & { tag: string; slug: string }
-  : TApiPage<S, V, M> & { tag: string; slug: string }
+type TPage<S extends TCName = TCName, V extends TView<S> = TView<S>> = V extends 'Gallery'
+  ? SwapUrlWithMedia<TApiPage<S, V>> & { tag: string; slug: string }
+  : TApiPage<S, V> & { tag: string; slug: string }
 
 // //convert media property type from the api's TMediaUrls to the frontend's TMediaOfItem
 type SwapUrlWithMedia<T extends TApiPage<TCName, 'Gallery'>> = Omit<T, 'urls'> & {

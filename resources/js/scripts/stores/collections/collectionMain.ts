@@ -37,7 +37,7 @@ export const useCollectionMainStore = defineStore('collectionMain', () => {
   })
 
   // page
-  const apiPage = ref<TApiPage<'main', TCollectionView, TModule>[]>([])
+  const apiPage = ref<TApiPage<'main', TCollectionView>[]>([])
 
   const loadPage: TFuncLoadPage = async function (
     pageNo: number,
@@ -55,7 +55,7 @@ export const useCollectionMainStore = defineStore('collectionMain', () => {
 
     switch (view) {
       case 'Chips': {
-        apiPage.value = <TApiPage<'main', 'Chips', TModule>[]>slice.map((x) => {
+        apiPage.value = <TApiPage<'main', 'Chips'>[]>slice.map((x) => {
           return { id: x }
         })
         pageNoB1.value = pageNo
@@ -83,8 +83,7 @@ export const useCollectionMainStore = defineStore('collectionMain', () => {
 
   const page = computed(() => {
     return apiPage.value.map((x) => {
-      const tagAndSlug = tagAndSlugFromId(x.id)
-      let y = { ...tagAndSlug, ...x }
+      let y = { ...tagAndSlugFromId(x.id), ...x }
       if ('urls' in y) {
         const media = buildMedia(y.urls, module.value)
         y = { ...y, ...{ media } }
@@ -94,14 +93,11 @@ export const useCollectionMainStore = defineStore('collectionMain', () => {
   })
 
   const tabularHeaders = computed(() => {
-    const obj = page.value[0]
-    delete obj.id
-    delete obj.slug
-    const headers = Object.keys(obj).map((x) => {
+    const headers = Object.keys(page.value[0]!).map((x) => {
       return [x, typeof x === 'string' ? 'start' : 'end', x]
     })
 
-    return headers
+    return headers.filter((x) => !['id', 'slug'].includes(x[0]!))
   })
 
   const info = computed(() => {

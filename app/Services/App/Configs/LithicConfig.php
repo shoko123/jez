@@ -61,7 +61,7 @@ class LithicConfig  implements ConfigInterface
     public static function shortQuery(): array
     {
         return [
-            'select' => ['description'],
+            'select' => ['field_description'],
             'with' => ['onps']
         ];
     }
