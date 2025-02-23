@@ -7,9 +7,15 @@
             <MediaOverlay :source="source" :item-index="itemIndex" :record="record" />
           </template>
         </v-overlay>
-        <v-btn v-if="data.showTag" class="text-subtitle-1 font-weight-medium text-black" color="grey">
-          {{ data.tagText }}
-        </v-btn>
+        <v-row no-gutters>
+          <v-btn v-if="data.showTag" class="text-subtitle-1 font-weight-medium text-black" color="grey">
+            {{ data.tagText }}
+          </v-btn>
+        </v-row>
+
+        <v-row v-if="showShort" no-gutters class="text-body-1 align-center text-white">
+          {{ shortToShow }}
+        </v-row>
       </v-img>
     </v-card>
   </v-hover>
@@ -35,6 +41,14 @@ const record = computed(() => {
     TPage<'media', 'Gallery'> &
     TPage<'related', 'Gallery'>
   //Note This can't be reduced to TPage<TCName', 'Gallery'>
+})
+
+const showShort = computed(() => {
+  return ['main', 'related'].includes(prps.source) && !record.value.media?.hasMedia
+})
+
+const shortToShow = computed(() => {
+  return record.value.short
 })
 
 const data = computed(() => {
