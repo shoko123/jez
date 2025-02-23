@@ -8,12 +8,12 @@
           </template>
         </v-overlay>
         <v-row no-gutters>
-          <v-btn v-if="data.showTag" class="text-subtitle-1 font-weight-medium text-black" color="grey">
+          <v-btn v-if="data.showTag && !isHovering" class="text-subtitle-1 font-weight-medium text-black" color="grey">
             {{ data.tagText }}
           </v-btn>
         </v-row>
 
-        <v-row v-if="showShort" no-gutters class="text-body-1 align-center text-white">
+        <v-row v-if="showShort && !isHovering" no-gutters class="text-body-1 align-center text-white">
           {{ shortToShow }}
         </v-row>
       </v-img>
