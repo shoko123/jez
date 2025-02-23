@@ -15,11 +15,7 @@ trait SmallFindTrait
 
     public static function smallFindRelatedModules(string $locus_id)
     {
-        $locus = GetService::getModel('Locus', true);
-        $locus->findOrfail($locus_id);
-        $formatted = LocusRelated::relatedModules($locus_id);
-        array_unshift($formatted, FormatRelated::transformOneItem('Belongs To', 'Locus', $locus));
-        return $formatted;
+        return LocusRelated::relatedModules($locus_id, true);
     }
 
     public static function smallFindDiscreteFilterOptions(bool $withRegCode): array

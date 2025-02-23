@@ -11,18 +11,19 @@ use App\Models\Module\DigModuleModel;
 
 class LocusRelated extends BaseService
 {
-    static DigModuleModel $locus;
-
-    public static function relatedModules(string $locus_id)
+    public static function relatedModules(string $locus_id, $isSmallFind)
     {
-        static::$locus = GetService::getModel('Locus', true);
         $res = static::accessDb($locus_id);
-        return static::formatResponse($res);
+        return static::formatResponse($res, $isSmallFind);
     }
 
     private static function accessDb(string $id): Model
     {
-        return static::$locus->with([
+        $locus = GetService::getModel('Locus', true);
+        return $locus->with([
+            'media' => function ($query) {
+                $query->orderBy('order_column')->limit(1);
+            },
             'area.media' => function ($query) {
                 $query->orderBy('order_column')->limit(1);
             },
@@ -51,13 +52,18 @@ class LocusRelated extends BaseService
             ->findOrfail($id);
     }
 
-    private static function formatResponse($res): array
+    // Called from either Locus or one of the small finds
+    private static function formatResponse($res, $isSmallFind): array
     {
+        $small = ['ceramics' => 'Ceramic', 'stones' => 'Stone',  'lithics' => 'Lithic', 'fauna' => 'Fauna', 'glass' => 'Glass', 'metals' => 'Metal'];
         $formatted = [];
 
-        $small = ['ceramics' => 'Ceramic', 'stones' => 'Stone',  'lithics' => 'Lithic', 'fauna' => 'Fauna', 'glass' => 'Glass', 'metals' => 'Metal'];
+        if ($isSmallFind) {
+            array_push($formatted, FormatRelated::transformOneItem('Belongs To', 'Locus', $res));
+        }
+
         foreach ($small as $key => $val) {
-            $list = FormatRelated::transformArrayOfItems('Has Find', $val, $res->$key);
+            $list = FormatRelated::transformArrayOfItems($isSmallFind ? 'Locus Finds' : 'Has Find', $val, $res->$key);
             $formatted = array_merge($formatted, $list);
         }
 

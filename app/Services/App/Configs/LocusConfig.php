@@ -175,7 +175,7 @@ class LocusConfig  implements ConfigInterface
     // Show
     public static function relatedModules(string $id): array
     {
-        return LocusRelated::relatedModules($id);
+        return LocusRelated::relatedModules($id, false);
     }
 
     // Tagger
