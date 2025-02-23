@@ -18,7 +18,6 @@ type TLocus = {
     registration_notes: string
     clean: string
   }
-  apiTabularPageFields: 'id' | 'square' | 'date_opened' | 'description' | 'registration_notes'
 }
 
 export { TLocus }

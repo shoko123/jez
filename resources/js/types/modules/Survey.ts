@@ -10,7 +10,6 @@ type TSurvey = {
     description: string
     notes: string
   }
-  apiTabularPageFields: 'id' | 'Surveyed Date' | 'Elevation' | 'Description' | 'Notes'
 }
 
 export { TSurvey }

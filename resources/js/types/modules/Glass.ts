@@ -22,7 +22,6 @@ type TGlass = {
 
     primary_classification_id: number
   }
-  apiTabularPageFields: 'id' | 'specialist_description'
 }
 
 export { TGlass }

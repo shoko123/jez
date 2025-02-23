@@ -29,7 +29,6 @@ type TFauna = {
     specialist_notes: string
     measured: string
   }
-  apiTabularPageFields: 'id' | 'taxa' | 'bone'
 }
 
 export { TFauna }

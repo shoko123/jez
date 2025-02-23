@@ -20,7 +20,6 @@ type TCeramic = {
     periods: string
     specialist_description: string
   }
-  apiTabularPageFields: 'id' | 'periods' | 'specialist_description'
 }
 
 export { TCeramic }

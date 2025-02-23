@@ -12,13 +12,6 @@ import type { TFauna } from '@/types/modules/Fauna'
 import type { TGlass } from '@/types/modules/Glass'
 import type { TMetal } from '@/types/modules/Metal'
 
-// This fields have to be filled for every module
-type TModuleInfo = {
-  url_name: string
-  fields: object
-  apiTabularPageFields: object
-}
-
 // Definition of all modules
 type TDefs = {
   Area: TArea
@@ -65,12 +58,8 @@ type TViewsForCollection = Record<TCName, TCollectionView[]>
 type TApiTabular = {
   id: string
   field: number
-  // } & {
   [key: string]: string | number
 }
-
-// type TApiTabular<M extends TModule = TModule> = TDefs[M]['apiTabularPageFields']
-// type TApiTabular<M extends TModule = TModule> = M & { tag: string; slug: string }
 
 // Specific records - "item"
 ////////////////////////////
@@ -103,6 +92,7 @@ type TFieldInfo = {
   options: TOption[]
   index: number
 }
+
 type TFieldValue = string | number | boolean | null
 
 type TModuleBtnsInfo = { title: string; module: TModule; url_module: TUrlModule }
@@ -123,7 +113,6 @@ type TApiModuleInit = {
 }
 
 export {
-  TModuleInfo,
   TModule,
   TUrlModule,
   TModuleToUrlName,

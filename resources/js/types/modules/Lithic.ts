@@ -12,7 +12,6 @@ type TLithic = {
     registration_notes: string
     specialist_notes: string
   }
-  apiTabularPageFields: 'id' | 'date_retrieved' | 'field_description' | 'weight'
 }
 
 export { TLithic }

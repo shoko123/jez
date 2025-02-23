@@ -5,7 +5,6 @@ type TArea = {
     description: string
     notes: string
   }
-  apiTabularPageFields: 'id' | 'Description' | 'Notes'
 }
 
 export { TArea }

@@ -5,7 +5,6 @@ type TSeason = {
     description: string
     staff: string
   }
-  apiTabularPageFields: 'id' | 'Description' | 'Staff'
 }
 
 export { TSeason }

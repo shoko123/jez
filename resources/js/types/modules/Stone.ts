@@ -34,13 +34,6 @@ type TStone = {
     stone_primary_classification_id: number
     material_id: number
   }
-  apiTabularPageFields:
-    | 'id'
-    | 'Date Retrieved'
-    | 'Description'
-    | 'Notes'
-    | 'Material'
-    | 'Primary Classification'
 }
 
 export { TStone }

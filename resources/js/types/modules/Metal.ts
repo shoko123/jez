@@ -18,13 +18,6 @@ type TMetal = {
     primary_classification_id: number
     specialist: string
   }
-  apiTabularPageFields:
-    | 'id'
-    | 'date_retrieved'
-    | 'field_description'
-    | 'specialist_description'
-    | 'primary_classification_id'
-    | 'material_id'
 }
 
 export { TMetal }
