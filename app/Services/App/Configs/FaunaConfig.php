@@ -82,7 +82,7 @@ class FaunaConfig  implements ConfigInterface
 
     public static function shortFormat(DigModuleModel $r): string
     {
-        return $r->taxa ?? '[No Taxa Given]';
+        return $r->taxa ?? '[No taxa description given]';
     }
 
     public static function tabularPageQuery(): array

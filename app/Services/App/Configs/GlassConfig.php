@@ -73,7 +73,7 @@ class GlassConfig implements ConfigInterface
 
     public static function shortFormat(DigModuleModel $model): string
     {
-        return $model->specialist_description ?? '[No specialist description]';
+        return $model->specialist_description ?? '[No specialist description given]';
     }
 
     // Pages

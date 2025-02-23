@@ -82,7 +82,7 @@ class StoneConfig  implements ConfigInterface
 
     public static function shortFormat(DigModuleModel $model): string
     {
-        return $model->description ?? '[No description]';
+        return $model->description ?? '[No description given]';
     }
 
     public static function tabularPageQuery(): array

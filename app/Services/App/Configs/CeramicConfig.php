@@ -67,7 +67,7 @@ class CeramicConfig  implements ConfigInterface
 
     public static function shortFormat(DigModuleModel $model): string
     {
-        return $model->periods ?? '[No periods description]';
+        return $model->periods ?? '[No periods description given]';
     }
 
     public static function tabularPageQuery(): array

@@ -56,7 +56,7 @@ class AreaConfig implements ConfigInterface
 
     public static function shortFormat(DigModuleModel $model): string
     {
-        return $model->description;
+        return $model->description ?? '[No description given]';
     }
 
     public static function tabularPageQuery(): array

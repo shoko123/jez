@@ -59,7 +59,7 @@ class SeasonConfig  implements ConfigInterface
 
     public static function shortFormat(DigModuleModel $model): string
     {
-        return $model->description;
+        return $model->description ?? '[No Description given]';
     }
 
     public static function tabularPageQuery(): array

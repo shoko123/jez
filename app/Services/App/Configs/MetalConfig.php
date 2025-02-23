@@ -66,7 +66,7 @@ class MetalConfig  implements ConfigInterface
 
     public static function shortFormat(DigModuleModel $model): string
     {
-        return $model->specialist_description ?? '[No specialistdescription]';
+        return $model->specialist_description ?? '[No specialist description]';
     }
 
     public static function tabularPageQuery(): array

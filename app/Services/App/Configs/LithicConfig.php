@@ -69,7 +69,7 @@ class LithicConfig  implements ConfigInterface
     public static function shortFormat(DigModuleModel $r): string
     {
         if (count($r->onps) === 0) {
-            return $r->field_description;
+            return $r->field_description ?? '[No field description given]';
         }
 
         $all = $r->onps->reduce(function (?string $carry, object $item) {
