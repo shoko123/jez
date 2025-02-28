@@ -30,7 +30,7 @@ class Stone extends DigModuleModel
 
     public function primaryClassification()
     {
-        return $this->belongsTo(StonePrimaryClassification::class, 'stone_primary_classification_id');
+        return $this->belongsTo(StonePrimaryClassification::class, 'primary_classification_id');
     }
 
     public function material()

@@ -21,7 +21,7 @@ interface ConfigInterface
     ];
 
     public static function fieldsValidation(): array;
-
+    public static function specialFields(): array;
     public static function showQuery(): array;
     public static function showFormat(DigModuleModel $model): array;
     public static function shortQuery(): array;
@@ -29,7 +29,6 @@ interface ConfigInterface
     public static function tabularPageQuery(): array;
     public static function tabularPageFormat(DigModuleModel $r): array;
 
-    public static function dateFields(): array;
     public static function allowed_search_field_names(): array;
 
     // trio

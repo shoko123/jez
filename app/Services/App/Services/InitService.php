@@ -41,7 +41,7 @@ class InitService extends BaseService
             ],
             'display_options' => static::$initDetails::displayOptions(),
             'first_id' => $this->model->select('id')->firstOrFail()['id'],
-            'dateFields' => static::$moduleConfigs::dateFields(),
+            'specialFields' => static::$moduleConfigs::specialFields(),
             'trio' => $this->trio(),
         ];
     }

@@ -35,6 +35,15 @@ class MetalConfig  implements ConfigInterface
         ];
     }
 
+    public static function specialFields(): array
+    {
+        return [
+            'dates' => ['date_retrieved'],
+            'lookupVals' => ['material_id', 'primary_classification_id'],
+            'enums' => ['specialist']
+        ];
+    }
+
     public static function showQuery(): array
     {
         return [
@@ -94,11 +103,6 @@ class MetalConfig  implements ConfigInterface
             'Material' => $r->material->name,
             'Primary Classification' => $r->primaryClassification->name,
         ];
-    }
-
-    public static function dateFields(): array
-    {
-        return ['date_retrieved'];
     }
 
     public static function groups(): array

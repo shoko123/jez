@@ -30,6 +30,11 @@ class SeasonConfig  implements ConfigInterface
         ];
     }
 
+    public static function specialFields(): array
+    {
+        return [];
+    }
+
     public static function showQuery(): array
     {
         return [
@@ -76,11 +81,6 @@ class SeasonConfig  implements ConfigInterface
             'Description' => $r->taxa,
             'Staff' => $r->staff,
         ];
-    }
-
-    public static function dateFields(): array
-    {
-        return [];
     }
 
     public static function groups(): array

@@ -14,11 +14,6 @@
 
         </id-selector>
       </template>
-      <template v-else>
-        <v-text-field v-model="tag" label="Label" filled disabled />
-      </template>
-
-
 
       <!-- <v-date-input v-model="nf.date_retrieved" label="Date Retrieved" prepend-icon="" prepend-inner-icon="$calendar"
         clearable max-width="368" @click:clear="nf.date_retrieved = null">
@@ -41,7 +36,7 @@
     </v-row>
 
     <v-row class="ga-1">
-      <v-select v-model="nf.stone_primary_classification_id" label="Select" item-title="text" item-value="extra"
+      <v-select v-model="nf.primary_classification_id" label="Select" item-title="text" item-value="extra"
         :items="primaryClassificationInfo.options"></v-select>
 
       <v-select v-model="nf.material_id" label="Select" item-title="text" item-value="extra"
@@ -138,7 +133,7 @@ const defaultsAndRules: TFieldsDefaultsAndRules<'Stone'> = {
   rim_thickness: { d: '', r: { between: between(1, 500) } },
   base_diameter: { d: null, r: { between: between(1, 500) } },
   base_thickness: { d: '', r: { between: between(1, 500) } },
-  stone_primary_classification_id: { d: 1, r: { between: between(1, 255) } },
+  primary_classification_id: { d: 1, r: { between: between(1, 255) } },
   material_id: { d: 1, r: { between: between(1, 255) } },
 }
 
@@ -194,7 +189,7 @@ const stoneFieldsWithOptions = computed(() => {
 })
 
 const primaryClassificationInfo = computed(() => {
-  return stoneFieldsWithOptions.value['stone_primary_classification_id']!
+  return stoneFieldsWithOptions.value['primary_classification_id']!
 })
 
 const materialInfo = computed(() => {

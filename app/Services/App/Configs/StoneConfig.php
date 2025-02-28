@@ -46,8 +46,17 @@ class StoneConfig  implements ConfigInterface
             'rim_thickness' => 'numeric|nullable|min:1|max:500',
             'base_diameter' => 'numeric|nullable|min:1|max:500',
             'base_thickness' => 'numeric|nullable|min:1|max:500',
-            'stone_primary_classification_id' => 'required|exists:stone_primary_classifications,id',
+            'primary_classification_id' => 'required|exists:stone_primary_classifications,id',
             'material_id' => 'required|exists:stone_materials,id',
+        ];
+    }
+
+    public static function specialFields(): array
+    {
+        return [
+            'dates' => ['date_retrieved'],
+            'lookupVals' => ['material_id', 'primary_classification_id'],
+
         ];
     }
 
@@ -94,7 +103,7 @@ class StoneConfig  implements ConfigInterface
                 'description',
                 'notes',
                 'material_id',
-                'stone_primary_classification_id'
+                'primary_classification_id'
             ],
             'with' => [
                 'material',
@@ -113,11 +122,6 @@ class StoneConfig  implements ConfigInterface
             'Material' => $r->material->name,
             'Primary Classification' => $r->primaryClassification->name,
         ];
-    }
-
-    public static function dateFields(): array
-    {
-        return ['date_retrieved'];
     }
 
     public static function groups(): array
@@ -141,7 +145,7 @@ class StoneConfig  implements ConfigInterface
             ],
             'Primary Classification' => [
                 'code' => 'LV',
-                'field_name' => 'stone_primary_classification_id',
+                'field_name' => 'primary_classification_id',
                 'lookup_table_name' => 'stone_primary_classifications',
                 'lookup_text_field' => 'name',
                 'useInTagger' => true,
@@ -283,7 +287,7 @@ class StoneConfig  implements ConfigInterface
     // Tagger
     public static function allowed_tagger_field_names(): array
     {
-        return ['stone_primary_classification_id', 'material_id'];
+        return ['primary_classification_id', 'material_id'];
     }
 
     // Show

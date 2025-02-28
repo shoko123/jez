@@ -97,11 +97,17 @@ type TFieldValue = string | number | boolean | null
 
 type TModuleBtnsInfo = { title: string; module: TModule; url_module: TUrlModule }
 
+type TSpecialFields = {
+  dates?: string[]
+  lookupVals?: string[]
+  enums?: string[]
+  onps?: true
+}
 type TApiModuleInit = {
   module: TModule
   counts: { items: number; media: number }
   first_id: string
-  dateFields: string[]
+  specialFields: TSpecialFields
   display_options: {
     item_views: string[]
     collection_views: TViewsForCollection
@@ -116,6 +122,7 @@ export {
   TModule,
   TUrlModule,
   TModuleToUrlName,
+  TSpecialFields,
   TUrlModuleNameToModule,
   TApiModuleInit,
   TViewsForCollection,

@@ -36,6 +36,15 @@ class CeramicConfig  implements ConfigInterface
         ];
     }
 
+    public static function specialFields(): array
+    {
+        return [
+            'dates' => ['date_retrieved'],
+            'lookupVals' => ['primary_classification_id'],
+            'enums' => ['specialists'],
+        ];
+    }
+
     public static function showQuery(): array
     {
         return [
@@ -94,11 +103,6 @@ class CeramicConfig  implements ConfigInterface
             'Specialist Description' => $r->specialist_description,
             'Periods ' => $r->periods
         ];
-    }
-
-    public static function dateFields(): array
-    {
-        return ['date_retrieved'];
     }
 
     public static function groups(): array

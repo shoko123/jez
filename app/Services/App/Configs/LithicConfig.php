@@ -31,6 +31,15 @@ class LithicConfig  implements ConfigInterface
             'data.onps.*.value' => 'required|numeric|between:1,999',
         ];
     }
+
+    public static function specialFields(): array
+    {
+        return [
+            'dates' => ['date_retrieved'],
+            'onps' => true,
+        ];
+    }
+
     public static function showQuery(): array
     {
         return [
@@ -108,11 +117,6 @@ class LithicConfig  implements ConfigInterface
             // 'registration_notes' => $r->registration_notes,
             // 'weight' => $r->weight,
         ];
-    }
-
-    public static function dateFields(): array
-    {
-        return ['date_retrieved'];
     }
 
     public static function groups(): array

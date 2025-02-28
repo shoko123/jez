@@ -14,7 +14,7 @@
     </v-row>
 
     <v-row class="ga-1">
-      <v-text-field v-if="lf.stone_primary_classification_id" v-model="lf.stone_primary_classification_id"
+      <v-text-field v-if="lf.primary_classification_id" v-model="lf.primary_classification_id"
         label="Primary Classification" readonly filled></v-text-field>
       <v-text-field v-if="lf.material_id" v-model="lf.material_id" label="Material" readonly filled></v-text-field>
       <v-text-field v-if="item.weight" v-model="item.weight" label="Weight" readonly filled></v-text-field>

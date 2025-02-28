@@ -34,6 +34,14 @@ class LocusConfig  implements ConfigInterface
         ];
     }
 
+    public static function specialFields(): array
+    {
+        return [
+            'dates' => ['date_opened', 'date_closed'],
+            'enums' => ['clean']
+        ];
+    }
+
     public static function showQuery(): array
     {
         return [
@@ -92,11 +100,6 @@ class LocusConfig  implements ConfigInterface
             'Deposit' => $r->deposit,
             'Registration Notes' => $r->registration_notes,
         ];
-    }
-
-    public static function dateFields(): array
-    {
-        return ['date_opened', 'date_closed'];
     }
 
     public static function groups(): array

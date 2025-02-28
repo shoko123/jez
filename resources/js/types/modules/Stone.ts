@@ -31,7 +31,7 @@ type TStone = {
     rim_thickness: string
     base_diameter: string
     base_thickness: string
-    stone_primary_classification_id: number
+    primary_classification_id: number
     material_id: number
   }
 }

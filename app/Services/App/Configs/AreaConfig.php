@@ -27,6 +27,11 @@ class AreaConfig implements ConfigInterface
         ];
     }
 
+    public static function specialFields(): array
+    {
+        return [];
+    }
+
     public static function showQuery(): array
     {
         return [
@@ -73,11 +78,6 @@ class AreaConfig implements ConfigInterface
             'Description' => $r->description,
             'Notes' => $r->notes,
         ];
-    }
-
-    public static function dateFields(): array
-    {
-        return [];
     }
 
     public static function groups(): array

@@ -48,6 +48,15 @@ class FaunaConfig  implements ConfigInterface
         ];
     }
 
+    public static function specialFields(): array
+    {
+        return [
+            'dates' => ['date_retrieved'],
+            'lookupVals' => ['primary_taxon_id', 'scope_id', 'material_id'],
+            'onps' => true
+        ];
+    }
+
     public static function showQuery(): array
     {
         return [
@@ -114,11 +123,6 @@ class FaunaConfig  implements ConfigInterface
             'Scope' => $r->scope->name,
             'Material' => $r->material->name,
         ];
-    }
-
-    public static function dateFields(): array
-    {
-        return ['date_retrieved'];
     }
 
     public static function groups(): array

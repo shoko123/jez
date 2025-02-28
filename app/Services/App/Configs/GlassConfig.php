@@ -40,6 +40,14 @@ class GlassConfig implements ConfigInterface
         ];
     }
 
+    public static function specialFields(): array
+    {
+        return [
+            'dates' => ['date_retrieved'],
+            'lookupVals' => ['primary_classification_id'],
+        ];
+    }
+
     public static function showQuery(): array
     {
         return [
@@ -99,11 +107,6 @@ class GlassConfig implements ConfigInterface
             'Specialist Description' => $r->specialist_description,
             'Notes' => $r->notes,
         ];
-    }
-
-    public static function dateFields(): array
-    {
-        return ['date_retrieved'];
     }
 
     public static function groups(): array

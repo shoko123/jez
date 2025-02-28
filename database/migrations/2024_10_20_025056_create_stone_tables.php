@@ -36,7 +36,7 @@ return new class extends Migration
             $table->string('square', 20)->nullable();
             $table->string('level_top', 20)->nullable();
             $table->string('level_bottom', 20)->nullable();
-            $table->unsignedInteger('stone_primary_classification_id')->default(1);
+            $table->unsignedInteger('primary_classification_id')->default(1);
             $table->unsignedInteger('material_id')->default(1);
             $table->string('description', 400)->nullable();
             $table->string('notes', 400)->nullable();
@@ -62,7 +62,7 @@ return new class extends Migration
             $table->unique(['locus_id', 'code', 'basket_no', 'artifact_no'], 'idx_unique_find');
 
             //by default delete of row in parent table is rejected if any refernece exists.
-            $table->foreign('stone_primary_classification_id')
+            $table->foreign('primary_classification_id')
                 ->references('id')->on('stone_primary_classifications')
                 ->onUpdate('cascade');
 

@@ -24,6 +24,13 @@ class SurveyConfig  implements ConfigInterface
         ];
     }
 
+    public static function specialFields(): array
+    {
+        return [
+            'dates' => ['surveyed_date']
+        ];
+    }
+
     public static function showQuery(): array
     {
         return [
@@ -78,11 +85,6 @@ class SurveyConfig  implements ConfigInterface
             'Surveyed Date' => $r->surveyed_date,
             'Notes' => $r->notes,
         ];
-    }
-
-    public static function dateFields(): array
-    {
-        return ['surveyed_date'];
     }
 
     public static function groups(): array

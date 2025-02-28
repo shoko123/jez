@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import type {
   TApiModuleInit,
   TUrlModule,
+  TSpecialFields,
   TModule,
   TItemsPerPageByView,
   TViewsForCollection,
@@ -20,7 +21,7 @@ export const useModuleStore = defineStore('module', () => {
   const counts = ref({ items: 0, media: 0 })
   const welcomeText = ref<string>('')
   const firstSlug = ref<string>('')
-  const dateFields = ref<string[]>([])
+  const specialFields = ref<TSpecialFields>({})
   const itemsPerPage = ref<TItemsPerPageByView>({ Gallery: 0, Tabular: 0, Chips: 0 })
   const collectionViews = ref<TViewsForCollection>({ main: [], media: [], related: [] })
   const itemViews = ref<TItemViews>({ options: [], index: -1 })
@@ -45,7 +46,7 @@ export const useModuleStore = defineStore('module', () => {
     welcomeText.value = initData.welcome_text
     const ts = tagAndSlugFromId(initData.first_id, initData.module)
     firstSlug.value = ts.slug
-    dateFields.value = initData.dateFields
+    specialFields.value = initData.specialFields
     itemsPerPage.value = initData.display_options.items_per_page
     collectionViews.value = initData.display_options.collection_views
     itemViews.value.index = 0
@@ -149,7 +150,11 @@ export const useModuleStore = defineStore('module', () => {
   function prepareNewFields(fields: object) {
     const newFields = Object.fromEntries(
       Object.entries(fields).map(([key, value]) => {
-        if (dateFields.value.includes(key) && value !== null) {
+        if (
+          specialFields.value.dates &&
+          specialFields.value.dates.includes(key) &&
+          value !== null
+        ) {
           console.log(`converting field ${key}(${value}) to Date`)
           return [key, new Date(value)]
         } else {
@@ -182,11 +187,11 @@ export const useModuleStore = defineStore('module', () => {
     getCollectionViewName,
     getItemsPerPage,
     getCategorizerFunc,
-    itemViews, // itemView will only be refreshed if itemViews are exposed
+    itemViews,
     itemView,
     setNextItemView,
     resetItemView,
-    dateFields,
+    specialFields,
     prepareNewFields,
     changeCount,
   }
