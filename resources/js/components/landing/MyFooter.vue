@@ -7,12 +7,11 @@
       </v-btn>
     </div>
 
-    <div>
-      Phasellus feugiat arcu sapien, et iaculis ipsum elementum sit amet.
-      Mauris cursus commodo interdum.
-    </div>
+    <!-- <div>
+      Time is short and plenty to do
+    </div> -->
     <div class="mt-4">
-      {{ new Date().getFullYear() }} — <strong>Nala the destroyer</strong>
+      <strong>{{ new Date().getFullYear() }} — Nala Industries</strong>
     </div>
   </v-footer>
 </template>

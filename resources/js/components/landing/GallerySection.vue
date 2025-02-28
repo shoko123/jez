@@ -8,7 +8,7 @@
             </v-carousel-item>
         </v-carousel>
         <v-divider />
-        <div class="text-h6 font-weight-bold ml-2">{{ current.title }}</div>
+        <!-- <div class="text-h6 font-weight-bold ml-2">{{ current.title }}</div> -->
         <v-divider />
     </v-card>
 </template>
@@ -40,9 +40,9 @@ const images = computed(() => {
     return c
 })
 
-const current = computed(() => {
-    return images.value[model.value]!
-})
+// const current = computed(() => {
+//     return images.value[model.value]!
+// })
 
 </script>
 <style scoped>

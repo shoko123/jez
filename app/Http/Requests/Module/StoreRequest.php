@@ -8,14 +8,7 @@ class StoreRequest extends BaseRequest
 {
     public function authorize(): bool
     {
-        $p = '';
-        if ($this->isMethod('post')) {
-            $p = $this->input('module') . '-create';
-        } else {
-            $p = $this->input('module') . '-update';
-        }
-
-        return $this->user('sanctum')->can($p);
+        return $this->user('sanctum')->can($this->input('module') . '-' . ($this->isMethod('post') ? 'create' : 'update'));
     }
 
     public function rules(): array

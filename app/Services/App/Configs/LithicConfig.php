@@ -69,7 +69,7 @@ class LithicConfig  implements ConfigInterface
     public static function shortFormat(DigModuleModel $r): string
     {
         if (count($r->onps) === 0) {
-            return $r->field_description ?? '[No field description given]';
+            return $r->field_description ?? '[No typology or description given]';
         }
 
         $all = $r->onps->reduce(function (?string $carry, object $item) {
@@ -87,7 +87,6 @@ class LithicConfig  implements ConfigInterface
                 'date_retrieved',
                 'weight',
                 'field_description',
-                'registration_notes',
                 'specialist_notes'
             ],
             'with' => ['onps']
@@ -103,11 +102,11 @@ class LithicConfig  implements ConfigInterface
         return [
             'id' => $r->id,
             'date_retrieved' => $r->date_retrieved,
-            // 'weight' => $r->weight,
-            // 'field_description' => $r->field_description,
-            // 'registration_notes' => $r->registration_notes,
+            'Counts' => $counts_text,
+            'Field Description' => $r->field_description,
             'Specialist Notes' => $r->specialist_notes,
-            'Counts' => $counts_text
+            // 'registration_notes' => $r->registration_notes,
+            // 'weight' => $r->weight,
         ];
     }
 
