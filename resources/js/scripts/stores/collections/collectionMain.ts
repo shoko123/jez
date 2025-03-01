@@ -93,6 +93,9 @@ export const useCollectionMainStore = defineStore('collectionMain', () => {
   })
 
   const tabularHeaders = computed(() => {
+    if (page.value.length === 0) {
+      return [['', 'start', '']]
+    }
     const headers = Object.keys(page.value[0]!).map((x) => {
       return [x, typeof x === 'string' ? 'start' : 'end', x]
     })

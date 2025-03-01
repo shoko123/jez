@@ -9,7 +9,7 @@ class StoneInitDetails implements InitDetailsInterface
     public static function displayOptions(): array
     {
         return [
-            'item_views' => ['Main', 'Media', 'Related'],
+            'item_views' => ['Form', 'All', 'Media', 'Related'],
             'collection_views' => (object)[
                 'main' => ['Gallery', 'Tabular', 'Chips'],
                 'related' => ['Gallery', 'Tabular', 'Chips'],

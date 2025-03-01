@@ -10,8 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { VDataTableVirtual } from 'vuetify/lib/components/index.mjs'
-import type { TModule } from '@/types/moduleTypes'
+
 import type { TCName, TPage } from '@/types/collectionTypes'
 
 import { computed } from 'vue'
@@ -21,7 +20,7 @@ import { useCollectionRelatedStore } from '../../scripts/stores/collections/coll
 import { useRoutesMainStore } from '../../scripts/stores/routes/routesMain'
 import { useCollectionMainStore } from '@/scripts/stores/collections/collectionMain'
 
-type THeader = { title: string, align: 'start' | 'end' | 'center' | undefined, key: string }
+type THeader = { title: string, align: 'start' | 'end' | 'center', key: string }
 const props = defineProps<{
   source: TCName
   pageNoB1: number
@@ -49,7 +48,7 @@ const c = computed(() => {
 const page = computed(() => {
   switch (props.source) {
     case 'main':
-      return c.value.page as TPage<'main', 'Tabular', TModule>[]
+      return c.value.page as TPage<'main', 'Tabular'>[]
     case 'related':
       return c.value.page as unknown as TPage<'related', 'Tabular'>[]
     default:
@@ -61,7 +60,7 @@ const collectionIsNotEmpty = computed(() => {
   return page.value === undefined ? 0 : page.value.length > 0
 })
 
-async function btnClicked(item: TPage<'main', 'Tabular', TModule> | TPage<'related', 'Tabular'>) {
+async function btnClicked(item: TPage<'main', 'Tabular'> | TPage<'related', 'Tabular'>) {
   console.log(`pageTable.btnClicked() item: ${JSON.stringify(item, null, 2)}`)
   if (props.source === 'main') {
     await routerPush('show', item.slug)

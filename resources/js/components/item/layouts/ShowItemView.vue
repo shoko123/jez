@@ -7,8 +7,10 @@
       <ItemSelected source="Item" />
     </v-col>
   </v-row>
-  <CollectionForm source="media" class="my-2" />
-  <CollectionForm source="related" />
+  <template v-if="props.all">
+    <CollectionForm source="media" class="my-2" />
+    <CollectionForm source="related" />
+  </template>
 </template>
 
 <script lang="ts" setup>
@@ -16,10 +18,16 @@ import { computed, defineAsyncComponent } from 'vue'
 import { useDisplay } from 'vuetify'
 import ItemCard from '../item-views/ItemCard.vue'
 import CollectionForm from '../../collections/CollectionForm.vue'
+
 const ItemSelected = defineAsyncComponent(() => import('../../trio/TrioSelectedForm.vue'))
 const { smAndDown } = useDisplay()
+
+const props = defineProps<{
+  all: boolean
+}>()
 
 const widths = computed(() => {
   return smAndDown.value ? [12, 12] : [9, 3]
 })
+
 </script>

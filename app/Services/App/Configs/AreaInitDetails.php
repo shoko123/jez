@@ -9,13 +9,13 @@ class AreaInitDetails implements InitDetailsInterface
     public static function displayOptions(): array
     {
         return [
-            'item_views' => ['Main', 'Media', 'Related'],
+            'item_views' => ['Form', 'All', 'Media', 'Related'],
             'collection_views' => (object)[
                 'main' => ['Gallery', 'Tabular', 'Chips'],
                 'related' => ['Tabular', 'Gallery', 'Chips'],
                 'media' => ['Gallery'],
             ],
-            'items_per_page' => ['Gallery' => 36, 'Tabular' => 50, 'Chips' => 100]
+            'items_per_page' => (object)['Gallery' => 36, 'Tabular' => 50, 'Chips' => 100]
         ];
     }
 
