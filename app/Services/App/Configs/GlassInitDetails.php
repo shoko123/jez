@@ -15,7 +15,7 @@ class GlassInitDetails implements InitDetailsInterface
                 'related' => ['Gallery', 'Tabular', 'Chips'],
                 'media' => ['Gallery'],
             ],
-            'items_per_page' => ['Gallery' => 36, 'Tabular' => 50, 'Chips' => 100]
+            'items_per_page' => (object)['Gallery' => 36, 'Tabular' => 50, 'Chips' => 100]
         ];
     }
 

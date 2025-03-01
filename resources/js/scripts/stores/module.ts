@@ -44,13 +44,13 @@ export const useModuleStore = defineStore('module', () => {
     module.value = initData.module
     counts.value = initData.counts
     welcomeText.value = initData.welcome_text
-    const ts = tagAndSlugFromId(initData.first_id, initData.module)
-    firstSlug.value = ts.slug
+    firstSlug.value = tagAndSlugFromId(initData.first_id, initData.module).slug
     specialFields.value = initData.specialFields
-    itemsPerPage.value = initData.display_options.items_per_page
-    collectionViews.value = initData.display_options.collection_views
+    //
+    itemsPerPage.value = initData['display_options']['items_per_page']
+    collectionViews.value = initData['display_options']['collection_views']
+    itemViews.value.options = initData['display_options']['item_views']
     itemViews.value.index = 0
-    itemViews.value.options = initData.display_options.item_views
   }
 
   // Construct necessary module related structures (often accessed by module rather than by url_module).

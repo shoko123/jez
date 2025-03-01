@@ -35,7 +35,7 @@ const headers = computed(() => {
   if (props.source === 'main') {
     return tabularHeaders.value.map(x => {
       return { title: x[0], align: x[1], key: x[2] }
-    })
+    }) as THeader[]
   } else {
     return relatedTableHeaders.value as THeader[]
   }

@@ -57,10 +57,13 @@ export const useCollectionRelatedStore = defineStore('collectionRelated', () => 
     switch (viewName) {
       case 'Tabular':
         res = slice.map((x) => {
+          const ts = tagAndSlugFromId(x.id, x.module)
           return {
             ...x,
-            slug: tagAndSlugFromId(x.id, x.module)['slug'],
+            slug: ts.slug,
             tag: `${x.module} ${tagAndSlugFromId(x.id, x.module)['tag']}`,
+            moduleAndTag: `${x.module} ${tagAndSlugFromId(x.id, x.module)['tag']}`,
+            unique: `${x.relation_name}${x.module} ${x.id}`,
           }
         })
         break
