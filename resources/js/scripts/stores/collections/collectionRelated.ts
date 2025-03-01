@@ -61,9 +61,9 @@ export const useCollectionRelatedStore = defineStore('collectionRelated', () => 
           return {
             ...x,
             slug: ts.slug,
-            tag: `${x.module} ${tagAndSlugFromId(x.id, x.module)['tag']}`,
-            moduleAndTag: `${x.module} ${tagAndSlugFromId(x.id, x.module)['tag']}`,
-            unique: `${x.relation_name}${x.module} ${x.id}`,
+            tag: ts.tag,
+            moduleAndTag: `${x.module} ${ts.tag}`,
+            unique: `${x.relation_name}:${x.module}:${x.id}`,
           }
         })
         break

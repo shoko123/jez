@@ -1,9 +1,9 @@
 <template>
   <v-data-table-virtual v-if="collectionIsNotEmpty" :headers="headers" :items="page" class="elevation-1" height="80vh"
-    item-value="slug" fixed-header>
+    item-value="unique" fixed-header>
     <template #[`item.tag`]="{ item }">
       <v-btn @click="btnClicked(item)">
-        {{ item.tag }}
+        {{ item.moduleAndTag }}
       </v-btn>
     </template>
   </v-data-table-virtual>

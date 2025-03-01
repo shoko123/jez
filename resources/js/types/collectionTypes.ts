@@ -58,7 +58,7 @@ type TApiPage<S extends TCName = TCName, V extends TView<S> = TView<S>> = S exte
 
 type TPage<S extends TCName = TCName, V extends TView<S> = TView<S>> = V extends 'Gallery'
   ? SwapUrlWithMedia<TApiPage<S, V>> & { tag: string; slug: string }
-  : TApiPage<S, V> & { tag: string; slug: string }
+  : TApiPage<S, V> & { tag: string; slug: string; moduleAndTag?: string; unique?: string }
 
 // //convert media property type from the api's TMediaUrls to the frontend's TMediaOfItem
 type SwapUrlWithMedia<T extends TApiPage<TCName, 'Gallery'>> = Omit<T, 'urls'> & {

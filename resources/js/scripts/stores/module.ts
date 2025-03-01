@@ -49,7 +49,7 @@ export const useModuleStore = defineStore('module', () => {
     //
     itemsPerPage.value = initData['display_options']['items_per_page']
     collectionViews.value = initData['display_options']['collection_views']
-    itemViews.value.options = initData['display_options']['item_views']
+    itemViews.value.options = [...initData['display_options']['item_views']]
     itemViews.value.index = 0
   }
 
