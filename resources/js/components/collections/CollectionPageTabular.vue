@@ -3,7 +3,12 @@
     item-value="unique" fixed-header>
     <template #[`item.tag`]="{ item }">
       <v-btn @click="btnClicked(item)">
-        {{ item.moduleAndTag }}
+        <template v-if="isMain">
+          {{ item.tag }}
+        </template>
+        <template v-else>
+          {{ item.moduleAndTag }}
+        </template>
       </v-btn>
     </template>
   </v-data-table-virtual>
@@ -31,8 +36,12 @@ const { relatedTableHeaders } = storeToRefs(useCollectionRelatedStore())
 const { tabularHeaders } = storeToRefs(useCollectionMainStore())
 const { routerPush, moveToRelatedItem } = useRoutesMainStore()
 
+const isMain = computed(() => {
+  return props.source === 'main'
+})
+
 const headers = computed(() => {
-  if (props.source === 'main') {
+  if (isMain.value) {
     return tabularHeaders.value.map(x => {
       return { title: x[0], align: x[1], key: x[2] }
     }) as THeader[]
