@@ -26,14 +26,12 @@ type TDefs = {
   Metal: TMetal
 }
 
-type TModuleDefinitionImplementation = {
-  [K in keyof TDefs]: {
-    idRegExp: RegExp
-    idDerived: (g: Record<string, string>) => { slug: string; tag: string }
-    slugRegExp: RegExp
-    idFormatter: (g: Record<string, string>) => string
-    categorizerFunc?: (p: TFields) => Record<string, number> // Use generic TFields and narrow in specific implementations
-  }
+type TModuleConfigs = {
+  idRegExp: RegExp
+  idDerived: (g: Record<string, string>) => { slug: string; tag: string }
+  slugRegExp: RegExp
+  idFormatter: (g: Record<string, string>) => string
+  categorizerFuncs?: (fields?: TFields) => Record<string, number> // Use generic TFields and narrow in specific implementations
 }
 
 // Conversions of Module <--> UrlModule
@@ -124,6 +122,7 @@ export {
   TModuleToUrlName,
   TSpecialFields,
   TUrlModuleNameToModule,
+  TModuleConfigs,
   TApiModuleInit,
   TViewsForCollection,
   TItemsPerPageByView,
@@ -139,5 +138,4 @@ export {
   TFieldInfo,
   TFieldsErrors,
   TFieldsDefaultsAndRules,
-  TModuleDefinitionImplementation,
 }

@@ -5,6 +5,7 @@ import type {
   TUrlModule,
   TSpecialFields,
   TModule,
+  TModuleConfigs,
   TItemsPerPageByView,
   TViewsForCollection,
   TModuleToUrlName,
@@ -14,7 +15,16 @@ import type {
 import type { TCName } from '@/types/collectionTypes'
 type TItemViews = { options: string[]; index: number }
 
-import { moduleDefinitions } from './moduleDefinitions'
+import { AreaConfigs } from '../../configs/AreaConfigs'
+import { SeasonConfigs } from '../../configs/SeasonConfigs'
+import { SurveyConfigs } from '../../configs/SurveyConfigs'
+import { LocusConfigs } from '../../configs/LocusConfigs'
+import { CeramicConfigs } from '../../configs/CeramicConfigs'
+import { FaunaConfigs } from '../../configs/FaunaConfigs'
+import { GlassConfigs } from '../../configs/GlassConfigs'
+import { LithicConfigs } from '../../configs/LithicConfigs'
+import { MetalConfigs } from '../../configs/MetalConfigs'
+import { StoneConfigs } from '../../configs/StoneConfigs'
 
 export const useModuleStore = defineStore('module', () => {
   const module = ref<TModule>('Locus')
@@ -40,7 +50,32 @@ export const useModuleStore = defineStore('module', () => {
     Glass: 'glass',
   })
 
-  function setModuleInfo(initData: TApiModuleInit) {
+  function getModuleConfigs(moduleName: TModule): TModuleConfigs {
+    switch (moduleName) {
+      case 'Area':
+        return AreaConfigs.getConfigs()
+      case 'Season':
+        return SeasonConfigs.getConfigs()
+      case 'Survey':
+        return SurveyConfigs.getConfigs()
+      case 'Locus':
+        return LocusConfigs.getConfigs()
+      case 'Ceramic':
+        return CeramicConfigs.getConfigs()
+      case 'Fauna':
+        return FaunaConfigs.getConfigs()
+      case 'Glass':
+        return GlassConfigs.getConfigs()
+      case 'Lithic':
+        return LithicConfigs.getConfigs()
+      case 'Metal':
+        return MetalConfigs.getConfigs()
+      case 'Stone':
+        return StoneConfigs.getConfigs()
+    }
+  }
+
+  async function setModuleInfo(initData: TApiModuleInit) {
     module.value = initData.module
     counts.value = initData.counts
     welcomeText.value = initData.welcome_text
@@ -98,8 +133,9 @@ export const useModuleStore = defineStore('module', () => {
     return itemViews.value.options[itemViews.value.index]
   })
 
-  function getCategorizerFunc() {
-    return moduleDefinitions[module.value].categorizerFunc ?? null
+  function getCategorizerFuncs() {
+    const configs = getModuleConfigs(module.value)
+    return configs.categorizerFuncs ?? null
   }
 
   // id, tag and slug conversions
@@ -107,13 +143,15 @@ export const useModuleStore = defineStore('module', () => {
     module: TModule,
     slug: string,
   ): { success: true; id: string } | { success: false; message: string } {
-    const res = moduleDefinitions[module].slugRegExp.exec(slug)
+    const config = getModuleConfigs(module)
+    const res = config.slugRegExp.exec(slug)
+
     if (res === null) {
       return { success: false, message: `Unsupported ${module} slug: ${slug}` }
     } else {
       return {
         success: true,
-        id: moduleDefinitions[module].idFormatter(res.groups!),
+        id: config.idFormatter(res.groups!),
       }
     }
   }
@@ -122,12 +160,18 @@ export const useModuleStore = defineStore('module', () => {
     // If the module is not provided, use current.
     const mod = m === undefined ? module.value : m
 
-    const res = moduleDefinitions[mod].idRegExp.exec(id)
+    const config = getModuleConfigs(mod)
+    const res = config.idRegExp.exec(id)
+
+    // console.log(
+    //   `tagAndSlugFromId idRegEx: ${config.idRegExp.toString()}, slugRegEx: ${config.slugRegExp.toString()}`,
+    // )
+
     if (res === null) {
       console.log(`*** Error in Formatting id (${mod}) "${id}"`)
       return { tag: '', slug: '' }
     } else {
-      return moduleDefinitions[mod].idDerived(res.groups!)
+      return config.idDerived(res.groups!)
     }
   }
 
@@ -186,7 +230,7 @@ export const useModuleStore = defineStore('module', () => {
     getCollectionViews,
     getCollectionViewName,
     getItemsPerPage,
-    getCategorizerFunc,
+    getCategorizerFuncs,
     itemViews,
     itemView,
     setNextItemView,

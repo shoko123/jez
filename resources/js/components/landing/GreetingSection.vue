@@ -27,7 +27,7 @@ const { smAndDown } = useDisplay()
 const { bucketUrl } = storeToRefs(useMainStore())
 
 const header = computed(() => {
-  return `Welcome to the Jezreel-Expedition database website!`
+  return `Welcome to the Jezreel Expedition Database Website!`
 })
 
 const text = computed(() => {

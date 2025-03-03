@@ -17,7 +17,7 @@ import { useModuleStore } from '../module'
 
 export const useTrioStore = defineStore('trio', () => {
   const { current } = storeToRefs(useRoutesMainStore())
-  const { getCategorizerFunc } = useModuleStore()
+  const { getCategorizerFuncs } = useModuleStore()
   const trio = ref<TTrio>({ categories: [], groupsObj: {}, optionsObj: {} })
   const groupLabelToGroupKeyObj = ref<TGroupOrFieldToKeyObj>({})
   const itemFieldsToGroupKeyObj = ref<TGroupOrFieldToKeyObj>({})
@@ -359,13 +359,13 @@ export const useTrioStore = defineStore('trio', () => {
     // Categorized
     //////////////
 
-    const catFunc = getCategorizerFunc()
+    const catFunc = getCategorizerFuncs()
     if (catFunc === null) {
       return
     }
     // console.log(`itemSetFieldsKeys() fields:${JSON.stringify(fields, null, 2)}`)
     const categorizerGroupOptionObj = catFunc(fields)
-    // console.log(`categorizerFunc() =>  ${JSON.stringify(categorizerGroupOptionObj, null, 2)}`)
+    // console.log(`categorizerFuncs() =>  ${JSON.stringify(categorizerGroupOptionObj, null, 2)}`)
 
     for (const groupLabel in categorizerGroupOptionObj) {
       const index = categorizerGroupOptionObj[groupLabel]!
@@ -393,10 +393,10 @@ export const useTrioStore = defineStore('trio', () => {
     let optionKey: string | undefined
     let val: TFieldValue = 0
 
-    // const catFunc = getCategorizerFunc()
+    // const catFunc = getCategorizerFuncs()
     // console.log(`itemFieldsOptions() fields:${JSON.stringify(fields, null, 2)}`)
     // const categorizerGroupOptionObj = catFunc(fields)
-    // console.log(`categorizerFunc() =>  ${JSON.stringify(categorizerGroupOptionObj, null, 2)}`)
+    // console.log(`categorizerFuncs() =>  ${JSON.stringify(categorizerGroupOptionObj, null, 2)}`)
 
     Object.entries(itemFieldsToGroupKeyObj.value).forEach(([key, value]) => {
       // console.log(`[key: ${key}] => ${value}`)

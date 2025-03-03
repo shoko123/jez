@@ -136,7 +136,6 @@ type TGroupObj = {
 
 /////////// extra types /////////////////////////
 
-type TCategorizerFunc = (val: TFieldValue) => number
 type TCategoriesArray = { name: string; groupKeys: string[] }[]
 type TGroupOrFieldToKeyObj = { [key: string]: string }
 
@@ -153,7 +152,6 @@ export {
   TGroupOrFieldToKeyObj,
   TOptionWithoutGroupKey,
   TOption,
-  TCategorizerFunc,
   TApiGroup,
   TGroupSpaceAndCode,
   TGroup,
