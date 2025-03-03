@@ -40,7 +40,7 @@ class SeasonConfig  implements ConfigInterface
         return [
             'with' => [
                 'media' => function ($query) {
-                    $query->orderBy('order_column')->limit(1);
+                    $query->orderBy('order_column');
                 }
             ]
         ];

@@ -1,16 +1,15 @@
-import type { TModuleConfigs, TFields } from '../types/moduleTypes'
+import type { TModuleConfigs, TFields, TCategorizerFuncs } from '../types/moduleTypes'
 import { CommonConfigs } from './common/CommonConfigs'
 
 export abstract class FaunaConfigs {
-  public static getConfigs(): TModuleConfigs {
-    const common = CommonConfigs.getConfigs()
-
-    common.categorizerFuncs = (fields) => {
-      const d = fields as TFields<'Fauna'>
-      return {
-        'Registration Scope': d.artifact_no === 0 ? 0 : 1,
-      }
+  private static categorizerFuncs: TCategorizerFuncs = (fields?: TFields) => {
+    const d = fields as TFields<'Ceramic'>
+    return {
+      'Registration Scope': d.artifact_no === 0 ? 0 : 1,
     }
-    return common
+  }
+
+  public static getConfigs(): TModuleConfigs {
+    return { ...CommonConfigs.getConfigs(), ...FaunaConfigs.categorizerFuncs } as const
   }
 }

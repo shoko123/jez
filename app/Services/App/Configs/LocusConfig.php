@@ -49,7 +49,7 @@ class LocusConfig  implements ConfigInterface
                 'module_tags.tag_group',
                 'global_tags.tag_group',
                 'media' => function ($query) {
-                    $query->orderBy('order_column')->limit(1);
+                    $query->orderBy('order_column');
                 }
             ]
         ];

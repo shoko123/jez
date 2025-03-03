@@ -1,13 +1,12 @@
-import type { TModuleConfigs } from '../types/moduleTypes'
+import type { TModuleConfigs, TCategorizerFuncs } from '../types/moduleTypes'
 import { CommonConfigs } from './common/CommonConfigs'
 
 export abstract class GlassConfigs {
-  public static getConfigs(): TModuleConfigs {
-    const common = CommonConfigs.getConfigs()
+  private static categorizerFuncs: TCategorizerFuncs = () => {
+    return {}
+  }
 
-    common.categorizerFuncs = () => {
-      return {}
-    }
-    return common
+  public static getConfigs(): TModuleConfigs {
+    return { ...CommonConfigs.getConfigs(), ...GlassConfigs.categorizerFuncs } as const
   }
 }

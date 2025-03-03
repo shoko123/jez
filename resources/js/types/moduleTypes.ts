@@ -25,13 +25,13 @@ type TDefs = {
   Fauna: TFauna
   Metal: TMetal
 }
-
+type TCategorizerFuncs = (fields?: TFields) => Record<string, number>
 type TModuleConfigs = {
   idRegExp: RegExp
   idDerived: (g: Record<string, string>) => { slug: string; tag: string }
   slugRegExp: RegExp
   idFormatter: (g: Record<string, string>) => string
-  categorizerFuncs?: (fields?: TFields) => Record<string, number> // Use generic TFields and narrow in specific implementations
+  categorizerFuncs?: TCategorizerFuncs // Use generic TFields and narrow in specific implementations
 }
 
 // Conversions of Module <--> UrlModule
@@ -124,13 +124,13 @@ export {
   TUrlModuleNameToModule,
   TModuleConfigs,
   TApiModuleInit,
+  TCategorizerFuncs,
   TViewsForCollection,
   TItemsPerPageByView,
   TModuleBtnsInfo,
   TApiTabular,
-  // TTabular,
-  // id, slug & tag
-  //item fields
+
+  // Item fields
   TFieldValue,
   TApiFields,
   TFields,

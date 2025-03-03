@@ -52,7 +52,7 @@ class CeramicConfig  implements ConfigInterface
                 'module_tags.tag_group',
                 'global_tags.tag_group',
                 'media' => function ($query) {
-                    $query->orderBy('order_column')->limit(1);
+                    $query->orderBy('order_column');
                 }
             ]
         ];
@@ -288,8 +288,8 @@ class CeramicConfig  implements ConfigInterface
                 default:
                     // Throw exception
             }
-            return $builder;
         }
+        return $builder;
     }
 
     private static function filterScope(Builder $builder, array $vals): Builder
