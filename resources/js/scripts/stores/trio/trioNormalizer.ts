@@ -9,6 +9,7 @@ import type {
   TGroupOrFieldToKeyObj,
   TApiGroup,
   TOptionWithoutGroupKey,
+  TGroup,
 } from '@/types/trioTypes'
 
 let categories: TCategoriesArray = []
@@ -16,7 +17,6 @@ let groupsObj: TGroupObj = {}
 let optionsObj: TOptionObj = {}
 let groupLabelToGroupKeyObj: TGroupOrFieldToKeyObj = {}
 let itemFieldsToGroupKeyObj: TGroupOrFieldToKeyObj = {}
-let orderByOptions: string[] = []
 let catCnt = 0
 const grpCnt = ref(0)
 let prmCnt = 0
@@ -93,7 +93,6 @@ export async function normalizeTrio(apiTrio: TApiTrio) {
     trio: { categories, groupsObj, optionsObj },
     groupLabelToGroupKeyObj,
     itemFieldsToGroupKeyObj,
-    orderByOptions,
   }
 }
 
@@ -214,8 +213,14 @@ function handleMD<C extends 'MD'>(grp: TApiGroup<C>) {
   addToGroupAndOptionObjects(grp, options)
 }
 
-function handleOB<C extends 'OB'>(grp: TApiGroup<C>) {
-  orderByOptions = grp.options
-  const options = Array<TOptionWithoutGroupKey>(grp.options.length).fill({ text: '', extra: null })
-  addToGroupAndOptionObjects(grp, options)
+function handleOB<C extends 'OB'>(apiGrp: TApiGroup<C>) {
+  const grp: Partial<TGroup<'OB'>> = {}
+  grp.orderByOptions = apiGrp.options
+  grp.code = apiGrp.code
+  grp.label = apiGrp.label
+  const options = Array<TOptionWithoutGroupKey>(apiGrp.options.length).fill({
+    text: '',
+    extra: null,
+  })
+  addToGroupAndOptionObjects(grp as TApiGroup, options)
 }

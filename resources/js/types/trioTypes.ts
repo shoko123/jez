@@ -79,7 +79,7 @@ type TDefs = {
   // order by
   OB: {
     API: { options: string[] }
-    TRIO: object
+    TRIO: { orderByOptions: string[] }
   }
 }
 

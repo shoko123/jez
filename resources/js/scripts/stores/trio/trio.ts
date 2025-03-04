@@ -22,8 +22,6 @@ export const useTrioStore = defineStore('trio', () => {
   const groupLabelToGroupKeyObj = ref<TGroupOrFieldToKeyObj>({})
   const itemFieldsToGroupKeyObj = ref<TGroupOrFieldToKeyObj>({})
 
-  const orderByOptions = ref<string[]>([])
-
   const taggerAllOptionKeys = ref<string[]>([])
   const filterAllOptionKeys = ref<string[]>([])
   const itemAllOptionKeys = ref<string[]>([])
@@ -39,7 +37,6 @@ export const useTrioStore = defineStore('trio', () => {
     const res = await normalizeTrio(apiTrio)
     trio.value = res.trio
     groupLabelToGroupKeyObj.value = res.groupLabelToGroupKeyObj
-    orderByOptions.value = res.orderByOptions
     itemFieldsToGroupKeyObj.value = res.itemFieldsToGroupKeyObj
   }
 
@@ -51,7 +48,14 @@ export const useTrioStore = defineStore('trio', () => {
     itemAllOptionKeys.value = []
     trio.value = { categories: [], groupsObj: {}, optionsObj: {} }
     groupLabelToGroupKeyObj.value = {}
-    orderByOptions.value = []
+  }
+
+  function getOptionFromKey(optionKey: string) {
+    return trio.value.optionsObj[optionKey]!
+  }
+
+  function getGroupFromKey(groupKey: string) {
+    return trio.value.groupsObj[groupKey]!
   }
 
   ////////////////////////////////
@@ -454,8 +458,8 @@ export const useTrioStore = defineStore('trio', () => {
   }
 
   function optionClicked(prmKey: string) {
-    const option = trio.value.optionsObj[prmKey]!
-    const group = trio.value.groupsObj[option.groupKey]!
+    const option = getOptionFromKey(prmKey) // trio.value.optionsObj[prmKey]!
+    const group = getGroupFromKey(option.groupKey) //trio.value.groupsObj[option.groupKey]!
 
     const isSelected = selectedOptionKeysByRoute.value.includes(prmKey)
     console.log(`TRIO.click(${getFullName(prmKey)}[${isSelected ? '+' : '-'}])`)
@@ -633,7 +637,13 @@ export const useTrioStore = defineStore('trio', () => {
 
   ////// Order By //////////////
   const orderByGroup = computed(() => {
-    return trio.value.groupsObj[groupLabelToGroupKeyObj.value['Order By']!]
+    return groupLabelToGroupKeyObj.value['Order By']
+      ? (getGroupFromKey(groupLabelToGroupKeyObj.value['Order By']!) as TGroup<'OB'>)
+      : undefined
+  })
+
+  const orderByOptions = computed(() => {
+    return orderByGroup.value ? orderByGroup.value.orderByOptions : []
   })
 
   function orderByClear() {
