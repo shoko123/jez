@@ -9,7 +9,8 @@ export const useTaggerStore = defineStore('tagger', () => {
   const { fields } = storeToRefs(useItemStore())
   const { send } = useXhrStore()
   const { module } = storeToRefs(useModuleStore())
-  const { trio, itemAllOptionKeys, taggerAllOptionKeys } = storeToRefs(useTrioStore())
+  const { getGroupFromKey, getOptionFromKey } = useTrioStore()
+  const { itemAllOptionKeys, taggerAllOptionKeys } = storeToRefs(useTrioStore())
 
   function taggerCopyItemOptionsToTagger() {
     const tmp = [...itemAllOptionKeys.value]
@@ -23,7 +24,7 @@ export const useTaggerStore = defineStore('tagger', () => {
   // Clear module & global tags
   function taggerSetDefaultOptions() {
     taggerAllOptionKeys.value = taggerAllOptionKeys.value.filter((x) => {
-      const group = trio.value.groupsObj[trio.value.optionsObj[x]!.groupKey]!
+      const group = getGroupFromKey(getOptionFromKey(x).groupKey)
       return !['TM', 'TG'].includes(group.code)
     })
   }
@@ -36,21 +37,21 @@ export const useTaggerStore = defineStore('tagger', () => {
     }
 
     taggerAllOptionKeys.value.forEach((optionKey) => {
-      const group = trio.value.groupsObj[trio.value.optionsObj[optionKey]!.groupKey]!
+      const option = getOptionFromKey(optionKey)
+      const group = getGroupFromKey(option.groupKey)
       switch (group.code) {
         case 'TG':
-          optionsParams.global_tag_ids.push(<number>trio.value.optionsObj[optionKey]!.extra)
+          optionsParams.global_tag_ids.push(<number>option.extra)
           break
 
         case 'TM':
-          optionsParams.module_tag_ids.push(<number>trio.value.optionsObj[optionKey]!.extra)
+          optionsParams.module_tag_ids.push(<number>option.extra)
           break
 
         case 'LV':
         case 'EM':
           {
             if (group.useInTagger) {
-              const option = trio.value.optionsObj[optionKey]!
               optionsParams.fields.push({
                 field_name: group.field_name!,
                 val: group.code === 'LV' ? option.extra : option.text,

@@ -51,11 +51,11 @@ export const useTrioStore = defineStore('trio', () => {
   }
 
   function getOptionFromKey(optionKey: string) {
-    return trio.value.optionsObj[optionKey]!
+    return { ...trio.value.optionsObj[optionKey]! } as const
   }
 
   function getGroupFromKey(groupKey: string) {
-    return trio.value.groupsObj[groupKey]!
+    return { ...trio.value.groupsObj[groupKey]! } as const
   }
 
   ////////////////////////////////
@@ -210,7 +210,7 @@ export const useTrioStore = defineStore('trio', () => {
 
     availableGroupKeysByRoute.value.forEach((x) => {
       const group = getGroupFromKey(x)
-      tmp[x] = selectedCount(group?.optionKeys, selectedOptionKeysByRoute.value)
+      tmp[x] = selectedCount(group.optionKeys, selectedOptionKeysByRoute.value)
     })
     return tmp
   })
@@ -607,11 +607,9 @@ export const useTrioStore = defineStore('trio', () => {
   }
 
   function getFullName(optionKey: string) {
-    const optionObj = getOptionFromKey(optionKey)
-    const optionName = optionObj?.text
-    const grpKey = optionObj?.groupKey
-    const group = getGroupFromKey(grpKey!)
-    return `${group?.label}:${optionName}` //`${group?.label}:${optionName} (${grpKey}:${optionKey})`
+    const option = getOptionFromKey(optionKey)
+    const group = getGroupFromKey(option.groupKey)
+    return `${group.label}:${option.text}`
   }
 
   // Tagger
@@ -645,7 +643,7 @@ export const useTrioStore = defineStore('trio', () => {
 
   function orderByClear() {
     orderByGroup.value?.optionKeys.forEach((x) => {
-      getOptionFromKey(x).text = ''
+      trio.value.optionsObj[x]!.text = ''
       if (filterAllOptionKeys.value.includes(x)) {
         const i = filterAllOptionKeys.value.indexOf(x)
         filterAllOptionKeys.value.splice(i, 1)
@@ -667,9 +665,8 @@ export const useTrioStore = defineStore('trio', () => {
           const i = filterAllOptionKeys.value.indexOf(x)
           filterAllOptionKeys.value.splice(i, 1)
         }
-        const param = getOptionFromKey(x)
-        param.text = ''
-        param.extra = ''
+        trio.value.optionsObj[x]!.text = ''
+        trio.value.optionsObj[x]!.extra = ''
       })
       return
     }
@@ -679,9 +676,8 @@ export const useTrioStore = defineStore('trio', () => {
       const group = getGroupFromKey(value)
       if (group.code === 'SF') {
         group.optionKeys.forEach((x) => {
-          const param = getOptionFromKey(x)
-          param.text = ''
-          param.extra = ''
+          trio.value.optionsObj[x]!.text = ''
+          trio.value.optionsObj[x]!.extra = ''
         })
       }
     }

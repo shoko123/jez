@@ -17,7 +17,7 @@ export const useItemNewStore = defineStore('itemNew', () => {
   const { tagAndSlugFromId } = useModuleStore()
   const { send } = useXhrStore()
   const { getCollectionStore } = useCollectionsStore()
-  const { itemFieldsOptions } = useTrioStore()
+  const { itemFieldsOptions, getOptionFromKey } = useTrioStore()
   const { trio, groupLabelToGroupKeyObj } = storeToRefs(useTrioStore())
   const { onps } = storeToRefs(useItemStore())
   const currentIds = ref<string[]>([])
@@ -78,7 +78,7 @@ export const useItemNewStore = defineStore('itemNew', () => {
     // Copy onps from trio
     dataNew.value.allOnps = dataNew.value.allOnps.concat(
       group.optionKeys.map((x) => {
-        const paramInfo = trio.value.optionsObj[x]!
+        const paramInfo = getOptionFromKey(x)
         return {
           label: paramInfo.text,
           id: paramInfo.extra as number,
