@@ -58,6 +58,10 @@ export const useTrioStore = defineStore('trio', () => {
     return { ...trio.value.groupsObj[groupKey]! } as const
   }
 
+  function getGroupKeyFromLabel(groupLabel: string) {
+    return groupLabelToGroupKeyObj.value[groupLabel] as string
+  }
+
   ////////////////////////////////
   // Displayed options (Read Only)
   ////////////////////////////////
@@ -371,7 +375,7 @@ export const useTrioStore = defineStore('trio', () => {
 
     for (const groupLabel in categorizerGroupOptionObj) {
       const index = categorizerGroupOptionObj[groupLabel]!
-      const group = getGroupFromKey(groupLabelToGroupKeyObj.value[groupLabel]!)
+      const group = getGroupFromKey(getGroupKeyFromLabel(groupLabel))
       // console.log(
       //   `${groupLabel} => ${index} =>  ${JSON.stringify(categorizerGroupOptionObj, null, 2)}`,
       // )
@@ -632,7 +636,7 @@ export const useTrioStore = defineStore('trio', () => {
 
   ////// Order By //////////////
   const orderByGroup = computed(() => {
-    return groupLabelToGroupKeyObj.value['Order By']
+    return getGroupKeyFromLabel('Order By')
       ? (getGroupFromKey(groupLabelToGroupKeyObj.value['Order By']!) as TGroup<'OB'>)
       : undefined
   })
@@ -693,7 +697,7 @@ export const useTrioStore = defineStore('trio', () => {
     // console.log(`SaveItem - Add extrnal (module and global) tags`)
     const tagOptionKey: string[] = []
     for (const x of apiTags) {
-      const group = getGroupFromKey(groupLabelToGroupKeyObj.value[x.group_label]!)
+      const group = getGroupFromKey(getGroupKeyFromLabel(x.group_label))
       if (group === undefined) {
         console.log(`*** itemApiTagsToOptionKeys() - Can't find group ${x.group_label}`)
         throw new Error(`*** itemApiTagsToOptionKeys() - Can't find group ${x.group_label}`)
@@ -758,6 +762,7 @@ export const useTrioStore = defineStore('trio', () => {
     // Trio setup and data structures
     trio,
     groupLabelToGroupKeyObj,
+    getGroupKeyFromLabel,
     clearTrio,
     setTrio,
   }

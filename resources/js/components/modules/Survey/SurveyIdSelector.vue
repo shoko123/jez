@@ -29,8 +29,7 @@ import { useRoutesMainStore } from '../../../scripts/stores/routes/routesMain'
 const { pushHome } = useRoutesMainStore()
 const { tagAndSlugFromId } = useModuleStore()
 const { openIdSelectorModal, dataNew } = storeToRefs(useItemNewStore())
-const { getGroupFromKey, getOptionFromKey } = useTrioStore()
-const { groupLabelToGroupKeyObj } = storeToRefs(useTrioStore())
+const { getGroupKeyFromLabel, getGroupFromKey, getOptionFromKey } = useTrioStore()
 const { send } = useXhrStore()
 
 const nf = computed(() => {
@@ -43,7 +42,7 @@ await getExistingFeatureNos()
 // setup - end
 
 const areas = computed(() => {
-  const group = getGroupFromKey(groupLabelToGroupKeyObj.value['Area']!)
+  const group = getGroupFromKey(getGroupKeyFromLabel('Area'))
   return group.optionKeys.map(k => {
     const option = getOptionFromKey(k)
     return { title: option.text, value: option.extra }

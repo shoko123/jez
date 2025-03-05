@@ -34,8 +34,7 @@ const { pushHome } = useRoutesMainStore()
 const { tagAndSlugFromId } = useModuleStore()
 const { fields } = storeToRefs(useItemStore())
 const { openIdSelectorModal, dataNew } = storeToRefs(useItemNewStore())
-const { getGroupFromKey, getOptionFromKey } = useTrioStore()
-const { groupLabelToGroupKeyObj } = storeToRefs(useTrioStore())
+const { getGroupKeyFromLabel, getGroupFromKey, getOptionFromKey } = useTrioStore()
 const { send } = useXhrStore()
 
 const nf = computed(() => {
@@ -55,7 +54,7 @@ await getExistingLociNos()
 
 
 const seasons = computed(() => {
-  const group = getGroupFromKey(groupLabelToGroupKeyObj.value['Season']!)
+  const group = getGroupFromKey(getGroupKeyFromLabel('Season'))
   return group.optionKeys.map(k => {
     const option = getOptionFromKey(k)
     return { title: option.text, value: option.extra }
@@ -63,7 +62,7 @@ const seasons = computed(() => {
 })
 
 const areas = computed(() => {
-  const group = getGroupFromKey(groupLabelToGroupKeyObj.value['Area']!)
+  const group = getGroupFromKey(getGroupKeyFromLabel('Area'))
   return group.optionKeys.map(k => {
     const option = getOptionFromKey(k)
     return { title: option.text, value: option.extra }

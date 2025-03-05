@@ -17,8 +17,9 @@ export const useItemNewStore = defineStore('itemNew', () => {
   const { tagAndSlugFromId } = useModuleStore()
   const { send } = useXhrStore()
   const { getCollectionStore } = useCollectionsStore()
-  const { itemFieldsOptions, getOptionFromKey } = useTrioStore()
-  const { trio, groupLabelToGroupKeyObj } = storeToRefs(useTrioStore())
+  const { getGroupKeyFromLabel, itemFieldsOptions, getOptionFromKey, getGroupFromKey } =
+    useTrioStore()
+  const { groupLabelToGroupKeyObj } = storeToRefs(useTrioStore())
   const { onps } = storeToRefs(useItemStore())
   const currentIds = ref<string[]>([])
   const slug = ref<string | undefined>(undefined)
@@ -64,8 +65,8 @@ export const useItemNewStore = defineStore('itemNew', () => {
 
     dataNew.value.allOnps = []
     for (const property in groupLabelToGroupKeyObj.value) {
-      // console.log(`${property}: ${groupLabelToGroupKeyObj.value[property]}`)
-      const group = trio.value.groupsObj[groupLabelToGroupKeyObj.value[property]!]!
+      // console.log(`${property}: ${getGroupKeyFromLabel(property)}`)
+      const group = getGroupFromKey(getGroupKeyFromLabel(property))
 
       if (group.code === 'ON') {
         addOnpGroup(group as TGroup<'ON'>)

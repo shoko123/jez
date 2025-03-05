@@ -46,8 +46,7 @@ const { pushHome } = useRoutesMainStore()
 const { current } = storeToRefs(useRoutesMainStore())
 
 const { openIdSelectorModal, dataNew } = storeToRefs(useItemNewStore())
-const { getGroupFromKey, getOptionFromKey } = useTrioStore()
-const { groupLabelToGroupKeyObj } = storeToRefs(useTrioStore())
+const { getGroupFromKey, getOptionFromKey, getGroupKeyFromLabel } = useTrioStore()
 const { send } = useXhrStore()
 
 const props = defineProps<{
@@ -78,7 +77,7 @@ basketNo.value = props.defaults.basketNo
 artifactNo.value = null  // null on initial call
 
 const seasons = computed(() => {
-  const group = getGroupFromKey(groupLabelToGroupKeyObj.value['Season']!)
+  const group = getGroupFromKey(getGroupKeyFromLabel('Season'))
   return group?.optionKeys.map(k => {
     const option = getOptionFromKey(k)
     return { title: option.text, value: option.extra }
@@ -92,7 +91,7 @@ async function seasonChanged() {
 }
 
 const areas = computed(() => {
-  const group = getGroupFromKey(groupLabelToGroupKeyObj.value['Area']!)
+  const group = getGroupFromKey(getGroupKeyFromLabel('Area'))
   return group?.optionKeys.map(k => {
     const option = getOptionFromKey(k)
     return { title: option.text, value: option.extra }
@@ -167,7 +166,7 @@ const locus = computed(() => {
 })
 
 const codes = computed(() => {
-  const group = getGroupFromKey(groupLabelToGroupKeyObj.value['Registration Code']!)
+  const group = getGroupFromKey(getGroupKeyFromLabel('Registration Code'))
   return group?.optionKeys.map(k => {
     const option = getOptionFromKey(k)
     return { title: option.text, value: option.text }
