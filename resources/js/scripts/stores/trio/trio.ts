@@ -67,7 +67,7 @@ export const useTrioStore = defineStore('trio', () => {
     const tmp: Record<TrioSelectorSource, string[]> = { Filter: [], Tagger: [] }
     // let i = 0
     for (const grpKey in trio.value.groupsObj) {
-      const group = trio.value.groupsObj[grpKey]!
+      const group = getGroupFromKey(grpKey)
       // i++
       switch (group.code) {
         case 'LV':
@@ -159,7 +159,7 @@ export const useTrioStore = defineStore('trio', () => {
   const visibleCatIndices = computed(() => {
     const indices: number[] = []
     availableGroupKeysByRoute.value.forEach((x) => {
-      const catIndex = trio.value.groupsObj[x]!.selectorCategoryIndex
+      const catIndex = getGroupFromKey(x).selectorCategoryIndex
       if (!indices.includes(catIndex)) {
         indices.push(catIndex)
       }
@@ -184,7 +184,7 @@ export const useTrioStore = defineStore('trio', () => {
 
   const selectorGroupTabs = computed(() => {
     return visibleGroupKeys.value.map((x) => {
-      const group = trio.value.groupsObj[x]!
+      const group = getGroupFromKey(x)
       if (indicesSourceIsFilter.value) {
         return {
           name: group.label,
@@ -209,7 +209,7 @@ export const useTrioStore = defineStore('trio', () => {
     const tmp: Record<string, number> = {}
 
     availableGroupKeysByRoute.value.forEach((x) => {
-      const group = trio.value.groupsObj[x]!
+      const group = getGroupFromKey(x)
       tmp[x] = selectedCount(group?.optionKeys, selectedOptionKeysByRoute.value)
     })
     return tmp
@@ -231,7 +231,7 @@ export const useTrioStore = defineStore('trio', () => {
   })
 
   const currentGroup = computed(() => {
-    return trio.value.groupsObj[visibleGroupKeys.value[selectorGroupIndex.value]!]
+    return getGroupFromKey(visibleGroupKeys.value[selectorGroupIndex.value]!)
   })
 
   const selectorOptions = computed(() => {
@@ -239,7 +239,7 @@ export const useTrioStore = defineStore('trio', () => {
       ? []
       : currentGroup.value.optionKeys.map((x) => {
           return {
-            ...trio.value.optionsObj[x],
+            ...getOptionFromKey(x),
             selected: selectedOptionKeysByRoute.value.includes(x),
             key: x,
           }
@@ -261,12 +261,12 @@ export const useTrioStore = defineStore('trio', () => {
     }[] = []
 
     // console.log(`displayedSelectedItem.selected: (${itemAllOptionKeys.value})`)
-    // console.log(`labels: (${itemAllOptionKeys.value.map((x) => trio.value.optionsObj[x]?.text)})`)
+    // console.log(`labels: (${itemAllOptionKeys.value.map((x) => getOptionFromKey(x)?.text)})`)
 
     // Build groups
     for (const key of selected) {
-      const groupKey = trio.value.optionsObj[key]!.groupKey
-      const group = trio.value.groupsObj[groupKey]!
+      const groupKey = getOptionFromKey(key).groupKey
+      const group = getGroupFromKey(groupKey)
       // If item, don't show CT groups , show LV & EM groups only if showAsTag is true and don't show if 'Unassigned'
       if (source === 'Item') {
         switch (group.code) {
@@ -278,7 +278,7 @@ export const useTrioStore = defineStore('trio', () => {
             if (!group.showAsTag) {
               continue
             } else {
-              if (trio.value.optionsObj[key]?.text === 'Unassigned') {
+              if (getOptionFromKey(key).text === 'Unassigned') {
                 continue
               }
             }
@@ -289,22 +289,20 @@ export const useTrioStore = defineStore('trio', () => {
         }
       }
 
-      const index = displayGroups.findIndex(
-        (x) => x.groupKey === trio.value.optionsObj[key]!.groupKey,
-      )
+      const index = displayGroups.findIndex((x) => x.groupKey === getOptionFromKey(key).groupKey)
 
       if (index === -1) {
-        const groupKey = trio.value.optionsObj[key]!.groupKey
-        const group = trio.value.groupsObj[groupKey]!
+        const groupKey = getOptionFromKey(key).groupKey
+        const group = getGroupFromKey(groupKey)
 
         displayGroups.push({
           groupKey,
           label: group.label,
           catIndex: group.selectorCategoryIndex,
-          options: [trio.value.optionsObj[key]!.text],
+          options: [getOptionFromKey(key).text],
         })
       } else {
-        displayGroups[index]?.options.push(trio.value.optionsObj[key]!.text)
+        displayGroups[index]?.options.push(getOptionFromKey(key).text)
       }
     }
 
@@ -354,7 +352,7 @@ export const useTrioStore = defineStore('trio', () => {
     //////////////////////////////
 
     Object.entries(itemFieldsToGroupKeyObj.value).forEach(([key, value]) => {
-      const group = trio.value.groupsObj[value]!
+      const group = getGroupFromKey(value)
       const val = fields[key as keyof TFields]
       const index = indexOfOptionOrThrow(group, val)
       itemAllOptionKeys.value.push(group!.optionKeys[index]!)
@@ -373,7 +371,7 @@ export const useTrioStore = defineStore('trio', () => {
 
     for (const groupLabel in categorizerGroupOptionObj) {
       const index = categorizerGroupOptionObj[groupLabel]!
-      const group = trio.value.groupsObj[groupLabelToGroupKeyObj.value[groupLabel]!]
+      const group = getGroupFromKey(groupLabelToGroupKeyObj.value[groupLabel]!)
       // console.log(
       //   `${groupLabel} => ${index} =>  ${JSON.stringify(categorizerGroupOptionObj, null, 2)}`,
       // )
@@ -404,7 +402,7 @@ export const useTrioStore = defineStore('trio', () => {
 
     Object.entries(itemFieldsToGroupKeyObj.value).forEach(([key, value]) => {
       // console.log(`[key: ${key}] => ${value}`)
-      const group = trio.value.groupsObj[value]!
+      const group = getGroupFromKey(value)
       val = fields[key as keyof TFields]
 
       const index = indexOfOptionOrThrow(group, val)
@@ -415,11 +413,10 @@ export const useTrioStore = defineStore('trio', () => {
         fieldValue: val,
         code: group.code,
         optionKey: optionKey,
-        optionLabel: trio.value.optionsObj[optionKey]!.text,
-        optionExtra: trio.value.optionsObj[optionKey]!.extra,
+        optionLabel: getOptionFromKey(optionKey).text,
+        optionExtra: getOptionFromKey(optionKey).extra,
         options: group.optionKeys.map((x) => {
-          const option = trio.value.optionsObj[x]!
-          return option
+          return getOptionFromKey(x)
         }),
         index,
       })
@@ -434,7 +431,7 @@ export const useTrioStore = defineStore('trio', () => {
     // Debug - Start
     // const showOptions: Record<string, { extra: TFieldValue; text: string }> = {}
     // group.optionKeys.forEach((x) => {
-    //   const op = trio.value.optionsObj[x]!
+    //   const op = getOptionFromKey(x)
     //   showOptions[x] = { extra: op.extra, text: op.text }
     // })
 
@@ -446,7 +443,7 @@ export const useTrioStore = defineStore('trio', () => {
     const propertyToCompare = group.code === 'EM' ? 'text' : 'extra'
     const index = group.optionKeys.findIndex(
       // ** weak comparison because option.extra is either string, number or boolean
-      (y) => trio.value.optionsObj[y]![propertyToCompare] == val,
+      (y) => getOptionFromKey(y)[propertyToCompare] == val,
     )
 
     if (index === -1) {
@@ -458,8 +455,8 @@ export const useTrioStore = defineStore('trio', () => {
   }
 
   function optionClicked(prmKey: string) {
-    const option = getOptionFromKey(prmKey) // trio.value.optionsObj[prmKey]!
-    const group = getGroupFromKey(option.groupKey) //trio.value.groupsObj[option.groupKey]!
+    const option = getOptionFromKey(prmKey)
+    const group = getGroupFromKey(option.groupKey)
 
     const isSelected = selectedOptionKeysByRoute.value.includes(prmKey)
     console.log(`TRIO.click(${getFullName(prmKey)}[${isSelected ? '+' : '-'}])`)
@@ -491,7 +488,7 @@ export const useTrioStore = defineStore('trio', () => {
             //if there is currently  a  selected one - unselect the currently selected and select the new one.
             //if there isn't, select the new one.
             const currentKey = selectedOptionKeysByRoute.value.find((x) => {
-              return trio.value.groupsObj[trio.value.optionsObj[x]!.groupKey]!.label === group.label
+              return getGroupFromKey(getOptionFromKey(x).groupKey).label === group.label
             })
             if (currentKey !== undefined) {
               unSelectOption(currentKey)
@@ -513,7 +510,7 @@ export const useTrioStore = defineStore('trio', () => {
         } else {
           //unselect the currently selected and select the new one
           const currentKey = selectedOptionKeysByRoute.value.find((x) => {
-            return trio.value.groupsObj[trio.value.optionsObj[x]!.groupKey]!.label === group.label
+            return getGroupFromKey(getOptionFromKey(x).groupKey).label === group.label
           })
           if (currentKey === undefined) {
             console.log(
@@ -555,8 +552,8 @@ export const useTrioStore = defineStore('trio', () => {
       return
     }
 
-    const option = trio.value.optionsObj[optionKey]!
-    const group = trio.value.groupsObj[option.groupKey]!
+    const option = getOptionFromKey(optionKey)
+    const group = getGroupFromKey(option.groupKey)
     // For required, Single groups (LV & EM) if setToDefault is true, replace with default options[0] (='Unassigned')
     if (current.value.name === 'tag' && ['LV', 'EM'].includes(group.code) && setToDefault) {
       // console.log(`Unselect Required,Single option. Set to default(${getFullName(optionKey)})`)
@@ -587,8 +584,8 @@ export const useTrioStore = defineStore('trio', () => {
     const possibleOptionsToUnselected = new Set<string>()
 
     selectedOptionKeysByRoute.value.forEach((x) => {
-      const optionObj = trio.value.optionsObj[x]!
-      const group = trio.value.groupsObj[optionObj.groupKey!]!
+      const optionObj = getOptionFromKey(x)
+      const group = getGroupFromKey(optionObj.groupKey!)
 
       if (
         ['TG', 'TM', 'LV', 'EM'].includes(group.code) &&
@@ -610,10 +607,10 @@ export const useTrioStore = defineStore('trio', () => {
   }
 
   function getFullName(optionKey: string) {
-    const optionObj = trio.value.optionsObj[optionKey]
+    const optionObj = getOptionFromKey(optionKey)
     const optionName = optionObj?.text
     const grpKey = optionObj?.groupKey
-    const group = trio.value.groupsObj[grpKey!]
+    const group = getGroupFromKey(grpKey!)
     return `${group?.label}:${optionName}` //`${group?.label}:${optionName} (${grpKey}:${optionKey})`
   }
 
@@ -648,7 +645,7 @@ export const useTrioStore = defineStore('trio', () => {
 
   function orderByClear() {
     orderByGroup.value?.optionKeys.forEach((x) => {
-      trio.value.optionsObj[x]!.text = ''
+      getOptionFromKey(x).text = ''
       if (filterAllOptionKeys.value.includes(x)) {
         const i = filterAllOptionKeys.value.indexOf(x)
         filterAllOptionKeys.value.splice(i, 1)
@@ -670,7 +667,7 @@ export const useTrioStore = defineStore('trio', () => {
           const i = filterAllOptionKeys.value.indexOf(x)
           filterAllOptionKeys.value.splice(i, 1)
         }
-        const param = trio.value.optionsObj[x]!
+        const param = getOptionFromKey(x)
         param.text = ''
         param.extra = ''
       })
@@ -679,10 +676,10 @@ export const useTrioStore = defineStore('trio', () => {
 
     // Clear only FieldSearch options' text. filterAllOptionKeys will be cleared by calling function filterClearOptions()
     for (const value of Object.values(groupLabelToGroupKeyObj.value)) {
-      const group = trio.value.groupsObj[value]!
+      const group = getGroupFromKey(value)
       if (group.code === 'SF') {
         group.optionKeys.forEach((x) => {
-          const param = trio.value.optionsObj[x]!
+          const param = getOptionFromKey(x)
           param.text = ''
           param.extra = ''
         })
@@ -700,13 +697,13 @@ export const useTrioStore = defineStore('trio', () => {
     // console.log(`SaveItem - Add extrnal (module and global) tags`)
     const tagOptionKey: string[] = []
     for (const x of apiTags) {
-      const group = trio.value.groupsObj[groupLabelToGroupKeyObj.value[x.group_label]!]
+      const group = getGroupFromKey(groupLabelToGroupKeyObj.value[x.group_label]!)
       if (group === undefined) {
         console.log(`*** itemApiTagsToOptionKeys() - Can't find group ${x.group_label}`)
         throw new Error(`*** itemApiTagsToOptionKeys() - Can't find group ${x.group_label}`)
       }
       // console.log(`Add Tag:  ${x.group_label} => "${x.tag_text}"`)
-      const optionKey = group.optionKeys.find((y) => trio.value.optionsObj[y]!.text === x.tag_text)
+      const optionKey = group.optionKeys.find((y) => getOptionFromKey(y).text === x.tag_text)
       if (optionKey === undefined) {
         console.log(
           `*** itemApiTagsToOptionKeys() - Can't find tag ${x.tag_text} in group ${group.label}`,
@@ -721,6 +718,10 @@ export const useTrioStore = defineStore('trio', () => {
   }
 
   return {
+    // general
+    getGroupFromKey,
+    getOptionFromKey,
+
     // Display selected
     displayedSelectedItem,
     displayedSelectedFilter,

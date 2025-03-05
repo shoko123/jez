@@ -46,7 +46,8 @@ const { pushHome } = useRoutesMainStore()
 const { current } = storeToRefs(useRoutesMainStore())
 
 const { openIdSelectorModal, dataNew } = storeToRefs(useItemNewStore())
-const { groupLabelToGroupKeyObj, trio } = storeToRefs(useTrioStore())
+const { getGroupFromKey, getOptionFromKey } = useTrioStore()
+const { groupLabelToGroupKeyObj } = storeToRefs(useTrioStore())
 const { send } = useXhrStore()
 
 const props = defineProps<{
@@ -77,9 +78,9 @@ basketNo.value = props.defaults.basketNo
 artifactNo.value = null  // null on initial call
 
 const seasons = computed(() => {
-  const group = trio.value.groupsObj[groupLabelToGroupKeyObj.value['Season']!]
+  const group = getGroupFromKey(groupLabelToGroupKeyObj.value['Season']!)
   return group?.optionKeys.map(k => {
-    const option = trio.value.optionsObj[k]!
+    const option = getOptionFromKey(k)
     return { title: option.text, value: option.extra }
   })
 })
@@ -91,9 +92,9 @@ async function seasonChanged() {
 }
 
 const areas = computed(() => {
-  const group = trio.value.groupsObj[groupLabelToGroupKeyObj.value['Area']!]
+  const group = getGroupFromKey(groupLabelToGroupKeyObj.value['Area']!)
   return group?.optionKeys.map(k => {
-    const option = trio.value.optionsObj[k]!
+    const option = getOptionFromKey(k)
     return { title: option.text, value: option.extra }
   })
 })
@@ -166,9 +167,9 @@ const locus = computed(() => {
 })
 
 const codes = computed(() => {
-  const group = trio.value.groupsObj[groupLabelToGroupKeyObj.value['Registration Code']!]
+  const group = getGroupFromKey(groupLabelToGroupKeyObj.value['Registration Code']!)
   return group?.optionKeys.map(k => {
-    const option = trio.value.optionsObj[k]!
+    const option = getOptionFromKey(k)
     return { title: option.text, value: option.text }
   })
 })
