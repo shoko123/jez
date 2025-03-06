@@ -1,5 +1,5 @@
 import type { TApiTrio, TOption } from '@/types/trioTypes'
-import type { TCName, TCollectionView } from '@/types/collectionTypes'
+import type { TCName, TCollectionView, TArray } from '@/types/collectionTypes'
 
 import type { TArea } from '@/types/modules/Area'
 import type { TSeason } from '@/types/modules/Season'
@@ -26,12 +26,18 @@ type TDefs = {
   Metal: TMetal
 }
 type TCategorizerFuncs = (fields?: TFields) => Record<string, number>
+
+type TMayDeleteFunc = (
+  related?: TArray<'related'>[],
+) => { mayDelete: true } | { mayDelete: false; message?: string }
+
 type TModuleConfigs = {
   idRegExp: RegExp
   idDerived: (g: Record<string, string>) => { slug: string; tag: string }
   slugRegExp: RegExp
   idFormatter: (g: Record<string, string>) => string
-  categorizerFuncs?: TCategorizerFuncs // Use generic TFields and narrow in specific implementations
+  categorizerFuncs: TCategorizerFuncs
+  mayDelete: TMayDeleteFunc
 }
 
 // Conversions of Module <--> UrlModule
@@ -124,7 +130,6 @@ export {
   TUrlModuleNameToModule,
   TModuleConfigs,
   TApiModuleInit,
-  TCategorizerFuncs,
   TViewsForCollection,
   TItemsPerPageByView,
   TModuleBtnsInfo,

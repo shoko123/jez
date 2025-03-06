@@ -1,8 +1,8 @@
-import type { TModuleConfigs, TFields, TCategorizerFuncs } from '../types/moduleTypes'
+import type { TModuleConfigs, TFields } from '../types/moduleTypes'
 import { CommonConfigs } from './common/CommonConfigs'
 
 export abstract class CeramicConfigs {
-  private static categorizerFuncs: TCategorizerFuncs = (fields?: TFields) => {
+  private static categorizerFuncs(fields?: TFields) {
     const d = fields as TFields<'Ceramic'>
     return {
       'Registration Scope': d.artifact_no === 0 ? 0 : 1,
@@ -10,7 +10,14 @@ export abstract class CeramicConfigs {
     }
   }
 
+  private static mayDelete() {
+    return { mayDelete: true }
+  }
+
   public static getConfigs(): TModuleConfigs {
-    return { ...CommonConfigs.getConfigs(), ...CeramicConfigs.categorizerFuncs } as const
+    const configs = CommonConfigs.getCommonConfigs()
+    configs['categorizerFuncs'] = CeramicConfigs.categorizerFuncs
+    configs['mayDelete'] = CeramicConfigs.mayDelete
+    return configs as Readonly<TModuleConfigs>
   }
 }

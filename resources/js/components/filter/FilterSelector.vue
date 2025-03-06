@@ -24,7 +24,6 @@
   </v-card>
 </template>
 
-
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, type Component } from 'vue'
 import { storeToRefs } from 'pinia'

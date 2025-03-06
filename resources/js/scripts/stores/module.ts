@@ -12,7 +12,7 @@ import type {
   TUrlModuleNameToModule,
   TModuleBtnsInfo,
 } from '../../types/moduleTypes'
-import type { TCName } from '@/types/collectionTypes'
+import type { TCName, TArray } from '@/types/collectionTypes'
 type TItemViews = { options: string[]; index: number }
 
 import { AreaConfigs } from '../../configs/AreaConfigs'
@@ -209,6 +209,11 @@ export const useModuleStore = defineStore('module', () => {
     return newFields
   }
 
+  function mayDelete(related: TArray<'related'>[]) {
+    const mayDeleteFunc = getModuleConfigs(module.value).mayDelete
+    return mayDeleteFunc(related)
+  }
+
   function changeCount(countOf: 'items' | 'media', change: number) {
     counts.value[countOf] += change
   }
@@ -237,6 +242,7 @@ export const useModuleStore = defineStore('module', () => {
     resetItemView,
     specialFields,
     prepareNewFields,
+    mayDelete,
     changeCount,
   }
 })

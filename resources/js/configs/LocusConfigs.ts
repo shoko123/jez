@@ -1,4 +1,5 @@
 import type { TModuleConfigs } from '../types/moduleTypes'
+import type { TArray } from '../types/collectionTypes'
 
 export abstract class LocusConfigs {
   private static configs: TModuleConfigs = {
@@ -15,6 +16,14 @@ export abstract class LocusConfigs {
     },
     categorizerFuncs: () => {
       return {}
+    },
+    mayDelete: (related?: TArray<'related'>[]) => {
+      return related!.some((x) => x.relation_name === 'Has Find')
+        ? {
+            mayDelete: false,
+            message: 'Delete aborted: Locus has related finds!',
+          }
+        : { mayDelete: true }
     },
   } as const
 

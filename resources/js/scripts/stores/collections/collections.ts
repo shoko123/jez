@@ -31,6 +31,11 @@ export const useCollectionsStore = defineStore('collections', () => {
     }
   }
 
+  function getCollectionArray(name: TCName) {
+    const c = getCollectionStore(name)
+    return c.array
+  }
+
   function getConsumeableCollection(
     name: TCName,
     viewIndex: number,
@@ -123,6 +128,7 @@ export const useCollectionsStore = defineStore('collections', () => {
 
   //Note: computed collection will only be reactive only if state (main, media) is exposed.
   return {
+    getCollectionArray,
     setCollectionArray,
     getCollectionStore,
     getConsumeableCollection,

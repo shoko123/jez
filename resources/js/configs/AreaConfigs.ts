@@ -15,6 +15,9 @@ export abstract class AreaConfigs {
     categorizerFuncs: () => {
       return {}
     },
+    mayDelete: () => {
+      return { mayDelete: false, message: 'Areas can not be deleted!' }
+    },
   } as const
 
   public static getConfigs() {

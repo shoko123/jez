@@ -1,12 +1,19 @@
-import type { TModuleConfigs, TCategorizerFuncs } from '../types/moduleTypes'
+import type { TModuleConfigs } from '../types/moduleTypes'
 import { CommonConfigs } from './common/CommonConfigs'
 
 export abstract class MetalConfigs {
-  private static categorizerFuncs: TCategorizerFuncs = () => {
+  private static categorizerFuncs() {
     return {}
   }
 
+  private static mayDelete() {
+    return { mayDelete: true }
+  }
+
   public static getConfigs(): TModuleConfigs {
-    return { ...CommonConfigs.getConfigs(), ...MetalConfigs.categorizerFuncs } as const
+    const configs = CommonConfigs.getCommonConfigs()
+    configs['categorizerFuncs'] = MetalConfigs.categorizerFuncs
+    configs['mayDelete'] = MetalConfigs.mayDelete
+    return configs as Readonly<TModuleConfigs>
   }
 }

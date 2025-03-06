@@ -1,7 +1,7 @@
 import type { TModuleConfigs } from '../../types/moduleTypes'
 
 export class CommonConfigs {
-  private static configs: TModuleConfigs = {
+  private static configs: Partial<TModuleConfigs> = {
     idRegExp:
       /^(?<season>[2-8])(?<area>[K-S])(?<locus_no>\d{3})(?<code>[A-Z]{2})(?<basket_no>\d{2})(?<artifact_no>\d{2})$/,
     slugRegExp:
@@ -17,7 +17,7 @@ export class CommonConfigs {
     },
   }
 
-  public static getConfigs(): TModuleConfigs {
+  public static getCommonConfigs(): Partial<TModuleConfigs> {
     return CommonConfigs.configs
   }
 }

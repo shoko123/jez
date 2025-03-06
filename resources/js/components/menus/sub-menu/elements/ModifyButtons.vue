@@ -36,8 +36,10 @@ import { useAuthStore } from '../../../../scripts/stores/auth'
 import { useRoutesMainStore } from '../../../../scripts/stores/routes/routesMain'
 import { useItemStore } from '../../../../scripts/stores/item'
 import { useTaggerStore } from '../../../../scripts/stores/trio/tagger'
-import { useCollectionMediaStore } from '../../../../scripts/stores/collections/collectionMedia'
+import { useModuleStore } from '../../../../scripts/stores/module'
+import { useCollectionsStore } from '../../../../scripts/stores/collections/collections'
 import { useNotificationsStore } from '../../../../scripts/stores/notifications'
+import { TArray } from '@/types/collectionTypes'
 
 const { routerPush } = useRoutesMainStore()
 const { current } = storeToRefs(useRoutesMainStore())
@@ -47,6 +49,7 @@ const { derived } = storeToRefs(useItemStore())
 const { itemRemove } = useItemStore()
 const { showSpinner, showSnackbar } = useNotificationsStore()
 const { taggerCopyItemOptionsToTagger } = useTaggerStore()
+const { mayDelete } = useModuleStore()
 
 const module = computed(() => {
   return current.value.module
@@ -79,10 +82,19 @@ async function goToTagger() {
 }
 
 async function itemDelete() {
-  const { array } = storeToRefs(useCollectionMediaStore())
+  const { getCollectionArray } = useCollectionsStore()
+  const media = getCollectionArray('media')
 
-  if (array.value.length > 0) {
+
+  if (media.length > 0) {
     alert(`Delete aborted. Please delete related media!`)
+    return
+  }
+
+  const result = mayDelete(getCollectionArray('related') as TArray<'related'>[])
+
+  if (result.mayDelete === false) {
+    alert(`${result.message}`)
     return
   }
 

@@ -1,15 +1,22 @@
-import type { TModuleConfigs, TFields, TCategorizerFuncs } from '../types/moduleTypes'
+import type { TModuleConfigs, TFields } from '../types/moduleTypes'
 import { CommonConfigs } from './common/CommonConfigs'
 
 export abstract class LithicConfigs {
-  private static categorizerFuncs: TCategorizerFuncs = (fields?: TFields) => {
+  private static categorizerFuncs(fields?: TFields) {
     const d = fields as TFields<'Ceramic'>
     return {
       'Registration Scope': d.artifact_no === 0 ? 0 : 1,
     }
   }
 
+  private static mayDelete() {
+    return { mayDelete: true }
+  }
+
   public static getConfigs(): TModuleConfigs {
-    return { ...CommonConfigs.getConfigs(), ...LithicConfigs.categorizerFuncs } as const
+    const configs = CommonConfigs.getCommonConfigs()
+    configs['categorizerFuncs'] = LithicConfigs.categorizerFuncs
+    configs['mayDelete'] = LithicConfigs.mayDelete
+    return configs as Readonly<TModuleConfigs>
   }
 }

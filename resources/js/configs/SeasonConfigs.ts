@@ -13,6 +13,9 @@ export abstract class SeasonConfigs {
     categorizerFuncs: () => {
       return {}
     },
+    mayDelete: () => {
+      return { mayDelete: false, message: 'Seasons may not be deleted!' }
+    },
   } as const
 
   public static getConfigs() {

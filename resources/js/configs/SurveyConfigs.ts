@@ -16,6 +16,9 @@ export abstract class SurveyConfigs {
     categorizerFuncs: () => {
       return {}
     },
+    mayDelete: () => {
+      return { mayDelete: false }
+    },
   } as const
 
   public static getConfigs() {
