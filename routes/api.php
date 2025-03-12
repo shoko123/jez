@@ -9,29 +9,31 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\XdevController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\EnsureReadAccessibility;
+use App\Http\Middleware\EnsureMutationAccessibility;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
-//open routes
-
+// Open routes
 Route::get('app/init', [AppController::class, 'init']);
 
-//read only APIs. Accessible when config.accessibility.authenticatedUsersOnly is false, or authenticated.
-//Route::group(['middleware' => ['read.accessibility']], function () {
-Route::post('module/init', [DigModuleController::class, 'init']);
-Route::post('module/index', [DigModuleController::class, 'index']);
-Route::post('module/page', [DigModuleController::class, 'page']);
-Route::post('module/show', [DigModuleController::class, 'show']);
-Route::post('carousel/show', [CarouselController::class, 'show']);
-//});
-
-// Route::get('about/me', [AuthController::class, 'me']);
-Route::get('about/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
-
-//mutator APIs
+// Authenticated users
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::get('about/me', [AuthController::class, 'me']);
+});
+
+// Read only routes
+Route::group(['middleware' => [EnsureReadAccessibility::class]], function () {
+    Route::post('module/init', [DigModuleController::class, 'init']);
+    Route::post('module/index', [DigModuleController::class, 'index']);
+    Route::post('module/page', [DigModuleController::class, 'page']);
+    Route::post('module/show', [DigModuleController::class, 'show']);
+    Route::post('carousel/show', [CarouselController::class, 'show']);
+});
+
+// Mutators. Additional specific authorization is done at request forms.
+Route::group(['middleware' => ['auth:sanctum', 'verified', EnsureMutationAccessibility::class]], function () {
     Route::post('module/store', [DigModuleController::class, 'store']);
     Route::put('module/store', [DigModuleController::class, 'store']);
     Route::post('module/destroy', [DigModuleController::class, 'destroy']);
