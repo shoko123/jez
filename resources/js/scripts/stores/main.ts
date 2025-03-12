@@ -11,6 +11,7 @@ type sendApiAppInit = {
   accessibility: {
     readOnly: boolean
     authenticatedUsersOnly: boolean
+    registrationAllowed: boolean
   }
   media_collections: string[]
   app_name: string

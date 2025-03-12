@@ -19,7 +19,11 @@ export const useAuthStore = defineStore('auth', () => {
   const { send } = useXhrStore()
 
   const user = ref<TUser | null>(null)
-  const accessibility = ref({ authenticatedUsersOnly: true, readOnly: false })
+  const accessibility = ref({
+    authenticatedUsersOnly: true,
+    readOnly: false,
+    registrationAllowed: true,
+  })
   const dialog = ref({ open: false, message: '' })
   const passwordResetEmail = ref<string>('')
 

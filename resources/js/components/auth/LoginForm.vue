@@ -39,7 +39,7 @@ import { required, email, minLength, helpers } from '@vuelidate/validators'
 
 const { showSnackbar } = useNotificationsStore()
 const { loginGetUser } = useAuthStore()
-const { user, passwordResetEmail, } = storeToRefs(useAuthStore())
+const { user, passwordResetEmail, accessibility } = storeToRefs(useAuthStore())
 const { preLogPath, redirectedPreLogPath } = storeToRefs(useRoutesMainStore())
 const { routerPush, pushHome } = useRoutesMainStore()
 
@@ -109,7 +109,22 @@ async function login() {
 }
 
 async function goTo(routeName: TPageName) {
-  await v$.value.email.$validate()
+  // console.log(`accessibility: ${JSON.stringify(accessibility.value, null, 2)}`)
+  switch (routeName) {
+    case 'register':
+      if (accessibility.value.registrationAllowed === false) {
+        showSnackbar('Registration of new users is not allowed at this time!')
+        return
+      }
+      break
+
+    case 'forgot-password':
+      await v$.value.email.$validate()
+      break
+
+    default:
+      return
+  }
   passwordResetEmail.value = data.email
   await routerPush(routeName)
 }

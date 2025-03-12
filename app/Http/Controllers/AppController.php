@@ -17,6 +17,7 @@ class AppController extends BaseController
             'accessibility' => [
                 'readOnly' => env('ACCESSIBILITY_READ_ONLY'),
                 'authenticatedUsersOnly' => env('ACCESSIBILITY_AUTHENTICATED_ONLY'),
+                'registrationAlowed' => env('ACCESSIBILITY_ALLOW_REGISTRATION')
             ],
             'media_collections' => MediaService::collection_names(),
             'app_name' => env('APP_NAME'),
