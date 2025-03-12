@@ -6,7 +6,6 @@ use App\Http\Controllers\CarouselController;
 use App\Http\Controllers\DigModuleController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\TagController;
-use App\Http\Controllers\XdevController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\EnsureReadAccessibility;
@@ -14,14 +13,6 @@ use App\Http\Middleware\EnsureMutationAccessibility;
 
 // Open routes
 Route::get('app/init', [AppController::class, 'init']);
-
-// Authenticated users
-Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-    Route::get('about/me', [AuthController::class, 'me']);
-});
 
 // Read only routes
 Route::group(['middleware' => [EnsureReadAccessibility::class]], function () {
@@ -44,7 +35,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified', EnsureMutationAccessi
     Route::post('media/reorder', [MediaController::class, 'reorder']);
 });
 
-//more open routes
-Route::post('dev/status', [XdevController::class, 'status']);
-Route::post('dev/test', [XdevController::class, 'test']);
-Route::post('dev/run', [XdevController::class, 'run']);
+// User info
+Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
+    Route::get('about/me', [AuthController::class, 'me']);
+});
