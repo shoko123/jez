@@ -11,8 +11,8 @@
       </v-img>
     </v-card>
 
-    <v-card class="ma-2 pa-2">
-      <GoogleMap v-if="isProduction" :api-key="mapInfo.apiKey" style="width: 100%; height: 700px" :zoom="mapInfo.zoom"
+    <v-card v-if="isProduction" class="ma-2 pa-2">
+      <GoogleMap :api-key="mapInfo.apiKey" style="width: 100%; height: 700px" :zoom="mapInfo.zoom"
         :center="mapInfo.center" :map-type-id="mapInfo.mapTypeId" :street-view-control="mapInfo.streetViewControl"
         :map-id="mapInfo.mapId">
         <AdvancedMarker :options="{ position: mapInfo.center }" />

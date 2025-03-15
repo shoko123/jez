@@ -17,7 +17,7 @@ import Zoomy from './zoomy/Zoomy.js'
 
 onMounted(() => {
   //console.log(`ImageZoom.mount`)
-  if (media.value?.hasMedia) {
+  if (media.value?.mediaSource === 'DB') {
     zm.value = new Zoomy('zoomy', options)
   } else {
     zm.value?.detach()
@@ -48,7 +48,7 @@ watch(media, () => {
   //console.log('ImageZoom.media changed')
   zm.value?.disable()
   zm.value?.detach()
-  if (media.value?.hasMedia) {
+  if (media.value?.mediaSource === 'DB') {
     zm.value = new Zoomy('zoomy', options)
   } else {
     zm.value = null
@@ -57,6 +57,6 @@ watch(media, () => {
 
 //isFiller includes a set function as v-overlays requires a modifiable boolean
 const isFiller = computed(() => {
-  return !media.value?.hasMedia
+  return media.value?.mediaSource === 'Filler'
 })
 </script>

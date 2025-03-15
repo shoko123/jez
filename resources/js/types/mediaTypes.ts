@@ -3,10 +3,11 @@ import { TModule } from '@/types/moduleTypes'
 import { TApiPage, TPage, TCName } from '@/types/collectionTypes'
 
 type TMediaUrls = { full: string; tn: string }
+type TMediaSource = 'DB' | 'Asset' | 'Filler' | 'External'
 
 //When an item has no related media, we use a placeholder media urls.
 type TMediaOfItem = {
-  hasMedia: boolean
+  mediaSource: TMediaSource
   urls: TMediaUrls
 }
 

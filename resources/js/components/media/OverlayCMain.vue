@@ -5,7 +5,7 @@
   </v-row>
   <v-row>
     <v-btn class="ml-2 bg-grey-lighten-1" @click="goToItem()"> {{ tag }} </v-btn>
-    <v-btn v-if="props.record.media.hasMedia" class="ml-2 bg-grey-lighten-1" @click="openModalCarousel()">
+    <v-btn v-if="props.record.media.mediaSource === 'DB'" class="ml-2 bg-grey-lighten-1" @click="openModalCarousel()">
       Lightbox
     </v-btn>
   </v-row>

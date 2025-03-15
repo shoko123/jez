@@ -28,7 +28,7 @@ export const useMediaStore = defineStore('media', () => {
   function buildMedia(apiMedia: TMediaUrls | null, module?: TModule): TMediaOfItem {
     if (apiMedia === null || apiMedia === undefined) {
       return {
-        hasMedia: false,
+        mediaSource: 'Filler',
         urls: {
           full: `${bucketUrl.value}app/fillers/${module}_Filler.jpg`,
           tn: `${bucketUrl.value}app/fillers/${module}_Filler-tn.jpg`,
@@ -36,7 +36,7 @@ export const useMediaStore = defineStore('media', () => {
       }
     } else {
       return {
-        hasMedia: true,
+        mediaSource: 'DB',
         urls: {
           full: `${bucketUrl.value}${apiMedia.full}`,
           tn: `${bucketUrl.value}${apiMedia.tn}`,

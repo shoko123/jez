@@ -37,14 +37,14 @@ const prps = defineProps<{
 const record = computed(() => {
   const c = getCollectionStore(prps.source)
   let indexInPage = prps.itemIndex % c.info.itemsPerPage
-  return c.page[indexInPage] as TPage<'main', 'Gallery'> &
+  return c.page[indexInPage] as TPage<TCName, 'Gallery'> &
     TPage<'media', 'Gallery'> &
     TPage<'related', 'Gallery'>
   //Note This can't be reduced to TPage<TCName', 'Gallery'>
 })
 
 const showShort = computed(() => {
-  return ['main', 'related'].includes(prps.source) && !record.value.media?.hasMedia
+  return ['main', 'related'].includes(prps.source) && record.value.media?.mediaSource === 'Filler'
 })
 
 const shortToShow = computed(() => {
