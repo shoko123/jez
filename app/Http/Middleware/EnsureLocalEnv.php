@@ -17,7 +17,7 @@ class EnsureLocalEnv
     public function handle(Request $request, Closure $next): Response
     {
         if (!app()->environment('local')) {
-            throw new GeneralJsonException('These routes are only available on the development environment!', 422);
+            throw new GeneralJsonException('These routes are only available on the development environment!', 403);
         }
         return $next($request);
     }

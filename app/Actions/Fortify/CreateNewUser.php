@@ -21,7 +21,7 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
         if (!env('ACCESSIBILITY_ALLOW_REGISTRATION')) {
-            throw new GeneralJsonException('New Users Registration is disabled at this time!', 422);
+            throw new GeneralJsonException('New Users Registration is disabled at this time!', 403);
         }
 
         Validator::make($input, [

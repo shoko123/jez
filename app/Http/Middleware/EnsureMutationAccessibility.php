@@ -17,7 +17,7 @@ class EnsureMutationAccessibility
     public function handle(Request $request, Closure $next): Response
     {
         if (env('ACCESSIBILITY_READ_ONLY')) {
-            throw new GeneralJsonException('No Mutations are allowed at this time!', 422);
+            throw new GeneralJsonException('No Mutations are allowed at this time!', 403);
         }
         return $next($request);
     }

@@ -244,6 +244,7 @@ class StoneConfig  implements ConfigInterface
     {
         return array_merge(static::smallFindDiscreteFilterOptions(true), [
             'Primary Classification' => 'primary_classification_id',
+            'Material' => 'material_id'
         ]);
     }
 

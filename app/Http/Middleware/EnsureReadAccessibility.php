@@ -17,7 +17,7 @@ class EnsureReadAccessibility
     public function handle(Request $request, Closure $next): Response
     {
         if (env('ACCESSIBILITY_AUTHENTICATED_ONLY') && !$request->user()) {
-            throw new GeneralJsonException('Only Authorized users are allowed to use this route!', 422);
+            throw new GeneralJsonException('Only Authorized users are allowed to use this route!', 401);
         }
         return $next($request);
     }
