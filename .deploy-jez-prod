@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Start dev environment:
+#   sail up
+#   sail npm run dev
+# Served at: localhost
+# Deploy: "bash .deploy-jez-prod".
+# Push to github: "git push gh"
+# Before doing this please verify that all changes are committed.
+
+source="/home/max/web/code/jez/"
+dest="max@159.89.232.183:/var/www/html/jez/"
+
+build_folder_path="public/build"
+auth_seeder_path="database/seeders/AuthTablesSeeder.php"
+
+echo "** JEZ ** deploy"
+
+echo "(1) Pushing git changes"
+git push -u deploy-jez-do master
+echo "git push exit code: " $?
+
+echo "(2) Building assets locally"
+./vendor/bin/sail npm run build
+echo "build assets exit code: " $?
+
+echo "(3) Copying build folder to server..."
+# Please note the "/" in source!
+rsync -a "${source}${build_folder_path}/" "${dest}${build_folder_path}"
+echo "Folder transfer exit code: " $?
+
+echo "(4) Copying AuthTablesSeeder"
+scp "${source}${auth_seeder_path}" "${dest}${auth_seeder_path}"
+echo "File transfer exit code: " $?
+
+echo "Deployment completed!"
